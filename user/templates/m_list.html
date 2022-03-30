@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user.css' %}?ver=1">
+    <script src="{% static 'js/user.js' %}"></script>
+{% endblock %}
+
+{% block contents %}
+
+<div class="title"> 
+    <h3>매거진</h3>
+</div>
+<!-- for문이용해서 5번 반복해서 나타내는걸로 함 -->
+<div class="container">
+    <div class="row">
+        <div class="admin_show" style="display:block">
+            <a class="btn btn-outline-dark" href="#" role="button">수정</a>
+            <a class="btn btn-outline-dark" href="#" role="button">작성</a>
+            <button type="button" class="btn btn-outline-dark" onclick="chkDelete()">삭제</button>
+        </div>
+      <div class="col-lg-6">
+          <div class="card">
+            <div class="admin_show" style="display:block">
+                <input type="checkbox">
+            </div>
+            <a href="#"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+          <div class="card-body">
+            <div class="small text-muted">작성일</div>
+            <a href="#" style="text-decoration:none">
+                <h5 class="card-title">제목입니다11111111111</h5>
+                <p class="card-text">내용입니다111111111111111111111.</p>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+          <div class="card">
+            <div class="admin_show" style="display:block" >
+                <input type="checkbox">
+            </div>
+            <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+          <div class="card-body">
+            <div class="small text-muted">작성일</div>
+            <a href="#" style="text-decoration:none">
+                <h5 class="card-title">제목입니다!!!!</h5>
+                <p class="card-text">내용입니다!!!!</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+    function chkDelete(){
+        // 삭제 여부 확인
+        var r = confirm("삭제하시겠습니까?");
+        if(r){
+            document.forms['delete'].submit();
+        }
+    }
+</script>
+
+<div class="paging">
+    
+</div>
+
+<!--
+해야할것
+게시물 5번 반복해서
+
+체크박스 style="display:block" or none 처리하는거 js로 처리
+삭제버튼
+
+-->
+
+{% endblock %}
