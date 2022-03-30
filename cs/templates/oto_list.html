@@ -7,12 +7,12 @@
 {% endblock %}
 
 {% block contents %}
-<h2>공지사항</h2>
-<h6>다양한 정보와 새로운 소식을 알려드립니다.</h6>
+<h2>1:1 문의</h2>
+<h6>1:1 문의입니다.</h6>
 <hr>
 <div class="mb-3 mt-3 clearfix">
-    <span class="float-start me-2">총 {{ notices.paginator.count }}개</span>
-    <span class="float-start">page {{ notices.number }}/{{ notices.paginator.num_pages }}</span>
+    <span class="float-start me-2">총 {{ otos.paginator.count }}개</span>
+    <span class="float-start">page {{ otos.number }}/{{ otos.paginator.num_pages }}</span>
 </div>
 <table class="table table-hover">
     <thead class="table-success">
@@ -24,12 +24,12 @@
         </tr>
     </thead>
     <tbody>
-        {% for notice in notices %}
+        {% for oto in otos %}
         <tr>
-            <td>{{ notice.id }}</td>
-            <td><a href="{% url 'Cs:notice_detail' notice.id %}">{{ notice.title }}</a></td>
-            <td>{{ notice.view_cnt }}</td>
-            <td>{{ notice.reg_date|date:"Y-m-d" }}</td>
+            <td>{{ oto.id }}</td>
+            <td>{{ oto.title }}</a></td>
+            <td>{{ oto.view_cnt }}</td>
+            <td>{{ oto.reg_date|date:"Y-m-d" }}</td>
         </tr>
         {% endfor %}
     </tbody>

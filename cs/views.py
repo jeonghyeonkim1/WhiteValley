@@ -42,7 +42,7 @@ def event_write(req):
     return render(req, 'event_write.html', context)
 
 
-def event_detail(req):
+def event_detail(req, pk):
     context = {
         'currentPage': 'c/s'
     }
@@ -56,7 +56,7 @@ def event_list(req):
     return render(req, 'event_list.html', context)
 
 
-def event_update(req):
+def event_update(req, pk):
     context = {
         'currentPage': 'c/s'
     }
@@ -68,3 +68,26 @@ def event_delete(req):
         'currentPage': 'c/s'
     }
     return render(req, 'event_delete.html', context)
+
+
+def oto_write(req):
+    context = {
+        'currentPage': 'c/s'
+    }
+    return render(req, 'oto_write.html', context)
+
+
+def oto_list(req):
+    context = {
+        'currentPage': 'c/s'
+    }
+    return render(req, 'oto_list.html', context)
+
+
+def faq_list(req):
+    context = {
+        'currentPage': 'c/s'
+    }
+    return render(req, 'faq_list.html', context)
+
+

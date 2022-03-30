@@ -14,4 +14,7 @@ urlpatterns = [
     path("event/list/", views.event_list, name="event_list"),
     path('event/update/<int:pk>/', views.event_update, name="event_update"),
     path('event/delete/', views.event_delete, name="event_delete"),
+    path("oto/write/", views.oto_write, name="oto_write"),
+    path("oto/list/", views.oto_list, name="oto_list"),
+    path("faq/list/", views.faq_list, name="faq_list"),
 ]
