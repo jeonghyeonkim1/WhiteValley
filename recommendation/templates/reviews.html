@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}?ver=1">
-    
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/7460690a88.js" crossorigin="anonymous"></script>
@@ -16,75 +15,68 @@
     {% endblock %}
 </head>
 <body>
-    <div class="fixed-top">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand ms-3" href="{% url 'Main:home' %}">WHITE VALLEY</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav ms-3">
-                        <li class="nav-item" id="nav_shopping">
-                            {% if currentPage == 'shopping' %}
-                                <a class="nav-link active" href="#">SHOPPING</a>
-                            {% else %}
-                                <a class="nav-link" href="#">SHOPPING</a>
-                            {% endif %}
-                        </li>
-                        <li class="nav-item">
-                            {% if currentPage == 'magazine' %}
-                                <a class="nav-link active" href="#">MAGAZINE</a>
-                            {% else %}
-                                <a class="nav-link" href="#">MAGAZINE</a>
-                            {% endif %}
-                        </li>
-                        <li class="nav-item">
-                            {% if currentPage == 'cart' %}
-                                <a class="nav-link active" href="#">CART</a>
-                            {% else %}
-                                <a class="nav-link" href="#">CART</a>
-                            {% endif %}
-                        </li>
-                        <li class="nav-item" id="nav_cs">
-                            {% if currentPage == 'cs' %}
-                                <a class="nav-link active" href="#">C/S</a>
-                            {% else %}
-                                <a class="nav-link" href="#">C/S</a>
-                            {% endif %}
-                        </li>
-                    </ul>
-                </div>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-                    <ul class="navbar-nav ms-3">
-                        <li class="nav-item me-3">
-                            <a class="nav-link" href="#">LogIn</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">SignIn</a>
-                        </li>
-                    </ul>
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand ms-3" href="{% url 'Main:home' %}">WHITE VALLEY</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-3">
+                    <li class="nav-item">
+                        {% if currentPage %}
+                            <a class="nav-link active" href="{% url 'Main:home' %}">HOME</a>
+                        {% else %}
+                            <a class="nav-link" href="{% url 'Main:home' %}">HOME</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">SHOPPING</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">CART</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">C/S</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-
-        <div id="nav_collapse">
-            <div style="border-radius: 25px;" class="container bg bg-dark text-white d-flex col-sm-12 h-100 border border-3 p-5">
-                <h1 class="d-flex justify-content-center align-items-center col-sm-5"></h1>
-                <div class="d-flex align-items-center col-sm-6">
-                    <ul class="list-unstyled navbar-nav text-center">
-                    </ul>
-                </div>
-                <div style="position-absolute col-sm-1" id="collapse_exit">
-                    <button class="btn btn-danger">X</button>
-                </div>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-3">
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="#">LogIn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">SignIn</a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </div>
-
+    </nav>
+    
     <div class="container mt-3">
         {% block contents %}
-            <!-- 원하는 내용 -->
+            <div class="container">     
+                <div class="row">
+                <div class="col-sm-12 bg-light text-dark">
+                    <h1 class='text-center'>BEST REVIEW</h1>
+                        <div class='text-center' style="margin: top 50px">
+                        <button type="button" class="btn btn-info">상품후기</button>
+                        <button type="button" class="btn btn-info">태그별 맞춤</button>
+                        <button type="button" class="btn btn-info">완성품</button>
+                        </div>
+                        <hr>
+                </div>
+                </div>
+                <p></p>
+                <span>최신순</span>
+                <span>인기순</span>
+                <hr>
+                <div>
+                </div>
+            </div>
+            
+            
         {% endblock %}
     </div>
 
@@ -170,4 +162,3 @@
     </footer>
 </body>
 </html>
-<script src="{% static 'js/base.js' %}"></script>
