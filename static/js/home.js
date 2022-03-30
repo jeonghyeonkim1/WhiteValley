@@ -1,6 +1,10 @@
 $(function () {
     $("#greet h1").hide();
     $("#greet button").hide();
+    $("#best_desc2").hide();
+    $("#best_desc3").hide();
+    $("#best_desc4").hide();
+
     $("#greet").animate({ opacity: 1 }, 'slow', function () {
         $("#greet h1").show();
         var $typing = $("#typing");
@@ -26,7 +30,7 @@ $(function () {
     $("#greet button").delay(5000).fadeIn("slow");
     $("#greet button").click(function () {
         $("#greet").animate({ opacity: 0 }, 'slow', function () {
-            $("#greet").hide();
+            $("#greet").css({zIndex: "-100"});
         });
     })
     
@@ -69,6 +73,10 @@ $(function () {
 
         if ($(this).text() == "BEST 코디") {
             $("#best_img")[0].src = "http://maybnous.com/file_data/seulgikim/2019/01/29/f34ca27ff87662feaf085171f7511a6a.jpg"
+            $("#best_desc").children().each(function () {
+                $(this).fadeOut();
+            })
+            $("#best_desc1").delay(80).fadeIn();
         } else if ($(this).text() == "BEST 깔맞춤") {
             $("#best_img")[0].src = "https://image.hmall.com/static/2/3/41/27/2127413260_0.jpg?RS=600x600&AR=0"
         } else if ($(this).text() == "BEST 포토후기") {
