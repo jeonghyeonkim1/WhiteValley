@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/order.css' %}?ver=1">
+    <script src="{% static 'js/order.js' %}"></script>
+{% endblock %}
+
+{% block contents %}
+    <div class="text_wrap">
+        <h3>상품타입네임<br>
+        <h6>해당 제품의 상세 설명과 커스텀 방법에 대해 설명해드리겠습니다.
+    </div>
+
+    <div class="custom1">
+        <div class="custom1_top">
+            <div class="pimg_wrap"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""></div>     
+        <div class="custom1_detail">
+            <p id="product_type" >상품타입네임<br>
+        <div class="selectcolor"> 
+            <div id="colorview"></div>
+           <select id="color"name="color">
+               <option value="White">White</option>
+               <option value="Ivory">Ivory</option>
+               <option value="Black">Black</option>
+               <option value="Red">Red</option>
+               <option value="Orange">Orange</option>
+               <option value="Yellow">Yellow</option>
+               <option value="Green">Green</option>
+               <option value="Blue">Blue</option>
+               <option value="BadyPink">BadyPink</option>
+               <option value="Navy">Navy</option>
+               <option value="Gray">Gray</option>
+               <option value="Purple">Purple</option>
+           </select>
+        </div>
+        <div class="selectsize"> 
+           <select id="size" name="size">
+               <option value="XS">XS</option>
+               <option value="S">S</option>
+               <option value="M" selected>M</option>
+               <option value="L">L</option>
+               <option value="XL">XL</option>
+               <option value="XXL">XXL</option>
+               <option value="3XL">3XL</option>
+           </select>
+        </div> 
+        <div class="Btn"><a href="#" id="CustomBtn2">Next</a></div>
+        </div>
+        </div>
+        
+       </div>
+           
+
+{% endblock %}

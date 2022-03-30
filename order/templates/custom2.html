@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/order.css' %}?ver=1">
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+    <script src="{% static 'js/order.js' %}"></script>
+{% endblock %}
+
+{% block contents %}
+
+    <div class="text_wrap">
+        <h3>상품타입네임<br>
+        <h6>해당 제품의 상세 설명과 커스텀 방법에 대해 설명해드리겠습니다.
+    </div>
+
+    <div class="custom1">
+        <div class="custom1_top">
+            <div class="pimg_wrap"><canvas id="Canvas" width="400" height="400" ></canvas></div>     
+            <div class="custom1_detail">
+            <p id="product_type" >상품타입네임<br>
+        <div class=""> 
+            <h6 id="">Text
+            <input type="text" id="text_input" class="form-control w-50" placeholder="15글자 이하의 텍스트" maxlength="15">
+            <img onclick="showModal();" id='colorwheel' src="https://i.ibb.co/gvJMcpG/color-wheel.png">
+            <div id="modal" class="modal-overlay">
+                <div class="modal-window">
+                    <div class="content">
+                        <div id="picker"></div>
+                        <div class="Btn"><a onclick="hideModal();" id="CustomBtn3">OK</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=""> 
+            <h6>Pattern
+            <select class="selectpicker">
+                <option>모야앙1</option>
+                <option>모야앙1</option>
+                <option>모야앙1</option>
+                <option>모야앙1</option>
+            </select>
+            <img onclick="showModal();" id='colorwheel' src="https://i.ibb.co/gvJMcpG/color-wheel.png">
+  
+                <div class="modal-window">
+                    <div class="content">
+                        <div id="hex">#ddd</div>
+                        <div id="picker"></div>
+                        <div class="Btn"><a href="#" id="CustomBtn3">Next</a></div>
+                    </div>
+  
+            </div>
+            <div>
+                <h6>Image upload
+                <img id="imageup" src="https://img.icons8.com/material-rounded/344/image-gallery.png" alt="">
+            </div>
+            
+        </div> 
+        <div class="Btn"><a href="#" id="CustomBtn2">Next</a></div>
+        </div>
+        </div>
+        
+       </div>
+       <script>
+
+        </script>
+           
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/order.css' %}?ver=1">
+    <script src="{% static 'js/order.js' %}"></script>
+{% endblock %}
+
+{% block contents %}
+    <div>
+        <h3>주문/제작 하기<br>
+        <h6>원하는 카테고리 상품을 선택해주세요. 
+    </div>
+    <div class="pcontain">
+        <ul id="te">
+            <li>
+                <div class="p"><a href="order_des.html"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">사이즈5가지</p></a></div>
+                <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
+            </li>
+            <li>
+                <div class="p"><a href=""><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">사이즈5가지</p></a></div>
+                <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
+            </li>
+            <li>
+                <div class="p"><a href=""><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">사이즈5가지</p></a></div>
+                <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
+            </li>
+            <li>
+                <div class="p"><a href=""><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">사이즈5가지</p></a></div>
+                <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
+            </li>
+            <li>
+                <div class="p"><a href=""><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">사이즈5가지</p></a></div>
+                <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
+            </li>
+        </ul>
+    </div>
+
+{% endblock %}
