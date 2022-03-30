@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user.css' %}?ver=1">
+    <script src="{% static 'js/user.js' %}"></script>
+{% endblock %}
+
+{% block contents %}
+
+<div class="title">
+    <h3>매거진 > 기사제목 </h3>
+</div>
+
+<div class="mb-3 mt-3 clearfix">
+    <span class="float-end ms-4">작성일: </span>
+    <span class="float-end">조회수: </span>
+</div>
+
+<div class="content">
+
+    <div class="mb-3 mt-3">
+        <label for="subject">제목:</label>
+        <div class="border bg-light rounded p-2" >{{ board.subject }}</div>
+    </div>    
+    <div class="mb-3 mt-3">
+        <label for="content">내용:</label>
+        <div class="border bg-light rounded p-2" >{{ board.content }}</div>
+    </div> 
+
+    <a class="btn btn-outline-dark" href ="#">목록</a>
+
+</div>
+
+
+
+
+<!-- -->
+{% endblock %}

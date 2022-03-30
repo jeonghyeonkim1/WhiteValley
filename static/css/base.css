@@ -8,3 +8,11 @@
 body {
     padding-top: 58px;
 }
+
+#nav_collapse ul li a {
+    border-bottom: 3px solid transparent;
+}
+
+#nav_collapse ul li a:hover {
+    border-bottom: 3px solid #fff;
+}

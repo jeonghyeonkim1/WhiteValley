@@ -10,3 +10,26 @@
 #greet button {
     bottom: 180px;
 }
+
+#home_navigator {
+    position: fixed;
+    right: 0;
+}
+
+#home_navigator > div > ul li {
+    margin-top: 5px;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+#home_navigator > div > ul li:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+#contents_nav li a {
+    color: #fff;
+}

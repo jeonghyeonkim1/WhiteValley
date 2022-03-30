@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/order.css' %}?ver=1">
+    <script src="{% static 'js/order.js' %}"></script>
+{% endblock %}
+
+{% block contents %}
+    <div>
+        <h3>상품타입네임<br>
+        <h6>해당 제품의 상세 설명과 커스텀 방법에 대해 설명해드리겠습니다.
+    </div>
+    <div class="pcontain2">
+        <div class="detail_top">
+            <div class="p"><a href="order_des.html"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">사이즈5가지</p></a></div>
+            <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
+        </div>
+        <div class="detail_bottom">adjf;aodifja;odf</div> 
+        <div class="detail_img" ><img src="https://i.ibb.co/2NsGnkL/pdetail.png"></div>
+    </div>
+    <div class="Btn"><a href="#" id="CustomBtn1">Custom start</a></div>
+    <div class="padd"></div>
+{% endblock %}
