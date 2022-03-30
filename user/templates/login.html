@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user.css' %}?ver=1">
+    <script src="{% static 'js/user.js' %}"></script>
+{% endblock %}
+
+{% block contents %}
+
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <h1>Plain Valley 로그인</h1>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-12">
+        <form method="POST" action="."> <!-- 자기자신으로 url로 돌아감 -->
+            {% csrf_token %}
+
+        </form>
+        <div class="form-row text-center">
+            <button type="submit" class="btn btn-primary mt-3 text-center">로그인</button>
+        </div>
+
+        <div class="form-row text-center mt-3">
+        <a class="btn btn-primary btn-block text-center">회원가입</a>
+        <a class="btn btn-primary btn-block text-center">비밀번호 찾기</a>
+        </div>
+        
+
+    </div>
+</div>
+
+
+{% endblock %}
