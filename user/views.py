@@ -19,3 +19,14 @@ def magazine_detail(request):
 
 # def magazine_detail(request, pk):
 #     return render(request, 'm_detail.html', pk)
+
+
+# 이거 ui설계용이므로 삭제 필수
+def magazine_update(request):
+    return render(request, 'm_update.html')
+
+# def magazine_update(request, pk):
+#     return render(request, 'm_update.html', pk)
+
+def magazine_write(request):
+    return render(request, 'm_write.html')

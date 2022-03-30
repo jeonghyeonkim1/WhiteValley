@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user.css' %}?ver=1">
+    <script src="{% static 'js/user.js' %}"></script>
+{% endblock %}
+
+{% block contents %}
+
+<div class="title"> 
+    <h3>매거진 > 작성</h3>
+</div>
+
+<form action="." method="POST">
+    {% csrf_token %}
+    <div class="col-lg-12">
+
+        <div class="mb-3 mt-3">
+            <label for="subject">제목:</label>
+            <input type="text" class="form-control" id="subject" placeholder="제목을 입력하세요" name="subject" required>
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="content">내용:</label>
+            <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content"></textarea>
+        </div>
+    
+        <button type="submit" class="btn btn-outline-dark">작성완료</button>
+        <a class="btn btn-outline-dark" href="{% url 'Login:magagin_list' %}">목록</a>
+
+    </div>
+</form>
+
+
+{% endblock %}
