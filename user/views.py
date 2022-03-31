@@ -31,3 +31,6 @@ def magazine_update(request):
 def magazine_write(request):
     return render(request, 'm_write.html')
 
+def magazine_delete(request):
+    return render(request, 'm_deleteok.html')
+
