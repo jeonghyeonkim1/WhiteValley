@@ -30,3 +30,4 @@ def magazine_update(request):
 
 def magazine_write(request):
     return render(request, 'm_write.html')
+
