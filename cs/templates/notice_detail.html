@@ -26,10 +26,9 @@
         <div class="border bg-light rounded p-2" >{{ notice.content }}</div>
     </div>    
 
-    <a class="btn btn-outline-dark" href="#">수정</a>
-    <a class="btn btn-outline-dark" href="#">목록</a>
-    <button type="button" class="btn btn-outline-dark" onclick="chkDelete()">삭제</button>
-    <a class="btn btn-outline-dark" href="#">작성</a>
+    <a class="btn btn-outline-dark" href="#">수정하기</a>
+    <a class="btn btn-outline-dark" href="#">목록가기</a>
+    <button type="button" class="btn btn-outline-dark" onclick="chkDelete()">삭제하기</button>
 
     <form action="#" name="delete" method="POST">
         {% csrf_token %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
+    <script src="{% static 'js/cs.js' %}"></script>
+{% endblock %}
+
+{% block contents %}
+<h2>1:1 문의</h2>
+<h6>1:1 문의 답변입니다.</h6>
+<hr>
+<div class="mb-3 mt-3 clearfix">
+    <span class="float-start me-2">작성자 {{ event.user_id }} 000</span>
+    <span class="float-end ms-4">작성일 {{ event.reg_date|date:"Y-m-d" }}</span>
+</div>
+
+<form action="." method="POST">
+    {% csrf_token %}
+    <div class="mb-3 mt-3">
+        <label for="title">제목</label>
+        <input type="text" class="form-control" id="title" placeholder="작성자가 쓴 제목 보여주기" name="title" value="{{ oto.title }}" readonly>
+    </div>
+    <div class="mb-3 mt-3">
+        <label for="content">내용</label>
+        <input type="text" class="form-control" id="content" placeholder="작성자가 쓴 내용 보여주기" name="title" value="{{ oto.content }}" readonly>
+    </div>
+    <div class="mb-3 mt-3">
+        <label for="answer">내용:</label>
+        <textarea class="form-control" rows="5" id="answer" placeholder="답변을 적어주세요" name="answer" required>{{ oto.answer }}</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-outline-dark">답변완료</button>
+    <button type="button" class="btn btn-outline-dark" onclick="history.back()">이전으로</button>
+    <a class="btn btn-outline-dark" href="#">목록가기</a>
+
+</form>
+{% endblock %}

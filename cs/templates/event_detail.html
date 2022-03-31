@@ -18,18 +18,25 @@
 
 <section>   
     <div class="mb-3 mt-3">
-        <label for="title">제목</label>
+        <label for="title">이벤트 제목</label>
         <div class="border bg-light rounded p-2" >{{ event.title }}</div>
-    </div>    
+    </div>
     <div class="mb-3 mt-3">
-        <label for="content">내용</label>
+        <label for="date">이벤트 날짜</label><br>
+        {{ event.start_date }}2020.03.01 ~ {{ event.end_date }}2020.04.30
+    </div>
+    <div class="mb-3 mt-3">
+        <label for="content">이벤트 내용</label>
         <div class="border bg-light rounded p-2" >{{ event.content }}</div>
-    </div>    
+    </div>
+    <div class="mb-3 mt-3">
+        <label for="photo">업로드 파일</label>
+        <input type="text" name="nowfile" placeholder="현재파일" readonly>
+    </div>
 
-    <a class="btn btn-outline-dark" href="#">수정</a>
-    <a class="btn btn-outline-dark" href="#">목록</a>
-    <button type="button" class="btn btn-outline-dark" onclick="chkDelete()">삭제</button>
-    <a class="btn btn-outline-dark" href="#">작성</a>
+    <a class="btn btn-outline-dark" href="#">수정하기</a>
+    <a class="btn btn-outline-dark" href="#">목록가기</a>
+    <button type="button" class="btn btn-outline-dark" onclick="chkDelete()">삭제하기</button>
 
     <form action="#" name="delete" method="POST">
         {% csrf_token %}

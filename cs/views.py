@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+
+# 공지사항 페이지
 def notice_write(req):
     context = {
         'currentPage': 'c/s'
@@ -35,6 +37,7 @@ def notice_delete(req):
     return render(req, 'notice_delete.html', context)
 
 
+# 이벤트 페이지
 def event_write(req):
     context = {
         'currentPage': 'c/s'
@@ -70,11 +73,19 @@ def event_delete(req):
     return render(req, 'event_delete.html', context)
 
 
+# 1:1문의 페이지
 def oto_write(req):
     context = {
         'currentPage': 'c/s'
     }
     return render(req, 'oto_write.html', context)
+
+
+def oto_detail(req, pk):    # 관리자만 볼 수 있음
+    context = {
+        'currentPage': 'c/s'
+    }
+    return render(req, 'oto_detail.html', context)
 
 
 def oto_list(req):
@@ -84,10 +95,25 @@ def oto_list(req):
     return render(req, 'oto_list.html', context)
 
 
+def oto_answer(req, pk):
+    context = {
+        'currentPage': 'c/s'
+    }
+    return render(req, 'oto_answer.html', context)
+
+
+# FAQ 페이지
 def faq_list(req):
     context = {
         'currentPage': 'c/s'
     }
     return render(req, 'faq_list.html', context)
+
+
+def sample(req):
+    context = {
+        'currentPage': 'c/s'
+    }
+    return render(req, 'sample.html', context)
 
 
