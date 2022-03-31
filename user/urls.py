@@ -18,7 +18,6 @@ urlpatterns = [
     # path('update/<int:pk>', views.magazine_update, name="magazine_update"), # 매거진 수정
     path('update/', views.magazine_update, name="magazine_update"), # ui설게용 매거진 상세
 
-    path('write/', views.magazine_write, name="magazine_write"), # ui설게용 매거진 상세
-
+    path('write/', views.magazine_write, name="magazine_write"), # 매거진 작성
 
 ]

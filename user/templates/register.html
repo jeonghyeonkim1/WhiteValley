@@ -21,6 +21,7 @@
 <div class="row">
     <div class="col-12">
         <form method="POST" action=".">
+            <!-- 가입 폼이 전달되면 로그인 페이지로 가야되는데.... 지금은 회원가입페이지로감...잘안.모르겠. -->
             {% csrf_token %}  
             <div class="form-group mt-3">
                 <label for="email" class= "text-danger">이메일(필수사항)</label>
@@ -41,26 +42,33 @@
 
             <div class="AgreeBox">
 
-                <input id="allcheck" type="checkbox" class"on">
+                <input id="allcheck" type="checkbox" name="on[]" value="1">
                 <label for="allcheck">모두 동의</label>
                 <br>
 
-                <input id="check_1" type="checkbox" class="on">
+                <input id="check_1" type="checkbox" name="on[]" value="1">
                 <label for="check_1">개인정보 수집 및 이용 동의 (필수)</label>
                 <a href="#" data-toggle="modal" data-target="#agree1" style="text-decoration:none">내용보기</a>
                 <br>
      
-                <input id="check_2" type="checkbox" class="on">
+                <input id="check_2" type="checkbox" name="on[]" value="1">
                 <label for="check_2">서비스이용약관 및 운영원칙 (필수)</label>
                 <a href="#" data-toggle="modal" data-target="#agree2" style="text-decoration:none">내용보기</a>
 
-            </div>
+            </div> 
 
             <button type="submit" class="btn btn-primary mt-3">가입</button>
 
         </form>
     </div>
 </div>
+
+
+
+
+
+
+
 
 <div class="modal fade" id="agree1" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
@@ -169,18 +177,18 @@
 <script>
 
     //이용약관 동의 체크
-    function CheckValidationAcceptAgree() {
+    {% comment %} function CheckValidationAcceptAgree() {
         var check = "false";
-        if (!document.getElementById("term_agreement").checked
-            || !document.getElementById("term_privacy").checked) {
-            if (!document.getElementById("term_agreement").checked) {
-                alert("YES24 이용약관에 동의 후 \n가입을 진행해 주세요.");
-                document.getElementById("term_agreement").focus();
+        if (!document.getElementById("agree1").checked
+            || !document.getElementById("agree2").checked) {
+            if (!document.getElementById("agree1").checked) {
+                alert("개인정보 수집 및 이용 동의 해주세요.");
+                document.getElementById("agree1").focus();
                 return check;
             }
-            else if (!document.getElementById("term_privacy").checked) {
-                alert("개인정보 수집 및 이용 동의 후 \n가입을 진행해 주세요.\n");
-                document.getElementById("term_privacy").focus();
+            else if (!document.getElementById("agree2").checked) {
+                alert("서비스이용약관 및 운영원칙 동의 해주세요.");
+                document.getElementById("agree2").focus();
                 return check;
             }
             else {
@@ -191,7 +199,9 @@
             check = "true";
         }
         return check;
-    }
+    } {% endcomment %}
+
+
 
 </script>
 
