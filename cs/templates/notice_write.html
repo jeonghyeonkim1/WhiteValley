@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block attachment %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
-    <script src="{% static 'js/cs.js' %}"></script>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
+<script src="{% static 'js/cs.js' %}"></script>
 {% endblock %}
 
 {% block contents %}
@@ -25,7 +25,12 @@
         <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required></textarea>
     </div>
 
-    <button type="submit" class="btn btn-outline-dark">작성완료</button>
-    <a class="btn btn-outline-dark" href="#">목록</a>
+    {% if session.username == "admin@email.com" %}
+    {% csrf_token %}
+        <button type="submit" class="btn btn-dark">작성완료</button>
+        <a class="btn btn-dark" href="{% url 'Cs:notice_list' %}">목록가기</a>
+    {% else %}
+        <a class="btn btn-dark" href="{% url 'Cs:notice_list' %}">목록가기</a>
+    {% endif %}
 </form>
 {% endblock %}

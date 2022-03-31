@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block attachment %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
-    <script src="{% static 'js/cs.js' %}"></script>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
+<script src="{% static 'js/cs.js' %}"></script>
 {% endblock %}
 
 {% block contents %}
@@ -11,4 +11,81 @@
 <h6>내 마음대로 꾸미기</h6>
 <hr>
 
+<div class="sample">
+    <div class="sampleimg">
+        <img src="https://mblogthumb-phinf.pstatic.net/MjAxOTEwMTFfNjEg/MDAxNTcwNzg1ODM3Nzc0.zxDXm20VlPdQv8GQi9LWOdPwkqoBdiEmf8aBTWTsPF8g.FqMQTiF6ufydkQxrLBgET3kNYAyyKGJTWTyi1qd1-_Ag.PNG.kkson50/sample_images_01.png?type=w800" 
+        alt="sample1" />
+        <div>
+            <p>SAMPLE DESIGN 1</p>
+            <a href="#"></a>
+        </div>
+    </div>
+    <div class="sampleimg">
+        <img src="https://mblogthumb-phinf.pstatic.net/MjAxOTEwMTFfODMg/MDAxNTcwNzg1ODM3NTUz.2m5sz7K4ATO7WZzXYGE-MmUQ1DYUOflq0IaGgitVZEIg.jYZnxxm0E275Jplbrw25aFCFPVXKcmai1zhf8rlYl3Eg.PNG.kkson50/sample_images_02.png?type=w800" 
+        alt="sample2" />
+        <div>
+            <p>SAMPLE DESIGN 2</p>
+            <a href="#"></a>
+        </div>
+    </div>
+    <div class="sampleimg">
+        <img src="https://mblogthumb-phinf.pstatic.net/MjAxOTEwMTFfMjIg/MDAxNTcwNzg1ODM3NTU0.S-ltTb4JaOedIKIRE-mWYcVuZGTBGi8Z8G8NJZtQmrkg.dlyc5gHE3DSF4rvH3fiirLhP7ilKSZuz6t0a0KoWJrYg.PNG.kkson50/sample_images_03.png?type=w800"
+        alt="sample3" />
+        <div>
+            <p>SAMPLE DESIGN 3</p>
+            <a href="#"></a>
+        </div>
+    </div>
+    <div class="sampleimg">
+        <img src="https://mblogthumb-phinf.pstatic.net/MjAxOTEwMTFfMjYw/MDAxNTcwNzg1ODM3NTY0.wmnNedC0zB5ummw6DSfYJeQEkiqILCyHRArLs7ZkSzgg.FfY1vXaDbLM3EdsvBHDV1EP0FVKo4jamY_yAJfs9gBIg.PNG.kkson50/sample_images_04.png?type=w800" 
+        alt="sample4" />
+        <div>
+            <p>SAMPLE DESIGN 4</p>
+            <a href="#"></a>
+        </div>
+    </div>
+    <div class="sampleimg">
+        <img src="https://mblogthumb-phinf.pstatic.net/MjAxOTEwMTFfMjg3/MDAxNTcwNzg1ODM3NTY1.qqCY6WHNolzYOJqJjNzx-5Z-ehx-Up4tJIbsMXOvLAcg.MroaRE_xMGpj1j-TshpXbgNT4yoFbWauCiyM4ngnBk8g.PNG.kkson50/sample_images_05.png?type=w800" 
+        alt="sample5" />
+        <div>
+            <p>SAMPLE DESIGN 5</p>
+            <a href="#"></a>
+        </div>
+    </div>
+    <div class="sampleimg">
+        <img src="https://mblogthumb-phinf.pstatic.net/MjAxOTEwMTFfMjQ0/MDAxNTcwNzg1ODM3NTY0.N-mCcjnaHkhYyrFs5skfugLRPRWh4KhhZSMWJVHQjbog.KDfVtJcaSIhvBaHNoVuXvejeoAJ50UR081fC0IYC0OIg.PNG.kkson50/sample_images_06.png?type=w800" 
+        alt="sample6" />
+        <div>
+            <p>SAMPLE DESIGN 6</p>
+            <a href="#"></a>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-1">
+    <ul class="pagination justify-content-center">
+        {# << 표시 여부 #}
+        <li class="page-item"><a class="page-link" href="javascript:void(0);" title="처음"><i
+                    class='fas fa-angle-double-left'></i></a></li>
+
+        {# < 표시 여부 #}
+        <li class="page-item"><a class="page-link" href="javascript:void(0);" title="이전"><i
+                    class='fas fa-angle-left'></i></a></li>
+
+        {# 페이징 안의 '숫자' 표시 #}
+        <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
+        <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
+        <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
+        {% comment %} <li class="page-item active"><a class="page-link" href="javascript:void(0);" title="현재페이지">3</a></li> {% endcomment %}
+        <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
+
+        {# > 표시 #}
+        <li class="page-item"><a class="page-link" href="javascript:void(0);" title="다음"><i
+                    class='fas fa-angle-right'></i></a></li>
+
+        {# >> 표시 #}
+        <li class="page-item"><a class="page-link" href="javascript:void(0);" title="마지막"><i
+                    class='fas fa-angle-double-right'></i></a></li>
+    </ul>
+</div>
 {% endblock %}
