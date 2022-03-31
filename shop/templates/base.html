@@ -41,9 +41,9 @@
                         </li>
                         <li class="nav-item">
                             {% if currentPage == 'cart' %}
-                                <a class="nav-link active">CART</a>
+                                <a class="nav-link active" href="{% url 'Main:cart' %}">CART</a>
                             {% else %}
-                                <a class="nav-link">CART</a>
+                                <a class="nav-link" href="{% url 'Main:cart' %}">CART</a>
                             {% endif %}
                         </li>
                         <li class="nav-item" id="nav_cs">
