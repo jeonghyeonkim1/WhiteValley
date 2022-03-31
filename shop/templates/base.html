@@ -72,17 +72,17 @@
             <div style="border-radius: 25px;" class="container bg bg-dark text-white d-flex col-sm-12 h-100 border border-3 p-5">
                 <h1 class="d-flex justify-content-center align-items-center col-sm-5"></h1>
                 <div class="d-flex align-items-center col-sm-6">
-                    <ul class="list-unstyled navbar-nav text-center" id="shopping_links">
-                        <li class='nav-item'><a href="{% url 'Order:order' %}" class='nav-link text-decoration-none text-white'>커스텀주문</a></li>
-                        <li class='nav-item'><a href="{% url 'Recommendation:finished' %}" class='nav-link text-decoration-none text-white'>완성품</a></li>
-                        <li class='nav-item'><a href="{% url 'Recommendation:tag_reviews' %}" class='nav-link text-decoration-none text-white'>깔맞춤</a></li>
-                        <li class='nav-item'><a href="{% url 'Recommendation:reviews' %}" class='nav-link text-decoration-none text-white'>포토후기</a></li>
+                    <ul class="list-unstyled navbar-nav w-75 text-start" id="shopping_links">
+                        <li class='nav-item'><a href="{% url 'Order:order' %}" class='nav-link text-decoration-none text-white mb-1'>커스텀주문</a></li>
+                        <li class='nav-item'><a href="{% url 'Recommendation:finished' %}" class='nav-link text-decoration-none text-white mb-1'>완성품</a></li>
+                        <li class='nav-item'><a href="{% url 'Recommendation:tag_reviews' %}" class='nav-link text-decoration-none text-white mb-1'>깔맞춤</a></li>
+                        <li class='nav-item'><a href="{% url 'Recommendation:reviews' %}" class='nav-link text-decoration-none text-white mb-1'>포토후기</a></li>
                     </ul>
-                    <ul class="list-unstyled navbar-nav text-center" id="cs_links">
-                        <li class='nav-item'><a href="{% url 'Cs:notice_list' %}" class='nav-link text-decoration-none text-white'>공지사항</a></li>
-                        <li class='nav-item'><a href="{% url 'Cs:event_list' %}" class='nav-link text-decoration-none text-white'>이벤트</a></li>
-                        <li class='nav-item'><a href='#' class='nav-link text-decoration-none text-white'>1:1문의</a></li>
-                        <li class='nav-item'><a href='#' class='nav-link text-decoration-none text-white'>FAQ</a></li>
+                    <ul class="list-unstyled navbar-nav w-75 text-start" id="cs_links">
+                        <li class='nav-item'><a href="{% url 'Cs:notice_list' %}" class='nav-link text-decoration-none text-white mb-1'>공지사항</a></li>
+                        <li class='nav-item'><a href="{% url 'Cs:event_list' %}" class='nav-link text-decoration-none text-white mb-1'>이벤트</a></li>
+                        <li class='nav-item'><a href='#' class='nav-link text-decoration-none text-white mb-1'>1:1문의</a></li>
+                        <li class='nav-item'><a href='#' class='nav-link text-decoration-none text-white mb-1'>FAQ</a></li>
                     </ul>
                 </div>
                 <div style="position-absolute col-sm-1" id="collapse_exit">
