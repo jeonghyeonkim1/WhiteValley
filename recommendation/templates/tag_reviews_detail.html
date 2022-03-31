@@ -1,12 +1,109 @@
-{% extends 'base.html' %}
 
-{% block attachment %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/recommendation.css' %}?ver=1">
-    <script src="{% static 'js/recommendation.js' %}"></script>
-{% endblock %}
 
-{% block contents %}
-    <h1>태그 리뷰 페이지</h1>
-    
-{% endblock %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>whitevalley : 태그별 맞춤</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .popHeader {
+        height: 100px;
+        background-color : #212529
+    }
+    .header {
+        margin : 30px 0 0 20px;
+        color : white;
+        
+    }
+
+    .reviewPdtV15 {
+        margin: 30px;
+       
+    }
+    .pdtBox{
+        display: flex;
+        flex-direction : row;
+        height :180px;
+        background-color : #f4f4f4;
+    }
+    .pdtPhoto {
+        margin : 22px
+    }
+    .pdtInfo {
+        margin : 30px;
+        height: 90px;
+    }
+    .finalP {
+        margin-top: 5px
+    }
+    .pdtReviewV15{
+        margin : 30px;
+    }
+</style>
+</head>
+<body>
+	<div class="heightgird">
+		<div class="popWrap">
+			<div class="popHeader" style='border: 1px solid #212529'>
+				<div class='header' ><h2>태그별맞춤</h2></div>
+			</div>
+			<div class="popContent">
+				<!-- content -->
+				<div class="popReviewV15">
+					<div class="reviewPdtV15">
+						<div class="pdtBox">
+							<div class="pdtPhoto"><img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='180px' alt=""></div>
+							<div class="pdtInfo">
+								<p class="pdtBrand tPad15"><a href="/street/street_brand.asp?makerid=viewlap01" target="_blank">VIEWLAP</a></a></p>
+								<p class="pdtName tPad07"><a href="/shopping/category_prd.asp?itemid=4268643" onclick="opener.TnGotoProduct(4268643); self.close(); return false;" target="_blank">무지 반팔 커스텀</a></p>
+								<p class="pdtPrice">
+                                    
+									<span class="finalP">9,930원</span>
+								</p>
+							</div>
+						</div>
+					</div>
+		
+					<div class="review pdtReviewV15 tMar10">
+
+						<tr>
+							<td class="comment">
+								
+									<div class="purchaseOption"><em><strong>구매옵션</strong> : 반팔(자동),XL</em></div>
+								
+									<div class="textArea">
+										<p>커스텀 이뻐요 </p>
+									</div>
+									<div class="imgArea">
+										
+										<img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='700px' id="file1"><br/>
+										
+									</div>
+								
+							</td>
+							<td class="ct">
+								<div>2022/03/31</div>
+								<div>닉네임</div>
+
+							</td>
+						</tr>
+						</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- //content -->
+			</div>
+		</div>
+		<div class="popFooter">
+			<div class="btnArea">
+                <button type="button" class="btn btn-info" style='margin: 0 0 0 80%' onclick="window.close();" >닫기</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
