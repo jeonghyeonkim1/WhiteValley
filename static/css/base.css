@@ -10,10 +10,9 @@ body {
 }
 
 #nav_collapse ul li a {
-    border-radius: 10px;
+    border-bottom: 3px solid transparent;
 }
 
 #nav_collapse ul li a:hover {
-    background-color: #fff;
-    color: #262626;
+    border-bottom: 3px solid #fff;
 }
