@@ -1,17 +1,13 @@
+from contextlib import redirect_stderr
 from django.shortcuts import render
 
 # Create your views here.
 def order(request):
-    context = {
-        'currentPage' : 'order'
-    }
-    return render(request, 'order.html',context)
+    return render(request,'order.html')
 
 def order_des(request):
-    context ={
-        'currentPage' : 'order_des'
-    }
-    return render(request, 'order_des.html',context)
+   
+    return render(request, 'order_des.html')
 
 def custom1(request):
    
@@ -25,3 +21,7 @@ def custom2(request):
 def customend(request):
    
     return render(request, 'customend.html')
+
+def payment(request):
+   
+    return render(request, 'payment.html')

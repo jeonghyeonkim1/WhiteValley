@@ -4,7 +4,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/order.css' %}?ver=1">
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
-    <script src="{% static 'js/order.js' %}"></script>
+    <script src="{% static 'js/order2.js' %}"></script>
 {% endblock %}
 
 {% block contents %}
@@ -15,17 +15,20 @@
 
     <div class="custom2">
         <div class="custom1_top">
-            <div class="pimg_wrap"><canvas id="Canvas" width="400" height="400" ></canvas></div>          
+            <div class="pimg_wrap"><canvas id="Canvas" width="1000" height="1000" ></canvas></div>          
             <div class="custom2_detail">
                 <p id="product_type" >상품타입네임<br>
             <div class="text_contain">
                 <form action="" class="form-horizontal">
                         <div id="text2_wrap" class="form-inline form-group">
-                            <label for="inputtext" class="col-sm control-label">Text</label>
-                            <div class="col-sm-5">
-                                <input type="text" id="text_input" class="form-control w-100" placeholder="15글자 이하의 텍스트" maxlength="15">
+                            <label for="inputtext" class="col-xs control-label" id="inputtext">Text</label>
+                            <div id="text_input_wrap" class="col-sm-6">
+                                <input type="text" id="text_input" class="form-control w-75" placeholder="15글자 이하의 텍스트" maxlength="15">
                             </div>
-                             <img onclick="showModal();" id='colorwheel' src="https://i.ibb.co/gvJMcpG/color-wheel.png">        
+                            <div id="colorview_wrap">
+                                <img onclick="showModal();" id='colorwheel' src="https://i.ibb.co/gvJMcpG/color-wheel.png">        
+                            </div>
+                             
                                 <div class="modal-window">
                                     <div class="content">
                                         <div id="picker"></div>
@@ -36,14 +39,18 @@
                 </form>  
             </div>
             <div class="selectpattern"> 
-                <label for="selecttext" class="col-sm control-label">Pattern</label>
-                <select class="form-control w-50" id="selectpattern">
+                <label id="selecttext" for="selecttext" class="col-xs control-label">Pattern</label>
+                <select class="form-control w-25" id="selectpattern">
                     <option>모야앙1</option>
                     <option>모야앙2</option>
                     <option>모야앙3</option>
                     <option>모야앙4</option>
                 </select>
             </div> 
+            <div class="imageupload">
+                <label class="col-xs control-label" id="imagetext">Image</label>
+                <div id="imgwrap"><img src="https://img.icons8.com/ios-glyphs/344/pictures-folder.png" alt=""></div>
+            </div>
             <div class="Btn"><a href="{% url 'Order:customend' %}" id="CustomBtn2">Next</a></div>
             </div>
 
@@ -51,5 +58,7 @@
         
        </div>
            
-
+<script>
+   
+</script>
 {% endblock %}

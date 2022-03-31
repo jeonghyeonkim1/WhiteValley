@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user.css' %}?ver=1">
+    <script src="{% static 'js/user.js' %}"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
+{% endblock %}
+
+{% block contents %}
+
+<div class="row mt-5">
+    <div class="col-12">
+        <h1>주문 상세 입력</h1>
+    </div>
+</div>
+<div>
+    <form name="paymentForm1" class="userform" action="">
+        <legend>주문정보</legend>
+        <div>
+            <label for="">주문자</label>
+            <div class="col-4"><input type="text" class="form-control" placeholder="필수" request></div>
+        </div>
+        <div>
+            <label for="">이메일</label>
+            <div class="col-8"><input type="text" class="form-control" placeholder="필수" request></div>
+        </div>
+        <div>
+            <label for="">연락처</label>
+            <div class="col-4"><input type="text" class="form-control" placeholder="필수" request></div>
+        </div>
+    </form>
+    <form name="paymentForm2" class="receform" action="">
+        <legend>배송지</legend>
+        <div>
+            <label for="">받는이</label>
+            <div class="col-4"><input type="text" class="form-control" placeholder="필수" request></div>
+        </div>
+        <div>
+            <label for="">주소</label>
+            <div class="col-4"><input type="text" class="form-control" placeholder="필수" request></div>
+            <div class="col-8"><input type="text" class="form-control" placeholder="필수" request></div>
+        </div>
+        <div>
+            <label for="">연락처</label>
+            <div class="col-4"><input type="text" class="form-control" placeholder="필수" request></div>
+        </div>
+        <div>
+            <label for="">배송요청사항</label>
+            <div>
+                <select type="text" class="form-control" placeholder="필수" request>
+                    <optgroup label="---------" data-max-options="1">
+                        <option value="1">문앞</option>
+                        <option value="2">직접 받고 부재 시 문앞</option>
+                        <option value="3">경비실</option>
+                        <option value="4">택배함</option>
+                        <option value="5">기타사항</option>
+                        <option value=""><input type="text" placeholder="상세사항"></option>
+                    </optgruop>
+                    <optgroup label="---------" data-max-options="1">
+                        <option value="6">공동현관 출입번호 없음.</option>
+                        <option value="7">공동현관 출입번호 있음.</option>
+                        <option value=""><input type="text" placeholder="예시: #1234*"></option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+{% endblock %}
