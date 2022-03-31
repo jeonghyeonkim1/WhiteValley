@@ -21,3 +21,7 @@ def custom1(request):
 def custom2(request):
    
     return render(request, 'custom2.html')
+
+def customend(request):
+   
+    return render(request, 'customend.html')

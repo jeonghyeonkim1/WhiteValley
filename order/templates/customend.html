@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/order.css' %}?ver=1">
+    <script src="{% static 'js/customend.js' %}"></script>
+{% endblock %}
+
+{% block contents %}
+    <div class="text_wrap">
+        <h3>커스텀 상품 확인<br>
+        <h6>해당 제품의 상세 설명과 커스텀 방법에 대해 설명해드리겠습니다.
+    </div>
+
+    <div class="custom1">
+        <div class="custom1_top">
+            <div></div>
+            <div class="slideshow-container">
+                <div class="slideshow-s">
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <div class="mySlides fades">
+                        <img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt="">
+                    </div>
+                    <div class="mySlides fades">
+                        <img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt="">
+                    </div>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>    
+                </div>
+                
+            
+            
+            <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span> 
+            <span class="dot" onclick="currentSlide(2)"></span> 
+            </div> 
+            </div>
+
+            
+        
+        <div class="customend_detail">
+        <p id="productend_type" >****님 커스텀 상품<br>
+        <div class="Tag">
+            <label for="Tag">Tag</label> 
+            <div class="selectsize"> 
+                <select class="form-control w-200" id="tagselect">
+                    <optgroup label="Season" data-max-options="2">
+                        <option>봄</option>
+                        <option>여름</option>
+                        <option>가을</option>
+                        <option>겨울</option>
+                    </optgroup>
+                    <optgroup label="mood" data-max-options="2">
+                        <option>데일리</option>
+                        <option>힙</option>
+                        <option>캐주얼</option>
+                        <option>모던</option>
+                        <option>러블리</option>
+                    </optgroup>
+                    <optgroup label="Theme" data-max-options="2">
+                        <option>가족</option>
+                        <option>친구</option>
+                        <option>단체</option>
+                        <option>자유</option>
+                    </optgroup>
+                </select>
+            </div> 
+        </div> 
+
+        <div class="request"> 
+            <label for="Request">요청사항</label>
+            <textarea id="reqinput" class="form-control w-50" row="2" placeholder="커스텀상품에 관해 요청사항이 있을 시 자세히 작성해주세요."></textarea>
+        </div>
+        <div class="amount"> 
+           <p><label for="number">수량: </label><input id="amount" type="number" min="1" max="500" step="1" value="1"></p>
+        </div> 
+        
+        <div class="Btn"><a href="" id="CustomBtn2">Add to Cart</a></div>
+       </div>
+        
+    
+        </div>
+        
+       </div>
+           
+
+{% endblock %}

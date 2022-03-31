@@ -3,7 +3,7 @@
 {% block attachment %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/order.css' %}?ver=1">
-    <script src="{% static 'js/order.js' %}"></script>
+    <script src="{% static 'js/custom1.js' %}"></script>
 {% endblock %}
 
 {% block contents %}
@@ -19,19 +19,19 @@
             <p id="product_type" >상품타입네임<br>
         <div class="selectcolor"> 
             <div id="colorview"></div>
-           <select id="color"name="color">
-               <option value="White">White</option>
-               <option value="Ivory">Ivory</option>
-               <option value="Black">Black</option>
-               <option value="Red">Red</option>
-               <option value="Orange">Orange</option>
-               <option value="Yellow">Yellow</option>
-               <option value="Green">Green</option>
-               <option value="Blue">Blue</option>
-               <option value="BadyPink">BadyPink</option>
-               <option value="Navy">Navy</option>
-               <option value="Gray">Gray</option>
-               <option value="Purple">Purple</option>
+           <select id="color"name="color" onchange="selectColor(this.value);">
+               <option value="#ffffff">White</option>
+               <option value="#ece6cc">Ivory</option>
+               <option value="#000000">Black</option>
+               <option value="#ed4545">Red</option>
+               <option value="#ff9717">Orange</option>
+               <option value="#f6fc38">Yellow</option>
+               <option value="#00d600">Green</option>
+               <option value="#3888ff">Blue</option>
+               <option value="#ffe3f0">BadyPink</option>
+               <option value="#13065c">Navy</option>
+               <option value="#808080">Gray</option>
+               <option value="#ac53c9">Purple</option>
            </select>
         </div>
         <div class="selectsize"> 
@@ -45,7 +45,7 @@
                <option value="3XL">3XL</option>
            </select>
         </div> 
-        <div class="Btn"><a href="#" id="CustomBtn2">Next</a></div>
+        <div class="Btn"><a href="{% url 'Order:custom2' %}" id="CustomBtn2">Next</a></div>
         </div>
         </div>
         

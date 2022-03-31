@@ -1,6 +1,4 @@
-var colorPicker = colorPicker = new iro.ColorPicker('#picker',{
-    width: 200,
-});
+var colorPicker;
 
 function showModal() {
     $(".modal-window").show();
@@ -8,15 +6,16 @@ function showModal() {
 }       
 
 function hideModal() {
-    $("#modal").hide();
-}       
-
-
-
-
+    $(".modal-window").hide();
+}    
 
 
 $(document).ready(function(){
+
+    colorPicker = new iro.ColorPicker("#picker", {
+        width: 200,
+      });
+
     let canvas = document.getElementById("Canvas")
     var img = new Image();
     img.src = "https://i.ibb.co/0JMMtF1/shortw.png"
@@ -26,9 +25,14 @@ $(document).ready(function(){
     img.onload = function(){
         ctx.drawImage(img, 0, 0,400,400);
     };
-    
+
 
 });
+
+
+
+
+
 
 
 
