@@ -42,3 +42,9 @@ def finished_detail(request):
 
     return render(request, 'finished_detail.html',context)
 
+def product_reviews(request):
+    context = {
+       
+    }
+
+    return render(request, 'product_reviews.html',context)
