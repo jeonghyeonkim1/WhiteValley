@@ -19,7 +19,7 @@
         <tr>
             <th>목록</th>
             <th>제목</th>
-            <th>조회수</th>
+            <th>작성자</th>
             <th>작성일</th>
         </tr>
     </thead>
@@ -28,7 +28,7 @@
         <tr>
             <td>{{ oto.id }}</td>
             <td>{{ oto.title }}</a></td>
-            <td>{{ oto.view_cnt }}</td>
+            <td>{{ oto.user_id }}</td>
             <td>{{ oto.reg_date|date:"Y-m-d" }}</td>
         </tr>
         {% endfor %}
@@ -36,7 +36,7 @@
 </table>
 <div class="row">
     <div class="col-12">
-        <a class="btn btn-outline-dark" href="#">작성</a>
+        <a class="btn btn-outline-dark" href="#">문의하기</a>
     </div>
 </div>
 

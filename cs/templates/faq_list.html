@@ -12,18 +12,18 @@
 <hr>
 <br><br>
 <form action=".">
-    <div>
-        <button>주문</button>
-        <button>결제</button>
-        <button>환불</button>
-        <button>배송</button>
-        <button>기타</button>
+    <div class='text-center'>
+        <input type="text" id="subject" placeholder="궁금한점을 검색해보세요" name="subject" style="width:50%">
+        <button type="submit" class="btn btn-dark">검색</button>
     </div>
-    <div>
-        <input type="text" id="subject" placeholder="궁금한점을 검색해보세요" name="title">
-        <button type="submit" class="btn btn-outline-dark">검색</button>
+    <br>
+    <div class='text-center' style="margin: top 50px" style="width:50%">
+        <button type="button" class="btn btn-dark" style="margin-right:80px">주문</button>
+        <button type="button" class="btn btn-dark" style="margin-right:80px">결제</button>
+        <button type="button" class="btn btn-dark" style="margin-right:80px">환불</button>
+        <button type="button" class="btn btn-dark" style="margin-right:80px">배송</button>
+        <button type="button" class="btn btn-dark" style="margin-right:80px">기타</button>
     </div>
-
+    <hr>
 </form>
-
 {% endblock %}
