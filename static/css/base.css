@@ -16,3 +16,7 @@ body {
 #nav_collapse ul li a:hover {
     border-bottom: 3px solid #fff;
 }
+
+a {
+    cursor: pointer;
+}

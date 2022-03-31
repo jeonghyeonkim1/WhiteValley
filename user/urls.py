@@ -6,6 +6,8 @@ app_name = "User"
 urlpatterns = [
     path('login/', views.login, name='user_login'), # 로그인 창
 
+    path('logout/',  views.logout, name='user_logout'),
+
     path('register/', views.register, name="user_register"), # 회원가입 창
 
     path('find/', views.find_pw, name="find_pw"), # Pw 찾는페이지

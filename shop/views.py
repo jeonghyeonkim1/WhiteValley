@@ -2,7 +2,8 @@ from django.shortcuts import render
 
 def home(req):
     context = {
-        'cookies': req.COOKIES
+        'cookies': req.COOKIES,
+        'session': req.session
     }
 
     cookie_name = 'visited'

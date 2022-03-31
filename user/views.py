@@ -1,8 +1,34 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse, redirect
+from .models import User
 
 # Create your views here.
 def login(request):
-    return render(request, 'login.html')
+    if request.method == "GET":
+        return render(request, 'login.html')
+    elif request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+
+        try:
+            request.session['username'] = User.objects.get(email=username, password=password).email
+            return HttpResponse(f'''
+                <script>
+                    alert("로그인에 성공했습니다!")
+                    location.href = '/whitevalley/'
+                </script>
+            ''')
+        except:
+            return HttpResponse(f'''
+                <script>
+                    alert("존재하지 않는 아이디이거나 비밀번호가 일치하지 않습니다!");
+                    history.back();    
+                </script>
+            ''')
+
+def logout(request):
+    del(request.session["username"])
+
+    return redirect('/whitevalley/')
 
 def register(request):
     return render(request, 'register.html')
