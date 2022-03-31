@@ -4,21 +4,22 @@ from django.shortcuts import render
 # 공지사항 페이지
 def notice_write(req):
     context = {
-        'currentPage': 'c/s'
+        'session': req.session
     }
+
     return render(req, 'notice_write.html', context)
     
 
 def notice_detail(req, pk):
     context = {
-        'currentPage': 'c/s'
+        'session': req.session
     }
     return render(req, 'notice_detail.html', context)
 
 
 def notice_list(req):
     context = {
-        'currentPage': 'c/s'
+        'session': req.session
     }
     return render(req, 'notice_list.html', context)
 
@@ -90,7 +91,7 @@ def oto_detail(req, pk):    # 관리자만 볼 수 있음
 
 def oto_list(req):
     context = {
-        'currentPage': 'c/s'
+        'session': req.session
     }
     return render(req, 'oto_list.html', context)
 

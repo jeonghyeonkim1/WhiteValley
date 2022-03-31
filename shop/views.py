@@ -21,3 +21,6 @@ def home(req):
     )
 
     return res
+
+def cart(req):
+    return render(req, 'cart.html')
