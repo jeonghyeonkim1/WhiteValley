@@ -1,7 +1,7 @@
 from django.urls import path
 from user import views
 
-app_name = "Login"
+app_name = "User"
 
 urlpatterns = [
     path('login/', views.login, name='user_login'), # 로그인 창
