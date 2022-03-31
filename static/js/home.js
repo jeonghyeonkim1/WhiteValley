@@ -72,17 +72,38 @@ $(function () {
         $(this)[0].disabled = true;
 
         if ($(this).text() == "BEST 코디") {
+            $("#best_img").hide();
             $("#best_img")[0].src = "http://maybnous.com/file_data/seulgikim/2019/01/29/f34ca27ff87662feaf085171f7511a6a.jpg"
+            $("#best_img").fadeIn();
             $("#best_desc").children().each(function () {
-                $(this).fadeOut();
+                $(this).hide();
             })
-            $("#best_desc1").delay(80).fadeIn();
+            $("#best_desc1").fadeIn();
+
         } else if ($(this).text() == "BEST 깔맞춤") {
+            $("#best_img").hide();
             $("#best_img")[0].src = "https://image.hmall.com/static/2/3/41/27/2127413260_0.jpg?RS=600x600&AR=0"
+            $("#best_img").fadeIn();
+            $("#best_desc").children().each(function () {
+                $(this).hide();
+            })
+            $("#best_desc2").fadeIn();
+            
         } else if ($(this).text() == "BEST 포토후기") {
+            $("#best_img").hide();
             $("#best_img")[0].src = "https://i.pinimg.com/236x/2d/7b/90/2d7b90bd27f9fd3066da2f601af4a4c6.jpg"
+            $("#best_img").fadeIn();
+            $("#best_desc").children().each(function () {
+                $(this).hide();
+            })
+            $("#best_desc3").fadeIn();
+            
         } else if ($(this).text() == "이달의 판매왕") {
-            $("#best_img")[0].src = "https://i.pinimg.com/736x/b1/6a/a6/b16aa66215b70e2d925a6ee4877cfa39.jpg"
+            $("#best_img").hide();
+            $("#best_desc").children().each(function () {
+                $(this).hide();
+            })
+            $("#best_desc4").fadeIn();
         }
     })
 })
