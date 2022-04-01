@@ -18,48 +18,56 @@
         <h1>Plain Valley 회원가입</h1>
     </div>
 </div>
+
+<div class="row mt-3 text-center">
+    <div class="col-12 text-danger">
+        {{ error }} 
+    </div>
+</div>
 <div class="row">
     <div class="col-12">
         <form method="POST" action=".">
             <!-- 가입 폼이 전달되면 로그인 페이지로 가야되는데.... 지금은 회원가입페이지로감...잘안.모르겠. -->
             {% csrf_token %}  
             <div class="form-group mt-3">
-                <label for="email" class= "text-danger">이메일(필수사항)</label>
+                <label for="email" >이메일(필수사항)</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력해주세요(aaa@mail.com)" required>
             </div>
             <div class="form-group mt-3">
-                <label for="password" class= "text-danger">비밀번호(필수사항)</label>
+                <label for="password">비밀번호(필수사항)</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호(숫자,영문,특수문자 조합 최소8자)" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" required>
             </div>
             <div class="form-group mt-3">
                 <label for="re-password">비밀번호 확인</label>
                 <input type="password" class="form-control" id="re-password" name="re-password" placeholder="비밀번호를 다시 입력해주세요">
             </div>
+
             <div class="form-group mt-3">
-                <label for="contact" class= "text-danger">연락처(필수사항)</label>
+                <label for="contact">연락처(필수사항)</label>
                 <input type="tel" class="form-control" id="contact" name="contact" placeholder="010-0000-0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required>
 
 
             </div>
 
             <div class="AgreeBox">
-
-                <input id="allcheck" type="checkbox" name="allcheck" value="1">
+                
+                <input id="allcheck" type="checkbox" name="allcheck" onclick="ch()">
                 <label for="allcheck">모두 동의</label>
                 <br>
 
-                <input id="check_1" type="checkbox" name="check_1" value="1">
+                <input id="check_1" type="checkbox" name="check_1" onclick="ch()" >
                 <label for="check_1">개인정보 수집 및 이용 동의 (필수)</label>
                 <a href="#" data-toggle="modal" data-target="#agree1" style="text-decoration:none">내용보기</a>
                 <br>
      
-                <input id="check_2" type="checkbox" name="heck_2" value="1">
+                <input id="check_2" type="checkbox" name="heck_2" onclick="ch()" >
                 <label for="check_2">서비스이용약관 및 운영원칙 (필수)</label>
                 <a href="#" data-toggle="modal" data-target="#agree2" style="text-decoration:none">내용보기</a>
 
             </div> 
 
-            <button type="submit" class="btn btn-primary mt-3" onclick="joincheck()">가입</button>
+            <button type="submit" class="btn btn-primary mt-3" onclick="ch()">가입</button>
+            <!--<button type="submit" class="btn btn-primary mt-3" onclick="joincheck()">가입</button>-->
 
         </form>
     </div>
@@ -173,7 +181,7 @@
 
 <script>
 
-    $(".AgreeBox").on("click", "#allcheck", function () {
+    {% comment %} $(".AgreeBox").on("click", "#allcheck", function () {
     $(this).parents(".AgreeBox").find('input').prop("checked", $(this).is(":checked"));
     });
      
@@ -185,8 +193,27 @@
         });
      
         $("#allcheck").prop("checked", is_checked);
-    });
+    }); {% endcomment %}
 
+    function ch(){
+
+        const allcheck = document.getElementById('allcheck');
+        const check_1 = document.getElementById('check_1');
+        const check_2 = document.getElementById('check_2');
+
+        if(check_1.checked == true && check_2.checked == true)
+            allcheck.checked == true;
+            alert("전체 동의해주셨습니다.");
+        else if (check_1.checked == true && check_2.checked == false)
+            allcheck.checked == false;
+            alert("두번째꺼 동의 해주세요.");
+        else if (check_1.checked == false && check_2.checked == true)
+            allcheck.checked == false;
+            alert("첫번째꺼 동의 해주세요.");
+        else if (check_1.checked == false && check_2.checked == false)
+            allcheck.checked == false;
+            alert("동의해주셔야됩니다.");
+    }
 
  </script>
 

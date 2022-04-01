@@ -22,9 +22,9 @@
     </div>
     <div class="mb-3 mt-3">
         <label for="content">공지사항 내용</label>
-        <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required></textarea>
+        <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required><c:out value="${content}" /></textarea>
     </div>
-    {% if session.username == "admin@email.com" %}
+    {% if session.user == "admin@email.com" %}
     {% csrf_token %}
         <button type="submit" class="btn btn-dark">작성완료</button>
     {% endif %}

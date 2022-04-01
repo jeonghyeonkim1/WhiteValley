@@ -25,7 +25,7 @@
         <div class="border bg-light rounded p-2" >{{ oto.content }}</div>
     </div>    
 
-    {% if session.username == "admin@email.com" %}
+    {% if session.user == "admin@email.com" %}
         <a class="btn btn-dark" href="{% url 'Cs:oto_answer' 1 %}">답변하기</a>
     {% endif %}
     <a class="btn btn-dark" href="{% url 'Cs:oto_list' %}">목록가기</a>

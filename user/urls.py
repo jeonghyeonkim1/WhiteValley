@@ -1,5 +1,6 @@
 from django.urls import path
 from user import views
+from django.contrib.auth import views as auth_views
 
 app_name = "User"
 
@@ -23,6 +24,12 @@ urlpatterns = [
     path('write/', views.magazine_write, name="magazine_write"), # 매거진 작성
 
     path('delete/', views.magazine_delete, name="magazine_delete"), # 매거진 삭제
+
+    # 장고에서 지원하는 비밀번호 찾기
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset_done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('password_reset_confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('password_reset_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     # mypage -------------------------------------------------------------------------------
     path('mypage/', views.mypage, name="mypage"),
