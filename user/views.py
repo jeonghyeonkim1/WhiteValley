@@ -1,6 +1,4 @@
 from django.shortcuts import render, HttpResponse, redirect
-from user.models import User
-from shop.models import Config
 
 # Create your views here.
 def login(request):
