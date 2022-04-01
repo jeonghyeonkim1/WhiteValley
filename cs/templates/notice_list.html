@@ -20,7 +20,7 @@
 </div>
 <table class="table table-hover">
     <thead class="table-success">
-        <tr onclick="location.href='#'">
+        <tr>
             <th>목록</th>
             <th>제목</th>
             <th>조회수</th>
@@ -28,78 +28,99 @@
         </tr>
     </thead>
     <tbody>
-        {% comment %} {% for notice in notices %} {% endcomment %}
-        <tr>
-            <td>{{ num }}1</td>
-            <td>{{ notice.title }}제목</td>
-            <td>{{ notice.view_cnt }}123213</td>
-            <td>{{ notice.reg_date|date:"Y-m-d" }}2022-04-01</td>
+        {% for notice in notices %}
+        <tr onclick="location.href='{% url 'Cs:notice_detail' notice.id %}'">
+            <td>{{ notice.id }}</td>
+            <td>{{ notice.title }}</td>
+            <td>{{ notice.view_cnt }}</td>
+            <td>{{ notice.reg_date|date:"Y-m-d" }}</td>
         </tr>
-        <tr>
-            <td>{{ num }}2</td>
-            <td>{{ notice.title }}제목</td>
-            <td>{{ notice.view_cnt }}123213</td>
-            <td>{{ notice.reg_date|date:"Y-m-d" }}2022-04-01</td>
-        </tr>
-        <tr>
-            <td>{{ num }}3</td>
-            <td>{{ notice.title }}제목</td>
-            <td>{{ notice.view_cnt }}123213</td>
-            <td>{{ notice.reg_date|date:"Y-m-d" }}2022-04-01</td>
-        </tr>
-        <tr>
-            <td>{{ num }}4</td>
-            <td>{{ notice.title }}제목</td>
-            <td>{{ notice.view_cnt }}123213</td>
-            <td>{{ notice.reg_date|date:"Y-m-d" }}2022-04-01</td>
-        </tr>
-        <tr>
-            <td>{{ num }}5</td>
-            <td>{{ notice.title }}제목</td>
-            <td>{{ notice.view_cnt }}123213</td>
-            <td>{{ notice.reg_date|date:"Y-m-d" }}2022-04-01</td>
-        </tr>
-        <tr>
-            <td>{{ notice.id }}6</td>
-            <td>{{ notice.title }}제목</td>
-            <td>{{ notice.view_cnt }}123213</td>
-            <td>{{ notice.reg_date|date:"Y-m-d" }}2022-04-01</td>
-        </tr>
-        {% comment %} {% endfor %} {% endcomment %}
+        {% endfor %}
     </tbody>
 </table>
 <div class="row">
     <div class="col-12">
         {% if session.username == "admin@email.com" %}
-            {% csrf_token %}
-            <a class="btn btn-dark" href="{% url 'Cs:notice_write' %}" style="float: right;">작성하기</a>
+        {% csrf_token %}
+        <a class="btn btn-dark" href="{% url 'Cs:notice_write' %}" style="float: right;">작성하기</a>
         {% endif %}
     </div>
 </div>
 
+
 <!-- pagination -->
-<div class="container mt-1">
+<div class="row mt-2">
+    <div class="col-12">
+        <nav>
+            <ul class="pagination justify-content-center">
+                {% if notices.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?p={{notices.previous_page_number}}">이전으로</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">                    
+                    <a class="page-link disabled" href="#">이전으로</a>
+                </li>
+                {% endif %}
+                <li class="page-item active">
+                    <a class="page-link" href="#">{{notices.number}} / {{notices.paginator.num_pages }}</a>
+                </li>                
+                {% if notices.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?p={{notices.next_page_number}}">다음으로</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link disabled" href="#">다음으로</a>
+                </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    </div>
+</div>
+<!-- pagination -->
+
+<!-- pagination -->
+{% comment %} <div class="container mt-1">
     <ul class="pagination justify-content-center">
-        {# << 표시 여부 #}        
-        <li class="page-item"><a class="page-link" href="javascript:void(0);" title="처음"><i class='fas fa-angle-double-left'></i></a></li>
+        {# << 표시 여부 #}
+        {% if notices.number > 1 %}
+        <li class="page-item"><a class="page-link" href="{% url 'Cs:notice_list' %}" title="처음"><i
+                    class='fas fa-angle-double-left'></i></a></li>
+        {% endif %}
 
         {# < 표시 여부 #}
-        <li class="page-item"><a class="page-link" href="javascript:void(0);" title="이전"><i class='fas fa-angle-left'></i></a></li>
+        {% if start_page > 1 %}
+        <li class="page-item"><a class="page-link" href="{% url 'Cs:notice_list' %}?page={{ start_page|add:-1 }}"
+                title="이전"><i class='fas fa-angle-left'></i></a></li>
+        {% endif %}
 
         {# 페이징 안의 '숫자' 표시 #}
-        <li class="page-item1"><a class="page-link" href="{% url 'Cs:notice_list' %}">1</a></li>
-        <li class="page-item2"><a class="page-link" href="{% url 'Cs:notice_list' %}">2</a></li>
-        <li class="page-item3"><a class="page-link" href="{% url 'Cs:notice_list' %}">3</a></li>
-        {% comment %} <li class="page-item active"><a class="page-link" href="javascript:void(0);" title="현재페이지">3</a></li> {% endcomment %}
-        <li class="page-item4"><a class="page-link" href="{% url 'Cs:notice_list' %}">4</a></li>
+        {% if notices.paginator.num_pages > 1 %}
+        {% for p in page_range %}
+        {% if notices.number != p %}
+        <li class="page-item1"><a class="page-link" href="{% url 'Cs:notice_list' %}?page={{ p }}">{{ p }}</a></li>
+        {% else %}
+        <li class="page-item active"><a class="page-link" href="#" title="현재페이지">{{ p }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
 
         {# > 표시 #}
-        <li class="page-item"><a class="page-link" href="javascript:void(0);" title="다음"><i class='fas fa-angle-right'></i></a></li>
-       
+        {% if notices.paginator.num_pages > end_page %}
+        <li class="page-item"><a class="page-link" href="{% url 'Cs:notice_list' %}?page={{ start_page|add:1 }}"
+                title="다음"><i class='fas fa-angle-right'></i></a></li>
+        {% endif %}
+
         {# >> 표시 #}
-        <li class="page-item"><a class="page-link" href="javascript:void(0);" title="마지막"><i class='fas fa-angle-double-right'></i></a></li>
+        {% if notices.number < notices.paginator.num_pages %}
+        <li class="page-item"><a class="page-link"
+                href="{% url 'Cs:notice_list' %}?page={{ notices.paginator.num_pages }}" title="마지막"><i
+                    class='fas fa-angle-double-right'></i></a></li>
+        {% endif %}
     </ul>
-</div>
+</div> {% endcomment %}
 
 
 {% endblock %}

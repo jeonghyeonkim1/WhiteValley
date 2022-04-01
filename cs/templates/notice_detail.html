@@ -28,7 +28,7 @@
 
     {% if session.username == "admin@email.com" %}
         {% csrf_token %}
-        <a class="btn btn-dark" href="{% url 'Cs:notice_update' 1 %}">수정하기</a>
+        <a class="btn btn-dark" href="{% url 'Cs:notice_update' notice.id %}">수정하기</a>
         <button type="button" class="btn btn-dark" onclick="chkDelete()">삭제하기</button>
     {% endif %}
         <a class="btn btn-dark" href="{% url 'Cs:notice_list' %}">목록가기</a>

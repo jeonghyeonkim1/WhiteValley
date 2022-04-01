@@ -12,8 +12,8 @@
 <hr>
 <div class="mb-3 mt-3 clearfix">
     <span class="float-start me-2">목록 {{ notice.id }}번</span>
-    <span class="float-end ms-4">작성일: {{ notice.reg_date|date:"Y-m-d" }}</span>
-    <span class="float-end">조회수: {{ notice.view_cnt }}</span>
+    <span class="float-end ms-4">작성일 {{ notice.reg_date|date:"Y-m-d" }}</span>
+    <span class="float-end">조회수 {{ notice.view_cnt }}</span>
 </div>
 
 <form action="." method="POST">
@@ -26,8 +26,10 @@
         <label for="content">내용:</label>
         <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required>{{ notice.content }}</textarea>
     </div>
-
-    <button type="submit" class="btn btn-dark">수정완료</button>
-    <a class="btn btn-dark" href="{% url 'Cs:notice_list' %}">목록가기</a>
+    {% if session.username == "admin@email.com" %}
+    {% csrf_token %}
+        <button type="submit" class="btn btn-dark">수정완료</button>
+        <a class="btn btn-dark" href="{% url 'Cs:notice_list' %}">목록가기</a>
+    {% endif %}
 </form>
 {% endblock %}
