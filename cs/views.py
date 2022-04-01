@@ -42,60 +42,27 @@ def notice_detail(request, pk):
 
 def notice_list(request):
     keyword = request.GET.get('keyword')
-
+    
     if keyword:
         all_notices = Board.objects.filter(title__contains=keyword).order_by('-reg_date')
     else:
         all_notices = Board.objects.all().order_by('-reg_date')
 
-    page = int(request.GET.get('p', 1))
+    page = int(request.GET.get('page', 1))
     paginator = Paginator (all_notices, 5)
     notices = paginator.get_page(page)
 
     context = {
-        'notices': notices,
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'cs',
+        'notices': notices,
         'all_notices': all_notices,
-        'keyword': keyword
+        # 'keyword': keyword
     }
         
 
     return render(request, 'notice_list.html', context)
-
-    # all_notices = Board.objects.all().order_by('-id')
-
-    # write_pages = 5
-    # page = int(request.GET.get('page', 1))
-    # paginator = Paginator (all_notices, 5)
-    # page_obj = paginator.get_page(page)
-
-    # start_page = ((int)((page_obj.number - 1) / write_pages) * write_pages) + 1
-    # end_page = start_page + write_pages - 1
-    
-    # if end_page >= paginator.num_pages:
-    #     end_page = paginator.num_pages
-
-    # page_range = paginator.page_range[start_page:end_page]
-
-    # keyword =request.GET.get('keyword')
-    # if keyword:
-    #     all_notices = all_notices.filter(title__icontains=keyword)
-        
-    #     return render(request, 'notice_list.html', {'all_notices': all_notices, 'keyword': keyword})
-
-    # else:
-    #     context = {
-    #         # 'notices': notices,
-    #         'page_range':page_range,
-    #         'session': request.session,
-    #         'config': Config.objects.get(id=1),
-    #         'currentpage': 'cs'
-    #     }
-
-    #     return render(request, 'notice_list.html', context)
-
 
 
 def notice_update(request, pk):

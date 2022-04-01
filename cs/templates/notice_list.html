@@ -15,77 +15,6 @@
     <span class="float-start">page {{ notices.number }}/{{ notices.paginator.num_pages }}</span>
 </div>
 
-{% comment %} <table class="table table-dark">
-    <thead class="thead-dark">
-        <tr class="text-center">
-            <th>목록</th>
-            <th>제목</th>
-            <th>조회수</th>
-            <th>작성일</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% if all_notices %}
-        {% for notice in all_notices %}
-        <tr class="text-center">
-            <td>{{ notice.id }}</td>
-            <td>{{ notice.title }}</td>
-            <td>{{ notice.view_cnt }}</td>
-            <td>{{ notice.reg_date|date:"Y. m. d" }}</td>
-        </tr>
-        {% endfor %}
-        {% else %}
-        <tr class="text-center">
-            <td colspan="4">
-                작성된 게시글이 없습니다.
-            </td>
-        </tr>
-        {% endif %}
-        {% for notice in notices %}
-        <tr onclick="location.href='{% url 'Cs:notice_detail' notice.id %}'" style="cursor: pointer;">
-            <td>{{ notice.id }}</td>
-            <td>{{ notice.title }}</td>
-            <td>{{ notice.view_cnt }}</td>
-            <td>{{ notice.reg_date|date:"Y-m-d" }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-{% if is_paginated %}
-<ul class="pagination">
-    {% if page.obj_has_previous %}
-    <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">이전</a>
-    </li>
-    {% else %}
-    <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1">이전</a>
-    </li>
-    {% endif %}
-
-    {% for page in page_range %}
-    <li class="page-item {% if page == page_obj.number %} active {% endif %}">
-        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
-    </li>
-    {% endfor %}
-
-    {% if page_obj.has_next %}
-    <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.next_page_number }}">다음</a>
-    </li>
-    {% else %}
-    <li class="page-item disabled">
-        <a class="page-link" href="#">다음</a>
-    </li>
-    {% endif %}
-</ul>
-{% endif %}
- {% endcomment %}
-
-
-
-
 <table class="table table-striped table-hover">
     <thead class="table-dark">
         <tr>
@@ -97,8 +26,7 @@
     </thead>
     <form action="" method="GET">
         <div style="float: right; margin: 20px;">
-            <input type="text" id="keword" placeholder="궁금한점을 검색해보세요" name="keyword" style="width:250px"
-                value="{{ keyword }}">
+            <input type="text" placeholder="궁금한점을 검색해보세요" name="keyword" style="width:250px">
             <button type="submit" class="btn btn-dark">검색</button>
         </div>
         {% if keyword %}
@@ -125,29 +53,16 @@
             {% endif %}
         {% endif %}
     </form>
-    <tbody>
-        {% for notice in notices %}
-        <tr onclick="location.href='{% url 'Cs:notice_detail' notice.id %}'" style="cursor: pointer;">
-            <td>{{ notice.id }}</td>
-            <td>{{ notice.title }}</td>
-            <td>{{ notice.view_cnt }}</td>
-            <td>{{ notice.reg_date|date:"Y-m-d" }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
 </table>
 <div class="row">
     <div class="col-12">
-        {% if session.user == "admin@email.com" %}
+        {% if admin %}
         {% csrf_token %}
         <a class="btn btn-dark" href="{% url 'Cs:notice_write' %}" style="float: right;">작성하기</a>
         {% endif %}
     </div>
 </div>
 
-
-
-<!-- pagination -->
 <div class="row mt-2">
     <div class="col-12">
         <nav>
@@ -178,50 +93,5 @@
         </nav>
     </div>
 </div>
-
-
-
-
-<!-- pagination -->
-{% comment %} <div class="container mt-1">
-    <ul class="pagination justify-content-center">
-        {# << 표시 여부 #}
-        {% if notices.number > 1 %}
-        <li class="page-item"><a class="page-link" href="{% url 'Cs:notice_list' %}" title="처음"><i
-                    class='fas fa-angle-double-left'></i></a></li>
-        {% endif %}
-
-        {# < 표시 여부 #}
-        {% if start_page > 1 %}
-        <li class="page-item"><a class="page-link" href="{% url 'Cs:notice_list' %}?page={{ start_page|add:-1 }}"
-                title="이전"><i class='fas fa-angle-left'></i></a></li>
-        {% endif %}
-
-        {# 페이징 안의 '숫자' 표시 #}
-        {% if notices.paginator.num_pages > 1 %}
-        {% for p in page_range %}
-        {% if notices.number != p %}
-        <li class="page-item1"><a class="page-link" href="{% url 'Cs:notice_list' %}?page={{ p }}">{{ p }}</a></li>
-        {% else %}
-        <li class="page-item active"><a class="page-link" href="#" title="현재페이지">{{ p }}</a></li>
-        {% endif %}
-        {% endfor %}
-        {% endif %}
-
-        {# > 표시 #}
-        {% if notices.paginator.num_pages > end_page %}
-        <li class="page-item"><a class="page-link" href="{% url 'Cs:notice_list' %}?page={{ start_page|add:1 }}"
-                title="다음"><i class='fas fa-angle-right'></i></a></li>
-        {% endif %}
-
-        {# >> 표시 #}
-        {% if notices.number < notices.paginator.num_pages %}
-        <li class="page-item"><a class="page-link"
-                href="{% url 'Cs:notice_list' %}?page={{ notices.paginator.num_pages }}" title="마지막"><i
-                    class='fas fa-angle-double-right'></i></a></li>
-        {% endif %}
-    </ul>
-</div> {% endcomment %}
-
 
 {% endblock %}
