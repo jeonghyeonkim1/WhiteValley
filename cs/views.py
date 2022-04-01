@@ -41,27 +41,28 @@ def notice_detail(request, pk):
 
 
 def notice_list(request):
-    all_notices = Board.objects.all().order_by('-id')
+    keyword = request.GET.get('keyword')
+
+    if keyword:
+        all_notices = Board.objects.filter(title__contains=keyword).order_by('-reg_date')
+    else:
+        all_notices = Board.objects.all().order_by('-reg_date')
 
     page = int(request.GET.get('p', 1))
     paginator = Paginator (all_notices, 5)
     notices = paginator.get_page(page)
 
-    keyword =request.GET.get('keyword')
-    if keyword:
-        all_notices = all_notices.filter(title__icontains=keyword)
+    context = {
+        'notices': notices,
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs',
+        'all_notices': all_notices,
+        'keyword': keyword
+    }
         
-        return render(request, 'notice_list.html', {'all_notices': all_notices, 'keyword': keyword})
 
-    else:
-        context = {
-            'notices': notices,
-            'session': request.session,
-            'config': Config.objects.get(id=1),
-            'currentpage': 'cs'
-        }
-
-        return render(request, 'notice_list.html', context)
+    return render(request, 'notice_list.html', context)
 
     # all_notices = Board.objects.all().order_by('-id')
 
