@@ -12,17 +12,17 @@
         <h6>해당 제품의 상세 설명과 커스텀 방법에 대해 설명해드리겠습니다.
     </div>
 
-    <div class="custom1">
+    <div class="custom1" id="customend_wrap">
         <div class="custom1_top">
             
             <div class="slideshow-container">
-                <div class="slideshow-s">
+                <div class="slideshow-s" style="">
                     <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
                     <div class="mySlides fades">
-                        <img id="pimg3" src="https://i.ibb.co/0JMMtF1/shortw.png" alt="">
+                        <img style="width: 500px;" id="pimg3" src="https://i.ibb.co/0JMMtF1/shortw.png" alt="">
                     </div>
                     <div class="mySlides fades">
-                        <img id="pimg3" src="https://i.ibb.co/0JMMtF1/shortw.png" alt="">
+                        <img  style="width: 500px;"  id="pimg3" src="https://i.ibb.co/0JMMtF1/shortw.png" alt="">
                     </div>
                 <a class="next" onclick="plusSlides(1)">&#10095;</a>    
                 </div>
@@ -75,12 +75,35 @@
         </div> 
         
         <div class="Btn"><a href="" id="CustomBtn2">Add to Cart</a></div>
-       </div>
-        
-    
+         </div>
         </div>
-        
        </div>
+
+       <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>장바구니에 추가</h3>
+                </div>
+                <div class="modal-body">완성품을 카드에 담으시겠습니까?</div>
+                <div class="modal-footer">
+                    <a id="backbtn" class="btn">돌아가기</a>
+                    <a id="addbtn" href={% url 'Main:cart' %} class="btn btn-dark" type="button" data-dismiss="modal">예</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $("#CustomBtn2").click(function(e){
+        e.preventDefault();
+        $("#cartModal").modal("show");
+    });
+    $("#backbtn").click(function(e){
+        window.history.back();
+    });
+    
+</script>
            
 
 {% endblock %}

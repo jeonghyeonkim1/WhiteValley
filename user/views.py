@@ -1,9 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
 
-#비밀번호 변경
-from django.contrib.auth.hashers import check_password
-from django.contrib import messages, auth
-
 # Create your views here.
 def login(request):
     context = {

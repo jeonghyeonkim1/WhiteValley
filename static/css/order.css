@@ -89,6 +89,9 @@ li{
 }
 .custom1{
     text-align: center;
+    height: 400px;
+    margin-top: 200px;
+    margin-bottom: 200px;
 }
 .custom1_top {
     display: flex;
@@ -103,6 +106,7 @@ li{
     text-align: center;
     width: 600px;
 }
+
 .text_wrap{
     border-bottom: 2px solid black;
     margin-bottom: 30px;
@@ -155,6 +159,11 @@ li{
 #text_input{
     margin-left: 0px;
     margin-right: 10px;
+}
+.pimg2_wrap{
+    text-align: center;
+    width: 600px;
+    margin-left: 70px;
 }
 #text_input_wrap{
     margin-left: 100px;
@@ -222,17 +231,17 @@ li{
     filter: blur(1px);
 }
 #Canvas {
-    height: 600px;
-    border: 1px solid black;
+    height: 500px;
+    border: 1px solid rgba(202, 202, 202, 0.582);
     max-width: fit-content;
     vertical-align: middle;
-    width: 600px;
+    width: 500px;
 }
 .custom2 form {
     flex-wrap: wrap;
 }
 .custom2_detail{
-    padding-top: 15%;
+    padding-top: 10%;
     width: 1000px;
 }
 #imgwrap img{
@@ -260,6 +269,10 @@ li{
 }
 
 /* customend.html */
+#customend_wrap{
+    margin-top: 100px;
+    height: 700px;
+}
 #productend_type {
     font-size: 25px;
 }
@@ -371,8 +384,13 @@ li{
     to {opacity: 1}
   }
 
+/* payment.html */
+.userform{
+    border: 1px solid rgb(196, 194, 194);
+    padding: 20px;
+}
+.receform{
+    border: 1px solid rgb(196, 194, 194);
+    padding: 20px;
 
-/* payment */
-.paytext{
-    padding-top: 300px;
 }

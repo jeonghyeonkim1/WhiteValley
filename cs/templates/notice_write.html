@@ -24,7 +24,6 @@
         <label for="content">공지사항 내용</label>
         <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required></textarea>
     </div>
-
     {% if session.username == "admin@email.com" %}
     {% csrf_token %}
         <button type="submit" class="btn btn-dark">작성완료</button>
