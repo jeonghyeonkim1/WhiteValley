@@ -24,26 +24,67 @@
         </tr>
     </thead>
     <tbody>
-        {% for oto in otos %}
+        {% comment %} {% for oto in otos %} {% endcomment %}
         <tr>
-            <td>{{ oto.id }}</td>
-            <td>{{ oto.title }}</a></td>
-            <td>{{ oto.user_id }}</td>
-            <td>{{ oto.reg_date|date:"Y-m-d" }}</td>
+            <td>{{ oto.id }}1</td>
+            <td>{{ oto.title }}결제 문의입니다</a></td>
+            <td>{{ oto.user_id }}홍길동</td>
+            <td>{{ oto.reg_date|date:"Y-m-d" }}2022-04-01</td>
         </tr>
-        {% endfor %}
+        <tr>
+            <td>{{ oto.id }}2</td>
+            <td>{{ oto.title }}배송 문의입니다</a></td>
+            <td>{{ oto.user_id }}둘리</td>
+            <td>{{ oto.reg_date|date:"Y-m-d" }}2022-04-01</td>
+        </tr>
+        <tr>
+            <td>{{ oto.id }}3</td>
+            <td>{{ oto.title }}환불 문의입니다</a></td>
+            <td>{{ oto.user_id }}둘리엄마</td>
+            <td>{{ oto.reg_date|date:"Y-m-d" }}2022-04-01</td>
+        </tr>
+        <tr>
+            <td>{{ oto.id }}4</td>
+            <td>{{ oto.title }}교환 문의입니다</a></td>
+            <td>{{ oto.user_id }}희동이</td>
+            <td>{{ oto.reg_date|date:"Y-m-d" }}2022-04-01</td>
+        </tr>
+        <tr>
+            <td>{{ oto.id }}5</td>
+            <td>{{ oto.title }}일주일전에 주문했는데 언제 도착해요</a></td>
+            <td>{{ oto.user_id }}또치</td>
+            <td>{{ oto.reg_date|date:"Y-m-d" }}2022-04-01</td>
+        </tr>
+        <tr>
+            <td>{{ oto.id }}6</td>
+            <td>{{ oto.title }}상품이 불량이에요</a></td>
+            <td>{{ oto.user_id }}도우너</td>
+            <td>{{ oto.reg_date|date:"Y-m-d" }}2022-04-01</td>
+        </tr>
+        {% comment %} {% endfor %} {% endcomment %}
     </tbody>
 </table>
 <div class="row">
     <div class="col-12">
         {% if session.username %}
-        <form action="{% url 'Cs:oto_write' %}" id="oto_write">
             {% csrf_token %}
-            <a class="btn btn-dark" id="oto_write_btn">문의하기</a>
-        </form>
+            <a class="btn btn-dark" href="{% url 'Cs:oto_write' %}" style="float: right;">문의하기</a>
         {% else %}
-            <a class="btn btn-dark" href="{% url 'User:user_login' %}">문의하기</a>
+            <button type="button" class="btn btn-dark" onclick="chkLogin()" style="float: right;">문의하기</button>
         {% endif %}
+
+        {% comment %} <form action="{% url 'User:user_login' %}" name="oto_login" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ notice.id }}">
+        </form> {% endcomment %}
+    
+        <script>
+            function chkLogin(){
+                var msg = confirm("로그인 후 이용하실 수 있습니다.");
+                if(msg){
+                }
+            }
+        </script>
     </div>
 </div>
 
@@ -61,7 +102,8 @@
         {# 페이징 안의 '숫자' 표시 #}
         <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
         <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-        <li class="page-item active"><a class="page-link" href="javascript:void(0);" title="현재페이지">3</a></li>
+        <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
+        {% comment %} <li class="page-item active"><a class="page-link" href="javascript:void(0);" title="현재페이지">3</a></li> {% endcomment %}
         <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
 
         {# > 표시 #}

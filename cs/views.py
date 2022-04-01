@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
 
 
 # 공지사항 페이지
@@ -6,7 +7,6 @@ def notice_write(req):
     context = {
         'session': req.session
     }
-
     return render(req, 'notice_write.html', context)
     
 
@@ -19,7 +19,7 @@ def notice_detail(req, pk):
 
 def notice_list(req):
     context = {
-        'session': req.session
+        'session': req.session,
     }
     return render(req, 'notice_list.html', context)
 
@@ -41,21 +41,21 @@ def notice_delete(req):
 # 이벤트 페이지
 def event_write(req):
     context = {
-        'currentPage': 'c/s'
+        'session': req.session
     }
     return render(req, 'event_write.html', context)
 
 
 def event_detail(req, pk):
     context = {
-        'currentPage': 'c/s'
+        'session': req.session
     }
     return render(req, 'event_detail.html', context)
 
 
 def event_list(req):
     context = {
-        'currentPage': 'c/s'
+        'session': req.session
     }
     return render(req, 'event_list.html', context)
 
@@ -77,14 +77,14 @@ def event_delete(req):
 # 1:1문의 페이지
 def oto_write(req):
     context = {
-        'currentPage': 'c/s'
+        'session': req.session
     }
     return render(req, 'oto_write.html', context)
 
 
 def oto_detail(req, pk):    # 관리자만 볼 수 있음
     context = {
-        'currentPage': 'c/s'
+        'session': req.session
     }
     return render(req, 'oto_detail.html', context)
 
