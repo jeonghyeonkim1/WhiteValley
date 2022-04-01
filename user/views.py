@@ -1,7 +1,4 @@
 from django.shortcuts import render, HttpResponse, redirect
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.hashers import make_password, check_password
-from .models import User
 
 #비밀번호 변경
 from django.contrib.auth.hashers import check_password
@@ -9,8 +6,14 @@ from django.contrib import messages, auth
 
 # Create your views here.
 def login(request):
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'login'
+    }
+
     if request.method == "GET":
-        return render(request, 'login.html')
+        return render(request, 'login.html', context)
     elif request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -103,3 +106,13 @@ def magazine_write(request):
 def magazine_delete(request):
     return render(request, 'm_deleteok.html')
 
+def mypage(req):
+    context = {
+        'session': req.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'mypage'
+    }
+
+    context['user'] = User.objects.get(email=req.session['username'])
+
+    return render(req, 'mypage.html', context)

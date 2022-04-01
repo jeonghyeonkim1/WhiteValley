@@ -30,9 +30,9 @@
         <textarea class="form-control" rows="5" id="answer" placeholder="답변을 적어주세요" name="answer" required>{{ oto.answer }}</textarea>
     </div>
 
-    <button type="submit" class="btn btn-outline-dark">답변완료</button>
-    <button type="button" class="btn btn-outline-dark" onclick="history.back()">이전으로</button>
-    <a class="btn btn-outline-dark" href="#">목록가기</a>
+    <button type="submit" class="btn btn-dark">답변완료</button>
+    <button type="button" class="btn btn-dark" onclick="history.back()">이전으로</button>
+    <a class="btn btn-dark" href="{% url 'Cs:oto_list' %}">목록가기</a>
 
 </form>
 {% endblock %}

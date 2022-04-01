@@ -36,9 +36,8 @@
         <input type="file" name="uploadedFile">
     </div>
 
-    <button type="submit" class="btn btn-outline-dark">수정완료</button>
-    <button type="button" class="btn btn-outline-dark" onclick="history.back()">이전으로</button>
-    <a class="btn btn-outline-dark" href="#">목록가기</a>
+    <button type="submit" class="btn btn-dark">수정완료</button>
+    <a class="btn btn-dark" href="{% url 'Cs:event_list' %}">목록가기</a>
 
 </form>
 {% endblock %}
