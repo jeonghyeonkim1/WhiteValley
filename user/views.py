@@ -45,6 +45,7 @@ def login(request):
 
 def logout(request):
     del(request.session["user"])
+    del(request.session["admin"])
 
     return redirect('/whitevalley/')
 
