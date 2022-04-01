@@ -1,4 +1,3 @@
-from re import T
 from django.db import models
 
 class Board(models.Model):
