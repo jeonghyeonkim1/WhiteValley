@@ -1,32 +1,59 @@
 from django.shortcuts import render,redirect
+from shop.models import Config
 
 # Create your views here.
 def order(request):
-    return render(request,'order.html')
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'shopping'
+    }
+    return render(request,'order.html',context)
 
 def order_des(request):
-   
-    return render(request, 'order_des.html')
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'shopping'
+    }
+    return render(request, 'order_des.html',context)
 
 def custom1(request):
-   
-    return render(request, 'custom1.html')
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'shopping'
+    }
+    return render(request, 'custom1.html',context)
 
     
 def custom2(request):
-   
-    return render(request, 'custom2.html')
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'shopping'
+    }
+    return render(request, 'custom2.html',context)
 
 def customend(request):
-   
-    return render(request, 'customend.html')
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'shopping'
+    }
+    return render(request, 'customend.html',context)
 
 def payment(request):
-    return render(request,'payment.html')
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'shopping'
+    }
+    return render(request,'payment.html',context)
 
 def loading(request):
     return render(request, 'loading.html')
-    
+
 #    if request.method == "POST":
 #         URL = 'https://kapi.kakao.com/v1/payment/ready'
 #         headers = {
