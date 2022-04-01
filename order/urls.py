@@ -11,4 +11,10 @@ urlpatterns = [
     path('order/order_des/custom1/custom2/',views.custom2 , name="custom2"),
     path('order/order_des/custom1/custom2/customend', views.customend, name="customend"),
     path('payment/', views.payment,name="payment"),
+    path('loading/', views.loading, name="loading"),
+    # path('kakaoPayLogic/', views.kakaoPayLogic, name="kakaoPayLogic"),
+    # path('paySuccess/', views.paySuccess, name="paySuccess"),
+    # path('payFail/', views.payFail, name="payFail"),
+    # path('payCancel/', views.payCancel, name="payCancel"),
+    
 ]

@@ -2,9 +2,9 @@
 
 {% block attachment %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/user.css' %}?ver=1">
-    <script src="{% static 'js/user.js' %}"></script>
-
+    <link rel="stylesheet" href="{% static 'css/order.css' %}?ver=1">
+    <script src="{% static 'js/order.js' %}"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
@@ -13,66 +13,231 @@
 
 {% block contents %}
 
-<div class="row mt-5">
-    <div class="col-12">
+<div class="paytext" style="margin-top: 200px; margin-bottom:100px; border-bottom: 3px solid rgb(172, 172, 172);">
+    <div class="">
         <h1>주문 상세 입력</h1>
     </div>
 </div>
-<div>
+<div class="paycontain">
     <form name="paymentForm1" class="userform" action="">
         <legend>주문정보</legend>
         <div>
             <label for="">주문자</label>
-            <div class="col-4"><input type="text" class="form-control" placeholder="필수" request></div>
+            <div class="col-4" style="display: inline-block; margin-bottom:15px"><input type="text" class="form-control" style="display:inline-block" placeholder="필수" required></div>
         </div>
         <div>
             <label for="">이메일</label>
-            <div class="col-8"><input type="text" class="form-control" placeholder="필수" request></div>
+            <div  class="col-4" style="display: inline-block; margin-bottom:15px"><input type="text" class="form-control" placeholder="필수" required></div>
         </div>
         <div>
             <label for="">연락처</label>
-            <div class="col-4"><input type="text" class="form-control" placeholder="필수" request></div>
+            <div class="col-4" style="display: inline-block; margin-bottom:30px"><input type="text" class="form-control" placeholder="필수" required></div>
         </div>
     </form>
+    <br>
+    <div style="float:right;"><button type="button" class="btn btn-dark">구매자와 동일</button></div>
     <form name="paymentForm2" class="receform" action="">
         <legend>배송지</legend>
         <div>
             <label for="">받는이</label>
-            <div class="col-4"><input type="text" class="form-control" placeholder="필수" request></div>
+            <div class="col-4"  style="display: inline-block; margin-bottom:15px"><input type="text" class="form-control" placeholder="필수" required></div>
         </div>
         <div>
             <label for="">주소</label>
-            <div class="col-4"><input type="text" class="form-control" placeholder="필수" request></div>
-            <div class="col-8"><input type="text" class="form-control" placeholder="필수" request></div>
+            <div class="col-2"  style="display: inline-block; margin-bottom:6px; margin-left:16px"><input type="text" class="form-control" placeholder="우편번호" required></div>
+            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
+            <div class="col-6" style="margin-bottom:6px; margin-left:53px"><input type="text" class="form-control" placeholder="도로명주소" required></div>
+            <div class="col-4" style="margin-bottom:15px; margin-left:53px"><input type="text" class="form-control" placeholder="상세주소" required></div>
         </div>
         <div>
             <label for="">연락처</label>
-            <div class="col-4"><input type="text" class="form-control" placeholder="필수" request></div>
+            <div class="col-4" class="col-4" style="display: inline-block; margin-bottom:15px"><input type="text" class="form-control" placeholder="필수" required></div>
         </div>
         <div>
             <label for="">배송요청사항</label>
-            <div>
-                <select type="text" class="form-control" placeholder="필수" request>
+            <div class="col-4" style="display: inline-block;">
+                <select type="text" id="selbox" class="form-control" placeholder="필수">
                     <optgroup label="---------" data-max-options="1">
                         <option value="1">문앞</option>
                         <option value="2">직접 받고 부재 시 문앞</option>
                         <option value="3">경비실</option>
                         <option value="4">택배함</option>
-                        <option value="5">기타사항</option>
-                        <option value=""><input type="text" placeholder="상세사항"></option>
+                        <option value="d1">기타사항&nbsp&nbsp&#9660</option>
                     </optgruop>
                     <optgroup label="---------" data-max-options="1">
                         <option value="6">공동현관 출입번호 없음.</option>
-                        <option value="7">공동현관 출입번호 있음.</option>
-                        <option value=""><input type="text" placeholder="예시: #1234*"></option>
+                        <option value="d2">공동현관 출입번호 있음.&nbsp&nbsp&#9660</option>
                     </optgroup>
                 </select>
+                <input id="direct1" class="form-control" type="text" placeholder="상세사항">
+                <input id="direct2" class="form-control" type="text" placeholder="예시: #1234*">
             </div>
         </div>
     </form>
 </div>
 
+<div class="paytext" style="margin-top: 200px; margin-bottom:100px; border-bottom: 3px solid rgb(172, 172, 172);">
+    <div class="">
+        <h1>결제</h1>
+    </div>
+</div>
+<form name="cashForm" class="cashform" action="" >
+    <div style="margin-bottom:60px; border-bottom: 1px solid black;">
+        <legend>금액</legend>
+        <div style="border-top: 1px solid black; padding-top:20px;">
+            <label for="" style="margin:30px;">총 상품 가격</label>
+            <input type="text" value="30,000">
+        </div>
+        <div>
+            <label for=""  style="margin:30px 50px;">적립금</label>
+            <input type="text" value="1,500">
+        </div>
+        <div>
+            <label for=""  style="margin:30px;">총 결제 금액</label>
+            <input type="text" value="금액처리하기">
+        </div>
+    </div>
+</form>
+<form name="paymentForm" class="paymentform" action="">
+    <div style="border-bottom:1px solid black;">
+      <legend>결제방법</legend>
+      <div class="form-check" style="display:inline-block; margin-right:25px; margin-left:150px;">
+        <input onclick="ch1(this.value);" class="form-check-input" type="radio" name="flexRadioDefault" name="r1" checked>
+        <label class="form-check-label" for="flexRadioDefault1">
+        카드결제
+        </label>
+      </div>
+      <div class="form-check" style="display:inline-block; margin-right:25px;">
+        <input onclick="ch2(this.value);" class="form-check-input" type="radio" name="flexRadioDefault"  name="r2">
+        <label class="form-check-label" for="flexRadioDefault1">
+        간편결제
+        </label>
+      </div>
+      <div class="form-check" style="display:inline-block; margin-right:25px;">
+        <input onclick="ch3(this.value);" class="form-check-input" type="radio" name="flexRadioDefault"  name="r3">
+        <label class="form-check-label" for="flexRadioDefault1">
+        무통장입금
+        </label>
+      </div>
+      <div class="form-check" style="display:inline-block; margin-right:25px;">
+        <input onclick="ch4(this.value);" class="form-check-input" type="radio" name="flexRadioDefault"  name="r4">
+        <label class="form-check-label" for="flexRadioDefault1">
+        핸드폰결제
+        </label>
+      </div>
+    </div>
+    
+      <div>
+        <div id="pay1"  style="border-bottom:1px solid black; padding:50px;">
+            <div style="display:flex;">
+                <div style="margin-left: 160px;"><label style="margin-right: 20px;">카드선택</label><select name="form-control w-20" id=""><option value="">카아드</option></select></div>
+                <div style="margin-left: 100px"><label style="margin-right: 20px;">할부기간</label><select name="form-control w-20" id=""><option value="">카아드</option></select></div>
+            </div>
+            
+        </div>
+        <div id="pay2"  style="border-bottom:1px solid black; padding:50px;  display:none">
+            <div style="display:flex;">
+                <div style="margin-left: 160px;"><form action="" method="POST">{% csrf_token %}<button class="btn btn-warning">카카오페이</button></div>
+            <div style="margin-left: 160px;"><form action="" method="POST">{% csrf_token %}<button class="btn btn-success">네이버페이</button></div>
+            </div>
+            
+        </div>
+        <div id="pay3" style="border-bottom:1px solid black; padding:50px;  display:none">
+            <div style="margin-left: 160px;"><label style="margin-right: 20px;">은행선택</label><select name="form-control w-25" id=""><option value="">카아드</option></select></div>
+        </div>
+        <div id="pay4" style="border-bottom:1px solid black; padding:50px;  display:none">
+            <div style="margin-left: 160px;"><label style="margin-right: 20px;">통신사선택</label><select name="form-control w-25" id=""><option value="">카아드</option></select></div>
+        </div>
+      </div>
+      <div>
+          <div style="margin-top:50px; margin-bottom:10px; display:flex;">
+            <p style="margin-left:170px">위 주문 내용을 확인하였으며, 회원본인은 개인정보 이용 및 제공 및 결제에 동의합니다.</p>
+            <div style="margin-left:30px;"><input type="checkbox" class="form-check-input"></div>
+          </div>
+          <div style="text-align: center;">
+              <button type="button" class="btn btn-dark">결제</button>
+          </div>
+      </div>
+</form>
 
+<p class="padd"></p>
 
+<script>
+    function sample6_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("sample6_extraAddress").value = extraAddr;
+                
+                } else {
+                    document.getElementById("sample6_extraAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('sample6_postcode').value = data.zonecode;
+                document.getElementById("sample6_address").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("sample6_detailAddress").focus();
+            }
+        }).open();
+    }
+
+    function re(){
+        document.getElementsByName['r1'].checked = false;
+    }
+    function ch1(e){
+        $("#pay1").css("display","block");
+        $("#pay2").css("display","none");
+        $("#pay3").css("display","none");
+        $("#pay4").css("display","none");
+    }
+    function ch2(e){
+        $("#pay1").css("display","none");
+        $("#pay2").css("display","block");
+        $("#pay3").css("display","none");
+        $("#pay4").css("display","none");
+    }
+    function ch3(e){
+        $("#pay1").css("display","none");
+        $("#pay2").css("display","none");
+        $("#pay3").css("display","block");
+        $("#pay4").css("display","none");
+    }
+    function ch4(e){
+        $("#pay1").css("display","none");
+        $("#pay2").css("display","none");
+        $("#pay3").css("display","none");
+        $("#pay4").css("display","block");
+    }
+</script>
 
 {% endblock %}
