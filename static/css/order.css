@@ -9,7 +9,7 @@
     align-content: space-around;
     display: flex;
 }
-li{
+.pcontain li{
     margin: 10px;
     margin-top: 60px;
     margin-bottom: 40px;
@@ -90,8 +90,9 @@ li{
 .custom1{
     text-align: center;
     height: 400px;
-    margin-top: 200px;
-    margin-bottom: 200px;
+    margin-top: 100px;
+    margin-bottom: 300px;
+    
 }
 .custom1_top {
     display: flex;

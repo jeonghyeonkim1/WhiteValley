@@ -7,33 +7,19 @@ function showModal() {
 
 function hideModal() {
     $(".modal-window").hide();
+    document.getElementById("textresult").style.color=colorPicker.color.rgbString;
 }    
 
 
 $(document).ready(function(){
-   
     colorPicker = new iro.ColorPicker("#picker", {
         width: 200,
       });
-    let canvas = document.getElementById("Canvas")
-    var img = new Image();
-    img.src = "https://i.ibb.co/0JMMtF1/shortw.png"
-    let ctx;
-    ctx = canvas.getContext("2d");
-
-    img.onload = function(){
-        ctx.drawImage(img, 0, 0,1000,1000);
-    };
-
-    let text = document.getElementById("text_input")
-    text.addEventListener("input", function(){
-        ctx.font="50pt Fira";
-        ctx.strokeText(text.value,275,400);
-    });
-
-
 });
-
+function printText(){
+    const text_input = document.getElementById("text_input").value;
+    document.getElementById("textresult").innerText = text_input
+}
 
 
 

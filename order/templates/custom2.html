@@ -2,6 +2,8 @@
 
 {% block attachment %}
     {% load static %}
+    <script src="/path/to/dist/panzoom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/order.css' %}?ver=1">
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
     <script src="{% static 'js/order2.js' %}"></script>
@@ -12,10 +14,16 @@
         <h3>상품타입네임<br>
         <h6>해당 제품의 상세 설명과 커스텀 방법에 대해 설명해드리겠습니다.
     </div>
-
     <div class="custom2">
         <div class="custom1_top">
-            <div class="pimg2_wrap"><canvas id="Canvas" width="1000" height="1000" ></canvas></div>          
+            <div class="pimg2_wrap">
+                <div id="parent" class="parent" style="width:500px; height:500px; background-image:URL(https://i.ibb.co/qMR0FcY/shortw.png); background-size:cover;">
+                <div id="textresult" style='position:absolute; left:400px; top:300px; cursor:pointer; cursor:hand;' onmousedown='startDrag(event, this)'></div>
+                <div class="panzoom" id="panzoom-element">
+                  <img src="https://i.ibb.co/gRJK53Z/caticon.png" width="200" height="200">
+                </div>
+            </div> 
+        </div>          
             <div class="custom2_detail">
                 <p id="product_type" >상품타입네임<br>
             <div class="text_contain">
@@ -23,7 +31,7 @@
                         <div id="text2_wrap" class="form-inline form-group">
                             <label for="inputtext" class="col-xs control-label" id="inputtext">Text</label>
                             <div id="text_input_wrap" class="col-sm-6">
-                                <input type="text" id="text_input" class="form-control w-75" placeholder="15글자 이하의 텍스트" maxlength="15">
+                                <input onkeyup="printText()" type="text" id="text_input" class="form-control w-75" placeholder="15글자 이하의 텍스트" maxlength="15">
                             </div>
                             <div id="colorview_wrap">
                                 <img onclick="showModal();" id='colorwheel' src="https://i.ibb.co/gvJMcpG/color-wheel.png">        
@@ -55,8 +63,85 @@
             </div>
         </div>   
        </div>
+       
+      
+       <script>
            
-<script>
- 
+        const elem = document.getElementById('panzoom-element');
+                const zoomInButton = document.getElementById('zoom-in');
+                const zoomOutButton = document.getElementById('zoom-out');
+                const resetButton = document.getElementById('reset');
+                const panzoom = Panzoom(elem);
+                const parent = elem.parentElement
+        // No function bind needed
+        parent.addEventListener('wheel', panzoom.zoomWithWheel);
+        
+        
+            
+        
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-36251023-1']);
+          _gaq.push(['_setDomainName', 'jqueryscript.net']);
+          _gaq.push(['_trackPageview']);
+        
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        
+    
+        try {
+          fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", { method: 'HEAD', mode: 'no-cors' })).then(function(response) {
+            return true;
+          }).catch(function(e) {
+            var carbonScript = document.createElement("script");
+            carbonScript.src = "//cdn.carbonads.com/carbon.js?serve=CK7DKKQU&placement=wwwjqueryscriptnet";
+            carbonScript.id = "_carbonads_js";
+            document.getElementById("carbon-block").appendChild(carbonScript);
+          });
+        } catch (error) {
+          console.log(error);
+        }
+
+
+var img_L = 0;
+var img_T = 0;
+var targetObj;
+
+function getLeft(o){
+     return parseInt(o.style.left.replace('px', ''));
+}
+function getTop(o){
+     return parseInt(o.style.top.replace('px', ''));
+}
+
+// 이미지 움직이기
+function moveDrag(e){
+     var e_obj = window.event? window.event : e;
+     var dmvx = parseInt(e_obj.clientX + img_L);
+     var dmvy = parseInt(e_obj.clientY + img_T);
+     targetObj.style.left = dmvx +"px";
+     targetObj.style.top = dmvy +"px";
+     return false;
+}
+
+// 드래그 시작
+function startDrag(e, obj){
+     targetObj = obj;
+     var e_obj = window.event? window.event : e;
+     img_L = getLeft(obj) - e_obj.clientX;
+     img_T = getTop(obj) - e_obj.clientY;
+
+     document.onmousemove = moveDrag;
+     document.onmouseup = stopDrag;
+     if(e_obj.preventDefault)e_obj.preventDefault();
+}
+
+function stopDrag(){
+        document.onmousemove = null;
+        document.onmouseup = null;
+    }
+       
 </script>
 {% endblock %}

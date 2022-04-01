@@ -7,7 +7,60 @@
 {% endblock %}
 
 {% block contents %}
+<div class="modal fade" id="p_add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Login이 필요합니다.</h3>
+            </div>
+            <div class="modal-body">
+                <h5>Custom을 하기위해 로그인을 하시겠습니까?<br>
+                <h6>간편한 가입과 로그인을 통해 직접 커스텀상품을 제작하고 판매할 수 있습니다. 
+                    *'매거진'과 '맞춤형 상품 추천 컨텐츠'는 로그인 없이 이용가능합니다.*
+            </div>
+            <div class="modal-footer">
+                <a id="backbtn" class="btn">취소.</a>
+                <a id="addbtn" href="{% url 'User:user_login' %}" class="btn btn-dark" type="button" data-dismiss="modal">로그인</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+    {% comment %} <div class="modal fade" id="p_add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="True">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>관리자_상품추가</h3>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label for="">품번</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div>
+                        <label for="">상품명</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div style="margin-bottom:40px">
+                        <label for="">상품상세 설명</label>
+                        <textarea name="" id="" class="form-control w-80"></textarea>
+                    </div>
+                    <div>
+                        <label for="">상세이미지</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="" class="btn">취소</a>
+                    <a onclick="" id="addbtn" href={% url 'Order:order' %} class="btn btn-dark" type="button" data-dismiss="modal">추가</a>
+                </div>
+            </div>
+        </div>
+    </div> {% endcomment %}
     <div class="ordertext">
+        <div>
+        <button id="product_add" class="btn btn-dark" style="float:right;">상품추가</button>
+    </div>
         <h3>주문/제작 하기
         <h6>자체제작 고급 원단에 나만의 제품을 제작해보세요. 원하는 카테고리 상품을 선택하면 CUSTOM을 시작할 수 있습니다.
     </div>
@@ -35,5 +88,10 @@
             </li>
         </ul>
     </div>
-
+<script>
+    $("#product_add").click(function(e){
+        e.preventDefault();
+        $("#p_add").modal("show");
+    });
+</script>
 {% endblock %}
