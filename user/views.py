@@ -1,7 +1,8 @@
+import email
 from django.shortcuts import render, HttpResponse, redirect
 from user.models import User
 from shop.models import Config
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 
 # Create your views here.
 def login(request):
@@ -13,28 +14,37 @@ def login(request):
 
     if request.method == "GET":
         return render(request, 'login.html', context)
-    elif request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
+    elif request.method == 'POST':
+        email = request.POST.get('email', None)
+        password = request.POST.get('password', None)
 
-        try:
-            request.session['username'] = User.objects.get(email=username, password=password).email
-            return HttpResponse(f'''
-                <script>
-                    alert("로그인에 성공했습니다!")
-                    location.href = '/whitevalley/'
-                </script>
-            ''')
-        except:
-            return HttpResponse(f'''
-                <script>
-                    alert("존재하지 않는 아이디이거나 비밀번호가 일치하지 않습니다!");
-                    history.back();    
-                </script>
-            ''')
+        res_data = {}
+
+        if not(email and password):
+            res_data['error'] = '모든 값을 입력해야 합니다.'
+        else:
+
+            user = User.objects.get(email = email)
+
+            if user.admin:
+                if user.password == password:
+                    request.session['user'] = user.id
+                    request.session['admin'] = user.admin
+                    return redirect('/whitevalley/')
+                else:
+                    res_data['error'] = '비밀번호가 틀렸습니다.'
+            else:
+                if check_password(password, user.password):
+                    request.session['user'] = user.id
+                    request.session['admin'] = user.admin
+                    return redirect('/whitevalley/')
+                else:
+                    res_data['error'] = '비밀번호가 틀렸습니다'
+        
+    return render(request, 'login.html', res_data)
 
 def logout(request):
-    del(request.session["username"])
+    del(request.session["user"])
 
     return redirect('/whitevalley/')
 
@@ -48,7 +58,7 @@ def register(request):
 
     if request.method == 'GET':
 
-        return render(request, 'register.html')
+        return render(request, 'register.html', context)
 
     # POST방식. 회원 가입 처리
     elif request.method == 'POST':
@@ -64,11 +74,12 @@ def register(request):
         elif password != re_password:
             res_data['error'] = '비밀번호가 다릅니다.' # 작동안됨.
         else:
+            el = email.split("@") # 이메일에서 @ 전까지를 닉네임이므로 값가져와서 split
             user = User(
                 email = email,
                 password = make_password(password),
                 contact = contact,
-                nickname = email
+                nickname = el[0]
             )
                 
             user.save()
@@ -116,6 +127,6 @@ def mypage(req):
         'currentpage': 'mypage'
     }
 
-    context['user'] = User.objects.get(email=req.session['username'])
+    context['user'] = User.objects.get(id=req.session['user'])
 
     return render(req, 'mypage.html', context)
