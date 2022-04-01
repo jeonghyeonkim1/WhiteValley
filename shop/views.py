@@ -47,7 +47,7 @@ def admin(req):
         'config': Config.objects.get(id=1),
         'currentpage': 'admin',
     }
-    return render(req, 'admin_customer.html', context)
+    return render(req, 'admin.html', context)
 
 def admin_customer(req):
     context = {
