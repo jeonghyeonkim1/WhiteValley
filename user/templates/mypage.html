@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    <style>
+        #link_icon div {
+            transition: all 0.2s ease-in-out;
+        }
+        #link_icon div:hover {
+            transform: scale(106%);
+        }
+    </style>
+{% endblock %}
+
+{% block contents %}
+    <div class="w-100 p-4 bg-dark rounded-pill text-light d-flex flex-column justify-content-around align-items-center">
+        <h2><strong>{{ user.nickname }}</strong> 님 환영합니다.</h2>
+    </div>
+    <hr>
+    <div class="container d-flex flex-column justify-content-center align-items-center">
+        <button class="btn btn-outline-dark border-4 pb-2 mb-3" title="내 정보 수정하기"><i class="fa-solid fa-user-astronaut fs-4 mt-2"></i></button>
+        <h4><strong>이메일: {{ user.email }}</strong></h4>
+        <h4><strong>연락처: {{ user.contact }}</strong></h4>
+        <h4><strong>적립금: {{ user.point }}</strong></h4>
+        <h4><strong>가입일: {{ user.reg_date }}</strong></h4>
+    </div>
+    <hr>
+    <div class="container mb-5 text-center">
+        <div class="fw-bold row" id="link_icon">
+            <div class="mb-3 col-sm-3 d-flex justify-content-center align-item-center">
+                <div class="m-3 text-light bg-dark w-75 h-100 d-flex flex-column justify-content-center align-item-center" style="border-radius: 20px; cursor: pointer;" onclick="location.href='{% url 'Cs:notice_list' %}'">
+                    <i class="fa-solid fa-file-pen ms-4 mt-2 mb-2 display-1"></i>
+                    <h5>공지사항</h5>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-3 d-flex justify-content-center align-item-center">
+                <div class="m-3 text-light bg-dark w-75 h-100 d-flex flex-column justify-content-center align-item-center" style="border-radius: 20px; cursor: pointer;" onclick="location.href='{% url 'Cs:event_list' %}'">
+                    <i class="fa-solid fa-gift m-3 mt-2 mb-2 display-1"></i>
+                    <h5>이벤트</h5>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-3 d-flex justify-content-center align-item-center">
+                <div class="m-3 text-light bg-dark w-75 h-100 d-flex flex-column justify-content-center align-item-center" style="border-radius: 20px; cursor: pointer;" onclick="location.href='{% url 'Cs:oto_list' %}'">
+                    <i class="fa-solid fa-circle-question mb-2 display-1"></i>
+                    <h5>내 1:1문의</h5>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-3 d-flex justify-content-center align-item-center">
+                <div class="m-3 text-light bg-dark w-75 h-100 d-flex flex-column justify-content-center align-item-center" style="border-radius: 20px; cursor: pointer;" onclick="location.href='{% url 'Cs:faq_list' %}'">
+                    <i class="fa-solid fa-file-circle-question ms-4 mt-2 mb-2 display-1"></i>
+                    <h5>FAQ</h5>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-3 d-flex justify-content-center align-item-center">
+                <div class="m-3 text-light bg-dark w-75 h-100 d-flex flex-column justify-content-center align-item-center" style="border-radius: 20px; cursor: pointer;" onclick="location.href='{% url 'Order:order' %}'">
+                    <i class="fa-solid fa-palette mb-2 display-1"></i>
+                    <h5>커스텀 하기</h5>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-3 d-flex justify-content-center align-item-center">
+                <div class="m-3 text-light bg-dark w-75 h-100 d-flex flex-column justify-content-center align-item-center" style="border-radius: 20px; cursor: pointer;" onclick="location.href='{% url 'Recommendation:finished' %}'">
+                    <i class="fa-solid fa-shirt mb-2 display-1"></i>
+                    <h5>내 완성품</h5>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-3 d-flex justify-content-center align-item-center">
+                <div class="m-3 text-light bg-dark w-75 h-100 d-flex flex-column justify-content-center align-item-center" style="border-radius: 20px; cursor: pointer;" onclick="location.href='{% url 'Recommendation:reviews' %}'">
+                    <i class="fa-solid fa-book-open mb-2 display-1"></i>
+                    <h5>내 포토후기</h5>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-3 d-flex justify-content-center align-item-center">
+                <div class="m-3 text-light bg-dark w-75 h-100 d-flex flex-column justify-content-center align-item-center" style="border-radius: 20px; cursor: pointer;" onclick="location.href='.'">
+                    <i class="fa-solid fa-magnifying-glass-dollar mb-2 display-1"></i>
+                    <h5>내 기여도</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

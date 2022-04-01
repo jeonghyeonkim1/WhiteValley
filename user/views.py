@@ -1,10 +1,17 @@
 from django.shortcuts import render, HttpResponse, redirect
-from .models import User
+from user.models import User
+from shop.models import Config
 
 # Create your views here.
 def login(request):
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'login'
+    }
+
     if request.method == "GET":
-        return render(request, 'login.html')
+        return render(request, 'login.html', context)
     elif request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -60,3 +67,13 @@ def magazine_write(request):
 def magazine_delete(request):
     return render(request, 'm_deleteok.html')
 
+def mypage(req):
+    context = {
+        'session': req.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'mypage'
+    }
+
+    context['user'] = User.objects.get(email=req.session['username'])
+
+    return render(req, 'mypage.html', context)

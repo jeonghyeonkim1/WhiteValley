@@ -10,7 +10,7 @@
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/7460690a88.js" crossorigin="anonymous"></script>
-    <title>WHITE VALLEY</title>
+    <title>{{ config.site_name }}</title>
     {% block attachment %}
         <!-- 원하는 js, css 파일 -->
     {% endblock %}
@@ -19,7 +19,7 @@
     <div class="fixed-top">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand ms-3" href="{% url 'Main:home' %}">WHITE VALLEY</a>
+                <a class="navbar-brand ms-3 fw-bold fs-4" href="{% url 'Main:home' %}">{{ config.site_name }}</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -40,7 +40,7 @@
                             {% endif %}
                         </li>
                         <li class="nav-item">
-                            {% if currentPage == 'cart' %}
+                            {% if currentpage == 'cart' %}
                                 <a class="nav-link active" href="{% url 'Main:cart' %}">CART</a>
                             {% else %}
                                 <a class="nav-link" href="{% url 'Main:cart' %}">CART</a>
@@ -64,14 +64,26 @@
                                     <a class="nav-link" id="logout_btn">LogOut</a>
                                 </form>
                             {% else %}
-                                <a class="nav-link" href="{% url 'User:user_login' %}">LogIn</a>
+                                {% if currentpage == 'login' %}
+                                    <a class="nav-link active" href="{% url 'User:user_login' %}">LogIn</a>
+                                {% else %}
+                                    <a class="nav-link" href="{% url 'User:user_login' %}">LogIn</a>
+                                {% endif %}
                             {% endif %}
                         </li>
                         <li class="nav-item">
                             {% if session.username %}
-                                <a class="nav-link" href="">MyPage</a>
+                                {% if currentpage == 'mypage' %}
+                                    <a class="nav-link active" href="{% url 'User:mypage' %}">MyPage</a>
+                                {% else %}
+                                    <a class="nav-link" href="{% url 'User:mypage' %}">MyPage</a>
+                                {% endif %}
                             {% else %}
-                                <a class="nav-link" href="{% url 'User:user_register' %}">SignIn</a>
+                                {% if currentpage == 'signin' %}
+                                    <a class="nav-link active" href="{% url 'User:user_register' %}">SignIn</a>
+                                {% else %}
+                                    <a class="nav-link" href="{% url 'User:user_register' %}">SignIn</a>
+                                {% endif %}
                             {% endif %}
                         </li>
                     </ul>
@@ -92,8 +104,8 @@
                     <ul class="list-unstyled navbar-nav w-75 text-start" id="cs_links">
                         <li class='nav-item'><a href="{% url 'Cs:notice_list' %}" class='nav-link text-decoration-none text-white mb-1'>공지사항</a></li>
                         <li class='nav-item'><a href="{% url 'Cs:event_list' %}" class='nav-link text-decoration-none text-white mb-1'>이벤트</a></li>
-                        <li class='nav-item'><a href='#' class='nav-link text-decoration-none text-white mb-1'>1:1문의</a></li>
-                        <li class='nav-item'><a href='#' class='nav-link text-decoration-none text-white mb-1'>FAQ</a></li>
+                        <li class='nav-item'><a href="{% url 'Cs:oto_list' %}" class='nav-link text-decoration-none text-white mb-1'>1:1문의</a></li>
+                        <li class='nav-item'><a href="{% url 'Cs:faq_list' %}" class='nav-link text-decoration-none text-white mb-1'>FAQ</a></li>
                     </ul>
                 </div>
                 <div style="position-absolute col-sm-1" id="collapse_exit">
@@ -135,11 +147,11 @@
                 
             </section>
             <section class="mb-4">
-                <h1>WHITE VALLEY</h1>
+                <h1>{{ config.site_name }}</h1>
                 <h6>
-                    MON-FRIㅣ09:30 - 17:00<br>
-                    LUNCH ㅣ 12:30 - 13:30<br>
-                    SAT, SUN, HOLIDAY ㅣ OFF
+                    {{ config.sale_time }}<br>
+                    {{ config.lunch_time }}<br>
+                    {{ config.holiday }}
                 </h6>
             </section>
             <section class="">
@@ -184,9 +196,7 @@
             </section>
         </div>
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-            Copyright © WhiteValley Corp. 2022-2023 All Rights Reserved.
-            {% comment %} © 2020 Copyright:
-            <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a> {% endcomment %}
+            Copyright © {{ config.site_name }} Corp. 2022-2023 All Rights Reserved.
         </div>
     </footer>
 </body>
