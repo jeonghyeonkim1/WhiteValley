@@ -57,7 +57,7 @@
                     <div class="row text-center">
                         <div class="col-sm d-flex flex-column align-items-center justify-content-evenly" id="event_link">
                             <h2><strong>OPEN EVENT</strong></h2>
-                            {% if session.username %}
+                            {% if session.user %}
                                 <a href="{% url 'Order:order' %}" class="link-dark text-decoration-none"><h5>1. 회원가입 시 적립금 {{ config.sign_point }}원!</h5></a>
                             {% else %}
                                 <a href="{% url 'User:user_login' %}" class="link-dark text-decoration-none"><h5>1. 회원가입 시 적립금 {{ config.sign_point }}원!</h5></a>

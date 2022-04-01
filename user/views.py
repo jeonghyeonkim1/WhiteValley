@@ -14,26 +14,6 @@ def login(request):
 
     if request.method == "GET":
         return render(request, 'login.html', context)
-    # elif request.method == "POST":
-    #     username = request.POST['username']
-    #     password = request.POST['password']
-
-    #     try:
-    #         request.session['username'] = User.objects.get(email=username, password=password).email
-    #         return HttpResponse(f'''
-    #             <script>
-    #                 alert("로그인에 성공했습니다!")
-    #                 location.href = '/whitevalley/'
-    #             </script>
-    #         ''')
-    #     except:
-    #         return HttpResponse(f'''
-    #             <script>
-    #                 alert("존재하지 않는 아이디이거나 비밀번호가 일치하지 않습니다!");
-    #                 history.back();    
-    #             </script>
-    #         ''')
-    
     elif request.method == 'POST':
         email = request.POST.get('email', None)
         password = request.POST.get('password', None)
@@ -46,18 +26,25 @@ def login(request):
 
             user = User.objects.get(email = email)
 
-            if check_password(password, user.password):
-
-                request.session['user'] = user.id
-                return redirect('/whitevalley/')
+            if user.admin:
+                if user.password == password:
+                    request.session['user'] = user.id
+                    request.session['admin'] = user.admin
+                    return redirect('/whitevalley/')
+                else:
+                    res_data['error'] = '비밀번호가 틀렸습니다.'
             else:
-                res_data['error'] = '비밀번호 틀렸습니다'
+                if check_password(password, user.password):
+                    request.session['user'] = user.id
+                    request.session['admin'] = user.admin
+                    return redirect('/whitevalley/')
+                else:
+                    res_data['error'] = '비밀번호가 틀렸습니다'
         
     return render(request, 'login.html', res_data)
 
 def logout(request):
-    del(request.session["username"])
-    del(request.session["admin"])
+    del(request.session["user"])
 
     return redirect('/whitevalley/')
 
@@ -140,6 +127,6 @@ def mypage(req):
         'currentpage': 'mypage'
     }
 
-    context['user'] = User.objects.get(email=req.session['username'])
+    context['user'] = User.objects.get(id=req.session['user'])
 
     return render(req, 'mypage.html', context)

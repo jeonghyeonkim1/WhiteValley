@@ -13,7 +13,7 @@
 </div>
 <div class="row">
   <div class="col-12">
-      {% if session.username == "admin@email.com" %}
+      {% if session.user.admin %}
           {% csrf_token %}
           <button type="button" class="btn btn-outline-dark float-end" onclick="chkDelete()">삭제</button>
           <a class="btn btn-outline-dark float-end" href="{% url 'User:magazine_write' %}" role="button">작성</a>
