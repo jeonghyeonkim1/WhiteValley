@@ -33,7 +33,7 @@ def login(request):
     #                 history.back();    
     #             </script>
     #         ''')
-
+    
     elif request.method == 'POST':
         email = request.POST.get('email', None)
         password = request.POST.get('password', None)
@@ -53,10 +53,11 @@ def login(request):
             else:
                 res_data['error'] = '비밀번호 틀렸습니다'
         
-    return render(request, 'login.html', res_data)          
+    return render(request, 'login.html', res_data)
 
 def logout(request):
     del(request.session["username"])
+    del(request.session["admin"])
 
     return redirect('/whitevalley/')
 

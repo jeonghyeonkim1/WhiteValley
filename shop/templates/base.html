@@ -27,30 +27,30 @@
                     <ul class="navbar-nav ms-3">
                         <li class="nav-item" id="nav_shopping">
                             {% if currentPage == 'shopping' %}
-                                <a class="nav-link active">SHOPPING</a>
+                                <a class="nav-link active"><i class="fa-brands fa-shopify"></i>&nbsp SHOPPING</a>
                             {% else %}
-                                <a class="nav-link">SHOPPING</a>
+                                <a class="nav-link"><i class="fa-brands fa-shopify"></i>&nbsp SHOPPING</a>
                             {% endif %}
                         </li>
                         <li class="nav-item">
                             {% if currentPage == 'magazine' %}
-                                <a class="nav-link active" href="{% url 'User:magazine_list' %}">MAGAZINE</a>
+                                <a class="nav-link active" href="{% url 'User:magazine_list' %}"><i class="fa-solid fa-book-open-reader"></i>&nbsp MAGAZINE</a>
                             {% else %}
-                                <a class="nav-link" href="{% url 'User:magazine_list' %}">MAGAZINE</a>
+                                <a class="nav-link" href="{% url 'User:magazine_list' %}"><i class="fa-solid fa-book-open-reader"></i>&nbsp MAGAZINE</a>
                             {% endif %}
                         </li>
                         <li class="nav-item">
                             {% if currentpage == 'cart' %}
-                                <a class="nav-link active" href="{% url 'Main:cart' %}">CART</a>
+                                <a class="nav-link active" href="{% url 'Main:cart' %}"><i class="fa-solid fa-cart-shopping"></i>&nbsp CART</a>
                             {% else %}
-                                <a class="nav-link" href="{% url 'Main:cart' %}">CART</a>
+                                <a class="nav-link" href="{% url 'Main:cart' %}"><i class="fa-solid fa-cart-shopping"></i>&nbsp CART</a>
                             {% endif %}
                         </li>
                         <li class="nav-item" id="nav_cs">
                             {% if currentPage == 'cs' %}
-                                <a class="nav-link active">C/S</a>
+                                <a class="nav-link active"><i class="fa-solid fa-headphones"></i>&nbsp C/S</a>
                             {% else %}
-                                <a class="nav-link">C/S</a>
+                                <a class="nav-link"><i class="fa-solid fa-headphones"></i>&nbsp C/S</a>
                             {% endif %}
                         </li>
                     </ul>
@@ -61,28 +61,34 @@
                             {% if session.username %}
                                 <form action="{% url 'User:user_logout' %}" id="logout_form">
                                     {% csrf_token %}
-                                    <a class="nav-link" id="logout_btn">LogOut</a>
+                                    <a class="nav-link" id="logout_btn"><i class="fa-solid fa-power-off"></i>&nbsp LogOut</a>
                                 </form>
                             {% else %}
                                 {% if currentpage == 'login' %}
-                                    <a class="nav-link active" href="{% url 'User:user_login' %}">LogIn</a>
+                                    <a class="nav-link active" href="{% url 'User:user_login' %}"><i class="fa-solid fa-door-open"></i>&nbsp LogIn</a>
                                 {% else %}
-                                    <a class="nav-link" href="{% url 'User:user_login' %}">LogIn</a>
+                                    <a class="nav-link" href="{% url 'User:user_login' %}"><i class="fa-solid fa-door-open"></i>&nbsp LogIn</a>
                                 {% endif %}
                             {% endif %}
                         </li>
                         <li class="nav-item">
-                            {% if session.username %}
-                                {% if currentpage == 'mypage' %}
-                                    <a class="nav-link active" href="{% url 'User:mypage' %}">MyPage</a>
+                            {% if session.admin %}
+                                {% if currentpage == 'admin' %}
+                                    <a class="nav-link active" href="{% url 'Main:admin' %}"><i class="fa-solid fa-gear"></i>&nbsp Manage</a>
                                 {% else %}
-                                    <a class="nav-link" href="{% url 'User:mypage' %}">MyPage</a>
+                                    <a class="nav-link" href="{% url 'Main:admin' %}"><i class="fa-solid fa-gear"></i>&nbsp Manage</a>
+                                {% endif %}
+                            {% elif session.username %}
+                                {% if currentpage == 'mypage' %}
+                                    <a class="nav-link active" href="{% url 'User:mypage' %}"><i class="fa-solid fa-user"></i>&nbsp MyPage</a>
+                                {% else %}
+                                    <a class="nav-link" href="{% url 'User:mypage' %}"><i class="fa-solid fa-user"></i>&nbsp MyPage</a>
                                 {% endif %}
                             {% else %}
                                 {% if currentpage == 'signin' %}
-                                    <a class="nav-link active" href="{% url 'User:user_register' %}">SignIn</a>
+                                    <a class="nav-link active" href="{% url 'User:user_register' %}"><i class="fa-solid fa-right-to-bracket"></i>&nbsp SignIn</a>
                                 {% else %}
-                                    <a class="nav-link" href="{% url 'User:user_register' %}">SignIn</a>
+                                    <a class="nav-link" href="{% url 'User:user_register' %}"><i class="fa-solid fa-right-to-bracket"></i>&nbsp SignIn</a>
                                 {% endif %}
                             {% endif %}
                         </li>
