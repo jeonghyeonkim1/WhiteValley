@@ -16,7 +16,7 @@
 </div>
 <div class="row mt-5">
     <div class="col-12">
-        <form method="POST" action="."> <!-- 자기자신으로 url로 돌아감 -->
+        <form method="POST" action="."> 
             {% csrf_token %}
            <div class="form-group mt-3 mb-5 row">
                 <label for="username" class="col-sm-2 col-form-label text-center"><strong>이메일</strong></label>
@@ -39,7 +39,6 @@
 
         <div class="form-row mt-3 text-center">
             <a class="btn btn-outline-warning" href="{% url 'User:find_pw' %}" role="button" >비밀번호 찾기</a>
-            
         </div>
         
 
@@ -47,5 +46,13 @@
 </div>
 <br>
 <br>
+
+<script>
+
+    
+
+
+</script>
+
 
 {% endblock %}

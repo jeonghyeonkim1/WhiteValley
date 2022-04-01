@@ -11,18 +11,22 @@
 <div class="title"> 
     <h3>매거진</h3>
 </div>
-<!-- for문이용해서 5번 반복해서 나타내는걸로 함 -->
+<div class="row">
+  <div class="col-12">
+      {% if session.username == "admin@email.com" %}
+          {% csrf_token %}
+          <button type="button" class="btn btn-outline-dark float-end" onclick="chkDelete()">삭제</button>
+          <a class="btn btn-outline-dark float-end" href="{% url 'User:magazine_write' %}" role="button">작성</a>
+          <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_update' %}" role="button">수정</a>   
+      {% endif %}
+  </div>
+</div>
 <div class="container">
     <div class="row">
-        <div class="admin_show" style="display:block">
-            <button type="button" class="btn btn-outline-dark float-end" onclick="chkDelete()">삭제</button>
-            <a class="btn btn-outline-dark float-end" href="{% url 'User:magazine_write' %}" role="button">작성</a>
-            <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_update' %}" role="button">수정</a>
-        </div>
       <div class="col-lg-6">
           <div class="card">
-            <div class="admin_show" style="display:block">
-                <input type="checkbox">
+            <div class="admin_show">
+              <input type="checkbox">
             </div>
             <a href="{% url 'User:magazine_detail'%}"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
           <div class="card-body">
@@ -35,18 +39,17 @@
         </div>
       </div>
       <div class="col-lg-6">
-          <div class="card">
-            <div class="admin_show" style="display:block" >
-                <input type="checkbox">
-            </div>
-            <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-          <div class="card-body">
-            <div class="small text-muted">작성일</div>
-            <a href="#" style="text-decoration:none">
-                <h5 class="card-title">제목입니다!!!!</h5>
-                <p class="card-text">내용입니다!!!!</p>
-            </a>
+        <div class="card">
+          <div class="admin_show">
+            <input type="checkbox">
           </div>
+          <a href="{% url 'User:magazine_detail'%}"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+        <div class="card-body">
+          <div class="small text-muted">작성일</div>
+          <a href="{% url 'User:magazine_detail'%}" style="text-decoration:none">
+              <h5 class="card-title">제목입니다11111111111</h5>
+              <p class="card-text">22222222222222.</p>
+          </a>
         </div>
       </div>
     </div>
@@ -106,10 +109,11 @@
 <script>
     function chkDelete(){
         // 삭제 여부 확인
-        var r = confirm("삭제하시겠습니까?");
-        if(r){
-            document.forms['delete'].submit();
-        }
+      if (confirm("삭제하시겠습니까?") == true){
+          document.form.submit();
+      }else{      
+          return;
+      }
     }
 </script>
 

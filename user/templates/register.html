@@ -25,11 +25,11 @@
             {% csrf_token %}  
             <div class="form-group mt-3">
                 <label for="email" class= "text-danger">이메일(필수사항)</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력해주세요(aaa@mail.com)">
+                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력해주세요(aaa@mail.com)" required>
             </div>
             <div class="form-group mt-3">
                 <label for="password" class= "text-danger">비밀번호(필수사항)</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호(숫자,영문,특수문자 조합 최소8자)">
+                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호(숫자,영문,특수문자 조합 최소8자)" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" required>
             </div>
             <div class="form-group mt-3">
                 <label for="re-password">비밀번호 확인</label>
@@ -37,34 +37,33 @@
             </div>
             <div class="form-group mt-3">
                 <label for="contact" class= "text-danger">연락처(필수사항)</label>
-                <input type="password" class="form-control" id="re-password" name="re-password" placeholder="연락처를 입력해주세요">
+                <input type="tel" class="form-control" id="contact" name="contact" placeholder="010-0000-0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required>
+
+
             </div>
 
             <div class="AgreeBox">
 
-                <input id="allcheck" type="checkbox" name="on[]" value="1">
+                <input id="allcheck" type="checkbox" name="allcheck" value="1">
                 <label for="allcheck">모두 동의</label>
                 <br>
 
-                <input id="check_1" type="checkbox" name="on[]" value="1">
+                <input id="check_1" type="checkbox" name="check_1" value="1">
                 <label for="check_1">개인정보 수집 및 이용 동의 (필수)</label>
                 <a href="#" data-toggle="modal" data-target="#agree1" style="text-decoration:none">내용보기</a>
                 <br>
      
-                <input id="check_2" type="checkbox" name="on[]" value="1">
+                <input id="check_2" type="checkbox" name="heck_2" value="1">
                 <label for="check_2">서비스이용약관 및 운영원칙 (필수)</label>
                 <a href="#" data-toggle="modal" data-target="#agree2" style="text-decoration:none">내용보기</a>
 
             </div> 
 
-            <button type="submit" class="btn btn-primary mt-3">가입</button>
+            <button type="submit" class="btn btn-primary mt-3" onclick="joincheck()">가입</button>
 
         </form>
     </div>
 </div>
-
-
-
 
 
 
@@ -167,43 +166,28 @@
 
 <!-- 
 해야할 것 유효성 검사!
-1. 이메일형식
 2. 비밀번호
-3. 연락처
 4. 체크박스에 따른 alert 알려줌
 5. 전체선택 완료시 가입됨.
  -->
 
 <script>
 
-    //이용약관 동의 체크
-    {% comment %} function CheckValidationAcceptAgree() {
-        var check = "false";
-        if (!document.getElementById("agree1").checked
-            || !document.getElementById("agree2").checked) {
-            if (!document.getElementById("agree1").checked) {
-                alert("개인정보 수집 및 이용 동의 해주세요.");
-                document.getElementById("agree1").focus();
-                return check;
-            }
-            else if (!document.getElementById("agree2").checked) {
-                alert("서비스이용약관 및 운영원칙 동의 해주세요.");
-                document.getElementById("agree2").focus();
-                return check;
-            }
-            else {
-                check = "true";
-            }
-        }
-        else {
-            check = "true";
-        }
-        return check;
-    } {% endcomment %}
+    $(".AgreeBox").on("click", "#allcheck", function () {
+    $(this).parents(".AgreeBox").find('input').prop("checked", $(this).is(":checked"));
+    });
+     
+    $(".AgreeBox").on("click", ".normal", function() {
+        var is_checked = true;
+        
+        $(".AgreeBox .normal").each(function(){
+            is_checked = is_checked && $(this).is(":checked");
+        });
+     
+        $("#allcheck").prop("checked", is_checked);
+    });
 
 
-
-</script>
-
+ </script>
 
 {% endblock %}

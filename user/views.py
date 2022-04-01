@@ -1,5 +1,11 @@
 from django.shortcuts import render, HttpResponse, redirect
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.hashers import make_password, check_password
 from .models import User
+
+#비밀번호 변경
+from django.contrib.auth.hashers import check_password
+from django.contrib import messages, auth
 
 # Create your views here.
 def login(request):
@@ -30,8 +36,45 @@ def logout(request):
 
     return redirect('/whitevalley/')
 
+@csrf_exempt
 def register(request):
-    return render(request, 'register.html')
+# GET방식. 회원 가입 폼
+
+    if request.method == 'GET':
+
+        return render(request, 'register.html')
+
+    # POST방식. 회원 가입 처리
+    elif request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        re_password = request.POST['re-password']
+        contact = request.POST['contact']
+
+        res_data = {}
+
+        if not(email and password and re_password and contact):
+            res_data['error'] = '모든 값을 입력해야 합니다'
+        elif password != re_password:
+            res_data['error'] = '비밀번호가 다릅니다.' # 작동안됨.
+        else:
+            user = User(
+                email = email,
+                password = make_password(password),
+                contact = contact,
+                nickname = email
+            )
+                
+            user.save()
+            return HttpResponse(f'''
+                <script>
+                    alert("회원가입에 성공했습니다!")
+                    location.href = '/whitevalley/'
+                </script>
+            ''')
+
+        return render(request, 'register.html', res_data)
+    
 
 def find_pw(request):
     return render(request,'find_pw.html')
