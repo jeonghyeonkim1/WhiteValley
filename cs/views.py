@@ -1,34 +1,75 @@
+from django.http import Http404
 from django.shortcuts import render
 from django.core.paginator import Paginator
-
+from cs.models import Board
 
 # 공지사항 페이지
 def notice_write(req):
-    context = {
-        'session': req.session
-    }
-    return render(req, 'notice_write.html', context)
-    
+    if req.method == 'GET':
+        context = {
+            'session': req.session
+        }
+        return render(req, 'notice_write.html', context)
+
+    elif req.method == 'POST':
+        title = req.POST['title']
+        content = req.POST['content']
+
+        notice = Board(title=title, content=content)
+        notice.save()
+        
+
+        return render(req, 'notice_writeOk.html', {"pk": notice.pk})
+        
 
 def notice_detail(req, pk):
+    notice = Board.objects.get(pk=pk)
+    notice.view_cnt += 1
+    notice.save()
+
     context = {
-        'session': req.session
+        'session': req.session,
+        'notice': notice
     }
     return render(req, 'notice_detail.html', context)
 
 
 def notice_list(req):
+    all_notices = Board.objects.all().order_by('-id')
+
+    page = int(req.GET.get('p', 1))
+    paginator = Paginator (all_notices, 5)
+    notices = paginator.get_page(page)
+
     context = {
-        'session': req.session,
+        'notices': notices,
+        'session': req.session
     }
+
     return render(req, 'notice_list.html', context)
 
 
 def notice_update(req, pk):
-    context = {
-        'currentPage': 'c/s'
-    }
-    return render(req, 'notice_update.html', context)
+    if req.method == 'GET':
+        notice = Board.objects.get(pk=pk)
+        context = {
+            'session': req.session,
+            'notice': notice
+        }
+
+        return render(req, 'notice_update.html', context)
+
+    elif req.method == 'POST':
+        title = req.POST['title']
+        content = req.POST['content']
+
+        notice = Board.objects.get(pk=pk)
+        notice.title = title
+        notice.content = content
+        notice.save()
+
+        return render(req, 'notice_updateOk.html', {"pk": notice.pk})
+
 
 
 def notice_delete(req):

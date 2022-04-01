@@ -4,161 +4,245 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/recommendation.css' %}?ver=1">
 <script src="{% static 'js/recommendation.js' %}"></script>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
+<script>
+    function removeCheck() {
+    
+        if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+       
+            document.removefrm.submit();
+       
+        }else{   //취소
+       
+            return false;
+       
+        }
+       }
+    </script>
+<style>
+    .termbtn {
+        margin-top: 30px;
+    }
+
+    .tagnaming {
+        float: left;
+    }
+    .imgform {
+        border-radius: 12px;
+    }
+</style>
 {% endblock %}
 
 {% block contents %}
 
-    <div class="container">     
-        <div class="row" style='height:200px'>
-        <div class="col-sm-12 bg-light text-dark">
+<div class="container">
+    <div class="row" style='height:200px'>
+        <div class="col-sm-12 bg-light text-dark" style='border-radius:24px'>
             <h1 class='text-center'>BEST REVIEW</h1>
-                <div class='text-center' style="margin: top 50px">
-                    <a class="btn btn-outline-dark" href="/whitevalley/shopping/finished">완성품</a>
-                    <a class="btn text-white" style="background-color: #000000;" href="/whitevalley/shopping/tag_reviews">태그별 맞춤</a>
-                    <a class="btn btn-outline-dark" href="/whitevalley/shopping/reviews">상품후기</a>
-                </div>
-                <hr>
-        </div>
-        </div>
-        <p></p>
-        <h1>차트 및 태그선택칸</h1>
-        <hr>
-        <div>
-            <a class="btn btn-outline-dark" href="">선택된 태그이름 여기에 표시</a>
-            <button type="button" class="btn btn-info" style='margin: 0 0 0 90%; display: block;'>게시글삭제</button>
+            <div class='text-center termbtn' style="margin: top 50px">
+                <a class="btn btn-outline-dark" href="/whitevalley/shopping/finished">완성품</a>
+                <a class="btn text-white" style="background-color: #000000;"
+                    href="/whitevalley/shopping/tag_reviews">태그별 맞춤</a>
+                <a class="btn btn-outline-dark" href="/whitevalley/shopping/reviews">상품후기</a>
+            </div>
             <hr>
         </div>
-        <table>
-            <tr>
-                <td>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' />
-                    <div style='text-align:center'>#태그</div>
-                    </a>
-                </td>
-                <td>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' />
-                    <div style='text-align:center'>#태그</div>
-                    </a>
-                </td>
-                <td>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' />
-                    <div style='text-align:center'>#태그</div>
-                    </a>
-                </td>
-                <td>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' />
-                    <div style='text-align:center'>#태그</div>
-                    </a>
-                </td>
-            <tr>
-            <tr>
-                <td>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' />
-                    <div style='text-align:center'>#태그</div>
-                    </a>
-                </td>
-                <td>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' />
-                    <div style='text-align:center'>#태그</div>
-                    </a>
-                </td>
-                <td>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' />
-                    <div style='text-align:center'>#태그</div>
-                    </a>
-                </td>
-                <td>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' />
-                    <div style='text-align:center'>#태그</div>
-                    </a>
-                </td>
-            <tr>
-            <tr>
-                <td>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' />
-                    <div style='text-align:center'>#태그</div>
-                    </a>
-                </td>
-                <td>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' />
-                    <div style='text-align:center'>#태그</div>
-                    </a>
-                </td>
-                <td>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' />
-                    <div style='text-align:center'>#태그</div>
-                    </a>
-                </td>
-                <td>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' />
-                    <div style='text-align:center'>#태그</div>
-                    </a>
-                </td>
-            <tr>
-        </table>
-        
-        <div class="container" style='margin: 50px 0 0 0'>
-            <ul class="pagination justify-content-center">
-              <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">4</a></li>
-              <li class="page-item"><a class="page-link" href="#">5</a></li>
-              <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-          </div>
-
+    </div>
+    <p></p>
+    <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+<script language="JavaScript">
+$(document).ready(function() {  
+   var chart = {
+      type: 'bubble',
+      zoomType: 'xy'
+   };
+   var title = {
+      text: '태그별 분포'   
+   };   
+   var series= [{
+            data: [[97, 36, 79], [94, 74, 60], [68, 76, 58], [64, 87, 56], [68, 27, 73], [74, 99, 42], [7, 93, 87], [51, 69, 40], [38, 23, 33], [57, 86, 31]]
+        }, {
+            data: [[25, 10, 87], [2, 75, 59], [11, 54, 8], [86, 55, 93], [5, 3, 58], [90, 63, 44], [91, 33, 17], [97, 3, 56], [15, 67, 48], [54, 25, 81]]
+        }, {
+            data: [[47, 47, 21], [20, 12, 4], [6, 76, 91], [38, 30, 60], [57, 98, 64], [61, 17, 80], [83, 60, 13], [67, 78, 75], [64, 12, 10], [30, 77, 82]]
+      }
+   ];     
+      
+   var json = {};   
+   json.chart = chart; 
+   json.title = title;     
+   json.series = series;   
+   $('#container').highcharts(json);
+  
+});
+</script>
+    <hr>
+    <div>
+        <a class="btn btn-outline-dark tagnaming" href="">선택된 태그이름 여기에 표시</a>
+        <button type="button" class="btn text-white" style='background-color: #000000; float: right; display: block;' onclick='removeCheck()'>게시글삭제</button>
 
     </div>
-    <a href=# onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">새창열기a</a>
+    <br>
+    <div></div>
+    <hr style='margin-top:40px'>
+
+    <table>
+        <tr>
+            <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform'/>
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+            <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform'/>
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+            <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform'/>
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+            <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform'/>
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+        <tr>
+        <tr>
+            <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform'/>
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+            <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform'/>
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+            <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform'/>
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+            <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform'/>
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+        <tr>
+        <tr>
+            <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform'/>
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+            <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform'/>
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+            <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform'/>
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+            <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform'/>
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+        <tr>
+    </table>
+
+    <div class="container" style='margin: 50px 0 0 0'>
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </div>
+
+
+</div>
+
 
 {% endblock %}
