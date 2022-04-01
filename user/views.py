@@ -1,4 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
+from user.models import User
+from shop.models import Config
+from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 def login(request):
@@ -35,9 +38,13 @@ def logout(request):
 
     return redirect('/whitevalley/')
 
-@csrf_exempt
 def register(request):
 # GET방식. 회원 가입 폼
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'sign'
+    }
 
     if request.method == 'GET':
 
