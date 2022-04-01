@@ -25,8 +25,10 @@
         <div class="border bg-light rounded p-2" >{{ oto.content }}</div>
     </div>    
 
-    <a class="btn btn-outline-dark" href="#">목록가기</a>
-    <a class="btn btn-outline-dark" href="#">답변하기</a>
+    {% if session.username == "admin@email.com" %}
+        <a class="btn btn-dark" href="{% url 'Cs:oto_answer' 1 %}">답변하기</a>
+    {% endif %}
+    <a class="btn btn-dark" href="{% url 'Cs:oto_list' %}">목록가기</a>
 
     <form action="#" name="delete" method="POST">
         {% csrf_token %}

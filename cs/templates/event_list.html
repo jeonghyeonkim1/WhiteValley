@@ -1,9 +1,50 @@
 {% extends 'base.html' %}
 
 {% block attachment %}
-{% load static %}
+{% comment %} {% load static %}
 <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
-<script src="{% static 'js/cs.js' %}"></script>
+<script src="{% static 'js/cs.js' %}"></script> {% endcomment %}
+<style>
+    .event {
+        position: relative;
+        margin: auto;
+        display: flex;
+        max-width: 1000px;
+        list-style: none;
+        text-align: center;
+        flex-wrap: wrap;
+        align-content: space-around;
+      }
+      
+      .event div {
+        position: relative;
+        float: left;
+        margin: 10px;
+        min-width: 300px;
+        max-width: 1000px;
+        max-height: 4000px;
+        width: 100px;
+        height: 400px;
+        text-align: center;
+        cursor: pointer;
+      }
+      
+      .event div img {
+        position: relative;
+        min-height: 100%;
+        max-width: 100%;
+        padding: 20px;
+        margin-top: 20px;
+      }
+      
+      .event div p {
+        display: block;
+        letter-spacing: 1px;
+        font-size: large;
+        padding: 0px 5px 50px;
+      }
+   
+</style>
 {% endblock %}
 
 {% block contents %}
@@ -16,13 +57,44 @@
 </div>
 
 <div class="event">
-    <div class="p"><img src="https://i.ibb.co/PC5bkB9/image.jpg" alt="신규회원이벤트" border="0"></div>
-    <div>신규회원 이벤트</div>
+    <div class="eventimg">
+        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" 
+        alt="event1" />
+        <p>이벤트1</p>
+    </div>
+    <div class="eventimg">
+        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" 
+        alt="event2" />
+        <p>이벤트1</p>
+    </div>
+    <div class="eventimg">
+        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg"
+        alt="event3" />
+        <p>이벤트1</p>
+    </div>
+    <div class="eventimg">
+        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" 
+        alt="event4" />
+        <p>이벤트1</p>
+    </div>
+    <div class="eventimg">
+        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" 
+        alt="event5" />
+        <p>이벤트1</p>
+    </div>
+    <div class="eventimg">
+        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" 
+        alt="event6" />
+        <p>이벤트1</p>
+    </div>
 </div>
 
 <div class="row">
     <div class="col-12">
-        <a class="btn btn-dark" href="#" style="float: right;">작성하기</a>
+        {% if session.username == "admin@email.com" %}
+        {% csrf_token %}
+            <a class="btn btn-dark" href="{% url 'Cs:event_write' %}" style="float: right;">작성하기</a>
+        {% endif %}
     </div>
 </div>
 
@@ -40,7 +112,8 @@
         {# 페이징 안의 '숫자' 표시 #}
         <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
         <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-        <li class="page-item active"><a class="page-link" href="javascript:void(0);" title="현재페이지">3</a></li>
+        <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
+        {% comment %} <li class="page-item active"><a class="page-link" href="javascript:void(0);" title="현재페이지">3</a></li> {% endcomment %}
         <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
 
         {# > 표시 #}
