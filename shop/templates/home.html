@@ -57,14 +57,14 @@
                     <div class="row text-center">
                         <div class="col-sm d-flex flex-column align-items-center justify-content-evenly" id="event_link">
                             <h2><strong>OPEN EVENT</strong></h2>
-                            {% if req.session.username %}
-                                <a href="{% url 'Order:order' %}" class="link-dark text-decoration-none"><h5>1. 회원가입 시 적립금 1000원!</h5></a>
+                            {% if session.username %}
+                                <a href="{% url 'Order:order' %}" class="link-dark text-decoration-none"><h5>1. 회원가입 시 적립금 {{ config.sign_point }}원!</h5></a>
                             {% else %}
-                                <a href="{% url 'User:user_login' %}" class="link-dark text-decoration-none"><h5>1. 회원가입 시 적립금 1000원!</h5></a>
+                                <a href="{% url 'User:user_login' %}" class="link-dark text-decoration-none"><h5>1. 회원가입 시 적립금 {{ config.sign_point }}원!</h5></a>
                             {% endif %}
-                            <a href="{% url 'Order:order' %}" class="link-dark text-decoration-none"><h5>2. 물품 구매 시 10%!</h5></a>
-                            <a href="{% url 'Recommendation:reviews' %}" class="link-dark text-decoration-none"><h5>3. 포토후기 작성 시 3000원!</h5></a>
-                            <a href="{% url 'Order:order' %}" class="link-dark text-decoration-none"><h5>4. 매월 베스트상 10만원!</h5></a>
+                            <a href="{% url 'Order:order' %}" class="link-dark text-decoration-none"><h5>2. 물품 구매 시 {{ config.return_point }}%!</h5></a>
+                            <a href="{% url 'Recommendation:reviews' %}" class="link-dark text-decoration-none"><h5>3. 포토후기 작성 시 {{ config.review_point }}원!</h5></a>
+                            <a href="{% url 'Order:order' %}" class="link-dark text-decoration-none"><h5>4. 매월 베스트상 {{ config.best_point }}원!</h5></a>
                         </div>
                         <div class="col-sm">
                             <img class="w-75" src="https://cdn-icons-png.flaticon.com/512/3081/3081840.png" alt="" srcset="">

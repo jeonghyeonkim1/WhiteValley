@@ -24,4 +24,6 @@ urlpatterns = [
 
     path('delete/', views.magazine_delete, name="magazine_delete"), # 매거진 삭제
 
+    # mypage -------------------------------------------------------------------------------
+    path('mypage/', views.mypage, name="mypage"),
 ]

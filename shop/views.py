@@ -1,9 +1,14 @@
 from django.shortcuts import render
+from .models import Config
 
 def home(req):
     context = {
         'cookies': req.COOKIES,
-        'session': req.session
+        # 모든 페이지에 적용해주세요 ----------------------
+        'session': req.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'home'
+        # -----------------------------------------------
     }
 
     cookie_name = 'visited'
@@ -23,4 +28,10 @@ def home(req):
     return res
 
 def cart(req):
-    return render(req, 'cart.html')
+    context = {
+        'session': req.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cart'
+    }
+
+    return render(req, 'cart.html', context)
