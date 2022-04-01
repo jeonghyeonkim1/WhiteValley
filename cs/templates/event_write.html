@@ -30,11 +30,12 @@
         <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required></textarea>
     </div>
     <div class="mb-3 mt-3">
-        <label for="photo">업로드 파일</label>
-        <input type="file" name="uploadedFile">
+        <label for="formFileSm" class="form-label">업로드 파일</label>
+        <input class="form-control form-control-sm" id="formFileSm" type="file">
     </div>
 
-    {% if session.username == "admin@email.com" %}
+
+    {% if session.user == "admin@email.com" %}
     {% csrf_token %}
         <button type="submit" class="btn btn-dark">작성완료</button>
     {% endif %}

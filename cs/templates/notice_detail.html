@@ -26,22 +26,22 @@
         <div class="border bg-light rounded p-2" >{{ notice.content }}</div>
     </div>    
 
-    {% if session.username == "admin@email.com" %}
+    {% if session.user == "admin@email.com" %}
         {% csrf_token %}
         <a class="btn btn-dark" href="{% url 'Cs:notice_update' notice.id %}">수정하기</a>
         <button type="button" class="btn btn-dark" onclick="chkDelete()">삭제하기</button>
     {% endif %}
         <a class="btn btn-dark" href="{% url 'Cs:notice_list' %}">목록가기</a>
 
-    <form action="#" name="delete" method="POST">
+    <form action="{% url 'Cs:notice_delete' %}" name="delete" method="POST">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ notice.id }}">
     </form>
 
     <script>
         function chkDelete(){
-            var r = confirm("삭제하시겠습니까?");
-            if(r){
+            var d = confirm("삭제하시겠습니까?");
+            if(d){
                 document.forms['delete'].submit();
             }
         }

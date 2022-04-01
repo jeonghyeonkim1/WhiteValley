@@ -91,7 +91,7 @@
 
 <div class="row">
     <div class="col-12">
-        {% if session.username == "admin@email.com" %}
+        {% if session.user == "admin@email.com" %}
         {% csrf_token %}
             <a class="btn btn-dark" href="{% url 'Cs:event_write' %}" style="float: right;">작성하기</a>
         {% endif %}

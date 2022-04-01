@@ -34,7 +34,7 @@
         <input type="text" name="nowfile" placeholder="현재파일" readonly>
     </div>
 
-    {% if session.username == "admin@email.com" %}
+    {% if session.user == "admin@email.com" %}
         <a class="btn btn-dark" href="{% url 'Cs:event_update' 1 %}">수정하기</a>
         <button type="button" class="btn btn-dark" onclick="chkDelete()">삭제하기</button>
     {% endif %}

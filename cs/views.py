@@ -1,161 +1,239 @@
+import re
 from django.http import Http404
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from cs.models import Board
+from shop.models import Config
 
 # 공지사항 페이지
-def notice_write(req):
-    if req.method == 'GET':
+def notice_write(request):
+    if request.method == 'GET':
         context = {
-            'session': req.session
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cs'
         }
-        return render(req, 'notice_write.html', context)
+        return render(request, 'notice_write.html', context)
 
-    elif req.method == 'POST':
-        title = req.POST['title']
-        content = req.POST['content']
+    elif request.method == 'POST':
+        title = request.POST['title']
+        content = request.POST['content']
 
         notice = Board(title=title, content=content)
         notice.save()
         
 
-        return render(req, 'notice_writeOk.html', {"pk": notice.pk})
         
+        return render(request, 'notice_writeOk.html', {"pk": notice.pk})
 
-def notice_detail(req, pk):
+def notice_detail(request, pk):
     notice = Board.objects.get(pk=pk)
     notice.view_cnt += 1
     notice.save()
 
     context = {
-        'session': req.session,
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs',
         'notice': notice
     }
-    return render(req, 'notice_detail.html', context)
+    return render(request, 'notice_detail.html', context)
 
 
-def notice_list(req):
+def notice_list(request):
     all_notices = Board.objects.all().order_by('-id')
 
-    page = int(req.GET.get('p', 1))
+    page = int(request.GET.get('p', 1))
     paginator = Paginator (all_notices, 5)
     notices = paginator.get_page(page)
 
-    context = {
-        'notices': notices,
-        'session': req.session
-    }
+    keyword =request.GET.get('keyword')
+    if keyword:
+        all_notices = all_notices.filter(title__icontains=keyword)
+        
+        return render(request, 'notice_list.html', {'all_notices': all_notices, 'keyword': keyword})
 
-    return render(req, 'notice_list.html', context)
+    else:
+        context = {
+            'notices': notices,
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cs'
+        }
+
+        return render(request, 'notice_list.html', context)
+
+    # all_notices = Board.objects.all().order_by('-id')
+
+    # write_pages = 5
+    # page = int(request.GET.get('page', 1))
+    # paginator = Paginator (all_notices, 5)
+    # page_obj = paginator.get_page(page)
+
+    # start_page = ((int)((page_obj.number - 1) / write_pages) * write_pages) + 1
+    # end_page = start_page + write_pages - 1
+    
+    # if end_page >= paginator.num_pages:
+    #     end_page = paginator.num_pages
+
+    # page_range = paginator.page_range[start_page:end_page]
+
+    # keyword =request.GET.get('keyword')
+    # if keyword:
+    #     all_notices = all_notices.filter(title__icontains=keyword)
+        
+    #     return render(request, 'notice_list.html', {'all_notices': all_notices, 'keyword': keyword})
+
+    # else:
+    #     context = {
+    #         # 'notices': notices,
+    #         'page_range':page_range,
+    #         'session': request.session,
+    #         'config': Config.objects.get(id=1),
+    #         'currentpage': 'cs'
+    #     }
+
+    #     return render(request, 'notice_list.html', context)
 
 
-def notice_update(req, pk):
-    if req.method == 'GET':
+
+def notice_update(request, pk):
+    if request.method == 'GET':
         notice = Board.objects.get(pk=pk)
         context = {
-            'session': req.session,
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cs',
             'notice': notice
         }
 
-        return render(req, 'notice_update.html', context)
+        return render(request, 'notice_update.html', context)
 
-    elif req.method == 'POST':
-        title = req.POST['title']
-        content = req.POST['content']
+    elif request.method == 'POST':
+        title = request.POST['title']
+        content = request.POST['content']
 
         notice = Board.objects.get(pk=pk)
         notice.title = title
         notice.content = content
         notice.save()
 
-        return render(req, 'notice_updateOk.html', {"pk": notice.pk})
+        return render(request, 'notice_updateOk.html', {"pk": notice.pk})
 
 
+def notice_delete(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        notice = Board.objects.get(id=id)
+        notice.delete()
 
-def notice_delete(req):
     context = {
-        'currentPage': 'c/s'
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
     }
-    return render(req, 'notice_delete.html', context)
+    return render(request, 'notice_deleteOk.html', context)
 
 
 # 이벤트 페이지
-def event_write(req):
+def event_write(request):
     context = {
-        'session': req.session
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
     }
-    return render(req, 'event_write.html', context)
+    return render(request, 'event_write.html', context)
 
 
-def event_detail(req, pk):
+def event_detail(request, pk):
     context = {
-        'session': req.session
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
     }
-    return render(req, 'event_detail.html', context)
+    return render(request, 'event_detail.html', context)
 
 
-def event_list(req):
+def event_list(request):
     context = {
-        'session': req.session
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
     }
-    return render(req, 'event_list.html', context)
+    return render(request, 'event_list.html', context)
 
 
-def event_update(req, pk):
+def event_update(request, pk):
     context = {
-        'currentPage': 'c/s'
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
     }
-    return render(req, 'event_update.html', context)
+    return render(request, 'event_update.html', context)
 
 
-def event_delete(req):
+def event_delete(request):
     context = {
-        'currentPage': 'c/s'
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
     }
-    return render(req, 'event_delete.html', context)
+    return render(request, 'event_delete.html', context)
 
 
 # 1:1문의 페이지
-def oto_write(req):
+def oto_write(request):
     context = {
-        'session': req.session
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
     }
-    return render(req, 'oto_write.html', context)
+    return render(request, 'oto_write.html', context)
 
 
-def oto_detail(req, pk):    # 관리자만 볼 수 있음
+def oto_detail(request, pk):    # 관리자만 볼 수 있음
     context = {
-        'session': req.session
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
     }
-    return render(req, 'oto_detail.html', context)
+    return render(request, 'oto_detail.html', context)
 
 
-def oto_list(req):
+def oto_list(request):
     context = {
-        'session': req.session
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
     }
-    return render(req, 'oto_list.html', context)
+    return render(request, 'oto_list.html', context)
 
 
-def oto_answer(req, pk):
+def oto_answer(request, pk):
     context = {
-        'currentPage': 'c/s'
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
     }
-    return render(req, 'oto_answer.html', context)
+    return render(request, 'oto_answer.html', context)
 
 
 # FAQ 페이지
-def faq_list(req):
+def faq_list(request):
     context = {
-        'currentPage': 'c/s'
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
     }
-    return render(req, 'faq_list.html', context)
+    return render(request, 'faq_list.html', context)
 
 
-def sample(req):
+def sample(request):
     context = {
-        'currentPage': 'c/s'
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
     }
-    return render(req, 'sample.html', context)
+    return render(request, 'sample.html', context)
 
 
