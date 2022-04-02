@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from shop.models import Config
+from user.models import User
 
 def reviews(request):
     context = {
@@ -61,5 +62,6 @@ def product_reviews(request):
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping'
     }
+    context['user'] = User.objects.get(id=request.session['user'])
 
     return render(request, 'product_reviews.html',context)
