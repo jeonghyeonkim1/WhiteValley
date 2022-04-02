@@ -61,12 +61,12 @@ def admin(req):
     except:
         return HttpResponse(f'''
             <script>
-                alert("로그인이 필요합니다.");
+                alert("관리자 계정의 로그인이 필요합니다.");
                 location.href='/whitevalley/login/';
             </script>
         ''')
 
-def admin_customer(req):
+def admin_member(req):
     try:
         if req.session['admin']:
             context = {
@@ -76,7 +76,7 @@ def admin_customer(req):
             }
 
             context['users'] = User.objects.all()
-            return render(req, 'admin_customer.html', context)
+            return render(req, 'admin_member.html', context)
         else:
             return HttpResponse(f'''
                 <script>
@@ -88,7 +88,7 @@ def admin_customer(req):
     except:
         return HttpResponse(f'''
             <script>
-                alert("권한이 없습니다!!");
+                alert("관리자 계정의 로그인이 필요합니다.");
                 location.href='/whitevalley/';
             </script>
         ''')
