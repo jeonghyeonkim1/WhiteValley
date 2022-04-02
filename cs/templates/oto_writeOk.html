@@ -8,10 +8,7 @@
 
 {% block contents %}
 <script>
-    var value = $('input[name=oto]').val();
-    if (value==True){
-        alert("문의가 등록되었습니다.");
-        location.href = "{% url 'Cs:oto_detail' pk  %}"
-    }
+    alert("문의가 등록되었습니다.");
+    location.href = "{% url 'Cs:oto_detail' pk  %}"
 </script>
 {% endblock %}
