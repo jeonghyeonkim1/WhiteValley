@@ -4,7 +4,9 @@ from django.http import Http404
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from cs.models import Board
+from user.models import User
 from shop.models import Config
+
 
 # 공지사항 페이지
 def notice_write(request):
@@ -17,10 +19,12 @@ def notice_write(request):
         return render(request, 'notice_write.html', context)
 
     elif request.method == 'POST':
+        user = User.objects.get(id=request.session['admin'])
+        tag = request.POST['notice']
         title = request.POST['title']
         content = request.POST['content']
 
-        notice = Board(title=title, content=content)
+        notice = Board(user=user, title=title, content=content, tag=tag)
         notice.save()
         
 
@@ -47,7 +51,7 @@ def notice_list(request):
     if keyword:
         all_notices = Board.objects.filter(title__contains=keyword).order_by('-reg_date')
     else:
-        all_notices = Board.objects.all().order_by('-reg_date')
+        all_notices = Board.objects.filter(tag='공지사항').order_by('-reg_date')
 
     page = int(request.GET.get('p', 1))
     paginator = Paginator(all_notices, 5)
@@ -161,13 +165,13 @@ def oto_write(request):
         return render(request, 'oto_write.html', context)
     
     elif request.method == 'POST':
+        user = User.objects.get(id=request.session['user'])
+        tag = request.POST['oto']
         title = request.POST['title']
         content = request.POST['content']
 
-        oto = Board(title=title, content=content)
+        oto = Board(user = user, title=title, content=content, tag=tag)
         oto.save()
-        
-
         
         return render(request, 'oto_writeOk.html', {"pk": oto.pk})
 
@@ -182,10 +186,17 @@ def oto_detail(request, pk):    # 관리자만 볼 수 있음
 
 
 def oto_list(request):
+    all_otos = Board.objects.filter(tag='일대일').order_by('-reg_date')
+
+    page = int(request.GET.get('p', 1))
+    paginator = Paginator(all_otos, 5)
+    otos = paginator.get_page(page)
+
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'cs'
+        'currentpage': 'cs',
+        'otos': otos
     }
     return render(request, 'oto_list.html', context)
 

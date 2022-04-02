@@ -14,8 +14,8 @@
 <h6>1:1 문의입니다.</h6>
 <hr>
 <form action="." method="POST">
-    {% csrf_token %}
     <input type="hidden" name="oto" value"일대일">
+    {% csrf_token %}
     <div class="mb-3 mt-3">
         <label>작성자</label>
         <input type="text" class="form-control" style="width:150px" placeholder="user 닉네임" readonly>
