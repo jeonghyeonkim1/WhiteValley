@@ -13,10 +13,16 @@ def order(request):
                 'currentpage': 'shopping',
             }
             return render(request, 'order.html', context)
+        elif request.session['admin']:
+            context = {
+                'session': request.session,
+                'config': Config.objects.get(id=1),
+                'currentpage': 'shopping',
+            }
+            return render(request, 'order.html', context)
         else:
             return HttpResponse(f'''
                 <script>
-                    
                     alert("로그인이 필요한 페이지입니다.");
                     location.href='/whitevalley/shopping/loading2/';
                 </script>

@@ -58,16 +58,45 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="p_del" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="True">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>관리자_상품삭제</h3>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div style="display:flex;">
+                           <label for="">품번</label>
+                           <input type="text" class="form-control">
+                        </div>
+                        <h3>해당상품을 정말 삭제하시겠습니까?
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="" class="btn">아니요.</a>
+                    <a onclick="" id="addbtn" href={% url 'Order:order' %} class="btn btn-dark" type="button" data-dismiss="modal">예</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="ordertext">
         <div>
-        <button id="product_add" class="btn btn-dark" style="float:right; display:none;">상품추가</button>
-    </div>
+        {% if session.admin %}
+            <button id="product_add" class="btn btn-dark" style="float:right;">상품추가</button>
+        {% endif %}
+        </div>
         <h3>주문/제작 하기
         <h6>자체제작 고급 원단에 나만의 제품을 제작해보세요. 원하는 카테고리 상품을 선택하면 CUSTOM을 시작할 수 있습니다.
     </div>
     <div class="pcontain">
         <ul id="te">
             <li>
+                {% if session.admin %}
+                    <button id="product_delete" class="btn btn-danger">X</button>
+                {% endif %}
                 <div class="p"><a href="{% url 'Order:order_des' %}"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">사이즈5가지</p></a></div>
                 <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
             </li>
@@ -93,6 +122,11 @@
     $("#product_add").click(function(e){
         e.preventDefault();
         $("#p_add").modal("show");
+    });
+    
+    $("#product_delete").click(function(e){
+        e.preventDefault();
+        $("#p_del").modal("show");
     });
 </script>
 {% endblock %}
