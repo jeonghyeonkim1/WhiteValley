@@ -56,10 +56,8 @@
     
     <button type="button" onclick='location.href="/whitevalley/shopping/reviews/product_reviews"' class="btn text-white"
         style='background-color: #000000; float: right; display: block;'>후기 작성</button>
-        {% if session.user %}   
-        <button type="button" class="btn btn-info" style='float: right; display: block;'>게시글삭제</button>
-        {% else %}
-        <button type="button" class="btn btn-info" style='float: right; display: none;'>게시글삭제</button>
+        {% if session.admin %}   
+        <button type="button" class="btn btn-info" style='float: right;'>게시글삭제</button>
         {% endif %}
         <div></div>
     <br>

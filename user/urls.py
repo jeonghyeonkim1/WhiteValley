@@ -13,7 +13,7 @@ urlpatterns = [
 
     path('find/', views.find_pw, name="find_pw"), # Pw 찾는페이지
 
-    path('chpw/<int:pk>', views.chpw, name="chpw"), # Pw 변경페이지
+    path('chpw/', views.chpw, name="chpw"), # Pw 변경페이지
 
     path('magazine/list/', views.magazine_list, name="magazine_list"), # 매거진 리스트
     

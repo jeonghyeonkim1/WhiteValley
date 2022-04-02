@@ -96,18 +96,10 @@ def register(request):
 
 def find_pw(request):
 
-    user = User.objects.get(email = email)
 
-    if (user == request.POST['email']):
-            return HttpResponse(f'''
-                <script>
-                    alert("회원정보가 맞습니다..")
-                    location.href = "/whitevalley/chpw/";
-                </script>
-            ''')
     return render(request,'find_pw.html')
 
-def chpw(request, pk):
+def chpw(request):
 
     # user = User.objects.get(username = user.id)
     # new_password = request.POST['password']
@@ -117,50 +109,86 @@ def chpw(request, pk):
     # response.set_cookie('username', user.username)
     # response.set_cookie('password', new_password)
     # return response
-    user = User.objects.get(email = email)
 
-    try :
-        pk = user.objects.get(pk=pk)
-    except User.DoesNotExist:
-        raise Http404('유저정보를 찾을수 없습니다.')
+
+    # user = User.objects.get(email = email)
+    # try :
+    #     pk = user.objects.get(pk=pk)
+    # except User.DoesNotExist:
+    #     raise Http404('유저정보를 찾을수 없습니다.')
     
-    new_password = request.POST['password']
-    re_password = request.POST['re_password']
+    # new_password = request.POST['password']
+    # re_password = request.POST['re_password']
 
-    res_data = {}
+    # res_data = {}
 
-    if not(new_password and re_password):
-        res_data['error'] = '입력 전체 입력해주세요'
-    user.set_password(new_password)
-    user.save()
-    
-    #  if not(email and password and re_password and contact):
-    #         res_data['error'] = '모든 값을 입력해야 합니다'
-    #     elif password != re_password:
-    #         res_data['error'] = '비밀번호가 다릅니다.' # 작동안됨.
-    #     else:
-    #         el = email.split("@") # 이메일에서 @ 전까지를 닉네임이므로 값가져와서 split
-    #         user = User(
-    #             email = email,
-    #             password = make_password(password),
-    #             contact = contact,
-    #             nickname = el[0]
-    #         )
-                
-    #         user.save()
+    # if not(new_password and re_password):
+    #     res_data['error'] = '입력 전체 입력해주세요'
+    # elif new_password != re_password:
+    #     res_data['error'] = '비밀번호가 다릅니다.'
+    # else:
+    #     user = User(
+    #         password = make_password(new_password),
+    #     )
+    #     user.save()
 
+    if request.method =="GET":
+        return render(request, 'chpw.html')
+    elif request.method =="POST":
+        return render(request, 'chpwOk.html')
 
-    return render(request, 'board_detail.html', {'pk' : pk})
 
     
 
 
 def magazine_list(request):
-    return render(request, 'm_list.html')
+
+
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'sign'
+    }
+
+    
+
+
+    return render(request, 'm_list.html', context)
 
 # 이거 ui설계용이므로 삭제 필수
 def magazine_detail(request):
-    return render(request, 'm_detail.html')
+
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'sign'
+    }
+
+    if request.method =="GET":
+        # try: 
+        #     board = Board.objects.get(pk=pk)
+        # except Board.DoesNotExist:
+        #     raise Http404('게시글을 찾을수 없습니다.')
+
+        # return render(request, 'board/update.html', {'board': board})
+        return render(request, 'm_update.html', context)
+    elif request.method =="POST":
+        # subject = request.POST['subject']
+        # content = request.POST['content']
+        
+        # # 수정 1.읽어오기
+        # board = Board.objects.get(pk=pk)
+        # # 2. 수정
+        # board.subject = subject
+        # board.content = content
+        # # 3. 저장
+        # board.save()
+
+        # return render(request, 'board/updateOk.html', {"pk" : board.pk})
+        return render(request, 'm_updateOk.html')
+
+
+
 
 # def magazine_detail(request, pk):
 #     return render(request, 'm_detail.html', pk)
@@ -168,16 +196,37 @@ def magazine_detail(request):
 
 # 이거 ui설계용이므로 삭제 필수
 def magazine_update(request):
-    return render(request, 'm_update.html')
+
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'sign'
+    }
+
+    return render(request, 'm_update.html', context)
 
 # def magazine_update(request, pk):
 #     return render(request, 'm_update.html', pk)
 
 def magazine_write(request):
-    return render(request, 'm_write.html')
+
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'sign'
+    }
+
+    return render(request, 'm_write.html', context)
 
 def magazine_delete(request):
-    return render(request, 'm_deleteok.html')
+
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'sign'
+    }
+
+    return render(request, 'm_deleteok.html', context)
 
 def mypage(req):
     context = {
