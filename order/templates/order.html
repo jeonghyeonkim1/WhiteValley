@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block contents %}
-<div class="modal fade" id="p_add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{% comment %} <div class="modal fade" id="logneed" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -24,9 +24,10 @@
             </div>
         </div>
     </div>
-</div>
+</div> {% endcomment %}
 
-    {% comment %} <div class="modal fade" id="p_add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="True">
+
+    <div class="modal fade" id="p_add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="True">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -56,10 +57,10 @@
                 </div>
             </div>
         </div>
-    </div> {% endcomment %}
+    </div>
     <div class="ordertext">
         <div>
-        <button id="product_add" class="btn btn-dark" style="float:right;">상품추가</button>
+        <button id="product_add" class="btn btn-dark" style="float:right; display:none;">상품추가</button>
     </div>
         <h3>주문/제작 하기
         <h6>자체제작 고급 원단에 나만의 제품을 제작해보세요. 원하는 카테고리 상품을 선택하면 CUSTOM을 시작할 수 있습니다.

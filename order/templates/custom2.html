@@ -55,9 +55,11 @@
                     <option>모야앙4</option>
                 </select>
             </div> 
-            <div class="imageupload">
-                <label class="col-xs control-label" id="imagetext">Image</label>
-                <div id="imgwrap"><img src="https://img.icons8.com/ios-glyphs/344/pictures-folder.png" alt=""></div>
+            <div class="imageupload" style="height:10%">
+                <label class="col-xs control-label" id="imagetext" style="margin-right:90px;">Image</label>
+                <input type="file" id="imgwrap"  style="display:none;" name='imgwrap'>
+                <img id="imgbtn" onclick='document.all.imgwrap.click(); document.all.imgwrap2.value=document.all.imgwrap.value' src="https://img.icons8.com/ios-glyphs/344/pictures-folder.png">
+                <input type="text" id="imgwrap2" style="height:20px; width: 60px; margin:20px">
             </div>
             <div class="Btn"><a href="{% url 'Order:customend' %}" id="CustomBtn2">Next</a></div>
             </div>

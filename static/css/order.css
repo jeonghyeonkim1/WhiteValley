@@ -157,6 +157,10 @@
 
 
 /* custom2.html */
+#imgwrap{
+
+}
+.img
 #text_input{
     margin-left: 0px;
     margin-right: 10px;
@@ -253,6 +257,9 @@
     margin-left: 90px;
     margin-top: 20px;
     display: flex;
+}
+.imgbtn:hover{
+    box-shadow: 5px 5px 5px #000;
 }
 @media (max-width: 1000px) {
     .custom1_top{

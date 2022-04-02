@@ -1,15 +1,37 @@
 from django.shortcuts import render,redirect
 from shop.models import Config
+from django.http import HttpResponse
 
 # Create your views here.
 def order(request):
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'shopping'
-    }
-    return render(request,'order.html',context)
-
+    
+    try:
+        if request.session['user']:
+            context = {
+                'session': request.session,
+                'config': Config.objects.get(id=1),
+                'currentpage': 'shopping',
+            }
+            return render(request, 'order.html', context)
+        else:
+            return HttpResponse(f'''
+                <script>
+                    
+                    alert("로그인이 필요한 페이지입니다.");
+                    location.href='/whitevalley/shopping/loading2/';
+                </script>
+            ''')
+        
+    except:
+        return HttpResponse(f'''
+        
+            <script>
+                alert("로그인이 필요합니다.");
+                location.href='/whitevalley/shopping/loading2/';
+            </script>
+        ''')
+        
+    
 def order_des(request):
     context = {
         'session': request.session,
@@ -53,6 +75,9 @@ def payment(request):
 
 def loading(request):
     return render(request, 'loading.html')
+
+def loading2(request):
+    return render(request, 'loading2.html')
 
 #    if request.method == "POST":
 #         URL = 'https://kapi.kakao.com/v1/payment/ready'
