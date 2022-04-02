@@ -1,6 +1,8 @@
+from tkinter import CASCADE
 from django.db import models
 
 class Board(models.Model):
+    user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name="작성자")
     tag = models.CharField(max_length=30, verbose_name='게시글 종류')
     title = models.CharField(max_length=60, verbose_name='제목')
     content = models.TextField(blank=True, verbose_name='내용') 
