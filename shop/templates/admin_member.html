@@ -23,26 +23,31 @@
         .container {
             min-width: 950px;
         }
+
+        #nav_fixed {
+            left: 5%;
+            top: 30%;
+        }
     </style>
 {% endblock %}
 
 {% block contents %}
     <div class="d-flex mt-5 mb-5">
         <div class="w-25 d-flex justify-content-center align-items-center">
-            <div style="border-radius: 25px;" class="position-fixed p-3 text-center bg-dark border border-3 border-light text-white d-flex align-items-center">
+            <div style="border-radius: 25px;" id="nav_fixed" class="position-fixed p-3 text-center bg-dark border border-3 border-light text-white d-flex align-items-center">
                 <nav class="navbar navbar-dark bg-dark px-3">
                     <ul class="nav d-flex flex-column" id="admin_nav">
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'Main:admin' %}">사이트 관리</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{% url 'Main:admin_account' %}">계좌 관리</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark bg-light rounded">회원 관리</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link">적립금 관리</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link">계좌 관리</a>
+                            <a class="nav-link" href="{% url 'Main:admin_point' %}">적립금 관리</a>
                         </li>
                     </ul>
                 </nav>
