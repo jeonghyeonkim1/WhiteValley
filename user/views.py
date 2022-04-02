@@ -3,7 +3,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from user.models import User
 from shop.models import Config
 from django.contrib.auth.hashers import make_password, check_password
-
+from django.http import Http404
 # Create your views here.
 def login(request):
     context = {
@@ -95,7 +95,65 @@ def register(request):
     
 
 def find_pw(request):
+
+    user = User.objects.get(email = email)
+
+    if (user == request.POST['email']):
+            return HttpResponse(f'''
+                <script>
+                    alert("회원정보가 맞습니다..")
+                    location.href = "/whitevalley/chpw/";
+                </script>
+            ''')
     return render(request,'find_pw.html')
+
+def chpw(request, pk):
+
+    # user = User.objects.get(username = user.id)
+    # new_password = request.POST['password']
+    # user.set_password(new_password)
+    # user.save()
+    # response = redirect('/user/login/')
+    # response.set_cookie('username', user.username)
+    # response.set_cookie('password', new_password)
+    # return response
+    user = User.objects.get(email = email)
+
+    try :
+        pk = user.objects.get(pk=pk)
+    except User.DoesNotExist:
+        raise Http404('유저정보를 찾을수 없습니다.')
+    
+    new_password = request.POST['password']
+    re_password = request.POST['re_password']
+
+    res_data = {}
+
+    if not(new_password and re_password):
+        res_data['error'] = '입력 전체 입력해주세요'
+    user.set_password(new_password)
+    user.save()
+    
+    #  if not(email and password and re_password and contact):
+    #         res_data['error'] = '모든 값을 입력해야 합니다'
+    #     elif password != re_password:
+    #         res_data['error'] = '비밀번호가 다릅니다.' # 작동안됨.
+    #     else:
+    #         el = email.split("@") # 이메일에서 @ 전까지를 닉네임이므로 값가져와서 split
+    #         user = User(
+    #             email = email,
+    #             password = make_password(password),
+    #             contact = contact,
+    #             nickname = el[0]
+    #         )
+                
+    #         user.save()
+
+
+    return render(request, 'board_detail.html', {'pk' : pk})
+
+    
+
 
 def magazine_list(request):
     return render(request, 'm_list.html')
