@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block attachment %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user.css' %}?ver=1">
+    <script src="{% static 'js/user.js' %}"></script>
+{% endblock %}
+
+{% block contents %}
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <h1>비밀번호 변경</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <form method="POST" action=".">
+            {% csrf_token %}  
+            <div class="form-group mt-3">
+                <label for="new_password" class= "text-danger">비밀번호</label>
+                <input type="password" class="form-control" id="new_password" name="new_password" placeholder="비밀번호를 입력해주세요">
+            </div>    
+            <div class="form-group mt-3">
+                <label for="re_password" class= "text-danger">비밀번호</label>
+                <input type="password" class="form-control" id="re_password" name="re_password" placeholder="비밀번호를 입력해주세요">
+            </div>    
+
+            <a class="btn btn-outline-warning" href="{% url 'User:password_reset' %}" role="button" >비밀번호 찾기</a>
+            
+        </form>
+    
+    </div>
+</div>
+
+
+<br>
+<br>
+
+{% endblock %}

@@ -3,7 +3,10 @@
 {% block attachment %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
-    <script src="{% static 'js/cs.js' %}"></script>
+    {% comment %} <script src="{% static 'js/cs.js' %}"></script> {% endcomment %}
+    <script>
+        var value = $('input[name=oto]').val();
+    </script>
 {% endblock %}
 
 {% block contents %}
@@ -12,6 +15,7 @@
 <hr>
 <form action="." method="POST">
     {% csrf_token %}
+    <input type="hidden" name="oto" value"일대일">
     <div class="mb-3 mt-3">
         <label>작성자</label>
         <input type="text" class="form-control" style="width:150px" placeholder="user 닉네임" readonly>

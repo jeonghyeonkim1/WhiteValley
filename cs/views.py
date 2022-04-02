@@ -1,3 +1,4 @@
+from importlib.metadata import requires
 import re
 from django.http import Http404
 from django.shortcuts import render
@@ -48,8 +49,8 @@ def notice_list(request):
     else:
         all_notices = Board.objects.all().order_by('-reg_date')
 
-    page = int(request.GET.get('page', 1))
-    paginator = Paginator (all_notices, 5)
+    page = int(request.GET.get('p', 1))
+    paginator = Paginator(all_notices, 5)
     notices = paginator.get_page(page)
 
     context = {
@@ -151,12 +152,24 @@ def event_delete(request):
 
 # 1:1문의 페이지
 def oto_write(request):
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'cs'
-    }
-    return render(request, 'oto_write.html', context)
+    if request.method == 'GET':        
+        context = {
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cs'
+        }
+        return render(request, 'oto_write.html', context)
+    
+    elif request.method == 'POST':
+        title = request.POST['title']
+        content = request.POST['content']
+
+        oto = Board(title=title, content=content)
+        oto.save()
+        
+
+        
+        return render(request, 'oto_writeOk.html', {"pk": oto.pk})
 
 
 def oto_detail(request, pk):    # 관리자만 볼 수 있음
