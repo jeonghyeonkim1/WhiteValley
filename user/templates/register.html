@@ -26,7 +26,7 @@
 </div>
 <div class="row">
     <div class="col-12">
-        <form method="POST" action=".">
+        <form method="POST" action="." id="sign_form">
             {% csrf_token %}  
             <div class="form-group mt-3">
                 <label for="email" >이메일(필수사항)</label>
@@ -34,7 +34,7 @@
             </div>
             <div class="form-group mt-3">
                 <label for="password">비밀번호(필수사항)</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호(숫자,영문,특수문자 조합 최소8자)" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" required>
+                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호(숫자,영문,특수문자 조합 최소8자)" required>
             </div>
             <div class="form-group mt-3">
                 <label for="re-password">비밀번호 확인</label>
@@ -54,12 +54,12 @@
                 <label for="allcheck">모두 동의</label>
                 <br>
 
-                <input id="check_1" type="checkbox" name="check_1" onclick="ch()" >
+                <input id="check_1" type="checkbox" name="check_1" onclick="ch()">
                 <label for="check_1">개인정보 수집 및 이용 동의 (필수)</label>
                 <a href="#" data-toggle="modal" data-target="#agree1" style="text-decoration:none">내용보기</a>
                 <br>
      
-                <input id="check_2" type="checkbox" name="heck_2" onclick="ch()" >
+                <input id="check_2" type="checkbox" name="heck_2" onclick="ch()">
                 <label for="check_2">서비스이용약관 및 운영원칙 (필수)</label>
                 <a href="#" data-toggle="modal" data-target="#agree2" style="text-decoration:none">내용보기</a>
 
@@ -178,39 +178,46 @@
  -->
 
 <script>
-/*
-$(".AgreeBox").on("click", "#allcheck", function () {
-    $(this).parents(".AgreeBox").find('input').prop("checked", $(this).is(":checked"));
-    });
-     
-    $(".AgreeBox").on("click", ".normal", function() {
-        var is_checked = true;
-        
-        $(".AgreeBox .normal").each(function(){
-            is_checked = is_checked && $(this).is(":checked");
-        });
-     
-        $("#allcheck").prop("checked", is_checked);
-    });
-*/
-function ch(){
-        const allcheck = document.getElementById('allcheck');
-        const check_1 = document.getElementById('check_1');
-        const check_2 = document.getElementById('check_2');
+$(function() {
+    $("#allcheck").on('click', function() {
+        if ($("#allcheck")[0].checked) {
+            $("#check_1")[0].checked = true;
+            $("#check_2")[0].checked = true;
+        } else {
+            $("#check_1")[0].checked = false;
+            $("#check_2")[0].checked = false;
+        }
+    })
 
-        if(check_1.checked == true && check_2.checked == true)
-            allcheck.checked == true;
-            alert("전체 동의해주셨습니다.");
-        else if (check_1.checked == true && check_2.checked == false)
-            allcheck.checked == false;
-            alert("두번째꺼 동의 해주세요.");
-        else if (check_1.checked == false && check_2.checked == true)
-            allcheck.checked == false;
-            alert("첫번째꺼 동의 해주세요.");
-        else if (check_1.checked == false && check_2.checked == false)
-            allcheck.checked == false;
-            alert("동의해주셔야됩니다.");
-    }
+    $("#check_1").click(function() {
+        if (!$("#check_1")[0].checked) {
+            $("#allcheck")[0].checked = false;
+        }
+
+        if ($("#check_1")[0].checked && $("#check_2")[0].checked) {
+            $("#allcheck")[0].checked = true;
+        }
+    })
+
+    $("#check_2").click(function() {
+        if (!$("#check_2")[0].checked) {
+            $("#allcheck")[0].checked = false;
+        }
+
+        if ($("#check_1")[0].checked && $("#check_2")[0].checked) {
+            $("#allcheck")[0].checked = true;
+        }
+    })
+
+    $("#sign_form").on("submit", function() {
+        if (!$("#allcheck")[0].checked) {
+            alert("동의 항목을 모두 체크해주시길 바랍니다.");
+            return false;
+        }
+        return true;
+    })
+
+})
  </script>
 
 {% endblock %}
