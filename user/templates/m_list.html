@@ -31,12 +31,7 @@
           <input class="form-check-input" type="checkbox" id="flexCheckDefault"display: "none";>
           {% endif %}
         </div>
-        <a href="{% url 'User:magazine_detail' magazine.id %}"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-        <div class="card-body">
-          <div class="small text-muted">등록일 {{ magazine.reg_date|date:"Y-m-d" }}</div>
-            <a href="{% url 'User:magazine_detail' magazine.id %}" style="text-decoration:none">
-            <h5 class="card-title">제목 {{ magazine.title }}</h5>
-            <p class="card-text">내용 {{ magazine.content }}</p>
+
           </a>
         </div>
     {% endfor %}

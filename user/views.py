@@ -21,10 +21,8 @@ def login(request):
         email = request.POST.get('email', None)
         password = request.POST.get('password', None)
 
-        res_data = {}
-
         if not(email and password):
-            res_data['error'] = '모든 값을 입력해야 합니다.'
+            context['error'] = '모든 값을 입력해야 합니다.'
         else:
 
             user = User.objects.get(email = email)
@@ -34,16 +32,17 @@ def login(request):
                     request.session['admin'] = user.admin
                     return redirect('/whitevalley/')
                 else:
-                    res_data['error'] = '비밀번호가 틀렸습니다.'
+                    context['error'] = '비밀번호가 틀렸습니다.'
             else:
                 if check_password(password, user.password):
                     request.session['user'] = user.id
                     request.session['admin'] = user.admin
                     return redirect('/whitevalley/')
                 else:
-                    res_data['error'] = '비밀번호가 틀렸습니다'                   
+                    context['error'] = '비밀번호가 틀렸습니다'                   
         
-    return render(request, 'login.html', res_data)
+    return render(request, 'login.html', context)
+
 
 def logout(request):
     del(request.session["user"])
@@ -70,21 +69,28 @@ def register(request):
         re_password = request.POST['re-password']
         contact = request.POST['contact']
 
-        res_data = {}
-
         if not(email and password and re_password and contact):
-            res_data['error'] = '모든 값을 입력해야 합니다'
+            context['error'] = '모든 값을 입력해야 합니다'
         elif password != re_password:
-            res_data['error'] = '비밀번호가 다릅니다.'
+            context['error'] = '비밀번호가 다릅니다.'
         elif (User.objects.filter(email=email).exists()) == True :
-            res_data['error'] = '사용중인 이메일입니다.'
+            context['error'] = '사용중인 이메일입니다.'
         else:
-            el = email.split("@") # 이메일에서 @ 전까지를 닉네임이므로 값가져와서 split
+            cnt = 0
+            el = email.split("@")[0] # 이메일에서 @ 전까지를 닉네임이므로 값가져와서 split
+
+            while 1:
+                try:
+                    User.objects.get(nickname=el)
+                    el = email.split("@")[0] + "@" + str(cnt + 1)
+                except:
+                    break
+
             user = User(
                 email = email,
                 password = make_password(password),
                 contact = contact,
-                nickname = el[0]
+                nickname = el
             )                
             user.save()
             return HttpResponse(f'''
@@ -94,11 +100,17 @@ def register(request):
                 </script>
             ''')
 
-        return render(request, 'register.html', res_data)
+        return render(request, 'register.html', context)
     
 
 def find_pw(request):
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'login'
+    }
 
+<<<<<<< HEAD
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
@@ -117,9 +129,27 @@ def find_pw(request):
             context['error'] = '이메일이 입력.'
         else:
             return render(request, 'chpw.html')
+=======
+    if request.method == 'GET':
+        return render(request,'find_pw.html', context)
+
+    elif request.method == ('POST'):
+        email = request.POST['email']
+
+        if (User.objects.filter(email=email).exists()) == False:
+            context['error'] = '이메일이 없습니다.'
+
+    return render(request, 'find_pw.html', context)
+        
+>>>>>>> 3a9e0282e623ac489fb51533bf09c9bebb9da188
 
 
 def chpw(request):
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'login'
+    }
 
     context = {
         'session': request.session,
@@ -131,8 +161,9 @@ def chpw(request):
     re_password = request.POST.get('re_password')
 
     if request.method =="GET":
-        return render(request, 'chpw.html')
+        return render(request, 'chpw.html', context)
     elif request.method =="POST":
+<<<<<<< HEAD
 
         if not(new_password and re_password):
             context['error'] = '빈칸 없이 입력해주시길 바랍니다.'
@@ -146,12 +177,16 @@ def chpw(request):
             user.save()
         
         return render(request, 'chpwOk.html')
+=======
+        return render(request, 'chpwOk.html', context)
+>>>>>>> 3a9e0282e623ac489fb51533bf09c9bebb9da188
 
 def magazine_list(request):
 
 
     magazine = Board.objects.filter(tag='매거진').order_by('-reg_date')
 
+<<<<<<< HEAD
     page = int(request.GET.get('page', 1))
     paginator = Paginator(magazine, 5)
     notices = paginator.get_page(page)
@@ -162,6 +197,13 @@ def magazine_list(request):
         'currentpage': 'cs',
         'notices': notices,
         'magazine': magazine,
+=======
+def magazine_list(request):
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'magazine'
+>>>>>>> 3a9e0282e623ac489fb51533bf09c9bebb9da188
     }
     return render(request, 'm_list.html', context)
 
@@ -177,7 +219,7 @@ def magazine_detail(request, pk):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'sign'
+        'currentpage': 'magazine'
     }
 
     try:
@@ -196,7 +238,7 @@ def magazine_update(request):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'sign'
+        'currentpage': 'magazine'
     }
 
     return render(request, 'm_update.html', context)
@@ -228,9 +270,14 @@ def magazine_write(request):
     context = {
             'session': request.session,
             'config': Config.objects.get(id=1),
+<<<<<<< HEAD
             'currentpage': 'cs'
     }
     if request.method == 'GET':
+=======
+            'currentpage': 'magazine'
+        }
+>>>>>>> 3a9e0282e623ac489fb51533bf09c9bebb9da188
         return render(request, 'm_write.html', context)
 
     elif request.method == 'POST':
@@ -249,7 +296,7 @@ def magazine_delete(request):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'sign'
+        'currentpage': 'magazine'
     }
 
     return render(request, 'm_deleteok.html', context)
@@ -264,3 +311,42 @@ def mypage(req):
     context['user'] = User.objects.get(id=req.session['user'])
 
     return render(req, 'mypage.html', context)
+
+def api_login(req):
+    email = req.POST['email']
+    password = req.POST['password']
+
+    try:
+        req.session['user'] = User.objects.get(email=email).id
+        req.session['admin'] = User.objects.get(email=email).admin
+
+        return HttpResponse(f'''
+            <script>
+                alert("로그인에 성공하였습니다!");
+                location.href = '/whitevalley/';
+            </script>
+        ''')
+    except:
+        cnt = 0
+        nickname = req.POST['nickname']
+
+        while 1:
+            try:
+                User.objects.get(nickname=nickname)
+                nickname = req.POST['api_req'].profile.nickname + "@" + str(cnt + 1)
+            except:
+                break
+
+        user = User(email=email, nickname=nickname, password=password, contact='010-0000-0000')
+
+        user.save()
+
+        req.session['user'] = user.id
+        req.session['admin'] = user.admin
+
+        return HttpResponse(f'''
+            <script>
+                alert("카카오 계정으로 가입 완료되었습니다!!");
+                location.href = '/whitevalley/';
+            </script>
+        ''')
