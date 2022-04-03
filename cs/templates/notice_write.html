@@ -16,7 +16,7 @@
     {% csrf_token %}
     <div class="mb-3 mt-3">
         <label>작성자</label>
-        <input type="text" class="form-control" style="width:80px" placeholder="관리자" readonly>
+        <input type="text" class="form-control" style="width:75px" placeholder="관리자" readonly>
     </div>
     <div class="mb-3 mt-3">
         <label for="title">공지사항 제목</label>
@@ -24,7 +24,7 @@
     </div>
     <div class="mb-3 mt-3">
         <label for="content">공지사항 내용</label>
-        <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required><c:out value="${content}" /></textarea>
+        <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required></textarea>
     </div>
     {% if session.admin %}
     {% csrf_token %}

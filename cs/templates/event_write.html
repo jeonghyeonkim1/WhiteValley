@@ -11,10 +11,12 @@
 <h6>이벤트에 참여해보세요.</h6>
 <hr>
 <form action="." method="POST">
+    <input type="hidden" name="event" value="이벤트">
+    
     {% csrf_token %}
     <div class="mb-3 mt-3">
         <label>작성자</label>
-        <input type="text" class="form-control" style="width:80px" placeholder="관리자" readonly>
+        <input type="text" class="form-control" style="width:75px" placeholder="관리자" readonly>
     </div>
     <div class="mb-3 mt-3">
         <label for="title">이벤트 제목</label>
@@ -22,8 +24,8 @@
     </div>
     <div class="mb-3 mt-3">
         <label for="date">이벤트 날짜</label><br>
-        <input type="date" id="date" name="date" min="2022-03-01" max="9999-12-31"> ~ 
-        <input type="date" id="date" name="date" min="2022-03-01" max="9999-12-31">
+        <input type="date" id="e_start" name="e_start" min="2022-03-01" max="9999-12-31"> ~ 
+        <input type="date" id="e_end" name="e_end" min="2022-03-01" max="9999-12-31">
     </div>
     <div class="mb-3 mt-3">
         <label for="content">이벤트 내용</label>
@@ -35,10 +37,10 @@
     </div>
 
 
-    {% if session.user == "admin@email.com" %}
+    {% if session.admin%}
     {% csrf_token %}
         <button type="submit" class="btn btn-dark">작성완료</button>
     {% endif %}
-        <a class="btn btn-dark" href="{% url 'Cs:event_list' %}">목록</a>
+        <a class="btn btn-dark" href="{% url 'Cs:event_list' %}">목록가기</a>
 </form>
 {% endblock %}

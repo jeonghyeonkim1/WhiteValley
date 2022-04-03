@@ -4,6 +4,13 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
 <script src="{% static 'js/cs.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $("#question").click(function () {
+            $(".answer").toggle();
+        });
+    });
+</script>
 {% endblock %}
 
 {% block contents %}
@@ -11,33 +18,51 @@
 <h6>검색 후 문의가 해결되지 않으면 1:1 문의를 이용해주세요.</h6>
 <hr>
 <br><br>
-<form action=".">
-    <div class='text-center'>
-        <input type="text" id="subject" placeholder="궁금한점을 검색해보세요" name="subject" style="width:30%; height: 38px;">
-        <button type="submit" class="btn btn-outline-dark">검색</button>
-    </div>
-    <br>
-    <table class="table table-hover">
-        <thead>
+<table class="table table-hover">
+    <thead>
+        <form action="" method="GET">
+            <div class='text-center'>
+                <input type="text" id="subject" placeholder="궁금한점을 검색해보세요" name="keyword"
+                    style="width:30%; height: 38px;">
+                <button type="submit" class="btn btn-outline-dark">검색</button>
+            </div>
+            <br>
             <div class='text-center' style="margin: top 50px">
-                <input type="button" class="btn btn-outline-dark" value="주문" style="margin-right:50px; width: 100px;">
+                <input type="button" class="btn btn-outline-dark" value="주문" onclick="order()"
+                    style="margin-right:50px; width: 100px;">
                 <input type="button" class="btn btn-outline-dark" value="결제" style="margin-right:50px; width: 100px;">
                 <input type="button" class="btn btn-outline-dark" value="환불" style="margin-right:50px; width: 100px;">
                 <input type="button" class="btn btn-outline-dark" value="배송" style="margin-right:50px; width: 100px;">
                 <input type="button" class="btn btn-outline-dark" value="기타" style="margin-right:50px; width: 100px;">
             </div>
-        </thead>
-        <br>
-        <tbody>
-            {% for faq in faqs %}
-            <tr onclick="location.href='{% url 'Cs:faq_detail' faq.id %}'" style="cursor: pointer;">
+    </thead>
+    <br>
+    <tbody>
+        {% if all_faqs %}
+        {% for faq in faqs %}
+        <div>
+            <tr style="cursor: pointer;">
                 <td>Q</td>
                 <td>{{ faq.title }}</td>
-                <td>{{ faq.content }}</td>
             </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            <tr style="display: none;">
+                <td>A</td>
+                <td>{{ faq.content }}</td>
+            </tr> 
+        </div>       
+        {% endfor %}
+        {% else %}
+        {% if not keyword %}
+        <tr>
+            <td colspan="3">
+                일치하는 검색 결과가 없습니다.
+            </td>
+        </tr>
+        {% endif %}
+        {% endif %}
+    </tbody>
+
+</table>
 </form>
 
 <div class="row">

@@ -44,16 +44,17 @@
 <div class="row">
     <div class="col-12">
         {% if session.user %}
-            {% csrf_token %}
-            <a class="btn btn-dark" href="{% url 'Cs:oto_write' %}" style="float: right;">문의하기</a>
+        {% comment %} {% csrf_token %} {% endcomment %}
+
+        <a class="btn btn-dark" href="{% url 'Cs:oto_write' %}" style="float: right;">문의하기</a>
         {% else %}
-            <button type="button" class="btn btn-dark" onclick="chkLogin()" style="float: right;">문의하기</button>
+        <button type="button" class="btn btn-dark" onclick="chkLogin()" style="float: right;">문의하기</button>
         {% endif %}
-    
+
         <script>
-            function chkLogin(){
+            function chkLogin() {
                 var msg = confirm("로그인 후 이용하실 수 있습니다.");
-                if(msg){
+                if (msg) {
                     location.href = "{% url 'User:user_login' %}"
                 }
             }

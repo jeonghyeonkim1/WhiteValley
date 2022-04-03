@@ -1,6 +1,3 @@
-from ast import In
-from importlib.metadata import requires
-import re
 from django.http import Http404
 from django.shortcuts import render
 from django.core.paginator import Paginator
@@ -29,9 +26,8 @@ def notice_write(request):
         notice = Board(user=user, title=title, content=content, tag=tag)
         notice.save()
         
-
-        
         return render(request, 'notice_writeOk.html', {"pk": notice.pk})
+
 
 def notice_detail(request, pk):
     notice = Board.objects.get(pk=pk)
@@ -112,12 +108,24 @@ def notice_delete(request):
 
 # 이벤트 페이지
 def event_write(request):
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'cs'
-    }
-    return render(request, 'event_write.html', context)
+    if request.method == 'GET':
+        context = {
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cs'
+        }
+        return render(request, 'event_write.html', context)
+
+    elif request.method == 'POST':
+        user = User.objects.get(id=request.session['admin'])
+        tag = request.POST['event']
+        title = request.POST['title']
+        content = request.POST['content']
+
+        event = Board(user=user, title=title, content=content, tag=tag)
+        event.save()
+
+        return render(request, 'event_writeOk.html', {"pk": event.pk})
 
 
 def event_detail(request, pk):
@@ -130,10 +138,18 @@ def event_detail(request, pk):
 
 
 def event_list(request):
+    all_events = Board.objects.filter(tag='이벤트')
+
+    page = int(request.GET.get('p', 1))
+    paginator = Paginator(all_events, 5)
+    events = paginator.get_page(page)
+
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'cs'
+        'currentpage': 'cs',
+        'events': events,
+        'all_events': all_events
     }
     return render(request, 'event_list.html', context)
 
@@ -275,7 +291,18 @@ def faq_detail(request, pk):
 
 
 def faq_list(request):
-    all_faqs = Board.objects.filter(tag='FAQ')
+    keyword = request.GET.get('keyword')
+    if keyword:
+        all_faqs = Board.objects.filter(title__contains=keyword, tag='FAQ')
+        all_faqs = Board.objects.filter(content__contains=keyword, tag='FAQ')
+    else:
+        all_faqs = Board.objects.filter(tag='FAQ')
+    
+    # btn = request.GET.get('btn')
+    # if btn:
+    #     all_faqs = Board.objects.filter(title__contains=btn)
+    # else:
+    #     all_faqs = Board.objects.filter(tag='FAQ')
 
     page = int(request.GET.get('p', 1))
     paginator = Paginator(all_faqs, 7)
