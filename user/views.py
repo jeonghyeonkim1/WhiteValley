@@ -282,6 +282,9 @@ def magazine_delete(request):
 
     return render(request, 'm_deleteok.html', context)
 
+
+# ------------------------------------------------------------------------------------
+
 def mypage(req):
     context = {
         'session': req.session,
@@ -294,8 +297,8 @@ def mypage(req):
     return render(req, 'mypage.html', context)
 
 def api_login(req):
-    email = req.POST['email']
-    password = req.POST['password']
+    email = req.POST['api_email']
+    password = req.POST['api_password']
 
     try:
         req.session['user'] = User.objects.get(email=email).id
@@ -309,12 +312,12 @@ def api_login(req):
         ''')
     except:
         cnt = 0
-        nickname = req.POST['nickname']
+        nickname = req.POST['api_nickname']
 
         while 1:
             try:
                 User.objects.get(nickname=nickname)
-                nickname = req.POST['api_req'].profile.nickname + "@" + str(cnt + 1)
+                nickname = req.POST['api_nickname'] + "@" + str(cnt + 1)
             except:
                 break
 
