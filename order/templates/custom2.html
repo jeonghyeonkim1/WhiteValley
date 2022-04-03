@@ -76,6 +76,10 @@
             </div>
         </div>   
        </div>
+       <form action="{% url 'Order:customend' %}" method="POST" id="file_base">
+           {% csrf_token %}
+           <input type="text" value="" name="file_base">
+       </form>
        
       
        <script>
@@ -172,7 +176,8 @@ $(document).ready(function(){
     
     $("#CustomBtn2").on("click",function(){
         html2canvas(document.querySelector("#parent")).then(canvas => {
-            saveAs(canvas.toDataURL('image/png'),"test1.png");
+            $("[name='file_base']").val(canvas.toDataURL('image/png'))
+            $("#file_base").submit();
         })
     });
     function saveAs(uri, filename){

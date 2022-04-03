@@ -1,3 +1,4 @@
+from tkinter import Image
 from django.shortcuts import render,redirect
 from shop.models import Config
 from django.http import HttpResponse
@@ -54,21 +55,32 @@ def custom1(request):
     }
     return render(request, 'custom1.html',context)
 
-    
 def custom2(request):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping'
     }
+
     return render(request, 'custom2.html',context)
 
+import urllib.request
 def customend(request):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping'
     }
+
+    if request.method == "POST":
+        url = request.POST['file_base']
+        
+        mem = urllib.request.urlopen(url).read()
+
+        with open("static/image/uploaded_img/test3.jpg", mode="wb") as f:
+            f.write(mem)
+            print("이미지 저장 완료되었습니다.")
+
     return render(request, 'customend.html',context)
 
 def payment(request):
