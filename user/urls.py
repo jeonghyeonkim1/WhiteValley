@@ -1,6 +1,5 @@
 from django.urls import path
 from user import views
-from django.contrib.auth import views as auth_views
 
 app_name = "User"
 
@@ -14,19 +13,13 @@ urlpatterns = [
 
     # 매거진
     path('list/', views.magazine_list, name="magazine_list"),
-    path('detail/<int:pk>', views.magazine_detail, name="magazine_detail"), 
-    # path('update/<int:pk>', views.magazine_update, name="magazine_update"),
+    path('detail/<int:pk>/', views.magazine_detail, name="magazine_detail"), 
+    # path('update/<int:pk>/', views.magazine_update, name="magazine_update"),
     path('write/', views.magazine_write, name="magazine_write"),
     path('delete/', views.magazine_delete, name="magazine_delete"),
     # path('per_page/', views.magazine_per_page, name="magazine_per_page"),
     # path('detail/', views.magazine_detail, name="magazine_detail"), # ui설게용 매거진 상세
     path('update/', views.magazine_update, name="magazine_update"), # ui설게용 매거진 상세
-
-    # 장고에서 지원하는 비밀번호 찾기
-    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
-    path('password_reset_done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('password_reset_confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('password_reset_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     # mypage -------------------------------------------------------------------------------
     path('mypage/', views.mypage, name="mypage"),
