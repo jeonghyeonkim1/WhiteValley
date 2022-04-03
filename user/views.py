@@ -1,4 +1,4 @@
-from ast import Not
+from math import fabs
 from multiprocessing import context
 from django.shortcuts import render, HttpResponse, redirect
 from user.models import User
@@ -112,16 +112,18 @@ def find_pw(request):
 
     if request.method == 'GET':
         return render(request, 'find_pw.html', context)
-
     elif request.method == 'POST':
-        email = request.POST['email']
+        email = request.POST.get('useremail')
 
-        if (User.objects.filter(email = email) == False):
+        if not email:
+            context['error'] = '이메일 입력바랍니다.'
+        elif not User.objects.filter(email = email):
             context['error'] = '이메일이 없습니다.'
-        elif not(email):
-            context['error'] = '이메일이 입력.'
-        else:
-            return render(request, 'chpw.html', context)
+        elif User.objects.filter(email = email):
+            return redirect('/whitevalley/user/chpw/')
+
+        return render(request, 'find_pw.html', context)
+
 
 def chpw(request):
     context = {
@@ -130,25 +132,48 @@ def chpw(request):
         'currentpage': 'login'
     }
 
+    # new_password = request.POST.get('new_password')
+    # re_password = request.POST.get('re_password')
+    # if request.method =="GET":
+    #     return render(request, 'chpw.html', context)
+    # elif request.method =="POST":
+
+    #     if not(new_password and re_password):
+    #         context['error'] = '빈칸 없이 입력해주시길 바랍니다.'
+
+    #     elif new_password != re_password:
+    #         context['error'] = '비밀번호가 다릅니다.'
+
+    #     elif new_password == re_password:
+    #         user = User(
+    #             password = make_password(new_password),
+    #         )
+    #         user.save()
+    #         return render(request, 'chpwOk.html', context)
+
+    # return render(request, "chpw.html",context)
+
+
     new_password = request.POST.get('new_password')
     re_password = request.POST.get('re_password')
-
     if request.method =="GET":
         return render(request, 'chpw.html', context)
     elif request.method =="POST":
 
         if not(new_password and re_password):
             context['error'] = '빈칸 없이 입력해주시길 바랍니다.'
+
         elif new_password != re_password:
             context['error'] = '비밀번호가 다릅니다.'
 
-        else:
+        elif new_password == re_password:
             user = User(
                 password = make_password(new_password),
-            )                
+            )
             user.save()
-        
-        return render(request, 'chpwOk.html', context)
+            return render(request, 'chpwOk.html', context)
+
+    return render(request, "chpw.html",context)
 
 def magazine_list(request):
 

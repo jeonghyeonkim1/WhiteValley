@@ -24,15 +24,15 @@
         <form method="POST" action=".">
             {% csrf_token %}  
             <div class="form-group mt-3">
-                <label for="new_password" class= "text-danger">비밀번호</label>
-                <input type="password" class="form-control" id="new_password" name="new_password" placeholder="비밀번호를 입력해주세요">
+                <label for="new_password">비밀번호</label>
+                <input type="password" class="form-control" id="new_password" name="new_password" placeholder="비밀번호(숫자,영문,특수문자 조합 최소8자)">
             </div>    
             <div class="form-group mt-3">
-                <label for="re_password" class= "text-danger">비밀번호</label>
+                <label for="re_password">비밀번호 확인</label>
                 <input type="password" class="form-control" id="re_password" name="re_password" placeholder="비밀번호를 입력해주세요">
             </div>    
 
-            <button type="submit" class="btn btn-primary mt-3">변경</button>
+            <button type="submit" class="btn btn-outline-dark mt-3">변경</button>
             
         </form>
     
