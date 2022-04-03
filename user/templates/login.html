@@ -11,12 +11,17 @@
                 window.Kakao.Auth.login({
                     scope: 'profile_nickname, account_email',
                     success: function(authObj) {
-                        ACCESS_TOKEN = authObj.access_token
+                        console.log(authObj)
                         window.Kakao.API.request({
                             url: '/v2/user/me',
                             success: res => {
-                                Kakao_account = res.kakao_account.email;
-                                console.log(ACCESS_TOKEN, '\n', Kakao_account);
+                                Kakao_account = res.kakao_account;
+                                if (confirm("카카오 계정으로 로그인 하시겠습니까?")) {
+                                    $("[name='email']").val(Kakao_account.email);
+                                    $("[name='nickname']").val(Kakao_account.profile.nickname);
+                                    $("[name='password']").val(authObj.access_token);
+                                    $("#api_login").submit();
+                                }
                             }
                         });
                     }
@@ -76,8 +81,11 @@
 <br>
 <br>
 
-<form action="">
-    
+<form action="{% url 'User:api_login' %}" method="POST" id="api_login">
+    {% csrf_token %}
+    <input type="hidden" value="" name="email">
+    <input type="hidden" value="" name="nickname">
+    <input type="hidden" value="" name="password">
 </form>
 
 

@@ -80,7 +80,7 @@ def register(request):
             while 1:
                 try:
                     User.objects.get(nickname=el)
-                    el = email.split("@")[0] + str(cnt + 1)
+                    el = email.split("@")[0] + "@" + str(cnt + 1)
                 except:
                     break
 
@@ -307,3 +307,42 @@ def mypage(req):
     context['user'] = User.objects.get(id=req.session['user'])
 
     return render(req, 'mypage.html', context)
+
+def api_login(req):
+    email = req.POST['email']
+    password = req.POST['password']
+
+    try:
+        req.session['user'] = User.objects.get(email=email).id
+        req.session['admin'] = User.objects.get(email=email).admin
+
+        return HttpResponse(f'''
+            <script>
+                alert("로그인에 성공하였습니다!");
+                location.href = '/whitevalley/';
+            </script>
+        ''')
+    except:
+        cnt = 0
+        nickname = req.POST['nickname']
+
+        while 1:
+            try:
+                User.objects.get(nickname=nickname)
+                nickname = req.POST['api_req'].profile.nickname + "@" + str(cnt + 1)
+            except:
+                break
+
+        user = User(email=email, nickname=nickname, password=password, contact='010-0000-0000')
+
+        user.save()
+
+        req.session['user'] = user.id
+        req.session['admin'] = user.admin
+
+        return HttpResponse(f'''
+            <script>
+                alert("카카오 계정으로 가입 완료되었습니다!!");
+                location.href = '/whitevalley/';
+            </script>
+        ''')
