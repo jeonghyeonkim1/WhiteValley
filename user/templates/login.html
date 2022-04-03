@@ -17,9 +17,9 @@
                             success: res => {
                                 Kakao_account = res.kakao_account;
                                 if (confirm("카카오 계정으로 로그인 하시겠습니까?")) {
-                                    $("[name='email']").val(Kakao_account.email);
-                                    $("[name='nickname']").val(Kakao_account.profile.nickname);
-                                    $("[name='password']").val(authObj.access_token);
+                                    $("[name='api_email']").val(Kakao_account.email);
+                                    $("[name='api_nickname']").val(Kakao_account.profile.nickname);
+                                    $("[name='api_password']").val(authObj.access_token);
                                     $("#api_login").submit();
                                 }
                             }
@@ -83,9 +83,9 @@
 
 <form action="{% url 'User:api_login' %}" method="POST" id="api_login">
     {% csrf_token %}
-    <input type="hidden" value="" name="email">
-    <input type="hidden" value="" name="nickname">
-    <input type="hidden" value="" name="password">
+    <input type="hidden" value="" name="api_email">
+    <input type="hidden" value="" name="api_nickname">
+    <input type="hidden" value="" name="api_password">
 </form>
 
 
