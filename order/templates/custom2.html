@@ -6,6 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/order.css' %}?ver=1">
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+    <script src="{% static 'js/html2canvas.js' %}"></script>
     <script src="{% static 'js/order2.js' %}"></script>
 {% endblock %}
 
@@ -13,31 +14,38 @@
     <div class="text_wrap">
         <h3>상품타입네임<br>
         <h6>문구와 이미지를 추가해 원하는 위치로 이동시키고 Custom이 완료되면 'Next'버튼을 눌러주세요.
+            
     </div>
     <div class="custom2">
         <div class="custom1_top">
             <div class="pimg2_wrap">
-                <div id="parent" class="parent" style="width:500px; height:500px; background-image:URL(https://i.ibb.co/qMR0FcY/shortw.png); background-size:cover;">
-                <div id="textresult" style='position:absolute; left:400px; top:300px; cursor:pointer; cursor:hand;' onmousedown='startDrag(event, this)'></div>
-                <div class="panzoom" id="panzoom-element" >
-                  <img src="https://i.ibb.co/gRJK53Z/caticon.png" width="200" height="200" style="z-index:2; position: absolute;">
-                </div>
-                <div id="patternimg_wrap" style="display: none;">
-                    <img src="" style="margin-left:5px; margin-top:2px; width:524px;" id="patternimg">
-                </div>
-            </div> 
-        </div>          
+                <div id="parent" class="parent" style="width:500px; height:500px; background-image:URL(/static/image/products/shortw.png); background-size:cover;">
+                    <div id="textresult" style='position:absolute; left:300px; top:300px; cursor:pointer; cursor:hand; font-weight: bold; font-size: 20px;' onmousedown='startDrag(event, this)'></div>
+                    <div class="panzoom" id="panzoom-element" >
+                        <img id="uploadimg" src="" width="200"  style="display:none; z-index:2; position: absolute;">
+                    </div>
+                    <div id="patternimg_wrap" style="display: none;">
+                        <img src="" id="patternimg">
+                    </div>
+                </div> 
+            </div>          
             <div class="custom2_detail">
-                <p id="product_type" >상품타입네임<br>
+                <div>
+                    <div>
+                        <p id="product_type">상품타입네임
+                    </div>
+                    <div style="padding-right:72%"><a data-toggle="tooltip" style="text-decoration: none; padding:30px;" title="이미지는 마우스 휠로 크기 조절 가능합니다. &#8251;상세한 변경을 더 원하시면 다음 페이지 요청란에 적어주세요&#8251;">TIP</a></div>
+                </div>
+             
             <div class="text_contain">
-                <form action="" class="form-horizontal">
+                <form onsubmit="return false;" action="" class="form-horizontal">
                         <div id="text2_wrap" class="form-inline form-group">
                             <label for="inputtext" class="col-xs control-label" id="inputtext">Text</label>
                             <div id="text_input_wrap" class="col-sm-6">
-                                <input onkeyup="printText()" type="text" id="text_input" class="form-control w-75" placeholder="15글자 이하의 텍스트" maxlength="15">
+                                <input onsubmit="return false;" onkeyup="printText()" type="text" id="text_input" class="form-control w-75" placeholder="15글자 이하의 텍스트" maxlength="15">
                             </div>
                             <div id="colorview_wrap">
-                                <img onclick="showModal();" id='colorwheel' src="https://i.ibb.co/gvJMcpG/color-wheel.png">        
+                                <img onclick="showModal();" id='colorwheel' src="/static/image/colorwheel.png">        
                             </div>
                              
                                 <div class="modal-window">
@@ -52,19 +60,19 @@
             <div class="selectpattern"> 
                 <label id="selecttext" for="selecttext" class="col-xs control-label">Pattern</label>
                 <select class="form-control w-25" id="selectpattern">
-                    <option value="p1">모야앙1</option>
-                    <option value="https://i.ibb.co/MGdbJj6/asd.png">모야앙2</option>
-                    <option value="https://i.ibb.co/gjdDD5N/png2.png">모야앙3</option>
-                    <option value="https://i.ibb.co/LYxgX7h/png3.png">모야앙4</option>
+                    <option value="p1">무지</option>
+                    <option value="/static/image/patterns/s_p1.png">도트</option>
+                    <option value="/static/image/patterns/s_p2.png">페인트</option>
+                    <option value="/static/image/patterns/s_p3.png">빈티지</option>
                 </select>
             </div> 
             <div class="imageupload" style="height:10%">
                 <label class="col-xs control-label" id="imagetext" style="margin-right:90px;">Image</label>
-                <input type="file" id="imgwrap"  style="display:none;" name='imgwrap'>
+                <input type="file" accept=".png,.gif,.png,.jpg,.jpeg" id="imgwrap"  style="display:none;" name='imgwrap'>
                 <img id="imgbtn" onclick='document.all.imgwrap.click(); document.all.imgwrap2.value=document.all.imgwrap.value' src="https://img.icons8.com/ios-glyphs/344/pictures-folder.png">
                 <input type="text" id="imgwrap2"onchange="loadFile(this)" style="height:20px; width: 60px; margin:20px">
             </div>
-            <div class="Btn"><a href="{% url 'Order:customend' %}" id="CustomBtn2">Next</a></div>
+            <div class="Btn"><a id="CustomBtn2">Next</a></div>
             </div>
         </div>   
        </div>
@@ -159,6 +167,44 @@ $("#selectpattern").change(function(){
     }
 })
 
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+    
+    $("#CustomBtn2").on("click",function(){
+        html2canvas(document.querySelector("#parent")).then(canvas => {
+            saveAs(canvas.toDataURL('image/png'),"test1.png");
+        })
+    });
+    function saveAs(uri, filename){
+        var link = document.createElement('a');
+        if(typeof link.download === 'string'){
+            link.href = uri;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }else{
+            window.open(uri);
+        }
+        location.href = "{% url 'Order:customend' %}"
+    }
+    
+});
+$("#imgwrap").on('change',function(){
+    $("#uploadimg").css("display","block");
+    ext = $(this).val().split('.').pop().toLowerCase(); //확장자
+    if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+        window.alert('이미지 파일이 아닙니다! (gif, png, jpg, jpeg 만 업로드 가능)');
+
+    }else {
+        file = $('#imgwrap').prop("files")[0];
+        blobURL = window.URL.createObjectURL(file);
+        $('#panzoom-element img').attr('src', blobURL);
+        $('#panzoom-element').slideDown(); //업로드한 이미지 미리보기 
+        $(this).slideUp(); //파일 양식 감춤
+    }
+});
        
+
 </script>
 {% endblock %}

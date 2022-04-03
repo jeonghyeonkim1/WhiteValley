@@ -1,3 +1,5 @@
+from ast import Not
+from multiprocessing import context
 from django.shortcuts import render, HttpResponse, redirect
 from user.models import User
 from shop.models import Config
@@ -109,17 +111,17 @@ def find_pw(request):
     }
 
     if request.method == 'GET':
-        return render(request,'find_pw.html', context)
+        return render(request, 'find_pw.html', context)
 
-    elif request.method == ('POST'):
+    elif request.method == 'POST':
         email = request.POST['email']
 
-        if (User.objects.filter(email=email).exists()) == False:
+        if (User.objects.filter(email = email) == False):
             context['error'] = '이메일이 없습니다.'
-
-    return render(request, 'find_pw.html', context)
-        
-
+        elif not(email):
+            context['error'] = '이메일이 입력.'
+        else:
+            return render(request, 'chpw.html', context)
 
 def chpw(request):
     context = {
@@ -128,48 +130,44 @@ def chpw(request):
         'currentpage': 'login'
     }
 
-    # user = User.objects.get(email = email)
-    # try :
-    #     pk = user.objects.get(pk=pk)
-    # except User.DoesNotExist:
-    #     raise Http404('유저정보를 찾을수 없습니다.')
-    
-    # new_password = request.POST['password']
-    # re_password = request.POST['re_password']
-
-    # res_data = {}
-
-    # if not(new_password and re_password):
-    #     res_data['error'] = '입력 전체 입력해주세요'
-    # elif new_password != re_password:
-    #     res_data['error'] = '비밀번호가 다릅니다.'
-    # else:
-    #     user = User(
-    #         password = make_password(new_password),
-    #     )
-    #     user.save()
+    new_password = request.POST.get('new_password')
+    re_password = request.POST.get('re_password')
 
     if request.method =="GET":
         return render(request, 'chpw.html', context)
     elif request.method =="POST":
+
+        if not(new_password and re_password):
+            context['error'] = '빈칸 없이 입력해주시길 바랍니다.'
+        elif new_password != re_password:
+            context['error'] = '비밀번호가 다릅니다.'
+
+        else:
+            user = User(
+                password = make_password(new_password),
+            )                
+            user.save()
+        
         return render(request, 'chpwOk.html', context)
 
-
-
-
 def magazine_list(request):
+
+
+    magazine = Board.objects.filter(tag='매거진').order_by('-reg_date')
+
+    page = int(request.GET.get('page', 1))
+    paginator = Paginator(magazine, 5)
+    notices = paginator.get_page(page)
+
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'magazine'
+        'currentpage': 'magazine',
+        'notices': notices,
+        'magazine': magazine,
     }
-    # if request.method == "GET":
     return render(request, 'm_list.html', context)
-    # elif request.method == "POST":
-    #     return render(request, 'm_list.html', context)
 
-
-    # 그냥 게시
 
 # def magazine_per_page(request):
 #     page = int(request.POST['page'])
@@ -177,42 +175,6 @@ def magazine_list(request):
 #     request.session['per_page'] = per_page
 
 #     return redirect(f'/magazine/list/?page={page}')
-    
-
-# 이거 ui설계용이므로 삭제 필수
-# def magazine_detail(request):
-
-#     context = {
-#         'session': request.session,
-#         'config': Config.objects.get(id=1),
-#         'currentpage': 'sign'
-#     }
-
-#     if request.method =="GET":
-#         # try: 
-#         #     board = Board.objects.get(pk=pk)
-#         # except Board.DoesNotExist:
-#         #     raise Http404('게시글을 찾을수 없습니다.')
-
-#         # return render(request, 'board/update.html', {'board': board})
-#         return render(request, 'm_update.html', context)
-#     elif request.method =="POST":
-#         # subject = request.POST['subject']
-#         # content = request.POST['content']
-        
-#         # # 수정 1.읽어오기
-#         # board = Board.objects.get(pk=pk)
-#         # # 2. 수정
-#         # board.subject = subject
-#         # board.content = content
-#         # # 3. 저장
-#         # board.save()
-
-#         # return render(request, 'board/updateOk.html', {"pk" : board.pk})
-#         return render(request, 'm_updateOk.html')
-
-
-
 
 def magazine_detail(request, pk):
     context = {
@@ -222,16 +184,14 @@ def magazine_detail(request, pk):
     }
 
     try:
-        board = Board.objects.get(pk=pk)  # id(pk) 값의 글 읽어오기 . SELECT
 
+        board = Board.objects.get(pk=pk)
         board.view_cnt += 1
         board.save()
     except Board.DoesNotExist:
         raise Http404('게시글을 찾을수 없습니다')
 
     return render(request, 'm_detail.html', {'board': board}, context)
-
-
 
 # 이거 ui설계용이므로 삭제 필수
 def magazine_update(request):
@@ -268,24 +228,24 @@ def magazine_update(request):
 
 def magazine_write(request):
 
-    if request.method == 'GET':
-        context = {
+    context = {
             'session': request.session,
             'config': Config.objects.get(id=1),
             'currentpage': 'magazine'
-        }
+    }
+    if request.method == 'GET':
         return render(request, 'm_write.html', context)
 
     elif request.method == 'POST':
         user = User.objects.get(id=request.session['admin'])
-        tag = request.POST['notice']
+        tag = request.POST['magazine']
         title = request.POST['title']
         content = request.POST['content']
 
-        notice = Board(user=user, title=title, content=content, tag=tag)
-        notice.save()
-        
-        return render(request, 'm_write.html', context)
+
+        b = Board(user = user, tag = tag, title = title, content = content)
+        b.save()
+        return render(request, 'm_writeOk.html', {"pk": b.pk})
 
 def magazine_delete(request):
 
@@ -296,6 +256,9 @@ def magazine_delete(request):
     }
 
     return render(request, 'm_deleteok.html', context)
+
+
+# ------------------------------------------------------------------------------------
 
 def mypage(req):
     context = {
@@ -309,8 +272,8 @@ def mypage(req):
     return render(req, 'mypage.html', context)
 
 def api_login(req):
-    email = req.POST['email']
-    password = req.POST['password']
+    email = req.POST['api_email']
+    password = req.POST['api_password']
 
     try:
         req.session['user'] = User.objects.get(email=email).id
@@ -324,12 +287,12 @@ def api_login(req):
         ''')
     except:
         cnt = 0
-        nickname = req.POST['nickname']
+        nickname = req.POST['api_nickname']
 
         while 1:
             try:
                 User.objects.get(nickname=nickname)
-                nickname = req.POST['api_req'].profile.nickname + "@" + str(cnt + 1)
+                nickname = req.POST['api_nickname'] + "@" + str(cnt + 1)
             except:
                 break
 

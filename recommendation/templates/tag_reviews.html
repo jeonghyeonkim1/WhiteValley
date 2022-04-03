@@ -128,14 +128,11 @@
     <div class="container">
         
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            {% for i in "x"|rjust:"10" %}
+            {% for i in "x"|rjust:"11" %}
             <div class="col">
-                {% if session.user %}
+                {% if session.admin %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
                     style='padding: 10px; display: block; margin-left:auto;'>
-                {% else %}
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
                 {% endif %}
                 <a href=#
                     onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">

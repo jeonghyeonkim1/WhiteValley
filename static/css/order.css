@@ -38,11 +38,12 @@
     opacity: 1;
     transition: all 0.8s;
 }
-.detail_bottom{
-    border: 1px solid rgb(60, 83, 212);
-}
+
 .detail_img{
-    text-align: center;
+    text-align: center;    
+}
+.detail_img img{
+    max-width: 100%;
 }
 #CustomBtn1{
     background-color: #343a40;
@@ -50,6 +51,9 @@
     text-decoration: none;
     padding: 10px;
     color: aliceblue;
+}
+#CustomBtn1:hover{
+    background-color: rgba(80, 80, 80, 0.699);
 }
 .Btn{
     width: 100%;
@@ -86,6 +90,10 @@
     margin-top: 30px;
     width: 150px;
     color: aliceblue;
+
+}
+#CustomBtn2:hover{
+    background-color: rgba(80, 80, 80, 0.699);
 }
 .custom1{
     text-align: center;
@@ -240,10 +248,7 @@
     padding-top: 10%;
     width: 1000px;
 }
-/* #imgwrap img{
-   width: 45px;
-   margin-left: 90px;
-} */
+
 .imageupload{
     margin-left: 90px;
     margin-top: 20px;
@@ -252,13 +257,11 @@
 
 @media (max-width: 1000px) {
     .custom1_top{
-        display: block;
-     
+        display: block; 
     }
     .custom2_detail {
         margin-right: 100px;
-        width: 100%;
-        
+        width: 100%;    
     }
     .modal-window {
         margin-top: 1000px;
