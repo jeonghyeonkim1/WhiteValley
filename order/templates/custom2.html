@@ -173,7 +173,7 @@ $(document).ready(function(){
     $("#CustomBtn2").on("click",function(){
         html2canvas(document.querySelector("#parent")).then(canvas => {
             saveAs(canvas.toDataURL('image/png'),"test1.png");
-        });
+        })
     });
     function saveAs(uri, filename){
         var link = document.createElement('a');
