@@ -12,15 +12,18 @@
 {% block contents %}
     <div class="text_wrap">
         <h3>상품타입네임<br>
-        <h6>해당 제품의 상세 설명과 커스텀 방법에 대해 설명해드리겠습니다.
+        <h6>문구와 이미지를 추가해 원하는 위치로 이동시키고 Custom이 완료되면 'Next'버튼을 눌러주세요.
     </div>
     <div class="custom2">
         <div class="custom1_top">
             <div class="pimg2_wrap">
                 <div id="parent" class="parent" style="width:500px; height:500px; background-image:URL(https://i.ibb.co/qMR0FcY/shortw.png); background-size:cover;">
                 <div id="textresult" style='position:absolute; left:400px; top:300px; cursor:pointer; cursor:hand;' onmousedown='startDrag(event, this)'></div>
-                <div class="panzoom" id="panzoom-element">
-                  <img src="https://i.ibb.co/gRJK53Z/caticon.png" width="200" height="200">
+                <div class="panzoom" id="panzoom-element" >
+                  <img src="https://i.ibb.co/gRJK53Z/caticon.png" width="200" height="200" style="z-index:2; position: absolute;">
+                </div>
+                <div id="patternimg_wrap" style="display: none;">
+                    <img src="" style="margin-left:5px; margin-top:2px; width:524px;" id="patternimg">
                 </div>
             </div> 
         </div>          
@@ -49,17 +52,17 @@
             <div class="selectpattern"> 
                 <label id="selecttext" for="selecttext" class="col-xs control-label">Pattern</label>
                 <select class="form-control w-25" id="selectpattern">
-                    <option>모야앙1</option>
-                    <option>모야앙2</option>
-                    <option>모야앙3</option>
-                    <option>모야앙4</option>
+                    <option value="p1">모야앙1</option>
+                    <option value="https://i.ibb.co/MGdbJj6/asd.png">모야앙2</option>
+                    <option value="https://i.ibb.co/gjdDD5N/png2.png">모야앙3</option>
+                    <option value="https://i.ibb.co/LYxgX7h/png3.png">모야앙4</option>
                 </select>
             </div> 
             <div class="imageupload" style="height:10%">
                 <label class="col-xs control-label" id="imagetext" style="margin-right:90px;">Image</label>
                 <input type="file" id="imgwrap"  style="display:none;" name='imgwrap'>
                 <img id="imgbtn" onclick='document.all.imgwrap.click(); document.all.imgwrap2.value=document.all.imgwrap.value' src="https://img.icons8.com/ios-glyphs/344/pictures-folder.png">
-                <input type="text" id="imgwrap2" style="height:20px; width: 60px; margin:20px">
+                <input type="text" id="imgwrap2"onchange="loadFile(this)" style="height:20px; width: 60px; margin:20px">
             </div>
             <div class="Btn"><a href="{% url 'Order:customend' %}" id="CustomBtn2">Next</a></div>
             </div>
@@ -69,6 +72,7 @@
       
        <script>
            
+      
         const elem = document.getElementById('panzoom-element');
                 const zoomInButton = document.getElementById('zoom-in');
                 const zoomOutButton = document.getElementById('zoom-out');
@@ -144,6 +148,17 @@ function stopDrag(){
         document.onmousemove = null;
         document.onmouseup = null;
     }
+
+$("#selectpattern").change(function(){
+    if($("#selectpattern").val() == "p1"){
+        patternimg_wrap.style.display = "none"
+    }
+    else{
+        patternimg_wrap.style.display = "block"
+        patternimg.setAttribute('src',$("#selectpattern").val())
+    }
+})
+
        
 </script>
 {% endblock %}
