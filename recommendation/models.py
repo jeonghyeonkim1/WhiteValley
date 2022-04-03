@@ -64,9 +64,7 @@ class P_photo(models.Model):
 
 class Tag_list(models.Model):
     name = models.ManyToManyField('recommendation.Product', verbose_name='태그이름')
-
-
-
+    
     class Meta:
         db_table = 't_tag_list'
         verbose_name = '태그'

@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from user.models import User
 from shop.models import Config, Co_account
+import datetime
 
 # HOME --------------------------------------------------------------------------------
 def home(req):
@@ -91,11 +92,13 @@ def admin_member(req):
         'session': req.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'admin',
+        'now': datetime.datetime.now(),
+        'week_ago': datetime.datetime.now() - datetime.timedelta(days=7)
     }
     if req.method == "GET":
         try:
             if req.session['admin']:
-                context['users'] = User.objects.all()
+                context['users'] = User.objects.all().order_by('-reg_date')
                 return render(req, 'admin_member.html', context)
             else:
                 return HttpResponse(f'''

@@ -18,15 +18,15 @@
     {% csrf_token %}
     <div class="mb-3 mt-3">
         <label>작성자</label>
-        <input type="text" class="form-control" style="width:150px" placeholder="user 닉네임" readonly>
+        <span class="border bg-light rounded p-2" >'{{ user.nickname }}' 님</span>
     </div>
     <div class="mb-3 mt-3">
         <label for="title">1:1문의 제목</label>
         <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" name="title" required>
     </div>
     <div class="mb-3 mt-3">
-        <label for="content">1:1문의 내용</label>
-        <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required></textarea>
+        <label for="contents">1:1문의 내용</label>
+        <textarea class="form-control" rows="5" id="contents" placeholder="내용을 입력하세요" name="contents" required></textarea>
     </div>
 
     <button type="submit" class="btn btn-dark">작성완료</button>
