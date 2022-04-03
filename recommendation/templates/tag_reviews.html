@@ -9,18 +9,18 @@
 <script src="http://code.highcharts.com/highcharts-more.js"></script>
 <script>
     function removeCheck() {
-    
-        if (confirm("정말 삭제하시겠습니까??") == true){    //확인
-       
+
+        if (confirm("정말 삭제하시겠습니까??") == true) { //확인
+
             document.removefrm.submit();
-       
-        }else{   //취소
-       
+
+        } else { //취소
+
             return false;
-       
+
         }
-       }
-    </script>
+    }
+</script>
 <style>
     .termbtn {
         margin-top: 30px;
@@ -29,6 +29,7 @@
     .tagnaming {
         float: left;
     }
+
     .imgform {
         border-radius: 12px;
     }
@@ -52,37 +53,70 @@
     </div>
     <p></p>
     <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
-<script language="JavaScript">
-$(document).ready(function() {  
-   var chart = {
-      type: 'bubble',
-      zoomType: 'xy'
-   };
-   var title = {
-      text: '태그별 분포'   
-   };   
-   var series= [{
-            data: [[97, 36, 79], [94, 74, 60], [68, 76, 58], [64, 87, 56], [68, 27, 73], [74, 99, 42], [7, 93, 87], [51, 69, 40], [38, 23, 33], [57, 86, 31]]
-        }, {
-            data: [[25, 10, 87], [2, 75, 59], [11, 54, 8], [86, 55, 93], [5, 3, 58], [90, 63, 44], [91, 33, 17], [97, 3, 56], [15, 67, 48], [54, 25, 81]]
-        }, {
-            data: [[47, 47, 21], [20, 12, 4], [6, 76, 91], [38, 30, 60], [57, 98, 64], [61, 17, 80], [83, 60, 13], [67, 78, 75], [64, 12, 10], [30, 77, 82]]
-      }
-   ];     
-      
-   var json = {};   
-   json.chart = chart; 
-   json.title = title;     
-   json.series = series;   
-   $('#container').highcharts(json);
-  
-});
-</script>
+    <script language="JavaScript">
+        $(document).ready(function () {
+            var chart = {
+                type: 'bubble',
+                zoomType: 'xy'
+            };
+            var title = {
+                text: '태그별 분포'
+            };
+            var series = [{
+                data: [
+                    [97, 36, 79],
+                    [94, 74, 60],
+                    [68, 76, 58],
+                    [64, 87, 56],
+                    [68, 27, 73],
+                    [74, 99, 42],
+                    [7, 93, 87],
+                    [51, 69, 40],
+                    [38, 23, 33],
+                    [57, 86, 31]
+                ]
+            }, {
+                data: [
+                    [25, 10, 87],
+                    [2, 75, 59],
+                    [11, 54, 8],
+                    [86, 55, 93],
+                    [5, 3, 58],
+                    [90, 63, 44],
+                    [91, 33, 17],
+                    [97, 3, 56],
+                    [15, 67, 48],
+                    [54, 25, 81]
+                ]
+            }, {
+                data: [
+                    [47, 47, 21],
+                    [20, 12, 4],
+                    [6, 76, 91],
+                    [38, 30, 60],
+                    [57, 98, 64],
+                    [61, 17, 80],
+                    [83, 60, 13],
+                    [67, 78, 75],
+                    [64, 12, 10],
+                    [30, 77, 82]
+                ]
+            }];
+
+            var json = {};
+            json.chart = chart;
+            json.title = title;
+            json.series = series;
+            $('#container').highcharts(json);
+
+        });
+    </script>
     <hr>
     <div>
         <a class="btn btn-outline-dark tagnaming" href="">선택된 태그이름 여기에 표시</a>
         {% if session.admin %}
-        <button type="button" class="btn text-white" style='background-color: #000000; float: right;' onclick='removeCheck()'>게시글삭제</button>
+        <button type="button" class="btn text-white" style='background-color: #000000; float: right;'
+            onclick='removeCheck()'>게시글삭제</button>
         {% endif %}
 
     </div>
@@ -90,135 +124,94 @@ $(document).ready(function() {
     <div></div>
     <hr style='margin-top:40px'>
 
-    <table>
+
+    <div class="container">
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for i in "x"|rjust:"10" %}
+            <div class="col">
+                {% if session.user %}
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin-left:auto;'>
+                {% else %}
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                {% endif %}
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                         style='margin: 10px; width:100%' class='imgform' />
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    {% comment %} <table>
         <tr>
             <td>
                 {% if session.user %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
                 {% else %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
                 {% endif %}
                 <a href=#
                     onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
                     <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
                         src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' class='imgform'/>
+                        width='300px' style='margin: 10px' class='imgform' />
                     <div style='text-align:center'>#태그</div>
                 </a>
             </td>
             <td>
                 {% if session.user %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
                 {% else %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
                 {% endif %}
                 <a href=#
                     onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
                     <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
                         src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' class='imgform'/>
+                        width='300px' style='margin: 10px' class='imgform' />
                     <div style='text-align:center'>#태그</div>
                 </a>
             </td>
             <td>
                 {% if session.user %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
                 {% else %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
                 {% endif %}
                 <a href=#
                     onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
                     <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
                         src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' class='imgform'/>
+                        width='300px' style='margin: 10px' class='imgform' />
                     <div style='text-align:center'>#태그</div>
                 </a>
             </td>
             <td>
                 {% if session.user %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
                 {% else %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
                 {% endif %}
                 <a href=#
                     onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
                     <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
                         src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' class='imgform'/>
-                    <div style='text-align:center'>#태그</div>
-                </a>
-            </td>
-        <tr>
-        <tr>
-            <td>
-                {% if session.user %}
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                {% else %}
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: none; margin: 0 0 0 290px'>
-                {% endif %}
-                <a href=#
-                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' class='imgform'/>
-                    <div style='text-align:center'>#태그</div>
-                </a>
-            </td>
-            <td>
-                {% if session.user %}
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                {% else %}
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: none; margin: 0 0 0 290px'>
-                {% endif %}
-                <a href=#
-                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' class='imgform'/>
-                    <div style='text-align:center'>#태그</div>
-                </a>
-            </td>
-            <td>
-                {% if session.user %}
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                {% else %}
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: none; margin: 0 0 0 290px'>
-                {% endif %}
-                <a href=#
-                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' class='imgform'/>
-                    <div style='text-align:center'>#태그</div>
-                </a>
-            </td>
-            <td>
-                {% if session.user %}
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: block; margin: 0 0 0 290px'>
-                {% else %}
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: none; margin: 0 0 0 290px'>
-                {% endif %}
-                <a href=#
-                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' class='imgform'/>
+                        width='300px' style='margin: 10px' class='imgform' />
                     <div style='text-align:center'>#태그</div>
                 </a>
             </td>
@@ -227,69 +220,135 @@ $(document).ready(function() {
             <td>
                 {% if session.user %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
                 {% else %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
                 {% endif %}
                 <a href=#
                     onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
                     <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
                         src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' class='imgform'/>
+                        width='300px' style='margin: 10px' class='imgform' />
                     <div style='text-align:center'>#태그</div>
                 </a>
             </td>
             <td>
                 {% if session.user %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
                 {% else %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
                 {% endif %}
                 <a href=#
                     onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
                     <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
                         src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' class='imgform'/>
+                        width='300px' style='margin: 10px' class='imgform' />
                     <div style='text-align:center'>#태그</div>
                 </a>
             </td>
             <td>
                 {% if session.user %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
                 {% else %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
                 {% endif %}
                 <a href=#
                     onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
                     <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
                         src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' class='imgform'/>
+                        width='300px' style='margin: 10px' class='imgform' />
                     <div style='text-align:center'>#태그</div>
                 </a>
             </td>
             <td>
                 {% if session.user %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
                 {% else %}
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
                 {% endif %}
                 <a href=#
                     onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
                     <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
                         src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
-                        width='300px' style='margin: 10px' class='imgform'/>
+                        width='300px' style='margin: 10px' class='imgform' />
                     <div style='text-align:center'>#태그</div>
                 </a>
             </td>
         <tr>
-    </table>
+        <tr>
+            <td>
+                {% if session.user %}
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                {% else %}
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                {% endif %}
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform' />
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+            <td>
+                {% if session.user %}
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                {% else %}
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                {% endif %}
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform' />
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+            <td>
+                {% if session.user %}
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                {% else %}
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                {% endif %}
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform' />
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+            <td>
+                {% if session.user %}
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: block; margin: 0 0 0 290px'>
+                {% else %}
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    style='padding: 10px; display: none; margin: 0 0 0 290px'>
+                {% endif %}
+                <a href=#
+                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
+                        src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                        width='300px' style='margin: 10px' class='imgform' />
+                    <div style='text-align:center'>#태그</div>
+                </a>
+            </td>
+        <tr>
+    </table> {% endcomment %}
 
     <div class="container" style='margin: 50px 0 0 0'>
         <ul class="pagination justify-content-center">

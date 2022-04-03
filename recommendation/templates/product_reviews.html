@@ -71,9 +71,9 @@
 <hr id='bol'>
 <div class='revhead'>
     <img class="my-review-profile__frame__image js_reviewProfileImage"
-        src="//img1a.coupangcdn.com/image/coupang/review/web/mycoupang/pc-profile-empty.png" alt="프로필 이미지"
+        src="https://img1a.coupangcdn.com/image/coupang/review/web/mycoupang/pc-profile-empty.png" alt="프로필 이미지"
         title="프로필 이미지" style='margin:10px'>
-    <span>윤무빙워크 님</span>
+    <span>{{ user.nickname }} 님</span>
 </div>
 <hr style='color: black'>
 
@@ -123,6 +123,6 @@
 
             <div class="review-intake-register">
                 <button class="submit-button" type="submit">등록하기</button>
-                <button class="cancel-button" type="submit" onclick="history.back()">취소하기</button>
+                <button class="cancel-button" type="button" onclick="history.back()">취소하기</button>
             </div>
             {% endblock %}
