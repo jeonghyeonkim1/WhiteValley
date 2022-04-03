@@ -12,6 +12,10 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 media
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7550d5c20d7b4f0d092247534dd8f702363a3659
 
 <<<<<<< HEAD
 <<<<<<< HEAD
