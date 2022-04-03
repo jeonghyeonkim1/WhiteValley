@@ -63,8 +63,13 @@ $(function () {
     // account
     $("#del_account").on('submit', function () {
         if (confirm("은행명: " + $(".bank").text() + "\n예금주: " + $(".depositer").text() + "\n계좌번호: " + $(".account").val() + "\n\n해당 계좌를 삭제하시겠습니까?")) {
-            return true
+            return true;
         }
-        return false
+        return false;
+    })
+    $("#account_add_btn").click(function () {
+        if (confirm("계좌를 추가하시겠습니까?")) {
+            $("#account_add").submit();
+        }
     })
 })

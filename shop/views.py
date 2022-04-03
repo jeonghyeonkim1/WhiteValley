@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from user.models import User
 from shop.models import Config, Co_account
+import datetime
 
 # HOME --------------------------------------------------------------------------------
 def home(req):
@@ -91,11 +92,13 @@ def admin_member(req):
         'session': req.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'admin',
+        'now': datetime.datetime.now(),
+        'week_ago': datetime.datetime.now() - datetime.timedelta(days=7)
     }
     if req.method == "GET":
         try:
             if req.session['admin']:
-                context['users'] = User.objects.all()
+                context['users'] = User.objects.all().order_by('-reg_date')
                 return render(req, 'admin_member.html', context)
             else:
                 return HttpResponse(f'''
@@ -191,6 +194,32 @@ def admin_account(req):
     elif req.method == "POST":
 
         return redirect('/whitevalley/admin/account/')
+
+
+def account_add(req):
+    bank = req.POST['bank']
+    depositer = req.POST['depositer']
+    number = req.POST['number']
+
+    try:
+        Co_account.objects.get(bank=bank)
+        return HttpResponse(f'''
+            <script>
+                alert("{bank}계좌가 이미 존재합니다!");
+                location.href = '/whitevalley/admin/account/'
+            </script>
+        ''')
+    
+    except:
+        Co_account(bank=bank, depositer=depositer, number=number).save()
+        return HttpResponse(f'''
+            <script>
+                alert("계좌가 추가되었습니다!");
+                location.href = '/whitevalley/admin/account/'
+            </script>
+        ''')
+        
+
 
 def account_delete(req, bank):
     Co_account.objects.get(bank=bank).delete()
