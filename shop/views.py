@@ -192,6 +192,32 @@ def admin_account(req):
 
         return redirect('/whitevalley/admin/account/')
 
+
+def account_add(req):
+    bank = req.POST['bank']
+    depositer = req.POST['depositer']
+    number = req.POST['number']
+
+    try:
+        Co_account.objects.get(bank=bank)
+        return HttpResponse(f'''
+            <script>
+                alert("{bank}계좌가 이미 존재합니다!");
+                location.href = '/whitevalley/admin/account/'
+            </script>
+        ''')
+    
+    except:
+        Co_account(bank=bank, depositer=depositer, number=number).save()
+        return HttpResponse(f'''
+            <script>
+                alert("계좌가 추가되었습니다!");
+                location.href = '/whitevalley/admin/account/'
+            </script>
+        ''')
+        
+
+
 def account_delete(req, bank):
     Co_account.objects.get(bank=bank).delete()
 

@@ -157,9 +157,7 @@
 
 
 /* custom2.html */
-#imgwrap{
 
-}
 .img
 #text_input{
     margin-left: 0px;
@@ -227,14 +225,7 @@
 #colorwheel:hover{
     filter: brightness(50%);
 }
-#imageup{
-    width: 15%;
-    height: 15%;
 
-}
-#imageup:hover{
-    filter: blur(1px);
-}
 #Canvas {
     height: 500px;
     border: 1px solid rgba(202, 202, 202, 0.582);
@@ -249,18 +240,16 @@
     padding-top: 10%;
     width: 1000px;
 }
-#imgwrap img{
+/* #imgwrap img{
    width: 45px;
    margin-left: 90px;
-}
+} */
 .imageupload{
     margin-left: 90px;
     margin-top: 20px;
     display: flex;
 }
-.imgbtn:hover{
-    box-shadow: 5px 5px 5px #000;
-}
+
 @media (max-width: 1000px) {
     .custom1_top{
         display: block;
@@ -273,6 +262,9 @@
     }
     .modal-window {
         margin-top: 1000px;
+    }
+    #imgbtn{
+        width: 10%;
     }
 }
 

@@ -3,7 +3,33 @@
 {% block attachment %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/user.css' %}?ver=1">
-    <script src="{% static 'js/user.js' %}"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+            window.Kakao.init("d0a089899d52dada0e103d8ad4697d13");
+
+            function kakaoLogin() {
+                window.Kakao.Auth.login({
+                    scope: 'profile_nickname, account_email',
+                    success: function(authObj) {
+                        console.log(authObj)
+                        window.Kakao.API.request({
+                            url: '/v2/user/me',
+                            success: res => {
+                                Kakao_account = res.kakao_account;
+                                if (confirm("카카오 계정으로 로그인 하시겠습니까?")) {
+                                    $("[name='email']").val(Kakao_account.email);
+                                    $("[name='nickname']").val(Kakao_account.profile.nickname);
+                                    $("[name='password']").val(authObj.access_token);
+                                    $("#api_login").submit();
+                                }
+                            }
+                        });
+                    }
+                })
+            }
+
+            
+        </script>
 {% endblock %}
 
 {% block contents %}
@@ -31,29 +57,36 @@
                     <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호">
                 </div>
             </div>
-            <div class="row p-2 mt-5">
+            <div class="d-flex justify-content-evenly align-items-center mt-5">
+                <a href="javascript:kakaoLogin();">
+                    <img
+                        src="//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
+                        width="222"
+                        alt="카카오 로그인 버튼"
+                    />
+                </a>
+            </div>
+            <div class="row p-2 mt-2">
                 <button class="btn btn-primary mt-3 text-center col-sm">로그인</button>
                 <a class="btn btn-dark mt-3 text-center col-sm" href="{% url 'User:user_register' %}">회원가입</a>
             </div>
         </form>
-        
 
         <div class="form-row mt-3 text-center">
             <a class="btn btn-outline-warning" href="{% url 'User:find_pw' %}" role="button" >비밀번호 찾기</a>
         </div>
         
-
     </div>
 </div>
 <br>
 <br>
 
-<script>
-
-    
-
-
-</script>
+<form action="{% url 'User:api_login' %}" method="POST" id="api_login">
+    {% csrf_token %}
+    <input type="hidden" value="" name="email">
+    <input type="hidden" value="" name="nickname">
+    <input type="hidden" value="" name="password">
+</form>
 
 
 {% endblock %}
