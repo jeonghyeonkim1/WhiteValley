@@ -1,9 +1,10 @@
-import email
 from django.shortcuts import render, HttpResponse, redirect
 from user.models import User
 from shop.models import Config
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import Http404
+from cs.models import Board
+from django.core.paginator import Paginator
 # Create your views here.
 def login(request):
     context = {
@@ -25,7 +26,6 @@ def login(request):
         else:
 
             user = User.objects.get(email = email)
-
             if user.admin:
                 if user.password == password:
                     request.session['user'] = user.id
@@ -39,7 +39,7 @@ def login(request):
                     request.session['admin'] = user.admin
                     return redirect('/whitevalley/')
                 else:
-                    res_data['error'] = '비밀번호가 틀렸습니다'
+                    res_data['error'] = '비밀번호가 틀렸습니다'                   
         
     return render(request, 'login.html', res_data)
 
@@ -73,7 +73,9 @@ def register(request):
         if not(email and password and re_password and contact):
             res_data['error'] = '모든 값을 입력해야 합니다'
         elif password != re_password:
-            res_data['error'] = '비밀번호가 다릅니다.' # 작동안됨.
+            res_data['error'] = '비밀번호가 다릅니다.'
+        elif (User.objects.filter(email=email).exists()) == True :
+            res_data['error'] = '사용중인 이메일입니다.'
         else:
             el = email.split("@") # 이메일에서 @ 전까지를 닉네임이므로 값가져와서 split
             user = User(
@@ -81,8 +83,7 @@ def register(request):
                 password = make_password(password),
                 contact = contact,
                 nickname = el[0]
-            )
-                
+            )                
             user.save()
             return HttpResponse(f'''
                 <script>
@@ -96,20 +97,21 @@ def register(request):
 
 def find_pw(request):
 
+    if request.method == 'GET':
+        return render(request,'find_pw.html')
+    elif request.method == ('POST'):
+        email = request.POST['email']
 
-    return render(request,'find_pw.html')
+        res_data = {}
+
+        if (User.objects.filter(email=email).exists()) == False:
+            res_data['error'] = '이메일이 없습니다.'
+
+    return render(request, 'find_pw.html', res_data)
+        
+
 
 def chpw(request):
-
-    # user = User.objects.get(username = user.id)
-    # new_password = request.POST['password']
-    # user.set_password(new_password)
-    # user.save()
-    # response = redirect('/user/login/')
-    # response.set_cookie('username', user.username)
-    # response.set_cookie('password', new_password)
-    # return response
-
 
     # user = User.objects.get(email = email)
     # try :
@@ -138,60 +140,83 @@ def chpw(request):
         return render(request, 'chpwOk.html')
 
 
-    
 
 
 def magazine_list(request):
 
-
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'sign'
     }
+    # if request.method == "GET":
+    return render(request, 'm_list.html', context)
+    # elif request.method == "POST":
+    #     return render(request, 'm_list.html', context)
 
+
+    # 그냥 게시
+
+# def magazine_per_page(request):
+#     page = int(request.POST['page'])
+#     per_page = int(request.POST['per_page'])
+#     request.session['per_page'] = per_page
+
+#     return redirect(f'/magazine/list/?page={page}')
     
 
-
-    return render(request, 'm_list.html', context)
-
 # 이거 ui설계용이므로 삭제 필수
-def magazine_detail(request):
+# def magazine_detail(request):
 
+#     context = {
+#         'session': request.session,
+#         'config': Config.objects.get(id=1),
+#         'currentpage': 'sign'
+#     }
+
+#     if request.method =="GET":
+#         # try: 
+#         #     board = Board.objects.get(pk=pk)
+#         # except Board.DoesNotExist:
+#         #     raise Http404('게시글을 찾을수 없습니다.')
+
+#         # return render(request, 'board/update.html', {'board': board})
+#         return render(request, 'm_update.html', context)
+#     elif request.method =="POST":
+#         # subject = request.POST['subject']
+#         # content = request.POST['content']
+        
+#         # # 수정 1.읽어오기
+#         # board = Board.objects.get(pk=pk)
+#         # # 2. 수정
+#         # board.subject = subject
+#         # board.content = content
+#         # # 3. 저장
+#         # board.save()
+
+#         # return render(request, 'board/updateOk.html', {"pk" : board.pk})
+#         return render(request, 'm_updateOk.html')
+
+
+
+
+def magazine_detail(request, pk):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'sign'
     }
 
-    if request.method =="GET":
-        # try: 
-        #     board = Board.objects.get(pk=pk)
-        # except Board.DoesNotExist:
-        #     raise Http404('게시글을 찾을수 없습니다.')
+    try:
+        board = Board.objects.get(pk=pk)  # id(pk) 값의 글 읽어오기 . SELECT
 
-        # return render(request, 'board/update.html', {'board': board})
-        return render(request, 'm_update.html', context)
-    elif request.method =="POST":
-        # subject = request.POST['subject']
-        # content = request.POST['content']
-        
-        # # 수정 1.읽어오기
-        # board = Board.objects.get(pk=pk)
-        # # 2. 수정
-        # board.subject = subject
-        # board.content = content
-        # # 3. 저장
-        # board.save()
+        board.view_cnt += 1
+        board.save()
+    except Board.DoesNotExist:
+        raise Http404('게시글을 찾을수 없습니다')
 
-        # return render(request, 'board/updateOk.html', {"pk" : board.pk})
-        return render(request, 'm_updateOk.html')
+    return render(request, 'm_detail.html', {'board': board}, context)
 
-
-
-
-# def magazine_detail(request, pk):
-#     return render(request, 'm_detail.html', pk)
 
 
 # 이거 ui설계용이므로 삭제 필수
@@ -206,17 +231,47 @@ def magazine_update(request):
     return render(request, 'm_update.html', context)
 
 # def magazine_update(request, pk):
+#     if request.method == "GET":
+#         try:
+#             board = Board.objects.get(pk=pk)
+#         except Board.DoesNotExist:
+#             raise Http404('게시글을 찾을수 없습니다')
+
+#         return render(request, 'm_update.html', {'board': board})
+    
+#     elif request.method == "POST":
+#         subject = request.POST['subject']
+#         content = request.POST['content']
+
+#         # 수정
+#         board = Board.objects.get(pk=pk)
+#         board.subject = subject
+#         board.content = content
+#         board.save()   # UPDATE
+
+#         return render(request, 'm_updateOk.html', {"pk": board.pk })
 #     return render(request, 'm_update.html', pk)
 
 def magazine_write(request):
 
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'sign'
-    }
+    if request.method == 'GET':
+        context = {
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cs'
+        }
+        return render(request, 'm_write.html', context)
 
-    return render(request, 'm_write.html', context)
+    elif request.method == 'POST':
+        user = User.objects.get(id=request.session['admin'])
+        tag = request.POST['notice']
+        title = request.POST['title']
+        content = request.POST['content']
+
+        notice = Board(user=user, title=title, content=content, tag=tag)
+        notice.save()
+        
+        return render(request, 'm_write.html', context)
 
 def magazine_delete(request):
 

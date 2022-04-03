@@ -27,7 +27,6 @@
 <div class="row">
     <div class="col-12">
         <form method="POST" action=".">
-            <!-- 가입 폼이 전달되면 로그인 페이지로 가야되는데.... 지금은 회원가입페이지로감...잘안.모르겠. -->
             {% csrf_token %}  
             <div class="form-group mt-3">
                 <label for="email" >이메일(필수사항)</label>
@@ -67,7 +66,6 @@
             </div> 
 
             <button type="submit" class="btn btn-primary mt-3" onclick="ch()">가입</button>
-            <!--<button type="submit" class="btn btn-primary mt-3" onclick="joincheck()">가입</button>-->
 
         </form>
     </div>
@@ -180,8 +178,8 @@
  -->
 
 <script>
-
-    {% comment %} $(".AgreeBox").on("click", "#allcheck", function () {
+/*
+$(".AgreeBox").on("click", "#allcheck", function () {
     $(this).parents(".AgreeBox").find('input').prop("checked", $(this).is(":checked"));
     });
      
@@ -193,10 +191,9 @@
         });
      
         $("#allcheck").prop("checked", is_checked);
-    }); {% endcomment %}
-
-    function ch(){
-
+    });
+*/
+function ch(){
         const allcheck = document.getElementById('allcheck');
         const check_1 = document.getElementById('check_1');
         const check_2 = document.getElementById('check_2');
@@ -214,7 +211,6 @@
             allcheck.checked == false;
             alert("동의해주셔야됩니다.");
     }
-
  </script>
 
 {% endblock %}
