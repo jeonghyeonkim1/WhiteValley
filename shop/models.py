@@ -9,7 +9,7 @@ class Config(models.Model):
 
     number = models.CharField(max_length=30, verbose_name="사업자등록번호")
 
-    adress = models.CharField(max_length=600, verbose_name="회사주소")
+    address = models.CharField(max_length=600, verbose_name="회사주소")
 
     email = models.CharField(max_length=100, verbose_name="회사메일")
 

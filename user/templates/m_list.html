@@ -11,88 +11,62 @@
 <div class="title"> 
     <h3>매거진</h3>
 </div>
+
+<div class="mb-3 mt-3 clearfix">
+  <span class="float-start me-2">총 {{ count }}개</span>
+</div>
+
 <div class="row">
   <div class="col-12">
-      {% if session.user.admin %}
-          {% csrf_token %}
-          <button type="button" class="btn btn-outline-dark float-end" onclick="chkDelete()">삭제</button>
-          <a class="btn btn-outline-dark float-end" href="{% url 'User:magazine_write' %}" role="button">작성</a>
-          <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_update' %}" role="button">수정</a>   
-      {% endif %}
+    {% if session.admin %}
+    <button type="button" class="btn btn-outline-dark float-end" onclick="chkDelete()" display="none">삭제</button>
+    <a class="btn btn-outline-dark float-end" href="{% url 'User:magazine_write' %}" role="button" display="none">작성</a>
+    <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_update' %}" role="button" display="none">수정</a> 
+    {% endif %}
   </div>
 </div>
-<div class="container">
-    <div class="row">
-      <div class="col-lg-6">
-          <div class="card">
-            <div class="admin_show">
-              <input type="checkbox">
-            </div>
-            <a href="{% url 'User:magazine_detail'%}"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-          <div class="card-body">
-            <div class="small text-muted">작성일</div>
-            <a href="{% url 'User:magazine_detail'%}" style="text-decoration:none">
-                <h5 class="card-title">제목입니다11111111111</h5>
-                <p class="card-text">내용입니다111111111111111111111.</p>
-            </a>
-          </div>
+
+{% comment %} <div class="row">
+  <div class="col-lg-6">
+      <div class="card">
+        <div class="admin_show">
+          {% if session.admin %}
+          <input class="form-check-input" type="checkbox" id="flexCheckDefault"display: "none";>
+          {% endif %}
         </div>
+        <a href="{% url 'User:magazine_detail'%}"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+      <div class="card-body">
+        <div class="small text-muted">작성일</div>
+        <a href="{% url 'User:magazine_detail'%}" style="text-decoration:none">
+            <h5 class="card-title">제목입니다11111111111</h5>
+            <p class="card-text">내용입니다111111111111111111111.</p>
+        </a>
       </div>
-      <div class="col-lg-6">
-        <div class="card">
-          <div class="admin_show">
-            <input type="checkbox">
-          </div>
-          <a href="{% url 'User:magazine_detail'%}"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+    </div>
+  </div> {% endcomment %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="admin_show">
+          {% if session.admin %}
+          <input class="form-check-input" type="checkbox" id="flexCheckDefault"display: "none";>
+          {% endif %}
+        </div>
+
+        <a href="{% url 'User:magazine_detail'%} "><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
         <div class="card-body">
           <div class="small text-muted">작성일</div>
-          <a href="{% url 'User:magazine_detail'%}" style="text-decoration:none">
-              <h5 class="card-title">제목입니다11111111111</h5>
-              <p class="card-text">22222222222222.</p>
+            <a href="{% url 'User:magazine_detail'%} " style="text-decoration:none">
+            <h5 class="card-title">제목입니다11111111111</h5>
+            <p class="card-text">내용입니다111111111111111111111.</p>
           </a>
         </div>
       </div>
     </div>
-  </div>
 </div>
 
-<!-- pagination -->
-<!--
-<div class="container mt-1">
-  <ul class="pagination justify-content-center">
-      {# << 표시 여부 #} 
-      {% if boards.number > 1 %}       
-      <li class="page-item"><a class="page-link" href="{% url 'board_list' %}" title="처음"><i class='fas fa-angle-double-left'></i></a></li>
-      {% endif %}
 
-      {# < 표시 여부 #}
-      {% if start_page > 1%}
-      <li class="page-item"><a class="page-link" href="{% url 'board_list' %}?page={{ start_page|add:-1 }}" title="이전"><i class='fas fa-angle-left'></i></a></li>
-      {% endif %}
-
-      {# 페이징 안의 '숫자' 표시 #}
-      {% if boards.paginator.num_pages > 1 %}
-          {% for p in page_range %}
-              {% if boards.number != p %}
-              <li class="page-item"><a class="page-link" href="{% url 'board_list' %}?page={{ p }}">{{ p }}</a></li>
-              {% else %}
-              <li class="page-item active"><a class="page-link" href="#" title="현재페이지">{{ p }}</a></li>
-              {% endif %}
-          {% endfor %}
-      {% endif %}
-
-      {# > 표시 #}
-      {% if boards.paginator.num_pages > end_page %}
-      <li class="page-item"><a class="page-link" href="{% url 'board_list' %}?page={{ end_page|add:1 }}" title="다음"><i class='fas fa-angle-right'></i></a></li>
-      {% endif %}
-     
-      {# >> 표시 #}
-      {% if boards.number < boards.paginator.num_pages %}
-      <li class="page-item"><a class="page-link" href="{% url 'board_list' %}?page={{ boards.paginator.num_pages }}" title="마지막"><i class='fas fa-angle-double-right'></i></a></li>
-      {% endif %}
-  </ul>
-</div>
--->
 <div class="container" style='margin: 50px 0 0 0'>
   <ul class="pagination justify-content-center">
     <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
