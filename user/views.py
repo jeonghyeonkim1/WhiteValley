@@ -110,15 +110,8 @@ def find_pw(request):
         'currentpage': 'login'
     }
 
-<<<<<<< HEAD
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'sign'
-    }
-
     if request.method == 'GET':
-        return render(request, 'find_pw.html')
+        return render(request, 'find_pw.html', context)
 
     elif request.method == 'POST':
         email = request.POST['email']
@@ -128,21 +121,7 @@ def find_pw(request):
         elif not(email):
             context['error'] = '이메일이 입력.'
         else:
-            return render(request, 'chpw.html')
-=======
-    if request.method == 'GET':
-        return render(request,'find_pw.html', context)
-
-    elif request.method == ('POST'):
-        email = request.POST['email']
-
-        if (User.objects.filter(email=email).exists()) == False:
-            context['error'] = '이메일이 없습니다.'
-
-    return render(request, 'find_pw.html', context)
-        
->>>>>>> 3a9e0282e623ac489fb51533bf09c9bebb9da188
-
+            return render(request, 'chpw.html', context)
 
 def chpw(request):
     context = {
@@ -151,19 +130,12 @@ def chpw(request):
         'currentpage': 'login'
     }
 
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'sign'
-    }
-
     new_password = request.POST.get('new_password')
     re_password = request.POST.get('re_password')
 
     if request.method =="GET":
         return render(request, 'chpw.html', context)
     elif request.method =="POST":
-<<<<<<< HEAD
 
         if not(new_password and re_password):
             context['error'] = '빈칸 없이 입력해주시길 바랍니다.'
@@ -176,17 +148,13 @@ def chpw(request):
             )                
             user.save()
         
-        return render(request, 'chpwOk.html')
-=======
         return render(request, 'chpwOk.html', context)
->>>>>>> 3a9e0282e623ac489fb51533bf09c9bebb9da188
 
 def magazine_list(request):
 
 
     magazine = Board.objects.filter(tag='매거진').order_by('-reg_date')
 
-<<<<<<< HEAD
     page = int(request.GET.get('page', 1))
     paginator = Paginator(magazine, 5)
     notices = paginator.get_page(page)
@@ -194,16 +162,9 @@ def magazine_list(request):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'cs',
+        'currentpage': 'magazine',
         'notices': notices,
         'magazine': magazine,
-=======
-def magazine_list(request):
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'magazine'
->>>>>>> 3a9e0282e623ac489fb51533bf09c9bebb9da188
     }
     return render(request, 'm_list.html', context)
 
@@ -270,14 +231,9 @@ def magazine_write(request):
     context = {
             'session': request.session,
             'config': Config.objects.get(id=1),
-<<<<<<< HEAD
-            'currentpage': 'cs'
+            'currentpage': 'magazine'
     }
     if request.method == 'GET':
-=======
-            'currentpage': 'magazine'
-        }
->>>>>>> 3a9e0282e623ac489fb51533bf09c9bebb9da188
         return render(request, 'm_write.html', context)
 
     elif request.method == 'POST':
