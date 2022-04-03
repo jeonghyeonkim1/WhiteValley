@@ -8,7 +8,7 @@
 
 {% block contents %}
 <h2>1:1 문의</h2>
-<h6>1:1 문의입니다.</h6>
+<h6>내가 작성한 1:1 문의입니다.</h6>
 <hr>
 <div class="mb-3 mt-3 clearfix">
     <span class="float-start me-2">총 {{ otos.paginator.count }}개</span>
@@ -19,18 +19,25 @@
         <tr>
             <th>목록</th>
             <th>제목</th>
-            <th>작성자</th>
             <th>작성일</th>
         </tr>
     </thead>
     <tbody>
         {% for oto in otos %}
-        <tr>
+        {% if session.admin %}
+        <tr onclick="location.href='{% url 'Cs:oto_detail' oto.id %}'" style="cursor: pointer;">
             <td>{{ oto.id }}</td>
             <td>{{ oto.title }}</a></td>
-            <td>{{ oto.user_id }}</td>
             <td>{{ oto.reg_date|date:"Y-m-d" }}</td>
         </tr>
+        {% endif %}
+        {% if session.user == oto.user_id %}
+        <tr onclick="location.href='{% url 'Cs:oto_detail' oto.id %}'" style="cursor: pointer;">
+            <td>{{ oto.id }}</td>
+            <td>{{ oto.title }}</a></td>
+            <td>{{ oto.reg_date|date:"Y-m-d" }}</td>
+        </tr>
+        {% endif %}
         {% endfor %}
     </tbody>
 </table>
@@ -42,16 +49,12 @@
         {% else %}
             <button type="button" class="btn btn-dark" onclick="chkLogin()" style="float: right;">문의하기</button>
         {% endif %}
-
-        {% comment %} <form action="{% url 'User:user_login' %}" name="oto_login" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="id" value="{{ notice.id }}">
-        </form> {% endcomment %}
     
         <script>
             function chkLogin(){
                 var msg = confirm("로그인 후 이용하실 수 있습니다.");
                 if(msg){
+                    location.href = "{% url 'User:user_login' %}"
                 }
             }
         </script>

@@ -1,9 +1,11 @@
+from ast import In
 from importlib.metadata import requires
 import re
 from django.http import Http404
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from cs.models import Board
+from cs.models import Inquire
 from user.models import User
 from shop.models import Config
 
@@ -162,31 +164,38 @@ def oto_write(request):
             'config': Config.objects.get(id=1),
             'currentpage': 'cs'
         }
+        context['user'] = User.objects.get(id=request.session['user'])
+
         return render(request, 'oto_write.html', context)
     
     elif request.method == 'POST':
         user = User.objects.get(id=request.session['user'])
-        tag = request.POST['oto']
         title = request.POST['title']
-        content = request.POST['content']
+        contents = request.POST['contents']
 
-        oto = Board(user = user, title=title, content=content, tag=tag)
+        oto = Inquire(user = user, title=title, contents=contents)
         oto.save()
         
         return render(request, 'oto_writeOk.html', {"pk": oto.pk})
 
 
-def oto_detail(request, pk):    # 관리자만 볼 수 있음
+def oto_detail(request, pk): 
+    oto = Inquire.objects.get(pk=pk)
+
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'cs'
+        'currentpage': 'cs',
+        'oto': oto
     }
+
+    context['user'] = User.objects.get(id=request.session['user'])
+    
     return render(request, 'oto_detail.html', context)
 
 
 def oto_list(request):
-    all_otos = Board.objects.filter(tag='일대일').order_by('-reg_date')
+    all_otos = Inquire.objects.all().order_by('-reg_date')
 
     page = int(request.GET.get('p', 1))
     paginator = Paginator(all_otos, 5)
@@ -196,28 +205,128 @@ def oto_list(request):
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'cs',
-        'otos': otos
+        'otos': otos,
     }
+
     return render(request, 'oto_list.html', context)
 
 
 def oto_answer(request, pk):
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'cs'
-    }
-    return render(request, 'oto_answer.html', context)
+    if request.method == 'GET':
+        oto = Inquire.objects.get(pk=pk)
+        context = {
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cs',
+            'oto': oto
+        }
+        
+        return render(request, 'oto_answer.html', context)
+
+    elif request.method == 'POST':
+        title = request.POST['title']
+        contents = request.POST['contents']
+        answer = request.POST['answer']
+
+        oto = Inquire.objects.get(pk=pk)
+        oto.title = title
+        oto.contents = contents
+        oto.answer = answer
+        oto.save()
+
+        return render(request, 'oto_answerOk.html', {"pk": oto.pk})
 
 
 # FAQ 페이지
+def faq_write(request):
+    if request.method == 'GET':
+        context = {
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cs'
+        }
+        return render(request, 'faq_write.html', context)
+
+    elif request.method == 'POST':
+        user = User.objects.get(id=request.session['admin'])
+        tag = request.POST['faq']
+        title = request.POST['title']
+        content = request.POST['content']
+
+        notice = Board(user=user, title=title, content=content, tag=tag)
+        notice.save()
+        
+
+        return render(request, 'faq_writeOk.html', {"pk": notice.pk})
+
+
+def faq_detail(request, pk):
+    faq = Board.objects.get(pk=pk)
+    faq.view_cnt += 1
+    faq.save()
+
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs',
+        'faq': faq
+    }
+    return render(request, 'faq_detail.html', context)
+
+
 def faq_list(request):
+    all_faqs = Board.objects.filter(tag='FAQ')
+
+    page = int(request.GET.get('p', 1))
+    paginator = Paginator(all_faqs, 7)
+    faqs = paginator.get_page(page)
+
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs',
+        'faqs': faqs,
+        'all_faqs': all_faqs
+    }
+    return render(request, 'faq_list.html', context)
+
+
+def faq_update(request, pk):
+    if request.method == 'GET':
+        faq = Board.objects.get(pk=pk)
+        context = {
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cs',
+            'faq': faq
+        }
+
+        return render(request, 'faq_update.html', context)
+
+    elif request.method == 'POST':
+        title = request.POST['title']
+        content = request.POST['content']
+
+        faq = Board.objects.get(pk=pk)
+        faq.title = title
+        faq.content = content
+        faq.save()
+
+        return render(request, 'faq_updateOk.html', {"pk": faq.pk})
+
+
+def faq_delete(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        faq = Board.objects.get(id=id)
+        faq.delete()
+
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'cs'
     }
-    return render(request, 'faq_list.html', context)
+    return render(request, 'faq_deleteOk.html', context)
 
 
 def sample(request):
