@@ -78,17 +78,18 @@
 				<div class="popReviewV15">
 					<div class="reviewPdtV15">
 						<div class="pdtBox">
-							<div class="pdtPhoto"><a href="/whitevalley/shopping/order/" target='_blank'><img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='180px' height='140px' alt=""></a></div>
+							<div class="pdtPhoto"><a href="{% url 'Order:order' %}" target='_blank'><img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='180px' height='140px' alt=""></a></div>
 							<div class="pdtInfo">
-								<p class="pdtBrand tPad15"><a href="/whitevalley/shopping/order/" target='_blank' style="text-decoration:none; color:blue">> VIEWLAP</a></p>
-								<p class="pdtName tPad07"><a href="/whitevalley/shopping/order/" target='_blank' style="text-decoration:none; color:blue" >> 무지 반팔 커스텀</a></p>
+								<p class="pdtBrand tPad15"><a href="{% url 'Order:order' %}" target='_blank' style="text-decoration:none; color:blue">> VIEWLAP</a></p>
+								<p class="pdtName tPad07"><a href="{% url 'Order:order' %}" target='_blank' style="text-decoration:none; color:blue" >> 무지 반팔 커스텀</a></p>
 								<p class="pdtPrice">
 									<span class="finalP">9,930원</span>
 								</p>
 							</div>
 						</div>
 					</div>
-					<button type="button" class="btn btn-warning callbtn">커스텀페이지로 이동</button>
+					<button type="button" class="btn btn-warning callbtn" onclick="window.open('{% url 'Order:order' %}')" target='_blank'>커스텀페이지로 이동</button>
+					
 					<hr>
 					<div class="review pdtReviewV15 tMar10">
 
