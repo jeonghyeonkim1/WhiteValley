@@ -8,51 +8,54 @@
 
 {% block contents %}
 <h2>1:1 문의</h2>
-<h6>1:1 문의입니다.</h6>
+<h6>내가 작성한 1:1 문의입니다.</h6>
 <hr>
 <div class="mb-3 mt-3 clearfix">
     <span class="float-start me-2">총 {{ otos.paginator.count }}개</span>
     <span class="float-start">page {{ otos.number }}/{{ otos.paginator.num_pages }}</span>
 </div>
+
 <table class="table table-hover">
     <thead class="table-success">
         <tr>
             <th>목록</th>
             <th>제목</th>
-            <th>작성자</th>
             <th>작성일</th>
         </tr>
     </thead>
     <tbody>
         {% for oto in otos %}
-        <tr>
+        {% if session.admin %}
+        <tr onclick="location.href='{% url 'Cs:oto_detail' oto.id %}'" style="cursor: pointer;">
             <td>{{ oto.id }}</td>
             <td>{{ oto.title }}</a></td>
-            <td>{{ oto.user_id }}</td>
             <td>{{ oto.reg_date|date:"Y-m-d" }}</td>
         </tr>
+        {% endif %}
+        {% if session.user == oto.user_id %}
+        <tr onclick="location.href='{% url 'Cs:oto_detail' oto.id %}'" style="cursor: pointer;">
+            <td>{{ oto.id }}</td>
+            <td>{{ oto.title }}</a></td>
+            <td>{{ oto.reg_date|date:"Y-m-d" }}</td>
+        </tr>
+        {% endif %}
         {% endfor %}
     </tbody>
 </table>
 <div class="row">
     <div class="col-12">
-        {% if session.user %}
-            {% csrf_token %}
-            <a class="btn btn-dark" href="{% url 'Cs:oto_write' %}" style="float: right;">문의하기</a>
+        {% if session.user %} {% comment %} 로그인상태 {% endcomment %}
+            {% if not session.admin %}
+                <a class="btn btn-dark" href="{% url 'Cs:oto_write' %}" style="float: right;">문의하기</a>
+            {% endif %}
         {% else %}
-            <button type="button" class="btn btn-dark" onclick="chkLogin()" style="float: right;">문의하기</button>
+        <button type="button" class="btn btn-dark" onclick="chkLogin()" style="float: right;">문의하기</button>
         {% endif %}
 
-        {% comment %} <form action="{% url 'User:user_login' %}" name="oto_login" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="id" value="{{ notice.id }}">
-        </form> {% endcomment %}
-    
         <script>
-            function chkLogin(){
-                var msg = confirm("로그인 후 이용하실 수 있습니다.");
-                if(msg){
-                }
+            function chkLogin() {
+                alert('로그인 후 이용할 수 있습니다.');
+                location.href = "{% url 'User:user_login' %}"
             }
         </script>
     </div>
@@ -89,6 +92,4 @@
         </nav>
     </div>
 </div>
-
-
 {% endblock %}

@@ -24,9 +24,9 @@
         <form method="POST" action=".">
             {% csrf_token %}  
             <div class="form-group mt-3">
-                <label for="email" class= "text-danger">이메일(필수사항)</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력해주세요">
-            </div>    
+                <label for="useremail" class='mb-3'>이메일(필수사항)</label>
+                <input type="email" class="form-control" id="useremail" name="useremail" placeholder="이메일을 입력해주세요">
+            </div>
             
             <button type="submit" class="btn btn-outline-dark mt-3">비밀번호 찾기</button>
 

@@ -11,7 +11,7 @@
 <h6>1:1 문의입니다.</h6>
 <hr>
 <div class="mb-3 mt-3 clearfix">
-    <span class="float-start me-2">작성자 {{ oto.id }}</span>
+    <span class="float-start me-2">작성자 {{ user.nickname }}</span>
     <span class="float-end ms-4">작성일 {{ oto.reg_date|date:"Y-m-d" }}</span>
 </div>
 
@@ -22,11 +22,15 @@
     </div>    
     <div class="mb-3 mt-3">
         <label for="content">내용</label>
-        <div class="border bg-light rounded p-2" >{{ oto.content }}</div>
+        <div class="border bg-light rounded p-2" >{{ oto.contents }}</div>
+    </div>    
+    <div class="mb-3 mt-3">
+        <label for="answer">답변</label>
+        <div class="border bg-light rounded p-2">{{ oto.answer }}</div>
     </div>    
 
     {% if session.admin %}
-        <a class="btn btn-dark" href="{% url 'Cs:oto_answer' 1 %}">답변하기</a>
+        <a class="btn btn-dark" href="{% url 'Cs:oto_answer' oto.id %}">답변하기</a>
     {% endif %}
     <a class="btn btn-dark" href="{% url 'Cs:oto_list' %}">목록가기</a>
 

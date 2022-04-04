@@ -45,23 +45,53 @@
         font-weight: bolder;
     }
 
-    .review-intake-register{
+    .review-intake-register {
         text-align: center;
-        margin-bottom : 20px;
+        margin-bottom: 20px;
     }
 
     .cancel-button {
-        padding : 10px;
-        background-color : rgb(233, 234, 240);
+        padding: 10px;
+        background-color: rgb(233, 234, 240);
         border-radius: 12px;
-        color : #0088FF
+        color: #0088FF
     }
 
     .submit-button {
-        padding : 10px;
-        background-color : #0088FF;
-        color : white;
+        padding: 10px;
+        background-color: #0088FF;
+        color: white;
         border-radius: 12px;
+    }
+
+    .insert {
+        padding: 20px 30px;
+        display: block;
+        width: 600px;
+        margin: 5vh auto;
+        height: 40vh;
+
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .insert .file-list {
+        height: 200px;
+        overflow: auto;
+        border: 1px solid #989898;
+        padding: 10px;
+    }
+
+    .insert .file-list .filebox p {
+        font-size: 14px;
+        margin-top: 10px;
+        display: inline-block;
+    }
+
+    .insert .file-list .filebox .delete i {
+        color: #ff5353;
+        margin-left: 5px;
     }
 </style>
 {% endblock %}
@@ -94,35 +124,145 @@
     <div class="review-table__cell review-intake-head title">
         <img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
             width="200" height="200" title="구매상품" alt="구매상품" />
-        <span class="review-intake-form">상품내역 : 화이트 무지 반팔 커스텀 (1) 개</span>
+
+        <span>
+            <div class="review-intake-form">상품내역 : 상품내역이 여기로 들어오고 싶을거야</div>
+            <div class="review-intake-form">상품옵션 : 옵션이 여기 들어올거야</div>
+        </span>
     </div>
     <hr style='color: black'>
-    </div>
+</div>
 
 
-    <div class="mb-3 mt-3">
-        <label class='my__rev' for="content">상세리뷰</label>
-        <textarea class="form-control" rows="5" id="content" placeholder="상품 품질에 대한 고객님의 솔직한 리뷰를 남겨주세요." name="content"
-            required></textarea>
+<div class="mb-3 mt-3">
+    <label class='my__rev' for="content">상세리뷰</label>
+    <textarea class="form-control" rows="5" id="content" placeholder="상품 품질에 대한 고객님의 솔직한 리뷰를 남겨주세요." name="content"
+        required></textarea>
+</div>
+<hr style='color: black'>
+
+<div class="my-review__modify__file">
+    <div class="field__title">사진첨부</div>
+    <div class="insert">
+        <form method="POST" onsubmit="return false;" enctype="multipart/form-data">
+            <input type="file" onchange="addFile(this);" multiple />
+            <div class="file-list"></div>
+        </form>
     </div>
+    
     <hr style='color: black'>
+</div>
 
-    <div class="my-review__modify__file">
-        <div class="field__title">사진첨부</div>
-        <div class="my-review__modify__file__content js_reviewModifyFileContainer" data-attachment-max-size="10">
-            <div>
-                <input type="file">
-                <span class="my-review__modify__file__count">
-                    <strong class="js_reviewModifyFileUploadCount">0</strong>&nbsp;&#47;&nbsp;<span>10</span>
-                </span>
-                <span class="my-review__modify__file__guide">사진은 최대 20MB 이하의 JPG, PNG, GIF 파일 10장까지 첨부 가능합니다.</span>
-            </div>
-        </div>
-            <hr style='color: black'>
-    </div>
+<div class="review-intake-register">
+    <button class="submit-button" type="submit">등록하기</button>
+    <button class="cancel-button" type="button" onclick="history.back()">취소하기</button>
+</div>
 
-            <div class="review-intake-register">
-                <button class="submit-button" type="submit">등록하기</button>
-                <button class="cancel-button" type="button" onclick="history.back()">취소하기</button>
-            </div>
-            {% endblock %}
+<script>
+    var fileNo = 0;
+    var filesArr = new Array();
+
+    /* 첨부파일 추가 */
+    function addFile(obj) {
+        var maxFileCnt = 5; // 첨부파일 최대 개수
+        var attFileCnt = document.querySelectorAll('.filebox').length; // 기존 추가된 첨부파일 개수
+        var remainFileCnt = maxFileCnt - attFileCnt; // 추가로 첨부가능한 개수
+        var curFileCnt = obj.files.length; // 현재 선택된 첨부파일 개수
+
+        // 첨부파일 개수 확인
+        if (curFileCnt > remainFileCnt) {
+            alert("첨부파일은 최대 " + maxFileCnt + "개 까지 첨부 가능합니다.");
+        }
+
+        for (var i = 0; i < Math.min(curFileCnt, remainFileCnt); i++) {
+
+            const file = obj.files[i];
+
+            // 첨부파일 검증
+            if (validation(file)) {
+                // 파일 배열에 담기
+                var reader = new FileReader();
+                reader.onload = function () {
+                    filesArr.push(file);
+                };
+                reader.readAsDataURL(file)
+
+                // 목록 추가
+                let htmlData = '';
+                htmlData += '<div id="file' + fileNo + '" class="filebox">';
+                htmlData += '   <p class="name">' + file.name + '</p>';
+                htmlData += '   <a class="delete" onclick="deleteFile(' + fileNo +
+                    ');"><i class="far fa-minus-square"></i></a>';
+                htmlData += '</div>';
+                $('.file-list').append(htmlData);
+                fileNo++;
+            } else {
+                continue;
+            }
+        }
+        // 초기화
+        document.querySelector("input[type=file]").value = "";
+    }
+
+    /* 첨부파일 검증 */
+    function validation(obj) {
+        const fileTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/bmp', 'image/tif',
+        ];
+        if (obj.name.length > 100) {
+            alert("파일명이 100자 이상인 파일은 제외되었습니다.");
+            return false;
+        } else if (obj.size > (100 * 1024 * 1024)) {
+            alert("최대 파일 용량인 100MB를 초과한 파일은 제외되었습니다.");
+            return false;
+        } else if (obj.name.lastIndexOf('.') == -1) {
+            alert("확장자가 없는 파일은 제외되었습니다.");
+            return false;
+        } else if (!fileTypes.includes(obj.type)) {
+            alert("첨부가 불가능한 파일입니다.");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /* 첨부파일 삭제 */
+    function deleteFile(num) {
+        document.querySelector("#file" + num).remove();
+        filesArr[num].is_delete = true;
+    }
+
+    /* 폼 전송 */
+    function submitForm() {
+        // 폼데이터 담기
+        var form = document.querySelector("form");
+        var formData = new FormData(form);
+        for (var i = 0; i < filesArr.length; i++) {
+            // 삭제되지 않은 파일만 폼데이터에 담기
+            if (!filesArr[i].is_delete) {
+                formData.append("attach_file", filesArr[i]);
+            }
+        }
+
+        $.ajax({
+            method: 'POST',
+            url: '/register',
+            dataType: 'json',
+            data: formData,
+            async: true,
+            timeout: 30000,
+            cache: false,
+            headers: {
+                'cache-control': 'no-cache',
+                'pragma': 'no-cache'
+            },
+            success: function () {
+                alert("파일업로드 성공");
+            },
+            error: function (xhr, desc, err) {
+                alert('에러가 발생 하였습니다.');
+                return;
+            }
+        })
+    }
+</script>
+{% endblock %}

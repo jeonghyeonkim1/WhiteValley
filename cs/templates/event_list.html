@@ -1,50 +1,10 @@
 {% extends 'base.html' %}
 
 {% block attachment %}
-{% comment %} {% load static %}
+{% load static %}
 <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
-<script src="{% static 'js/cs.js' %}"></script> {% endcomment %}
-<style>
-    .event {
-        position: relative;
-        margin: auto;
-        display: flex;
-        max-width: 1000px;
-        list-style: none;
-        text-align: center;
-        flex-wrap: wrap;
-        align-content: space-around;
-      }
-      
-      .event div {
-        position: relative;
-        float: left;
-        margin: 10px;
-        min-width: 300px;
-        max-width: 1000px;
-        max-height: 4000px;
-        width: 100px;
-        height: 400px;
-        text-align: center;
-        cursor: pointer;
-      }
-      
-      .event div img {
-        position: relative;
-        min-height: 100%;
-        max-width: 100%;
-        padding: 20px;
-        margin-top: 20px;
-      }
-      
-      .event div p {
-        display: block;
-        letter-spacing: 1px;
-        font-size: large;
-        padding: 0px 5px 50px;
-      }
-   
-</style>
+<script src="{% static 'js/cs.js' %}"></script>
+
 {% endblock %}
 
 {% block contents %}
@@ -56,74 +16,88 @@
     <span class="float-start">page {{ events.number }}/{{ events.paginator.num_pages }}</span>
 </div>
 
-<div class="event">
+<table class="table table-striped table-hover">
+    {% for event in events %}
+    <tr>
+        <td>사진</td>
+        <td>사진</td>
+        <td>사진</td>
+    </tr>
+    <tr>
+        <td>{{ event.title }}</td>
+        <td>{{ event.title }}</td>
+        <td>{{ event.title }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+{% comment %} <div class="event">
     <div class="eventimg">
-        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" 
-        alt="event1" />
+        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" alt="event1" />
         <p>이벤트1</p>
     </div>
     <div class="eventimg">
-        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" 
-        alt="event2" />
+        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" alt="event2" />
         <p>이벤트1</p>
     </div>
     <div class="eventimg">
-        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg"
-        alt="event3" />
+        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" alt="event3" />
         <p>이벤트1</p>
     </div>
     <div class="eventimg">
-        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" 
-        alt="event4" />
+        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" alt="event4" />
         <p>이벤트1</p>
     </div>
     <div class="eventimg">
-        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" 
-        alt="event5" />
+        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" alt="event5" />
         <p>이벤트1</p>
     </div>
     <div class="eventimg">
-        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" 
-        alt="event6" />
+        <img src="http://know.nifos.go.kr/webzine/201812/images/event_img_01_m.jpg" alt="event6" />
         <p>이벤트1</p>
     </div>
-</div>
+</div> {% endcomment %}
 
 <div class="row">
     <div class="col-12">
-        {% if session.user == "admin@email.com" %}
+        {% if session.admin%}
         {% csrf_token %}
-            <a class="btn btn-dark" href="{% url 'Cs:event_write' %}" style="float: right;">작성하기</a>
+        <a class="btn btn-dark" href="{% url 'Cs:event_write' %}" style="float: right;">작성하기</a>
         {% endif %}
     </div>
 </div>
 
-<!-- pagination -->
-<div class="container mt-1">
-    <ul class="pagination justify-content-center">
-        {# << 표시 여부 #}
-        <li class="page-item"><a class="page-link" href="javascript:void(0);" title="처음"><i
-                    class='fas fa-angle-double-left'></i></a></li>
 
-        {# < 표시 여부 #}
-        <li class="page-item"><a class="page-link" href="javascript:void(0);" title="이전"><i
-                    class='fas fa-angle-left'></i></a></li>
+<div class="row mt-2">
+    <div class="col-12">
+        <nav>
+            <ul class="pagination justify-content-center">
+                {% if events.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?p={{events.previous_page_number}}">이전으로</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link disabled" href="#">이전으로</a>
+                </li>
+                {% endif %}
+                <li class="page-item active">
+                    <a class="page-link" href="#">{{events.number}} / {{events.paginator.num_pages }}</a>
+                </li>
+                {% if events.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?p={{events.next_page_number}}">다음으로</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link disabled" href="#">다음으로</a>
+                </li>
+                {% endif %}
 
-        {# 페이징 안의 '숫자' 표시 #}
-        <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
-        <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-        <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
-        {% comment %} <li class="page-item active"><a class="page-link" href="javascript:void(0);" title="현재페이지">3</a></li> {% endcomment %}
-        <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
-
-        {# > 표시 #}
-        <li class="page-item"><a class="page-link" href="javascript:void(0);" title="다음"><i
-                    class='fas fa-angle-right'></i></a></li>
-
-        {# >> 표시 #}
-        <li class="page-item"><a class="page-link" href="javascript:void(0);" title="마지막"><i
-                    class='fas fa-angle-double-right'></i></a></li>
-    </ul>
+            </ul>
+        </nav>
+    </div>
 </div>
 
 

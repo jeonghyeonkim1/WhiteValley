@@ -7,29 +7,28 @@
 {% endblock %}
 
 {% block contents %}
-<h2>공지사항</h2>
-<h6>다양한 정보와 새로운 소식을 알려드립니다.</h6>
+<h2>FAQ</h2>
 <hr>
 <form action="." method="POST">
-    <input type="hidden" name="notice" value="공지사항">
+    <input type="hidden" name="faq" value="FAQ">
     
     {% csrf_token %}
     <div class="mb-3 mt-3">
         <label>작성자</label>
-        <input type="text" class="form-control" style="width:75px" placeholder="관리자" readonly>
+        <input type="text" class="form-control" style="width:80px" placeholder="관리자" readonly>
     </div>
     <div class="mb-3 mt-3">
-        <label for="title">공지사항 제목</label>
+        <label for="title">FAQ 제목</label>
         <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" name="title" required>
     </div>
     <div class="mb-3 mt-3">
-        <label for="content">공지사항 내용</label>
-        <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required></textarea>
+        <label for="content">FAQ 내용</label>
+        <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required><c:out value="${content}" /></textarea>
     </div>
     {% if session.admin %}
     {% csrf_token %}
         <button type="submit" class="btn btn-dark">작성완료</button>
     {% endif %}
-        <a class="btn btn-dark" href="{% url 'Cs:notice_list' %}">목록가기</a>
+        <a class="btn btn-dark" href="{% url 'Cs:faq_list' %}">목록가기</a>
 </form>
 {% endblock %}

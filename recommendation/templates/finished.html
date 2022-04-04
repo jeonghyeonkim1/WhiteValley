@@ -83,7 +83,7 @@ function removeCheck() {
                 <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
                     src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
                      style='margin: 10px; width:100%' class='imgform' />
-                <div style='text-align:center'>{{board.title}}</div>
+                <div style='text-align:center'>옵션 : {{board.title}}</div>
             </a>
         </div>
         {% endfor %}
@@ -91,41 +91,41 @@ function removeCheck() {
     </div>
 </div>
 
+{% comment %} 페이징 {% endcomment %}
+<ul class="pagination justify-content-center" style='margin:50px'>
+   
+    {% if question_list.has_previous %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ question_list.previous_page_number }}">이전</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+    </li>
+    {% endif %}
+    
+    {% for page_number in question_list.paginator.page_range %}
+    {% if page_number == question_list.number %}
+    <li class="page-item active" aria-current="page">
+        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+    </li>
+    {% else %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+    
+    {% if question_list.has_next %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ question_list.next_page_number }}">다음</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+    </li>
+    {% endif %}
+</ul>
 
-
-<div class="container mt-1">
-    <ul class="pagination justify-content-center">
-        {# << 표시 여부 #} 
-        {% if boards.number > 1 %}       
-        <li class="page-item"><a class="page-link" href="{% url 'board_list' %}" title="처음"><i class='fas fa-angle-double-left'></i></a></li>
-        {% endif %}
-
-        {# < 표시 여부 #}
-        {% if start_page > 1 %}
-        <li class="page-item"><a class="page-link" href="{% url 'board_list' %}?page={{start_page|add:-1}}" title="이전"><i class='fas fa-angle-left'></i></a></li>
-        {% endif %}
-
-        {# 페이징 안의 '숫자' 표시 #}
-        {% if boards.paginator.num_pages > 1 %}
-            {% for p in page_range %}
-                {% if boards.number != p %}
-                <li class="page-item"><a class="page-link" href="{% url 'board_list' %}?page={{p}}">{{p}}</a></li>
-                {% else %}        
-                <li class="page-item active"><a class="page-link" href="#" title="현재페이지">{{p}}</a></li>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-
-        {# > 표시 #}
-        {% if boards.paginator.num_pages > end_page %}
-        <li class="page-item"><a class="page-link" href="{% url 'board_list' %}?page={{end_page|add:1}}" title="다음"><i class='fas fa-angle-right'></i></a></li>
-        {% endif %}
-
-        {# >> 표시 #}
-        {% if boards.number < boards.paginator.num_pages %}
-        <li class="page-item"><a class="page-link" href="{% url 'board_list' %}?page={{boards.paginator.num_pages}}" title="마지막"><i class='fas fa-angle-double-right'></i></a></li>
-        {% endif %}
-    </ul>
-</div>
 
 {% endblock %}
