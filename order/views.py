@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-import base64
-from random import random
-from unittest import result
-=======
-from tkinter import Image
->>>>>>> 8702696ca6eff55a48c6225587e1a44de713f9de
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from shop.models import Config
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse 
-import os
+import urllib.request
+
 
 # Create your views here.
 def order(request):
@@ -73,7 +65,7 @@ def custom2(request):
 
     return render(request, 'custom2.html',context)
 
-import urllib.request
+
 def customend(request):
     context = {
         'session': request.session,
@@ -83,6 +75,8 @@ def customend(request):
 
     if request.method == "POST":
         url = request.POST['file_base']
+
+        cnt = 0
         
         mem = urllib.request.urlopen(url).read()
 
