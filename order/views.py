@@ -2,6 +2,8 @@ from tkinter import Image
 from django.shortcuts import render,redirect
 from shop.models import Config
 from django.http import HttpResponse
+import urllib.request
+
 
 # Create your views here.
 def order(request):
@@ -64,7 +66,7 @@ def custom2(request):
 
     return render(request, 'custom2.html',context)
 
-import urllib.request
+
 def customend(request):
     context = {
         'session': request.session,
@@ -74,6 +76,8 @@ def customend(request):
 
     if request.method == "POST":
         url = request.POST['file_base']
+
+        cnt = 0
         
         mem = urllib.request.urlopen(url).read()
 
