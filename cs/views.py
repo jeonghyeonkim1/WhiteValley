@@ -211,20 +211,25 @@ def oto_detail(request, pk):
 
 
 def oto_list(request):
-    all_otos = Inquire.objects.all().order_by('-reg_date')
 
-    page = int(request.GET.get('p', 1))
-    paginator = Paginator(all_otos, 5)
-    otos = paginator.get_page(page)
+    try:
+        all_otos = Inquire.objects.filter(user=User.objects.get(id=request.session['user'])).order_by('-reg_date')
 
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'cs',
-        'otos': otos,
-    }
+        page = int(request.GET.get('p', 1))
+        paginator = Paginator(all_otos, 5)
+        otos = paginator.get_page(page)
 
-    return render(request, 'oto_list.html', context)
+        context = {
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cs',
+            'otos': otos,
+        }
+
+        return render(request, 'oto_list.html', context)
+        
+    except KeyError:
+        return render(request, 'oto_list.html')
 
 
 def oto_answer(request, pk):

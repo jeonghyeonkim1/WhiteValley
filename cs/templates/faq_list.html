@@ -6,8 +6,8 @@
 <script src="{% static 'js/cs.js' %}"></script>
 <script>
     $(document).ready(function () {
-        $("#question").click(function () {
-            $(".answer").toggle();
+        $(".question").click(function () {
+            $(this).next(".answer").toggle();
         });
     });
 </script>
@@ -40,16 +40,14 @@
     <tbody>
         {% if all_faqs %}
         {% for faq in faqs %}
-        <div>
-            <tr style="cursor: pointer;">
-                <td>Q</td>
-                <td>{{ faq.title }}</td>
-            </tr>
-            <tr style="display: none;">
-                <td>A</td>
-                <td>{{ faq.content }}</td>
-            </tr> 
-        </div>       
+        <tr class="question" style="cursor: pointer;">
+            <td>Q</td>
+            <td>{{ faq.title }}</td>
+        </tr>
+        <tr class="answer" style="display: none;">
+            <td>A</td>
+            <td>{{ faq.content }}</td>
+        </tr>        
         {% endfor %}
         {% else %}
         {% if not keyword %}

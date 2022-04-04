@@ -4,46 +4,7 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
 <script src="{% static 'js/cs.js' %}"></script>
-<style>
-    .event {
-        position: relative;
-        margin: auto;
-        display: flex;
-        max-width: 1000px;
-        list-style: none;
-        text-align: center;
-        flex-wrap: wrap;
-        align-content: space-around;
-    }
 
-    .event div {
-        position: relative;
-        float: left;
-        margin: 10px;
-        min-width: 300px;
-        max-width: 1000px;
-        max-height: 4000px;
-        width: 100px;
-        height: 400px;
-        text-align: center;
-        cursor: pointer;
-    }
-
-    .event div img {
-        position: relative;
-        min-height: 100%;
-        max-width: 100%;
-        padding: 20px;
-        margin-top: 20px;
-    }
-
-    .event div p {
-        display: block;
-        letter-spacing: 1px;
-        font-size: large;
-        padding: 0px 5px 50px;
-    }
-</style>
 {% endblock %}
 
 {% block contents %}
