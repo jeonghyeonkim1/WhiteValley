@@ -68,11 +68,13 @@
             </div> 
             <div class="imageupload" style="height:10%">
                 <label class="col-xs control-label" id="imagetext" style="margin-right:90px;">Image</label>
+    
                 <input type="file" accept=".png,.gif,.png,.jpg,.jpeg" id="imgwrap"  style="display:none;" name='imgwrap'>
                 <img id="imgbtn" onclick='document.all.imgwrap.click(); document.all.imgwrap2.value=document.all.imgwrap.value' src="https://img.icons8.com/ios-glyphs/344/pictures-folder.png">
                 <input type="text" id="imgwrap2"onchange="loadFile(this)" style="height:20px; width: 60px; margin:20px">
+            
+            <div class="Btn"><a type="submit" id="CustomBtn2">Next</a></div>
             </div>
-            <div class="Btn"><a id="CustomBtn2">Next</a></div>
             </div>
         </div>   
        </div>
@@ -170,9 +172,29 @@ $("#selectpattern").change(function(){
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
     
+    $("#CustomBtn2").click(function() {
+        html2canvas($('#parent').get(0)).then(function(canvas){
+            var data = canvas.toDataURL();
+            $.ajax({
+                type : 'POST',
+                url: '/static/image/',
+                data: {data:data},
+                
+            })
+        })
+    });
+
+    var fileInput = document.querySelector("#imgwrap");
+    var sendButton = document.querySelector("#CustomBtn2");
+    sendButton.addEventListener("click",function() {
+        var formData = new FormData();
+        formData.append("AddImage",fileInput.files[0]);
+    });
+
     $("#CustomBtn2").on("click",function(){
         html2canvas(document.querySelector("#parent")).then(canvas => {
             saveAs(canvas.toDataURL('image/png'),"test1.png");
+            console.log(canvas.toDataURL('image/png'))
         });
     });
     function saveAs(uri, filename){
@@ -187,8 +209,8 @@ $(document).ready(function(){
             window.open(uri);
         }
         location.href = "{% url 'Order:customend' %}"
-    }
-    
+    } 
+
 });
 $("#imgwrap").on('change',function(){
     $("#uploadimg").css("display","block");
