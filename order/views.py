@@ -4,7 +4,8 @@ from django.http import HttpResponse
 import urllib.request
 from user.models import User
 from recommendation.models import Type
-import os
+
+import os.path
 
 
 # Create your views here.
@@ -105,16 +106,25 @@ def customend(request):
         
             url = request.POST['file_base']
 
-            cnt = 0
-        
             mem = urllib.request.urlopen(url).read()
+            cnt = 0
+            name = f'img{cnt}.jpg'
 
-            print(os.path.exists('static/image/uploaded_img/test3.jpg'))
-            with open("static/image/uploaded_img/test3.jpg", mode="wb") as f:
+            while os.path.exists(f'static/image/uploaded_img/{name}'):
+                cnt += 1
+                name = f'img{cnt}.jpg'
+
+                if os.path.exists(f'static/image/uploaded_img/{name}') == False:
+                    context['img_path'] = f'static/image/uploaded_img/{name}'
+                    break
+                
+
+            with open(f"static/image/uploaded_img/{name}", mode="wb") as f:
                 f.write(mem)
                 print("이미지 저장 완료되었습니다.")
+
+            return render(request, 'customend.html', context)
                 
-            return render(request, 'customend.html',context)
 
 
 def payment(request):

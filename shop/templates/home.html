@@ -141,9 +141,9 @@
                 <div class="border border-3 rounded mb-3 p-5 col-sm">
                     <h1><strong>공지사항</strong></h1>
                     <hr>
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group list-group-flush rounded">
                         {% for notice in notices %}
-                            <li class="list-group-item">{{ notice.title }}</li>
+                            <li class="list-group-item" onclick="location.href='{% url 'Cs:notice_detail' notice.id %}'">{{ notice.title }}</li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -153,7 +153,7 @@
                         <hr>
                         <ul class="list-group list-group-flush">
                             {% for faq in faqs %}
-                                <li class="list-group-item">{{ faq.title }}</li>
+                                <li class="list-group-item" onclick="location.href='{% url 'Cs:faq_detail' faq.id %}'">{{ faq.title }}</li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -162,7 +162,7 @@
                         <hr>
                         <ul class="list-group list-group-flush">
                             {% for magazine in magazines %}
-                                <li class="list-group-item">{{ magazine.title }}</li>
+                                <li class="list-group-item" onclick="location.href='{% url 'User:magazine_detail' magazine.id %}'">{{ magazine.title }}</li>
                             {% endfor %}
                         </ul>
                     </div>

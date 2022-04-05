@@ -72,6 +72,14 @@
     color: #262626
 }
 
+.list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item:hover {
+    background-color: lightblue;
+}
+
 .map_wrap {
     overflow: hidden;
 }

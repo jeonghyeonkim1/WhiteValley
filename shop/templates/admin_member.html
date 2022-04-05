@@ -95,7 +95,7 @@
         #reg_date button:disabled,
         #order button:disabled {
             background-color: #fff;
-            color: #262626;
+            color: #000
         }
     </style>
 {% endblock %}
@@ -132,12 +132,12 @@
                     <div class="col-sm-10">
                         <input type="hidden" value="{{ date }}" name="date_filter">
                         <div class="d-flex justify-content-evenly align-items-center mb-2" id="reg_date">
-                                <button type="button" class="btn btn-outline-light w-100" {% if date == "전체" %}disabled{% endif %}>전체</button>
-                                <button type="button" class="btn btn-outline-light w-100" {% if date == "오늘" %}disabled{% endif %}>오늘</button>
-                                <button type="button" class="btn btn-outline-light w-100" {% if date == "1주일" %}disabled{% endif %}>1주일</button>
-                                <button type="button" class="btn btn-outline-light w-100" {% if date == "1개월" %}disabled{% endif %}>1개월</button>
-                                <button type="button" class="btn btn-outline-light w-100" {% if date == "3개월" %}disabled{% endif %}>3개월</button>
-                                <button type="button" class="btn btn-outline-light w-100" {% if date == "직접선택" %}disabled{% endif %}>직접선택</button>
+                            <button type="button" class="btn btn-outline-light w-100" {% if date == "전체" %}disabled{% endif %}>전체</button>
+                            <button type="button" class="btn btn-outline-light w-100" {% if date == "오늘" %}disabled{% endif %}>오늘</button>
+                            <button type="button" class="btn btn-outline-light w-100" {% if date == "1주일" %}disabled{% endif %}>1주일</button>
+                            <button type="button" class="btn btn-outline-light w-100" {% if date == "1개월" %}disabled{% endif %}>1개월</button>
+                            <button type="button" class="btn btn-outline-light w-100" {% if date == "3개월" %}disabled{% endif %}>3개월</button>
+                            <button type="button" class="btn btn-outline-light w-100" {% if date == "직접선택" %}disabled{% endif %}>직접선택</button>
                         </div>
                         <div class="d-flex justify-content-center align-items-center" id="reg_date_detail">
                             <input type="text" name="datepicker1" class="text-center form-control" id="datepicker1" value="{{ datepicker1_value }}" {% if not date == "직접선택" %}disabled{% endif %}>
@@ -153,26 +153,10 @@
                     <div class="col-sm-10">
                         <input type="hidden" value="{{ order }}" name="order_filter">
                         <div class="d-flex justify-content-evenly align-items-center mb-2" id="order">
-                            {% if order == "가입일순" %}
-                                <button type="button" class="btn btn-outline-light w-100" disabled>가입일순</button>
-                            {% else %}
-                                <button type="button" class="btn btn-outline-light w-100">가입일순</button>
-                            {% endif %}
-                            {% if order == "ID순" %}
-                                <button type="button" class="btn btn-outline-light w-100" disabled>ID순</button>
-                            {% else %}
-                                <button type="button" class="btn btn-outline-light w-100">ID순</button>
-                            {% endif %}
-                            {% if order == "닉네임순" %}
-                                <button type="button" class="btn btn-outline-light w-100" disabled>닉네임순</button>
-                            {% else %}
-                                <button type="button" class="btn btn-outline-light w-100">닉네임순</button>
-                            {% endif %}
-                            {% if order == "연락처순" %}
-                                <button type="button" class="btn btn-outline-light w-100" disabled>연락처순</button>
-                            {% else %}
-                                <button type="button" class="btn btn-outline-light w-100">연락처순</button>
-                            {% endif %}
+                            <button type="button" class="btn btn-outline-light w-100" {% if order == "가입일순" %}disabled{% endif %}>가입일순</button>
+                            <button type="button" class="btn btn-outline-light w-100" {% if order == "ID순" %}disabled{% endif %}>ID순</button>
+                            <button type="button" class="btn btn-outline-light w-100" {% if order == "닉네임순" %}disabled{% endif %}>닉네임순</button>
+                            <button type="button" class="btn btn-outline-light w-100" {% if order == "연락처순" %}disabled{% endif %}>연락처순</button>
                         </div>
                     </div>
                 </div>

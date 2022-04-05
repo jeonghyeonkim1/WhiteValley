@@ -15,27 +15,24 @@
 <div class="container col-lg-12 mt-3">
     <hr>
     <div class="mb-3 mt-3 clearfix">
-        <span class="float-end ms-4">작성일: </span>
-        <span class="float-end">조회수: </span>
+        <span class="float-end ms-4">작성일 : {{ magazine.reg_date|date:"Y-m-d H:i:s" }} </span>
+        <span class="float-end">조회수 : {{ magazine.view_cnt }} </span>
     </div>
 
     <form action="." method="POST" >
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="name">작성자:</label>
-            <div class="border bg-light rounded p-2" ></div>
-        </div>    
+        {% csrf_token %}  
         <div class="mb-3 mt-3">
-            <label for="subject">제목:</label>
-            <input type="text" class="form-control" id="subject" placeholder="제목을 입력하세요" name="subject" value="">
+            <label for="title">제목</label>
+            <input type="text" class="form-control" id="title" placeholder="수정 할 제목을 입력하세요" name="title" value="{{ magazine.title }}">
         </div>
         <div class="mb-3 mt-3">
             <label for="content">내용:</label>
-            <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content"></textarea>
+            <textarea class="form-control" rows="5" id="content" name="content" required>{{ magazine.content }}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-outline-dark">수정완료</button>
-        <a class="btn btn-outline-dark" href="{% url 'User:magazine_list' %}">목록</a>
+        <input class="btn-outline-dark mt-3" type="file" name="uploadedFile"><br>
+        <a class="btn btn-outline-dark float-end" href="{% url 'User:magazine_list' %}">목록</a>
+        <button type="submit" class="btn btn-outline-dark float-end">수정완료</button>
 
     </form>
 </div>
