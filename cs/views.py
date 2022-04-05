@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from cs.models import Board, Inquire, B_Photo, Photo_Upload
@@ -125,6 +125,16 @@ def event_write(request):
         e_start = request.POST['e_start']
         e_end = request.POST['e_end']
         uploadedFile = request.FILES["uploadedFile"]
+
+
+        if len(re.findall(r'\W', uploadedFile.name)) > 0:
+            return HttpResponse(f'''
+                <script>
+                    alert("파일 이름에 특수문자가 포함되어 있습니다!");
+                    history.back();
+                </script>
+            ''')
+
         uploadedFileName = re.sub(r"\W | [^.] | [^_]", "", uploadedFile.name.replace(" ", "_").replace("(", "").replace(")", ""))
 
     
