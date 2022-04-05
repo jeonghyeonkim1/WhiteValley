@@ -22,4 +22,6 @@ urlpatterns = [
     # mypage -------------------------------------------------------------------------------
     path('mypage/', views.mypage, name="mypage"),
     path('login/api/', views.api_login, name="api_login"),
+    path('mypage/modify/check/', views.info_modify, name="info_modify"),
+    path('mypage/modify/detail/', views.info_modify_detail, name="info_modify_detail"),
 ]

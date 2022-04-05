@@ -285,6 +285,52 @@ def mypage(req):
 
     return render(req, 'mypage.html', context)
 
+def info_modify(req):
+    password = req.GET["password"]
+    real_password = req.GET["real_password"]
+
+    if check_password(password, real_password):
+        req.session['modify_check'] = True
+        return HttpResponse(f'''
+            <script>
+                alert("인증이 완료되었습니다!!");
+                location.href="/whitevalley/user/mypage/modify/detail/"
+            </script>
+        ''')
+    else:
+        return HttpResponse(f'''
+            <script>
+                alert("비밀번호가 틀렸습니다!!");
+                history.back();
+            </script>
+        ''')
+
+
+def info_modify_detail(req):
+    try:
+        req.session['user']
+    except:
+        return HttpResponse(f'''
+            <script>
+                alert("올바른 경로가 아닙니다.");
+                history.back();
+            </script>
+        ''')
+
+    try:
+        req.session['modify_check']
+    except:
+        return HttpResponse(f'''
+            <script>
+                alert("인증 유효기간이 지났습니다. 다시 인증해주세요.");
+                history.back();
+            </script>
+        ''')
+    
+
+    return render(req, 'mypage_modify.html')
+
+
 def api_login(req):
     email = req.POST['api_email']
     password = req.POST['api_password']
