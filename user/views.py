@@ -25,7 +25,16 @@ def login(request):
             context['error'] = '모든 값을 입력해야 합니다.'
         else:
 
-            user = User.objects.get(email = email)
+            try:
+                user = User.objects.get(email = email)
+            except:
+                return HttpResponse(f'''
+                    <script>
+                        alert("존재하지 않는 아이디입니다!");
+                        history.back();
+                    </script>
+                ''')
+
             if user.admin:
                 if user.password == password:
                     request.session['user'] = user.id

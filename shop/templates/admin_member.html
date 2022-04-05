@@ -5,6 +5,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script>
+        $.datepicker.setDefaults({
+            dateFormat: 'yy-mm-dd',
+            prevText: '이전 달',
+            nextText: '다음 달',
+            monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+            dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+            dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+            showMonthAfterYear: true,
+            yearSuffix: '년'
+        });
         $(function() {
             $("#datepicker1").datepicker();
             $("#datepicker2").datepicker();
@@ -16,6 +28,9 @@
                         $(this)[0].disabled = false;
                     })
                     $(this)[0].disabled = true;
+                    $("[name='date_filter']").val($(this).text())
+                    
+                    console.log($("[name='date_filter']").val())
 
                     if ($(this).text() == "직접선택") {
                         $("#datepicker1")[0].disabled = false;
@@ -33,7 +48,26 @@
                         $(this)[0].disabled = false;
                     })
                     $(this)[0].disabled = true;
+                    $("[name='order_filter']").val($(this).text())
+                    console.log($("[name='order_filter']").val())
                 })
+            })
+
+            $("#filtering").on('submit', function() {
+                if ($("#reg_date button:last")[0].disabled) {
+                    if ($("#datepicker1").val() == "" || $("#datepicker2").val() == "") {
+                        alert("두 날짜를 모두 기입해주세요!!");
+                        return false;
+                    }
+                }
+                return true
+            })
+
+            $("[name='del_member']").on('submit', function() {
+                if(confirm("정말로 해당 유저를 회원탈퇴 처리 시키겠습니까?")) {
+                    return true;
+                }
+                return false;
             })
         });
     </script>
@@ -92,22 +126,26 @@
             </div>
         </div>
         <div class="w-100">
-            <form action="" class="bg-dark rounded p-3 text-white text-center d-flex flex-column justify-content-evenly align-items-center">
+            <form id="filtering" method="POST" action="." class="bg-dark rounded p-3 text-white text-center d-flex flex-column justify-content-evenly align-items-center">
+                {% csrf_token %}
                 <div class="w-100 row mb-3">
                     <div class="col-sm-2 pt-2 d-flex justify-content-evenly align-items-center">
                         <h4>가입일</h4>
                     </div>
                     <div class="col-sm-10">
+                        <input type="hidden" value="{{ date }}" name="date_filter">
                         <div class="d-flex justify-content-evenly align-items-center mb-2" id="reg_date">
-                            <button class="btn btn-outline-light w-100" disabled>전체</button>
-                            <button class="btn btn-outline-light w-100">오늘</button>
-                            <button class="btn btn-outline-light w-100">1주일</button>
-                            <button class="btn btn-outline-light w-100">1개월</button>
-                            <button class="btn btn-outline-light w-100">3개월</button>
-                            <button class="btn btn-outline-light w-100">직접선택</button>
+                                <button type="button" class="btn btn-outline-light w-100" {% if date == "전체" %}disabled{% endif %}>전체</button>
+                                <button type="button" class="btn btn-outline-light w-100" {% if date == "오늘" %}disabled{% endif %}>오늘</button>
+                                <button type="button" class="btn btn-outline-light w-100" {% if date == "1주일" %}disabled{% endif %}>1주일</button>
+                                <button type="button" class="btn btn-outline-light w-100" {% if date == "1개월" %}disabled{% endif %}>1개월</button>
+                                <button type="button" class="btn btn-outline-light w-100" {% if date == "3개월" %}disabled{% endif %}>3개월</button>
+                                <button type="button" class="btn btn-outline-light w-100" {% if date == "직접선택" %}disabled{% endif %}>직접선택</button>
                         </div>
                         <div class="d-flex justify-content-center align-items-center" id="reg_date_detail">
-                            <input type="text" class="text-center form-control" id="datepicker1" disabled>~<input type="text" class="text-center form-control" id="datepicker2" value="{{ now }}" disabled>
+                            <input type="text" name="datepicker1" class="text-center form-control" id="datepicker1" value="{{ datepicker1_value }}" {% if not date == "직접선택" %}disabled{% endif %}>
+                            ~
+                            <input type="text" name="datepicker2" class="text-center form-control" id="datepicker2" value="{{ datepicker2_value }}" {% if not date == "직접선택" %}disabled{% endif %}>
                         </div>
                     </div>
                 </div>
@@ -116,16 +154,33 @@
                         <h4>정렬</h4>
                     </div>
                     <div class="col-sm-10">
+                        <input type="hidden" value="{{ order }}" name="order_filter">
                         <div class="d-flex justify-content-evenly align-items-center mb-2" id="order">
-                            <button class="btn btn-outline-light w-100" disabled>가입일순</button>
-                            <button class="btn btn-outline-light w-100">ID순</button>
-                            <button class="btn btn-outline-light w-100">닉네임순</button>
-                            <button class="btn btn-outline-light w-100">연락처순</button>
+                            {% if order == "가입일순" %}
+                                <button type="button" class="btn btn-outline-light w-100" disabled>가입일순</button>
+                            {% else %}
+                                <button type="button" class="btn btn-outline-light w-100">가입일순</button>
+                            {% endif %}
+                            {% if order == "ID순" %}
+                                <button type="button" class="btn btn-outline-light w-100" disabled>ID순</button>
+                            {% else %}
+                                <button type="button" class="btn btn-outline-light w-100">ID순</button>
+                            {% endif %}
+                            {% if order == "닉네임순" %}
+                                <button type="button" class="btn btn-outline-light w-100" disabled>닉네임순</button>
+                            {% else %}
+                                <button type="button" class="btn btn-outline-light w-100">닉네임순</button>
+                            {% endif %}
+                            {% if order == "연락처순" %}
+                                <button type="button" class="btn btn-outline-light w-100" disabled>연락처순</button>
+                            {% else %}
+                                <button type="button" class="btn btn-outline-light w-100">연락처순</button>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
                 <div class="w-100 d-flex justify-content-center align-items-center mt-3">
-                    <button class="btn btn-outline-primary">검색</button>
+                    <button class="btn btn-success fw-bold" id="filtering_btn">검색</button>
                 </div>
             </form>
             <div>
@@ -138,6 +193,7 @@
                             <th scope="col">연락처</th>
                             <th scope="col">적립금</th>
                             <th scope="col">회원가입일</th>
+                            <th scope="col">회원탈퇴</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -149,10 +205,52 @@
                                 <td>{{ user.contact }}</td>
                                 <td>{{ user.point }}</td>
                                 <td>{{ user.reg_date | date:"Y-m-d" }}</td>
+                                <td>
+                                    <form name="del_member" action="/whitevalley/admin/member/delete/{{ user.id }}/" method="POST">
+                                        {% csrf_token %}
+                                        <button class="btn btn-danger" style="font-size: 10px;">
+                                            <i class="fa-solid fa-x"></i>
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+            <div class="d-flex justify-content-center">
+                <ul class="pagination justify-content-center col-sm-9">
+                    {# << 표시 여부 #}        
+                    {% if users.number > 1 %}
+                        <li class="page-item"><a class="page-link" href="{% url 'Main:admin_member' %}" title="처음"><i class='fas fa-angle-double-left'></i></a></li>
+                    {% endif %}
+
+                    {# < 표시 여부 #}
+                    {% if start_page > 1 %}
+                        <li class="page-item"><a class="page-link" href="{% url 'Main:admin_member' %}?page={{ start_page | add:-1 }}" title="이전"><i class='fas fa-angle-left'></i></a></li>
+                    {% endif %}
+{{ page_range }}
+                    {# 페이징 안의 '숫자' 표시 #}
+                    {% if users.paginator.num_pages > 1 %}
+                        {% for p in page_range %}
+                            {% if users.number != p %}
+                                <li class="page-item"><a class="page-link" href="{% url 'Main:admin_member' %}?page={{ p }}">{{ p }}</a></li>
+                            {% else %}
+                                <li class="page-item active"><a class="page-link" href="#" title="현재페이지">{{ p }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    
+                    {# > 표시 #}
+                    {% if users.paginator.num_pages > end_page %}
+                        <li class="page-item"><a class="page-link" href="{% url 'Main:admin_member' %}?page={{ end_page | add:1 }}" title="다음"><i class='fas fa-angle-right'></i></a></li>
+                    {% endif %}
+                
+                    {# >> 표시 #}
+                    {% if users.number < users.paginator.num_pages %}
+                        <li class="page-item"><a class="page-link" href="{% url 'Main:admin_member' %}?page={{ users.paginator.num_pages }}" title="마지막"><i class='fas fa-angle-double-right'></i></a></li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </div>
