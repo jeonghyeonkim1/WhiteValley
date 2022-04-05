@@ -35,26 +35,32 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <label for="">품번</label>
-                        <input type="text" class="form-control">
+                        <label for="">상품명</label>
+                        <input type="text" name="title_input" class="form-control">
                     </div>
                     <div>
-                        <label for="">상품명</label>
-                        <input type="text" class="form-control">
+                        <label for="">가격</label>
+                        <input type="text" name="price_input"  class="form-control">
                     </div>
                     <div style="margin-bottom:40px">
                         <label for="">상품상세 설명</label>
-                        <textarea name="" id="" class="form-control w-80"></textarea>
+                        <textarea name="description_input"  class="form-control w-80"></textarea>
                     </div>
                     <div>
                         <label for="">상세이미지</label>
-                        <input type="text" class="form-control">
+                        <input type="file" name="image_input"  class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <a href="" class="btn">취소</a>
                     <a onclick="" id="addbtn" href={% url 'Order:order' %} class="btn btn-dark" type="button" data-dismiss="modal">추가</a>
                 </div>
+                <form action="{% url 'Order:order' %}" method="GET">
+                    <input type="text" name="title">
+                    <input type="text" name="price">
+                    <input type="text" name="description">
+                    <input type="text" name="img">
+                </form>
             </div>
         </div>
     </div>
@@ -97,15 +103,15 @@
                 {% if session.admin %}
                     <button id="product_delete" class="btn btn-danger" onclick="deleteitem">X</button>
                 {% endif %}
-                <div class="p"><a href="{% url 'Order:order_des' %}"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">사이즈5가지</p></a></div>
+                <div class="p"><a href="{% url 'Order:order_des' %}"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">19,900원</p></a></div>
                 <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
             </li>
             <li>
-                <div class="p"><a href="{% url 'Order:order_des' %}"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">사이즈5가지</p></a></div>
+                <div class="p"><a href="{% url 'Order:order_des' %}"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">19,900원</p></a></div>
                 <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
             </li>
             <li>
-                <div class="p"><a href="{% url 'Order:order_des' %}"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">사이즈5가지</p></a></div>
+                <div class="p"><a href="{% url 'Order:order_des' %}"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">19,900원</p></a></div>
                 <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
             </li>
             <li>
@@ -132,6 +138,18 @@
         const item = document.getElementById('item');
         item.remove();
     }
+    $("[name='title_input']").change(function(){
+        $("[name='title']").val($(this).val());
+    });
+    $("[name='price_input']").change(function(){
+        $("[name='price']").val($(this).val());
+    });
+    $("[name='description_input']").change(function(){
+        $("[name='description']").val($(this).val());
+    });
+    $("[name='image_input']").change(function(){
+        $("[name='img']").val($(this).val());
+    });
 
 </script>
 

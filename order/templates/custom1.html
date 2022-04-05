@@ -36,7 +36,6 @@
         </div>
         <div class="selectsize"> 
            <select id="size" name="size">
-               <option value="XS">XS</option>
                <option value="S">S</option>
                <option value="M" selected>M</option>
                <option value="L">L</option>
@@ -45,11 +44,26 @@
                <option value="3XL">3XL</option>
            </select>
         </div> 
-        <div class="Btn"><a href="{% url 'Order:custom2' %}" id="CustomBtn2">Next</a></div>
+        <form action="{% url 'Order:custom2' %}" method="GET">
+            <input type="text" value="#ffffff" name="color_input">
+            <input type="text" value="M" name="size_input">
+            <div class="Btn"><a href="{% url 'Order:custom2' %}" id="CustomBtn2">Next</a></div>
+        </form>
+        
         </div>
         </div>
         
        </div>
            
+<script>
+    $(document).ready(function(){
+        $("[name='color']").change(function(){
+            $("[name='color_input']").val($(this).val());
+        });
+        $("[name='size']").change(function(){
+            $("[name='size_input']").val($(this).val());
+        })
+    })
+</script>
 
 {% endblock %}
