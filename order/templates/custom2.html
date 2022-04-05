@@ -12,14 +12,14 @@
 
 {% block contents %}
     <div class="text_wrap">
-        <h3>상품타입네임<br>
+        <h3>{{ type_title }}<br>
         <h6>문구와 이미지를 추가해 원하는 위치로 이동시키고 Custom이 완료되면 'Next'버튼을 눌러주세요.
             
     </div>
     <div class="custom2">
         <div class="custom1_top">
             <div class="pimg2_wrap">
-                <div id="parent" class="parent" style="width:500px; height:500px; background-image:URL(/static/image/products/shortw.png); background-size:cover;">
+                <div id="parent" class="parent" style="width:500px; height:500px; background-image:URL({{ color }}); background-size:cover;">
                     <div id="textresult" style='position:absolute; left:300px; top:300px; cursor:pointer; cursor:hand; font-weight: bold; font-size: 20px;' onmousedown='startDrag(event, this)'></div>
                     <div class="panzoom" id="panzoom-element" >
                         <img id="uploadimg" src="" width="200"  style="display:none; z-index:2; position: absolute;">
@@ -32,7 +32,7 @@
             <div class="custom2_detail">
                 <div>
                     <div>
-                        <p id="product_type">상품타입네임
+                        <p id="product_type">{{ type_title }}</p>
                     </div>
                     <div style="padding-right:72%"><a data-toggle="tooltip" style="text-decoration: none; padding:30px;" title="이미지는 마우스 휠로 크기 조절 가능합니다. &#8251;상세한 변경을 더 원하시면 다음 페이지 요청란에 적어주세요&#8251;">TIP</a></div>
                 </div>

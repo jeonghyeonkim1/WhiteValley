@@ -36,14 +36,14 @@
                     <div class="col-sm-10 d-flex">
                         <input type="hidden" name="tag_expose" value="{{ config.tag_show }}">
                         {% if config.tag_show %}
-                            <button type="button" class="w-50 btn btn-primary fw-bold border-3" id="tag_show" disabled>SHOW</button>
+                            <button type="button" class="w-50 btn btn-primary fw-bold" id="tag_show" disabled>SHOW</button>
                         {% else %}
-                            <button type="button" class="w-50 btn btn-outline-primary fw-bold border-3" id="tag_show">SHOW</button>
+                            <button type="button" class="w-50 btn btn-outline-primary fw-bold" id="tag_show">SHOW</button>
                         {% endif %}
                         {% if config.tag_show %}
-                            <button type="button" class="w-50 btn btn-outline-danger fw-bold border-3" id="tag_hide">HIDE</button>
+                            <button type="button" class="w-50 btn btn-outline-danger fw-bold" id="tag_hide">HIDE</button>
                         {% else %}
-                            <button type="button" class="w-50 btn btn-danger fw-bold border-3" id="tag_hide" disabled>HIDE</button>
+                            <button type="button" class="w-50 btn btn-danger fw-bold" id="tag_hide" disabled>HIDE</button>
                         {% endif %}
                     </div>
                 </div>

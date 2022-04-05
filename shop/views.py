@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from user.models import User
+from cs.models import Board
 from shop.models import Config, Co_account
 import datetime
 from django.core.paginator import Paginator
@@ -11,7 +12,10 @@ def home(req):
         'cookies': req.COOKIES,
         'session': req.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'home'
+        'currentpage': 'home',
+        'notices': Board.objects.filter(tag="공지사항").order_by("-reg_date")[:12],
+        'faqs': Board.objects.filter(tag="FAQ").order_by("-reg_date")[:12],
+        'magazines': Board.objects.filter(tag="매거진").order_by("-reg_date")[:12]
     }
 
     cookie_name = 'visited'
@@ -100,7 +104,8 @@ def admin_member(req):
             if req.session['admin']:
                 context['date'] = "전체"
                 context['order'] = "가입일순"
-                context['users'] = User.objects.all()
+                context['users'] = User.objects.all().order_by('-reg_date')
+                page = int(req.GET.get('page', 1))
             else:
                 return HttpResponse(f'''
                     <script>
@@ -126,27 +131,24 @@ def admin_member(req):
 
         if date_filter == "전체":
             datepicker1 = "2000-01-01"
-            datepicker2 = datetime.datetime.now().date()
+            datepicker2 = datetime.datetime.now().date() + datetime.timedelta(days=1)
         elif date_filter == "오늘":
             datepicker1 = datetime.datetime.now().date()
             datepicker2 = datetime.datetime.now().date() + datetime.timedelta(days=1)
         elif date_filter == "1주일":
             datepicker1 = datetime.datetime.now().date() + datetime.timedelta(days=-7)
-            datepicker2 = datetime.datetime.now().date()
+            datepicker2 = datetime.datetime.now().date() + datetime.timedelta(days=1)
         elif date_filter == "1개월":
             datepicker1 = datetime.datetime.now().date() + datetime.timedelta(days=-30)
-            datepicker2 = datetime.datetime.now().date() 
+            datepicker2 = datetime.datetime.now().date() + datetime.timedelta(days=1)
         elif date_filter == "3개월":
             datepicker1 = datetime.datetime.now().date() + datetime.timedelta(days=-90)
-            datepicker2 = datetime.datetime.now().date()
+            datepicker2 = datetime.datetime.now().date() + datetime.timedelta(days=1)
         elif date_filter == "직접선택":
             datepicker1 = req.POST['datepicker1']
             context['datepicker1_value'] = datepicker1
             datepicker2 = req.POST['datepicker2']
             context['datepicker2_value'] = datepicker2
-            
-
-        print(datepicker1, datepicker2, "11111111111111111111111111111111111111111")
                 
 
         if order_filter == "가입일순":
