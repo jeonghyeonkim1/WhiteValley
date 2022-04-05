@@ -1,14 +1,11 @@
-from math import fabs
-from multiprocessing import context
 from django.shortcuts import render, HttpResponse, redirect
 from user.models import User
 from shop.models import Config
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import Http404
-from cs.models import Board
-from cs.models import B_Photo
+from cs.models import Board, B_Photo, Photo_Upload
 from django.core.paginator import Paginator  
-
+import re
 
 # Create your views here.
 def login(request):
@@ -174,13 +171,14 @@ def magazine_list(request):
     page = request.GET.get('page', '1')
     paginator = Paginator(allmagazine, 10)
     page_obj = paginator.get_page(page)
+    photos = B_Photo.objects.all()
 
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'magazine',
         'boards': page_obj,
-        'magazine' : page_obj,
+        'photos' : photos,
     }
 
     return render(request, 'm_list.html', context)
@@ -189,6 +187,7 @@ def magazine_list(request):
 def magazine_detail(request, pk):
 
     magazine = Board.objects.get(pk=pk)
+    photos = B_Photo.objects.all()
     magazine.view_cnt += 1
     magazine.save()
 
@@ -197,6 +196,7 @@ def magazine_detail(request, pk):
         'config': Config.objects.get(id=1),
         'currentpage': 'magazine',
         'magazine' : magazine,
+        'photos' : photos,
     }
 
     return render(request, 'm_detail.html', context)
@@ -241,10 +241,30 @@ def magazine_write(request):
         title = request.POST['title']
         content = request.POST['content']
         uploadedFile = request.FILES["uploadedFile"]
-        photo = B_Photo.objects.get(b.pk, photo = uploadedFile)
-        b = Board(user = user, tag = tag, title = title, content = content)
-        photo.save()
-        return render(request, 'm_writeOk.html', {"pk": photo.pk})
+
+        if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
+            return HttpResponse(f'''
+                <script>
+                    alert("파일 이름에 특수문자가 포함되어 있습니다!");
+                    history.back();
+                </script>
+            ''')
+
+        uploadedFileName = re.sub(r"\W | [^.] | [^_]", "", uploadedFile.name.replace(" ", "_").replace("(", "").replace(")", ""))
+
+        Photo_Upload(title=uploadedFileName, photo=uploadedFile).save()
+
+        board = Board(
+            user=user,
+            tag=tag,
+            title=title, 
+            content=content, 
+        )
+        board.save()
+
+        B_Photo(board=board, photo=f'/static/image/{uploadedFileName}').save()
+
+        return render(request, 'm_writeOk.html', {"pk": board.pk})
   
 def magazine_delete(request):
 
