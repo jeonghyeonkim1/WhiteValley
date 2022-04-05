@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from cs.models import Board
 from cs.models import Inquire
+from cs.models import B_Photo
 from user.models import User
 from shop.models import Config
 
@@ -121,18 +122,32 @@ def event_write(request):
         tag = request.POST['event']
         title = request.POST['title']
         content = request.POST['content']
+        e_start = request.POST['e_start']
+        e_end = request.POST['e_end']
 
-        event = Board(user=user, title=title, content=content, tag=tag)
+        event = Board(
+            user=user, 
+            title=title, 
+            content=content, 
+            tag=tag,
+            e_start=e_start,
+            e_end=e_end
+        )
         event.save()
 
         return render(request, 'event_writeOk.html', {"pk": event.pk})
 
 
 def event_detail(request, pk):
+    event = Board.objects.get(pk=pk)
+    event.view_cnt += 1
+    event.save()
+
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'cs'
+        'currentpage': 'cs',
+        'event': event
     }
     return render(request, 'event_detail.html', context)
 
@@ -164,12 +179,17 @@ def event_update(request, pk):
 
 
 def event_delete(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        event = Board.objects.get(id=id)
+        event.delete()
+
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'cs'
     }
-    return render(request, 'event_delete.html', context)
+    return render(request, 'event_deleteOk.html', context)
 
 
 # 1:1문의 페이지
@@ -211,10 +231,14 @@ def oto_detail(request, pk):
 
 
 def oto_list(request):
-
+    
     try:
-        all_otos = Inquire.objects.filter(user=User.objects.get(id=request.session['user'])).order_by('-reg_date')
+        if request.session['admin']:
+            all_otos = Inquire.objects.all().order_by('-reg_date')
 
+        else:
+            all_otos = Inquire.objects.filter(user=User.objects.get(id=request.session['user'])).order_by('-reg_date')
+        
         page = int(request.GET.get('p', 1))
         paginator = Paginator(all_otos, 5)
         otos = paginator.get_page(page)
@@ -229,8 +253,8 @@ def oto_list(request):
         return render(request, 'oto_list.html', context)
         
     except KeyError:
-        return render(request, 'oto_list.html')
-
+        return render(request, 'oto_list.html') 
+  
 
 def oto_answer(request, pk):
     if request.method == 'GET':
@@ -297,9 +321,9 @@ def faq_detail(request, pk):
 
 def faq_list(request):
     keyword = request.GET.get('keyword')
+    
     if keyword:
         all_faqs = Board.objects.filter(title__contains=keyword, tag='FAQ')
-        all_faqs = Board.objects.filter(content__contains=keyword, tag='FAQ')
     else:
         all_faqs = Board.objects.filter(tag='FAQ')
     
@@ -318,7 +342,7 @@ def faq_list(request):
         'config': Config.objects.get(id=1),
         'currentpage': 'cs',
         'faqs': faqs,
-        'all_faqs': all_faqs
+        'all_faqs': all_faqs,
     }
     return render(request, 'faq_list.html', context)
 

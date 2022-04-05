@@ -18,12 +18,12 @@
         <input type="text" class="form-control" style="width:80px" placeholder="관리자" readonly>
     </div>
     <div class="mb-3 mt-3">
-        <label for="title">FAQ 제목</label>
-        <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" name="title" required>
+        <label for="title">Question</label>
+        <input type="text" class="form-control" id="title" placeholder="질문을 입력해주세요" name="title" required>
     </div>
     <div class="mb-3 mt-3">
-        <label for="content">FAQ 내용</label>
-        <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required><c:out value="${content}" /></textarea>
+        <label for="content">Answer</label>
+        <textarea class="form-control" rows="5" id="content" placeholder="답변을 입력해주세요" name="content" required></textarea>
     </div>
     {% if session.admin %}
     {% csrf_token %}

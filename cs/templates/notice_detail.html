@@ -27,7 +27,6 @@
     </div>    
 
     {% if session.admin %}
-        {% csrf_token %}
         <a class="btn btn-dark" href="{% url 'Cs:notice_update' notice.id %}">수정하기</a>
         <button type="button" class="btn btn-dark" onclick="chkDelete()">삭제하기</button>
     {% endif %}
