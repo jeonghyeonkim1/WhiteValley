@@ -28,21 +28,20 @@
     <div class="container">
         <div class="row row-cols-1">
             {% for event in events %}
-            <div class="col">
-                <div class="card shadow-sm" style="width:auto; height:100%;">
-                    {% for photo in photos %}
-                    {% if photo.board == event %}
-                    <img class="bd-placeholder-img card-img-top"
-                        src="{{ photo.photo }}"
-                        onclick="location.href='{% url 'Cs:event_detail' event.id %}'" style="cursor: pointer;">
-                    {% endif %}
-                    {% endfor %}
-                    <div class="card-body">
-                        <p class="card-text" style="text-align:center">{{ event.title }}</p>
-
+                <div class="col">
+                    <div class="card shadow-sm" style="width:auto; height:100%;">
+                        {% for photo in photos %}
+                            {% if photo.board == event %}
+                                <img class="bd-placeholder-img card-img-top"
+                                    src="{{ photo.photo }}"
+                                    onclick="location.href='{% url 'Cs:event_detail' event.id %}'" style="cursor: pointer;">
+                            {% endif %}
+                        {% endfor %}
+                        <div class="card-body">
+                            <p class="card-text" style="text-align:center">{{ event.title }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
             {% endfor %}
         </div>
     </div>

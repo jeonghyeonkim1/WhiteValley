@@ -1,11 +1,10 @@
 from django.http import Http404
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from cs.models import Board
-from cs.models import Inquire
-from cs.models import B_Photo
+from cs.models import Board, Inquire, B_Photo, Photo_Upload
 from user.models import User
 from shop.models import Config
+import re
 
 
 # 공지사항 페이지
@@ -109,33 +108,42 @@ def notice_delete(request):
 
 # 이벤트 페이지
 def event_write(request):
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'cs'
+    }
+
     if request.method == 'GET':
-        context = {
-            'session': request.session,
-            'config': Config.objects.get(id=1),
-            'currentpage': 'cs'
-        }
         return render(request, 'event_write.html', context)
 
     elif request.method == 'POST':
-        user = User.objects.get(id=request.session['admin'])
+        user = User.objects.get(id=request.session['user'])
         tag = request.POST['event']
         title = request.POST['title']
         content = request.POST['content']
         e_start = request.POST['e_start']
         e_end = request.POST['e_end']
+        uploadedFile = request.FILES["uploadedFile"]
+        uploadedFileName = re.sub(r"\W | [^.] | [^_]", "", uploadedFile.name.replace(" ", "_").replace("(", "").replace(")", ""))
 
-        event = Board(
+    
+        Photo_Upload(title=uploadedFileName, photo=uploadedFile).save()
+
+        board = Board(
             user=user, 
             title=title, 
             content=content, 
             tag=tag,
             e_start=e_start,
-            e_end=e_end
+            e_end=e_end,
         )
-        event.save()
+        
+        board.save()
 
-        return render(request, 'event_writeOk.html', {"pk": event.pk})
+        B_Photo(board=board, photo=f'/static/image/{uploadedFileName}').save()
+
+        return render(request, 'event_writeOk.html', {"pk": board.pk})
 
 
 def event_detail(request, pk):
@@ -153,7 +161,7 @@ def event_detail(request, pk):
 
 
 def event_list(request):
-    all_events = Board.objects.filter(tag='이벤트').order_by('-reg_date')
+    all_events = Board.objects.filter(tag='이벤트').order_by('reg_date')
 
     page = int(request.GET.get('p', 1))
     paginator = Paginator(all_events, 6)

@@ -36,9 +36,17 @@ class Inquire(models.Model):
 
 class B_Photo(models.Model):
     board = models.ForeignKey('cs.Board', on_delete=models.CASCADE)
-    photo = models.ImageField(blank=True, null=True, verbose_name='이벤트이미지')
+    photo = models.CharField(max_length=300, null=True, verbose_name='게시물이미지')
 
     class Meta:
         db_table = 'b_photo'
-        verbose_name = '이벤트사진'
+        verbose_name = '게시물사진'
+        verbose_name_plural = '게시물사진(들)'
 
+class Photo_Upload(models.Model):
+    title = models.CharField(max_length=3000)
+
+    photo = models.FileField(upload_to="static/image/")
+
+    class Meta:
+        db_table = 'u_photo'
