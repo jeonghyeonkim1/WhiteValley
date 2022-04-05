@@ -9,7 +9,19 @@
         $(".question").click(function () {
             $(this).next(".answer").toggle();
         });
+
+
+        $("#btn_filter").children().each(function () {
+            $(this).click(function () {
+                $("[name='keyword']").val($(this).val())
+                $('#keyword_btn')[0].submit();
+            })
+        })
     });
+
+    function order() {
+        document.getElementById('keyword').value;
+    }
 </script>
 {% endblock %}
 
@@ -20,20 +32,19 @@
 <br><br>
 <table class="table table-hover">
     <thead>
-        <form action="" method="GET">
+        <form action="." method="GET" id="keyword_btn">
             <div class='text-center'>
-                <input type="text" id="subject" placeholder="궁금한점을 검색해보세요" name="keyword"
+                <input type="text" id="keyword" placeholder="궁금한점을 검색해보세요" name="keyword"
                     style="width:30%; height: 38px;">
                 <button type="submit" class="btn btn-outline-dark">검색</button>
             </div>
             <br>
-            <div class='text-center' style="margin: top 50px">
-                <input type="button" class="btn btn-outline-dark" value="주문" onclick="order()"
-                    style="margin-right:50px; width: 100px;">
-                <input type="button" class="btn btn-outline-dark" value="결제" style="margin-right:50px; width: 100px;">
-                <input type="button" class="btn btn-outline-dark" value="환불" style="margin-right:50px; width: 100px;">
-                <input type="button" class="btn btn-outline-dark" value="배송" style="margin-right:50px; width: 100px;">
-                <input type="button" class="btn btn-outline-dark" value="기타" style="margin-right:50px; width: 100px;">
+            <div class='text-center' style="margin: top 50px" id="btn_filter">
+                <input type="button" class="btn btn-outline-dark" value="주문" style="margin-right:50px; width: 85px;">
+                <input type="button" class="btn btn-outline-dark" value="결제" style="margin-right:50px; width: 85px;">
+                <input type="button" class="btn btn-outline-dark" value="환불" style="margin-right:50px; width: 85px;">
+                <input type="button" class="btn btn-outline-dark" value="배송" style="margin-right:50px; width: 85px;">
+                <input type="button" class="btn btn-outline-dark" value="기타" style="margin-right:50px; width: 85px;">
             </div>
     </thead>
     <br>
@@ -47,7 +58,7 @@
         <tr class="answer" style="display: none;">
             <td>A</td>
             <td>{{ faq.content }}</td>
-        </tr>        
+        </tr>
         {% endfor %}
         {% else %}
         {% if not keyword %}

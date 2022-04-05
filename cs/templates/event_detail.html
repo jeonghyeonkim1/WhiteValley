@@ -23,18 +23,14 @@
     </div>
     <div class="mb-3 mt-3">
         <label for="date">이벤트 날짜</label><br>
-        {{ event.start_date }}2020.03.01 ~ {{ event.end_date }}2020.04.30
+        {{ event.e_start }} ~ {{ event.e_end }}
     </div>
     <div class="mb-3 mt-3">
         <label for="content">이벤트 내용</label>
         <div class="border bg-light rounded p-2" >{{ event.content }}</div>
     </div>
-    <div class="mb-3 mt-3">
-        <label for="photo">업로드 파일</label>
-        <input type="text" name="nowfile" placeholder="현재파일" readonly>
-    </div>
 
-    {% if session.user == "admin@email.com" %}
+    {% if session.admin %}
         <a class="btn btn-dark" href="{% url 'Cs:event_update' 1 %}">수정하기</a>
         <button type="button" class="btn btn-dark" onclick="chkDelete()">삭제하기</button>
     {% endif %}
@@ -47,8 +43,8 @@
 
     <script>
         function chkDelete(){
-            var r = confirm("삭제하시겠습니까?");
-            if(r){
+            var d = confirm("삭제하시겠습니까?");
+            if(d){
                 document.forms['delete'].submit();
             }
         }
