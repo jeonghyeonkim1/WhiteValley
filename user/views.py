@@ -6,7 +6,7 @@ from shop.models import Config
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import Http404
 from cs.models import Board
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator  
 # Create your views here.
 def login(request):
     context = {
@@ -105,7 +105,7 @@ def register(request):
             return HttpResponse(f'''
                 <script>
                     alert("회원가입에 성공했습니다!")
-                    location.href = '/whitevalley/'
+                    location.href = '/whitevalley/user/login/'
                 </script>
             ''')
 
@@ -129,45 +129,25 @@ def find_pw(request):
         elif not User.objects.filter(email = email):
             context['error'] = '이메일이 없습니다.'
         elif User.objects.filter(email = email):
-            return redirect('/whitevalley/user/chpw/')
+
+            return redirect(f'/whitevalley/user/chpw/${email}')  # 이메일 값을 url로 저장하고 보낸다.
 
         return render(request, 'find_pw.html', context)
 
 
-def chpw(request):
+def chpw(request, email):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'login'
     }
 
-    # new_password = request.POST.get('new_password')
-    # re_password = request.POST.get('re_password')
-    # if request.method =="GET":
-    #     return render(request, 'chpw.html', context)
-    # elif request.method =="POST":
+    if request.method == "GET":
+        return render(request, "chpw.html",context)
 
-    #     if not(new_password and re_password):
-    #         context['error'] = '빈칸 없이 입력해주시길 바랍니다.'
-
-    #     elif new_password != re_password:
-    #         context['error'] = '비밀번호가 다릅니다.'
-
-    #     elif new_password == re_password:
-    #         user = User(
-    #             password = make_password(new_password),
-    #         )
-    #         user.save()
-    #         return render(request, 'chpwOk.html', context)
-
-    # return render(request, "chpw.html",context)
-
-
-    new_password = request.POST.get('new_password')
-    re_password = request.POST.get('re_password')
-    if request.method =="GET":
-        return render(request, 'chpw.html', context)
-    elif request.method =="POST":
+    elif request.method == "POST":
+        new_password = request.POST.get('new_password')
+        re_password = request.POST.get('re_password')
 
         if not(new_password and re_password):
             context['error'] = '빈칸 없이 입력해주시길 바랍니다.'
@@ -176,84 +156,80 @@ def chpw(request):
             context['error'] = '비밀번호가 다릅니다.'
 
         elif new_password == re_password:
-            user = User(
-                password = make_password(new_password),
-            )
+            
+            user = User.objects.get(email = email.replace("$",""))
+            user.password = make_password(new_password)
             user.save()
+
             return render(request, 'chpwOk.html', context)
 
-    return render(request, "chpw.html",context)
+        return render(request, "chpw.html",context)
 
 def magazine_list(request):
 
-
-    magazine = Board.objects.filter(tag='매거진').order_by('-reg_date')
-
-    page = int(request.GET.get('page', 1))
-    paginator = Paginator(magazine, 5)
-    notices = paginator.get_page(page)
+    allmagazine = Board.objects.filter(tag='매거진').order_by('-reg_date')
+    page = request.GET.get('page', '1')
+    paginator = Paginator(allmagazine, 10)
+    page_obj = paginator.get_page(page)
 
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'magazine',
-        'notices': notices,
-        'magazine': magazine,
+        'boards': page_obj,
+        'magazine' : page_obj,
     }
+
     return render(request, 'm_list.html', context)
 
 
-# def magazine_per_page(request):
-#     page = int(request.POST['page'])
-#     per_page = int(request.POST['per_page'])
-#     request.session['per_page'] = per_page
-
-#     return redirect(f'/magazine/list/?page={page}')
-
 def magazine_detail(request, pk):
+    board = Board.objects.get(pk=pk)
+    board.view_cnt += 1
+    board.save()
+
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'magazine'
+        'currentpage': 'magazine',
+        'board' : board,
     }
 
-    try:
+    return render(request, 'm_detail.html', context)
 
-        board = Board.objects.get(pk=pk)
-        board.view_cnt += 1
-        board.save()
-    except Board.DoesNotExist:
-        raise Http404('게시글을 찾을수 없습니다')
-
-    return render(request, 'm_detail.html', {'board': board}, context)
-
-# 이거 ui설계용이므로 삭제 필수
 def magazine_update(request):
-
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'magazine'
+        'currentpage': 'magazine',
     }
 
-    return render(request, 'm_update.html', context)
+    return render(request, 'm_update.html')
 
 # def magazine_update(request, pk):
+
+#     context = {
+#         'session': request.session,
+#         'config': Config.objects.get(id=1),
+#         'currentpage': 'magazine',
+#         'board' : board,
+#     }
+
 #     if request.method == "GET":
 #         try:
 #             board = Board.objects.get(pk=pk)
 #         except Board.DoesNotExist:
 #             raise Http404('게시글을 찾을수 없습니다')
 
-#         return render(request, 'm_update.html', {'board': board})
+#         return render(request, 'm_update.html', context)
     
 #     elif request.method == "POST":
-#         subject = request.POST['subject']
+#         title = request.POST['title']
 #         content = request.POST['content']
 
 #         # 수정
 #         board = Board.objects.get(pk=pk)
-#         board.subject = subject
+#         board.title = title
 #         board.content = content
 #         board.save()   # UPDATE
 
@@ -288,6 +264,10 @@ def magazine_delete(request):
         'config': Config.objects.get(id=1),
         'currentpage': 'magazine'
     }
+    if request.method == "POST":
+        id = request.POST['id']
+        board = Board.objects.get(id=id)
+        board.delete()
 
     return render(request, 'm_deleteok.html', context)
 

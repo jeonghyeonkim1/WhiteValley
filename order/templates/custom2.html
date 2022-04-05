@@ -42,7 +42,7 @@
                         <div id="text2_wrap" class="form-inline form-group">
                             <label for="inputtext" class="col-xs control-label" id="inputtext">Text</label>
                             <div id="text_input_wrap" class="col-sm-6">
-                                <input onsubmit="return false;" onkeyup="printText()" type="text" id="text_input" class="form-control w-75" placeholder="15글자 이하의 텍스트" maxlength="15">
+                                <input onsubmit="return false;" onkeyup="printText()" type="text" name="text_input" id="text_input" class="form-control w-75" placeholder="15글자 이하의 텍스트" maxlength="15" required>
                             </div>
                             <div id="colorview_wrap">
                                 <img onclick="showModal();" id='colorwheel' src="/static/image/colorwheel.png">        
@@ -59,7 +59,8 @@
             </div>
             <div class="selectpattern"> 
                 <label id="selecttext" for="selecttext" class="col-xs control-label">Pattern</label>
-                <select class="form-control w-25" id="selectpattern">
+                <select class="form-control w-25" id="selectpattern" name="selectpattern"  onchange="document.all.s_input.value=document.all.selectpattern.value;" required>
+                    <option value="0">선택</option>
                     <option value="p1">무지</option>
                     <option value="/static/image/patterns/s_p1.png">도트</option>
                     <option value="/static/image/patterns/s_p2.png">페인트</option>
@@ -68,29 +69,34 @@
             </div> 
             <div class="imageupload" style="height:10%">
                 <label class="col-xs control-label" id="imagetext" style="margin-right:90px;">Image</label>
+    
+                {% comment %} <input type="file" id="imgwrap" name="imgwrap" > {% endcomment %}
                 <input type="file" accept=".png,.gif,.png,.jpg,.jpeg" id="imgwrap"  style="display:none;" name='imgwrap'>
-                <img id="imgbtn" onclick='document.all.imgwrap.click(); document.all.imgwrap2.value=document.all.imgwrap.value' src="https://img.icons8.com/ios-glyphs/344/pictures-folder.png">
-                <input type="text" id="imgwrap2"onchange="loadFile(this)" style="height:20px; width: 60px; margin:20px">
+                <img id="imgbtn" onclick='document.all.imgwrap.click(); document.all.imgwrap2.value=document.all.imgwrap.value;' src="https://img.icons8.com/ios-glyphs/344/pictures-folder.png">
+                
+                <input name="imgwrap2" type="text" id="imgwrap2" style="height:20px; width: 60px; margin:20px">
             </div>
             <div class="Btn"><a id="CustomBtn2">Next</a></div>
+            
             </div>
         </div>   
        </div>
-       <form action="{% url 'Order:customend' %}" method="POST" id="file_base">
+        <form action="{% url 'Order:customend' %}" method="POST" id="file_base">
            {% csrf_token %}
-           <input type="text" value="" name="file_base">
-       </form>
+           <input type="text" value="0" name="t_input" style="display: none;">
+           <input type="text" value="0" name="s_input" style="display: none;">
+           <input type="text" value="0" name="file_base" style="display: none;">
+           <input type="text" value="0" id="input_image" name="i_input" style="display: none;">
+        </form>
        
       
-       <script>
-           
-      
+       <script>     
         const elem = document.getElementById('panzoom-element');
-                const zoomInButton = document.getElementById('zoom-in');
-                const zoomOutButton = document.getElementById('zoom-out');
-                const resetButton = document.getElementById('reset');
-                const panzoom = Panzoom(elem);
-                const parent = elem.parentElement
+        const zoomInButton = document.getElementById('zoom-in');
+        const zoomOutButton = document.getElementById('zoom-out');
+        const resetButton = document.getElementById('reset');
+        const panzoom = Panzoom(elem);
+        const parent = elem.parentElement
         // No function bind needed
         parent.addEventListener('wheel', panzoom.zoomWithWheel);
         
@@ -161,40 +167,7 @@ function stopDrag(){
         document.onmouseup = null;
     }
 
-$("#selectpattern").change(function(){
-    if($("#selectpattern").val() == "p1"){
-        patternimg_wrap.style.display = "none"
-    }
-    else{
-        patternimg_wrap.style.display = "block"
-        patternimg.setAttribute('src',$("#selectpattern").val())
-    }
-})
 
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-    
-    $("#CustomBtn2").on("click",function(){
-        html2canvas(document.querySelector("#parent")).then(canvas => {
-            $("[name='file_base']").val(canvas.toDataURL('image/png'))
-            $("#file_base").submit();
-        })
-    });
-    function saveAs(uri, filename){
-        var link = document.createElement('a');
-        if(typeof link.download === 'string'){
-            link.href = uri;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }else{
-            window.open(uri);
-        }
-        location.href = "{% url 'Order:customend' %}"
-    }
-    
-});
 $("#imgwrap").on('change',function(){
     $("#uploadimg").css("display","block");
     ext = $(this).val().split('.').pop().toLowerCase(); //확장자
@@ -206,10 +179,69 @@ $("#imgwrap").on('change',function(){
         blobURL = window.URL.createObjectURL(file);
         $('#panzoom-element img').attr('src', blobURL);
         $('#panzoom-element').slideDown(); //업로드한 이미지 미리보기 
-        $(this).slideUp(); //파일 양식 감춤
+        {% comment %} $(this).slideUp(); //파일 양식 감춤 {% endcomment %}
+        {% comment %} console.log($("#imgwrap").files); {% endcomment %}
     }
 });
-       
 
+          
+
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+
+    
+    $("#selectpattern").change(function(){
+        if($("#selectpattern").val() == "p1"){
+            patternimg_wrap.style.display = "none"
+        }
+        else{
+            patternimg_wrap.style.display = "block"
+            patternimg.setAttribute('src',$("#selectpattern").val())
+        }
+    })
+
+    $("[name='text_input']").change(function(){
+        if($(this).val() == ""){
+            $("[name='t_input']").val("0");
+        }else{
+            $("[name='t_input']").val("1");
+        }
+    }); 
+    
+    $("input[type=file]").on('change', function(){
+        if($(this)[0].files.length === 0 ){
+            $("#input_image").val("0");
+        }else{
+            $("#input_image").val("1");
+        }
+    })
+    
+        
+  
+   $("#CustomBtn2").on("click",function(){
+            html2canvas(document.querySelector("#parent")).then(canvas => {
+            $("[name='file_base']").val(canvas.toDataURL('image/png'))
+            $("#file_base").submit();
+        })
+        
+    }); 
+
+    
+    function saveAs(uri, filename){
+        var link = document.createElement('a');
+        if(typeof link.download === 'string'){
+            link.href = uri;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }else{
+            window.open(uri);
+        }
+    }
+
+    
+
+});
 </script>
 {% endblock %}
