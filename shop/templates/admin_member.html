@@ -29,8 +29,6 @@
                     })
                     $(this)[0].disabled = true;
                     $("[name='date_filter']").val($(this).text())
-                    
-                    console.log($("[name='date_filter']").val())
 
                     if ($(this).text() == "직접선택") {
                         $("#datepicker1")[0].disabled = false;
@@ -49,7 +47,6 @@
                     })
                     $(this)[0].disabled = true;
                     $("[name='order_filter']").val($(this).text())
-                    console.log($("[name='order_filter']").val())
                 })
             })
 
@@ -126,7 +123,7 @@
             </div>
         </div>
         <div class="w-100">
-            <form id="filtering" method="POST" action="." class="bg-dark rounded p-3 text-white text-center d-flex flex-column justify-content-evenly align-items-center">
+            <form id="filtering" method="POST" action="{% url 'Main:admin_member' %}" class="bg-dark rounded p-3 text-white text-center d-flex flex-column justify-content-evenly align-items-center">
                 {% csrf_token %}
                 <div class="w-100 row mb-3">
                     <div class="col-sm-2 pt-2 d-flex justify-content-evenly align-items-center">
@@ -219,36 +216,80 @@
                 </table>
             </div>
             <div class="d-flex justify-content-center">
-                <ul class="pagination justify-content-center col-sm-9">
+                <ul class="pagination justify-content-center col-sm-9" id="pagination">
                     {# << 표시 여부 #}        
                     {% if users.number > 1 %}
-                        <li class="page-item"><a class="page-link" href="{% url 'Main:admin_member' %}" title="처음"><i class='fas fa-angle-double-left'></i></a></li>
+                        <form action="{% url 'Main:admin_member' %}" method="POST">
+                            {% csrf_token %}
+                            <li class="page-item">
+                                <input type="hidden" value="{{ date }}" name="date_filter">
+                                <input type="hidden" value="{{ order }}" name="order_filter">
+                                <button class="page-link" title="처음">
+                                    <i class='fas fa-angle-double-left'></i>
+                                </button>
+                            </li>
+                        </form>
                     {% endif %}
 
                     {# < 표시 여부 #}
                     {% if start_page > 1 %}
-                        <li class="page-item"><a class="page-link" href="{% url 'Main:admin_member' %}?page={{ start_page | add:-1 }}" title="이전"><i class='fas fa-angle-left'></i></a></li>
+                        <form action="{% url 'Main:admin_member' %}?page={{ start_page | add:-1 }}" method="POST">
+                            {% csrf_token %}
+                            <li class="page-item">
+                                <input type="hidden" value="{{ date }}" name="date_filter">
+                                <input type="hidden" value="{{ order }}" name="order_filter">
+                                <button class="page-link" title="이전">
+                                    <i class='fas fa-angle-left'></i>
+                                </button>
+                            </li>
+                        </form>
                     {% endif %}
-{{ page_range }}
                     {# 페이징 안의 '숫자' 표시 #}
                     {% if users.paginator.num_pages > 1 %}
                         {% for p in page_range %}
                             {% if users.number != p %}
-                                <li class="page-item"><a class="page-link" href="{% url 'Main:admin_member' %}?page={{ p }}">{{ p }}</a></li>
+                                <form action="{% url 'Main:admin_member' %}?page={{ p }}" method="POST">
+                                    {% csrf_token %}
+                                    <li class="page-item">
+                                        <input type="hidden" value="{{ date }}" name="date_filter">
+                                        <input type="hidden" value="{{ order }}" name="order_filter">
+                                        <button class="page-link" title="이전">
+                                            {{ p }}
+                                        </button>
+                                    </li>
+                                </form>
                             {% else %}
-                                <li class="page-item active"><a class="page-link" href="#" title="현재페이지">{{ p }}</a></li>
+                                <li class="page-item active"><a class="page-link" title="현재페이지">{{ p }}</a></li>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
                     
                     {# > 표시 #}
                     {% if users.paginator.num_pages > end_page %}
-                        <li class="page-item"><a class="page-link" href="{% url 'Main:admin_member' %}?page={{ end_page | add:1 }}" title="다음"><i class='fas fa-angle-right'></i></a></li>
+                        <form action="{% url 'Main:admin_member' %}?page={{ end_page | add:1 }}" method="POST">
+                            {% csrf_token %}
+                            <li class="page-item">
+                                <input type="hidden" value="{{ date }}" name="date_filter">
+                                <input type="hidden" value="{{ order }}" name="order_filter">
+                                <button class="page-link" title="다음">
+                                    <i class='fas fa-angle-right'></i>
+                                </button>
+                            </li>
+                        </form>
                     {% endif %}
                 
                     {# >> 표시 #}
                     {% if users.number < users.paginator.num_pages %}
-                        <li class="page-item"><a class="page-link" href="{% url 'Main:admin_member' %}?page={{ users.paginator.num_pages }}" title="마지막"><i class='fas fa-angle-double-right'></i></a></li>
+                        <form action="{% url 'Main:admin_member' %}?page={{ users.paginator.num_pages }}" method="POST">
+                            {% csrf_token %}
+                            <li class="page-item">
+                                <input type="hidden" value="{{ date }}" name="date_filter">
+                                <input type="hidden" value="{{ order }}" name="order_filter">
+                                <button class="page-link" title="마지막">
+                                    <i class='fas fa-angle-double-right'></i>
+                                </button>
+                            </li>
+                        </form>
                     {% endif %}
                 </ul>
             </div>
