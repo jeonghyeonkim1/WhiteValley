@@ -194,24 +194,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for user in users %}
+                        {% if users %}
+                            {% for user in users %}
+                                <tr>
+                                    <th scope="row">{{ user.id }}</th>
+                                    <td>{{ user.nickname }}</td>
+                                    <td>{{ user.email | truncatechars:10 }}</td>
+                                    <td>{{ user.contact }}</td>
+                                    <td>{{ user.point }}</td>
+                                    <td>{{ user.reg_date | date:"Y-m-d" }}</td>
+                                    <td>
+                                        <form name="del_member" action="/whitevalley/admin/member/delete/{{ user.id }}/" method="POST">
+                                            {% csrf_token %}
+                                            <button class="btn btn-danger" style="font-size: 10px;">
+                                                <i class="fa-solid fa-x"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
                             <tr>
-                                <th scope="row">{{ user.id }}</th>
-                                <td>{{ user.nickname }}</td>
-                                <td>{{ user.email | truncatechars:10 }}</td>
-                                <td>{{ user.contact }}</td>
-                                <td>{{ user.point }}</td>
-                                <td>{{ user.reg_date | date:"Y-m-d" }}</td>
-                                <td>
-                                    <form name="del_member" action="/whitevalley/admin/member/delete/{{ user.id }}/" method="POST">
-                                        {% csrf_token %}
-                                        <button class="btn btn-danger" style="font-size: 10px;">
-                                            <i class="fa-solid fa-x"></i>
-                                        </button>
-                                    </form>
+                                <td class="text-danger pt-5" style="height: 120px;" colspan="7">
+                                    <h4>표시할 회원이 없습니다.</h4>
                                 </td>
                             </tr>
-                        {% endfor %}
+                        {% endif %}
                     </tbody>
                 </table>
             </div>

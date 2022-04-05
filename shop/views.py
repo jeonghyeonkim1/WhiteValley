@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from user.models import User
+from cs.models import Board
 from shop.models import Config, Co_account
 import datetime
 from django.core.paginator import Paginator
@@ -11,7 +12,10 @@ def home(req):
         'cookies': req.COOKIES,
         'session': req.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'home'
+        'currentpage': 'home',
+        'notices': Board.objects.filter(tag="공지사항").order_by("-reg_date")[:12],
+        'faqs': Board.objects.filter(tag="FAQ").order_by("-reg_date")[:12],
+        'magazines': Board.objects.filter(tag="매거진").order_by("-reg_date")[:12]
     }
 
     cookie_name = 'visited'
