@@ -59,7 +59,6 @@
 <div class="row">
     <div class="col-12">
         {% if session.admin %}
-        {% csrf_token %}
         <a class="btn btn-dark" href="{% url 'Cs:notice_write' %}" style="float: right;">작성하기</a>
         {% endif %}
     </div>
