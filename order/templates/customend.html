@@ -38,29 +38,30 @@
             
         
         <div class="customend_detail">
-        <p id="productend_type" >{{ a }}님 커스텀 상품<br>
+        <p id="productend_type" >{{ user.nickname }}님 커스텀 상품<br>
         <div class="Tag">
             <label for="Tag">Tag</label> 
             <div class="selectsize"> 
-                <select class="form-control w-200" id="tagselect">
+                <select class="form-control w-200" id="tagselect" name="tagselect" required>
+                    <option value="0" selected>태그를 선택해주세요.</option>
                     <optgroup label="Season" data-max-options="2">
-                        <option>봄</option>
-                        <option>여름</option>
-                        <option>가을</option>
-                        <option>겨울</option>
+                        <option value="봄">봄</option>
+                        <option value="여름">여름</option>
+                        <option value="가을">가을</option>
+                        <option value="겨울">겨울</option>
                     </optgroup>
                     <optgroup label="mood" data-max-options="2">
-                        <option>데일리</option>
-                        <option>힙</option>
-                        <option>캐주얼</option>
-                        <option>모던</option>
-                        <option>러블리</option>
+                        <option value="데일리">데일리</option>
+                        <option value="힙">힙</option>
+                        <option value="캐주얼">캐주얼</option>
+                        <option value="모던">모던</option>
+                        <option value="러블리">러블리</option>
                     </optgroup>
                     <optgroup label="Theme" data-max-options="2">
-                        <option>가족</option>
-                        <option>친구</option>
-                        <option>단체</option>
-                        <option>자유</option>
+                        <option value="가족">가족</option>
+                        <option value="친구">친구</option>
+                        <option value="단체">단체</option>
+                        <option value="자유">자유</option>
                     </optgroup>
                 </select>
             </div> 
@@ -73,8 +74,14 @@
         <div class="amount"> 
            <p><label for="number">수량: </label><input id="amount" type="number" min="1" max="500" step="1" value="1"></p>
         </div> 
-        
-        <div class="Btn"><a href="" id="CustomBtn2">Add to Cart</a></div>
+        <button id="CustomBtn2">Add to Cart</button>
+        <form  action="{% url 'Order:loading' %}" method="GET" class="Btn">
+            <input type="hidden" value="" name="product_tag">
+            <input type="hidden" value="" name="order_req">
+            <input type="hidden" value="1" name="order_amount">
+            <input type="hidden" value="{{ type_price }}" name="type_price">
+            <input type="hidden" value="{{ type_title }}" name="type_title">
+        </form>
          </div>
         </div>
        </div>
@@ -88,19 +95,32 @@
                 <div class="modal-body">완성품을 카드에 담으시겠습니까?</div>
                 <div class="modal-footer">
                     <a id="backbtn" class="btn">돌아가기</a>
-                    <a id="addbtn" href={% url 'Order:loading' %} class="btn btn-dark" type="button" data-dismiss="modal">예</a>
+                    <button id="addbtn" class="btn btn-dark" type="button" data-dismiss="modal">예</button>
                 </div>
             </div>
         </div>
     </div>
 
 <script>
-    $("#CustomBtn2").click(function(e){
-        e.preventDefault();
-        $("#cartModal").modal("show");
+    $("#CustomBtn2").click(function(){
+        if($("#tagselect").val() == "0"){
+            alert("태그는 필수 입니다.");
+        }else{
+            $("#cartModal").modal("show"); 
+        }
+        
     });
     $("#backbtn").click(function(e){
-        window.history.back();
+        window.history.go(0);
+    });
+    $("[name='tagselect']").change(function(){
+        $("[name='product_tag']").val($(this).val());
+    });
+    $("#reqinput").change(function(){
+        $("[name='order_req']").val($(this).val());
+    });
+    $("#amount").change(function(){
+        $("[name='order_amount']").val($(this).val());
     });
     
 </script>

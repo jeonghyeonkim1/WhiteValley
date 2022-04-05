@@ -4,6 +4,7 @@ from django.http import HttpResponse
 import urllib.request
 from user.models import User
 from recommendation.models import Type
+import os
 
 
 # Create your views here.
@@ -67,13 +68,13 @@ def custom1(request):
 
 def custom2(request):
     color = request.GET.get('color_input')
-    size = request.GET.get('size_input')
+    size = request.GET.get('type_size')
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         'color': color,
-        'size':size,
+        'type_size':size,
         'type_price': request.GET['type_price'],
         'type_title': request.GET['type_title']
     }
@@ -86,6 +87,8 @@ def customend(request):
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
+        'type_price': request.POST['type_price'],
+        'type_title': request.POST['type_title']
     }
     context['user'] = User.objects.get(id=request.session['user'])
     
@@ -106,6 +109,7 @@ def customend(request):
         
             mem = urllib.request.urlopen(url).read()
 
+            print(os.path.exists('static/image/uploaded_img/test3.jpg'))
             with open("static/image/uploaded_img/test3.jpg", mode="wb") as f:
                 f.write(mem)
                 print("이미지 저장 완료되었습니다.")
@@ -117,14 +121,28 @@ def payment(request):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'shopping'
+        'currentpage': 'shopping',
+        # 'type_price': request.GET['type_price'],
+        # 'amount':request.GET['order_amount']
     }
     context['user'] = User.objects.get(id=request.session['user'])
+    # context['email'] = User.objects.get(id=request.session['email'])
 
     return render(request,'payment.html',context)
 
 def loading(request):
-    return render(request, 'loading.html')
+    context={
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'shopping',
+        'type_price': request.GET['type_price'],
+        'type_size':request.GET['type_size'],
+        'amount':request.GET['order_amount'],
+        'req':request.GET['order_req'],
+        'tag':request.GET['product_tag'],
+
+    }
+    return render(request, 'loading.html',context)
 
 def loading2(request):
     return render(request, 'loading2.html')
