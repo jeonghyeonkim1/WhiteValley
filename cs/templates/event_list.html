@@ -4,11 +4,50 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
 <script src="{% static 'js/cs.js' %}"></script>
-
+<style>
+    .col{
+        width: 580px;
+        padding: 20px;
+        margin-bottom: 20px;
+        float: left;
+    }
+    @media ( max-width: 480px ) {
+        .col {
+          float: none;
+          width: auto;
+        }
+</style>
 {% endblock %}
 
 {% block contents %}
 <h2>이벤트</h2>
+<h6>이벤트에 참여해보세요.</h6>
+<hr>
+{% comment %} <div class="album py-5 bg-light"> {% endcomment %}
+    <div class="container">
+        <div class="row row-cols-1">
+            {% for event in events %}
+            <div class="col">
+                <div class="card shadow-sm" style="width:auto; height:100%;">
+                    <img class="bd-placeholder-img card-img-top"
+                        src="https://cdn.imweb.me/upload/S202012036dabf66d360c2/1068abcbb8499.jpg"
+                        onclick="location.href='{% url 'Cs:event_detail' event.id %}'" style="cursor: pointer;">
+
+                    <div class="card-body">
+                        <p class="card-text" style="text-align:center">{{ event.title }}</p>
+                        
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+{% comment %} </div> {% endcomment %}
+{% comment %} <h2>이벤트</h2>
 <h6>이벤트에 참여해보세요.</h6>
 <hr>
 <div class="mb-3 mt-3 clearfix">
@@ -29,7 +68,7 @@
         <td>{{ event.title }}</td>
     </tr>
     {% endfor %}
-</table>
+</table> {% endcomment %}
 
 
 {% comment %} <div class="event">

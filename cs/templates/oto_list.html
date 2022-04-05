@@ -8,8 +8,17 @@
 
 {% block contents %}
 <h2>1:1 문의</h2>
-<h6>내가 작성한 1:1 문의입니다.</h6>
+{% if session.user %}
+    {% if session.admin %}
+    <h6>1:1 문의에 답변해주세요</h6>
+    {% else %}
+    <h6>내가 작성한 1:1 문의입니다.</h6>
+    {% endif %}
+{% else %}
+    회원만 이용할 수 있는 페이지입니다.
+{% endif %}
 <hr>
+
 <div class="mb-3 mt-3 clearfix">
     <span class="float-start me-2">총 {{ otos.paginator.count }}개</span>
     <span class="float-start">page {{ otos.number }}/{{ otos.paginator.num_pages }}</span>
@@ -24,6 +33,7 @@
         </tr>
     </thead>
     <tbody>
+
         {% for oto in otos %}
         {% if session.admin %}
         <tr onclick="location.href='{% url 'Cs:oto_detail' oto.id %}'" style="cursor: pointer;">
@@ -45,9 +55,9 @@
 <div class="row">
     <div class="col-12">
         {% if session.user %} {% comment %} 로그인상태 {% endcomment %}
-            {% if not session.admin %}
-                <a class="btn btn-dark" href="{% url 'Cs:oto_write' %}" style="float: right;">문의하기</a>
-            {% endif %}
+        {% if not session.admin %}
+        <a class="btn btn-dark" href="{% url 'Cs:oto_write' %}" style="float: right;">문의하기</a>
+        {% endif %}
         {% else %}
         <button type="button" class="btn btn-dark" onclick="chkLogin()" style="float: right;">문의하기</button>
         {% endif %}

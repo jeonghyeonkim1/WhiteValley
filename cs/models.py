@@ -33,3 +33,14 @@ class Inquire(models.Model):
 
     def __str__(self):
         return f'{self.user}: {self.title}'
+
+class B_Photo(models.Model):
+    board = models.ForeignKey('cs.Board', on_delete=models.CASCADE)
+    photo = models.CharField(max_length=300, verbose_name='이벤트이미지')
+
+    class Meta:
+        db_table = 'b_photo'
+        verbose_name = '이벤트사진'
+
+    def __str__(self):
+        return self.title
