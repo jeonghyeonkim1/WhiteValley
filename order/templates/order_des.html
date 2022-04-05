@@ -12,10 +12,10 @@
         <h6>해당 제품의 상세 설명과 커스텀 방법에 대해 설명해드리겠습니다. 진행을 계속 원하시면 하단 'Custom start'로 이동해주세요.
     </div>
     <div class="pcontain2">
-        <div class="detail_top">
-            <div class=""><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""></div>
-            <div>설명글 top</div>
-            <div class="detail_bottom" style="border: 1px solid rgb(209, 209, 209); padding: 30px; border-radius: 6px; margin-bottom:100px">30수 반팔로 튼튼하고 시원한 소재입니다. 솰라솰라</div> 
+        <div class="detail_top text-center">
+            <div class="d-flex justify-content-center align-items-center"><img id="pimg" src="{{ type_img }}" alt=""></div>
+            
+            <div class="detail_bottom" style="border: 1px solid rgb(209, 209, 209); padding: 30px; border-radius: 6px; margin-bottom:100px">{{ type_desc }}</div> 
         </div>
         
         <div class="detail_img" >
@@ -23,6 +23,10 @@
             <img src="/static/image/pdetail2.jpg">
         </div>
     </div>
-    <div class="Btn"><a href="{% url 'Order:custom1' %}" id="CustomBtn1">Custom start</a></div>
+    <form class="Btn" action="{% url 'Order:custom1' %}" method="GET">
+        <input type="hidden" value="{{ type_title }}" name="type_title">
+        <input type="hidden" value="{{ type_price }}" name="type_price">
+        <button id="CustomBtn1">Custom start</button>
+    </form>
     <div class="padd"></div>
 {% endblock %}

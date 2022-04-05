@@ -26,13 +26,13 @@
                         </div>
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                            <img src="https://media.bunjang.co.kr/product/164794741_2_1631993283_w360.jpg" class="d-block w-100" alt="cloth1">
+                            <img src="{% static 'image/main_img_1.jpg' %}" class="d-block w-100" alt="cloth1">
                             </div>
                             <div class="carousel-item">
-                            <img src="http://m.terco.kr/file_data/junc5881/2019/03/08/e5c8cecba6126ab9a4ce7b8dbbf338fa.jpeg" class="d-block w-100" alt="cloth2">
+                            <img src="{% static 'image/main_img_2.jpeg' %}" class="d-block w-100" alt="cloth2">
                             </div>
                             <div class="carousel-item">
-                            <img src="https://scontent.cdnsnapwidget.com/vp/3d3b7f55bff729387d84b0c41372406c/5D6CCBD3/t51.2885-15/sh0.08/e35/s640x640/54512487_418363908974821_4465286862667549317_n.jpg" class="d-block w-100" alt="cloth3">
+                            <img src="{% static 'image/main_img_3.jpg' %}" class="d-block w-100" alt="cloth3">
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -125,7 +125,7 @@
                             <div id="best_desc4">
                                 <div class="col-sm d-flex flex-column justify-content-center align-items-center h-100">
                                     <div class="text-center">
-                                        <h2>(USER)님</h2>
+                                        <h2>(USER)님의 상품(들)</h2>
                                         <h4>누적판매금액</h4>
                                         <hr>
                                         <h1><strong>200000000￦</strong></h1>
@@ -142,18 +142,9 @@
                     <h1><strong>공지사항</strong></h1>
                     <hr>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">공지사항1</li>
-                        <li class="list-group-item">공지사항2</li>
-                        <li class="list-group-item">공지사항3</li>
-                        <li class="list-group-item">공지사항4</li>
-                        <li class="list-group-item">공지사항5</li>
-                        <li class="list-group-item">공지사항6</li>
-                        <li class="list-group-item">공지사항7</li>
-                        <li class="list-group-item">공지사항8</li>
-                        <li class="list-group-item">공지사항9</li>
-                        <li class="list-group-item">공지사항10</li>
-                        <li class="list-group-item">공지사항11</li>
-                        <li class="list-group-item">공지사항12</li>
+                        {% for notice in notices %}
+                            <li class="list-group-item">{{ notice.title }}</li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="col-sm">
@@ -161,20 +152,18 @@
                         <h1><strong>FAQ</strong></h1>
                         <hr>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">FAQ1</li>
-                            <li class="list-group-item">FAQ2</li>
-                            <li class="list-group-item">FAQ3</li>
-                            <li class="list-group-item">FAQ4</li>
+                            {% for faq in faqs %}
+                                <li class="list-group-item">{{ faq.title }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="border border-3 rounded mb-3 p-5 col-sm">
                         <h1><strong>매거진</strong></h1>
                         <hr>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">매거진1</li>
-                            <li class="list-group-item">매거진2</li>
-                            <li class="list-group-item">매거진3</li>
-                            <li class="list-group-item">매거진4</li>
+                            {% for magazine in magazines %}
+                                <li class="list-group-item">{{ magazine.title }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>

@@ -14,42 +14,63 @@
 
     <div class="custom1">
         <div class="custom1_top">
-            <div class="pimg_wrap"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""></div>     
+            <div class="pimg_wrap">
+                <img id="pimg" src="{% static 'image/products/shortw.png' %}" alt="sample">
+            </div>     
         <div class="custom1_detail">
-            <p id="product_type" >상품타입네임<br>
-        <div class="selectcolor"> 
-            <div id="colorview"></div>
-           <select id="color"name="color" onchange="selectColor(this.value);">
-               <option value="#ffffff">White</option>
-               <option value="#ece6cc">Ivory</option>
-               <option value="#000000">Black</option>
-               <option value="#ed4545">Red</option>
-               <option value="#ff9717">Orange</option>
-               <option value="#f6fc38">Yellow</option>
-               <option value="#00d600">Green</option>
-               <option value="#3888ff">Blue</option>
-               <option value="#ffe3f0">BadyPink</option>
-               <option value="#13065c">Navy</option>
-               <option value="#808080">Gray</option>
-               <option value="#ac53c9">Purple</option>
-           </select>
+            <p id="product_type" >{{ type_title }}<br>
+            <div class="selectcolor"> 
+                <div id="colorview"></div>
+                <select id="color" name="color" onchange="selectColor(this.value);">
+                    <option value="{% static 'image/products/shortw.png' %}">White</option>
+                    <option value="{% static 'image/products/s_ivory.png' %}">Ivory</option>
+                    <option value="{% static 'image/products/s_black.jpg' %}">Black</option>
+                    <option value="{% static 'image/products/s_red.png' %}">Red</option>
+                    <option value="{% static 'image/products/s_orange.png' %}">Orange</option>
+                    <option value="{% static 'image/products/s_yellow.png' %}">Yellow</option>
+                    <option value="{% static 'image/products/s_green.jpg' %}">Green</option>
+                    <option value="{% static 'image/products/s_blue.png' %}">Blue</option>
+                    <option value="{% static 'image/products/s_babypink.png' %}">BabyPink</option>
+                    <option value="{% static 'image/products/s_navy.jpg' %}">Navy</option>
+                    <option value="{% static 'image/products/s_gray.png' %}">Gray</option>
+                    <option value="{% static 'image/products/s_pruple.png' %}">Purple</option>
+                </select>
+            </div>
+                <div class="selectsize"> 
+                    <select id="size" name="size">
+                        <option value="S">S</option>
+                        <option value="M" selected>M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                        <option value="3XL">3XL</option>
+                    </select>
+                </div> 
+                <form action="{% url 'Order:custom2' %}" method="GET">
+                    <input type="hidden" value="{% static 'image/products/s_black.jpg' %}" name="color_input">
+                    <input type="hidden" value="M" name="size_input">
+                    <input type="hidden" value="{{ type_price }}" name="type_price">
+                    <input type="hidden" value="{{ type_title }}" name="type_title">
+                    <div class="Btn">
+                        <button id="CustomBtn2">Next</button>
+                    </div>
+                </form>
+                
+                </div>
         </div>
-        <div class="selectsize"> 
-           <select id="size" name="size">
-               <option value="XS">XS</option>
-               <option value="S">S</option>
-               <option value="M" selected>M</option>
-               <option value="L">L</option>
-               <option value="XL">XL</option>
-               <option value="XXL">XXL</option>
-               <option value="3XL">3XL</option>
-           </select>
-        </div> 
-        <div class="Btn"><a href="{% url 'Order:custom2' %}" id="CustomBtn2">Next</a></div>
-        </div>
-        </div>
-        
-       </div>
+    </div>
            
+<script>
+    $(document).ready(function(){
+        $("[name='color']").change(function(){
+            $("[name='color_input']").val($(this).val());
+            $("#pimg").attr("src", $(this).val())
+        });
+
+        $("[name='size']").change(function(){
+            $("[name='size_input']").val($(this).val());
+        });
+    })
+</script>
 
 {% endblock %}

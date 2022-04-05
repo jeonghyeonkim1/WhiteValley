@@ -4,6 +4,8 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/recommendation.css' %}?ver=1">
 <script src="{% static 'js/recommendation.js' %}"></script>
+
+
 <style>
     .termbtn {
         margin-top: 30px;
@@ -56,14 +58,40 @@
 
 
 
-
+    
     {% if session.user %}
-    <button type="button" onclick='location.href="/whitevalley/shopping/reviews/product_reviews"' class="btn text-white"
+    <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn text-white"
         style='background-color: #000000; float: right; display: block;'>후기 작성</button>
     {% else %}
     <button type="button" onclick='gologin()' class="btn text-white"
         style='background-color: #000000; float: right; display: block;'>후기 작성</button>
     {% endif %}
+
+    
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModal">리뷰작성리스트</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5>최근 구매 내역</h5>
+        
+        {% for i in "x"|rjust:"15" %}
+        <p>이곳은 완성품이미지 , 그리고 옵션: <a href="{% url 'Recommendation:product_reviews' %}" class="tooltip-test" title="Tooltip">반팔,XXL,패턴:꽃무늬</a></p>
+        <hr>
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
     <script>
         function gologin() {
