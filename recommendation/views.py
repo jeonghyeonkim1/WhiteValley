@@ -11,7 +11,7 @@ from django.http import Http404
 def reviews(request):
     all_board = Board.objects.all()
     page = request.GET.get('page', '1')
-    paginator = Paginator(all_board, 8)  # 페이지당 몇개씩 보여주기
+    # paginator = Paginator(all_board, 8)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     
     context = {
