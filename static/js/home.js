@@ -4,6 +4,8 @@ $(function () {
     $("#best_desc2").hide();
     $("#best_desc3").hide();
     $("#best_desc4").hide();
+    $("#introduce").css('backgroundColor', '#fff')
+    $("#introduce").children()[0].style.color = "#262626"
 
     // greeter
     $("#greet").animate({ opacity: 1 }, 'slow', function () {

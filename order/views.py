@@ -1,5 +1,4 @@
-from tkinter import Image
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from shop.models import Config
 from django.http import HttpResponse
 import urllib.request
