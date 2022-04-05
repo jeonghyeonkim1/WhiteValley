@@ -81,8 +81,12 @@
     height: 40px;
     text-align: center;
 }
+.Btn{
+    
+}
 #CustomBtn2{
     display: inline-block;
+    
     background-color: #343a40;
     border-radius: 10px;
     text-decoration: none;
@@ -175,6 +179,7 @@
     text-align: center;
     width: 600px;
     margin-left: 70px;
+    display: flex;
 }
 #text_input_wrap{
     margin-left: 100px;
@@ -267,7 +272,8 @@
         margin-top: 1000px;
     }
     #imgbtn{
-        width: 10%;
+        max-width: 50px;
+        max-height: 50px;
     }
 }
 
