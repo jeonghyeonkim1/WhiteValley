@@ -153,18 +153,20 @@ def event_detail(request, pk):
 
 
 def event_list(request):
-    all_events = Board.objects.filter(tag='이벤트')
+    all_events = Board.objects.filter(tag='이벤트').order_by('-reg_date')
 
     page = int(request.GET.get('p', 1))
-    paginator = Paginator(all_events, 5)
+    paginator = Paginator(all_events, 6)
     events = paginator.get_page(page)
+    photos = B_Photo.objects.all()
 
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'cs',
         'events': events,
-        'all_events': all_events
+        'all_events': all_events,
+        'photos': photos
     }
     return render(request, 'event_list.html', context)
 

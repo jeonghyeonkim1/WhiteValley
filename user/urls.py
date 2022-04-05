@@ -23,6 +23,8 @@ urlpatterns = [
     # mypage -------------------------------------------------------------------------------
     path('mypage/', views.mypage, name="mypage"),
     path('login/api/', views.api_login, name="api_login"),
+    path('mypage/modify/check/', views.info_modify, name="info_modify"),
+    path('mypage/modify/detail/', views.info_modify_detail, name="info_modify_detail"),
 ]
 # MEDIA 경로 추가
 urlpatterns += static(  # 정규표현식 사용가능

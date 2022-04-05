@@ -10,6 +10,17 @@
             transform: scale(106%);
         }
     </style>
+    <script>
+        $(function() {
+           $("#pw_check").on('submit', function() {
+                if (!$("[name='password']").val()) {
+                    alert("비밀번호를 입력해주세요!")
+                    return false;
+                }
+                return true;
+           })
+        })
+    </script>
 {% endblock %}
 
 {% block contents %}
@@ -18,7 +29,25 @@
     </div>
     <hr>
     <div class="container d-flex flex-column justify-content-center align-items-center">
-        <button class="btn btn-outline-dark border-4 pb-2 mb-3" title="내 정보 수정하기"><i class="fa-solid fa-user-astronaut fs-4 mt-2"></i></button>
+        <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <form action="{% url 'User:info_modify' %}" method="GET" class="modal-content" id="pw_check">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel">본인인증</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>패스워드를 입력해주세요.</h6>
+                        <input class="form-control" type="hidden" name="real_password" value="{{ user.password }}">
+                        <input class="form-control" type="password" name="password">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary">Open second modal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <button data-bs-toggle="modal" href="#exampleModalToggle" class="btn btn-outline-dark border-4 pb-2 mb-3" title="내 정보 수정하기"><i class="fa-solid fa-user-astronaut fs-4 mt-2"></i></button>
         <h4><strong>이메일: {{ user.email }}</strong></h4>
         <h4><strong>연락처: {{ user.contact }}</strong></h4>
         <h4><strong>적립금: {{ user.point }}</strong></h4>
