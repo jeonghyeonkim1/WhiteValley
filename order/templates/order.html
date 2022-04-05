@@ -99,29 +99,28 @@
     </div>
     <div class="pcontain">
         <ul id="te">
-            <li id="item">
-                {% if session.admin %}
-                    <button id="product_delete" class="btn btn-danger" onclick="deleteitem">X</button>
-                {% endif %}
-                <div class="p"><a href="{% url 'Order:order_des' %}"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">19,900원</p></a></div>
-                <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
-            </li>
-            <li>
-                <div class="p"><a href="{% url 'Order:order_des' %}"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">19,900원</p></a></div>
-                <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
-            </li>
-            <li>
-                <div class="p"><a href="{% url 'Order:order_des' %}"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">19,900원</p></a></div>
-                <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
-            </li>
-            <li>
-                <div class="p"><a href="{% url 'Order:order_des' %}"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">사이즈5가지</p></a></div>
-                <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
-            </li>
-            <li>
-                <div class="p"><a href="{% url 'Order:order_des' %}"><img id="pimg" src="https://i.ibb.co/0JMMtF1/shortw.png" alt=""><p id="ptext">사이즈5가지</p></a></div>
-                <div>반팔입니다<br>컬러~~~사이즈~~~~</div>
-            </li>
+            {% for type in types %}
+                <form action="{% url 'Order:order_des' %}" method="GET">
+                    <input type="hidden" value="{{ type.title }}" name="type_title">
+                    <input type="hidden" value="{{ type.description }}" name="type_desc">
+                    <input type="hidden" value="{{ type.img }}" name="type_img">
+                    <input type="hidden" value="{{ type.price }}" name="type_price">
+                    <li id="item">
+                        {% if session.admin %}
+                            <button type="button" id="product_delete" class="btn btn-danger" onclick="deleteitem">X</button>
+                        {% endif %}
+                        <div class="p">
+                            <button>
+                                <img id="pimg" src="{{ type.img }}" alt="">
+                                <p id="ptext">
+                                    {{ type.price }}원
+                                </p>
+                            </button>
+                        </div>
+                        <div>{{ type.description }}</div>
+                    </li>
+                </form>
+            {% endfor %}
         </ul>
     </div>
 <script>

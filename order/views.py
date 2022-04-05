@@ -2,28 +2,26 @@ from django.shortcuts import render, redirect
 from shop.models import Config
 from django.http import HttpResponse
 import urllib.request
-# import requests
 from user.models import User
+from recommendation.models import Type
 
 
 # Create your views here.
 def order(request):
-    
     try:
+        context = {
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'shopping',
+            'types': Type.objects.all()
+        }
         if request.session['user']:
-            context = {
-                'session': request.session,
-                'config': Config.objects.get(id=1),
-                'currentpage': 'shopping',
-            }
+            
             return render(request, 'order.html', context)
         elif request.session['admin']:
-            context = {
-                'session': request.session,
-                'config': Config.objects.get(id=1),
-                'currentpage': 'shopping',
-                'title':request.title,
-            }
+
+            context['title'] = request.title
+
             return render(request, 'order.html', context)
         else:
             return HttpResponse(f'''
@@ -47,16 +45,24 @@ def order_des(request):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'shopping'
+        'currentpage': 'shopping',
+        'type_price': request.GET['type_price'],
+        'type_desc': request.GET['type_desc'],
+        'type_img': request.GET['type_img'],
+        'type_title': request.GET['type_title']
     }
-    return render(request, 'order_des.html',context)
+
+    return render(request, 'order_des.html', context)
 
 def custom1(request):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'shopping'
+        'currentpage': 'shopping',
+        'type_price': request.GET['type_price'],
+        'type_title': request.GET['type_title']
     }
+
     return render(request, 'custom1.html',context)
 
 def custom2(request):
@@ -68,7 +74,10 @@ def custom2(request):
         'currentpage': 'shopping',
         'color': color,
         'size':size,
+        'type_price': request.GET['type_price'],
+        'type_title': request.GET['type_title']
     }
+
     return render(request, 'custom2.html',context)
 
 
@@ -100,6 +109,7 @@ def customend(request):
             with open("static/image/uploaded_img/test3.jpg", mode="wb") as f:
                 f.write(mem)
                 print("이미지 저장 완료되었습니다.")
+                
             return render(request, 'customend.html',context)
 
 
