@@ -120,7 +120,7 @@
     <hr>
 </div>
 
-<form action="." method="POST">
+<form action="{% url 'Recommendation:product_reviews' %}" method="POST">
     {% csrf_token %}
 <div class="review-table">
     <div class="review-table__cell review-intake-head title">
@@ -134,11 +134,15 @@
     </div>
     <hr style='color: black'>
 </div>
+<div class="mb-3 mt-3">
+    <label for="order">제목:</label>
+    <input type="text" class="form-control" id="order" placeholder="리뷰제목을 입력하세요" name="order" required>
+</div>
 
 
 <div class="mb-3 mt-3">
-    <label class='my__rev' for="content">상세리뷰</label>
-    <textarea class="form-control" rows="5" id="content" placeholder="상품 품질에 대한 고객님의 솔직한 리뷰를 남겨주세요." name="content"
+    <label class='my__rev' for="photo">상세리뷰</label>
+    <textarea class="form-control" rows="5" id="photo" placeholder="상품 품질에 대한 고객님의 솔직한 리뷰를 남겨주세요." name="photo"
         required></textarea>
 </div>
 <hr style='color: black'>
