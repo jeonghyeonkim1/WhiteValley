@@ -9,22 +9,25 @@
 {% block contents %}
 
 <div class="title">
-    <h3>매거진 </h3>
+    <br>
+    <h3>매거진</h3>
+    <br>
 </div>
 
 <div class="mb-3 mt-3 clearfix">
     {% if session.admin %}
-    <span class="float-end ms-4">id : {{ board.id }} </span>
+    <span class="float-start ms-4">id : {{ magazine.id }} </span>
     {% endif %}
-    <span class="float-end ms-4">작성일 : {{ board.reg_date|date:"Y-m-d H:i:s" }} </span>
-    <span class="float-end">조회수 : {{ board.view_cnt }} </span>
+    <span class="float-end ms-4">작성일 : {{ magazine.reg_date|date:"Y-m-d H:i:s" }} </span>
+    <span class="float-end">조회수 : {{ magazine.view_cnt }} </span>
 </div>
 
+<section> 
 <div class="row">
     <div class="col-12">
       {% if session.admin %}
       <button type="button" class="btn btn-outline-dark float-end" onclick="chkDelete()" display="none">삭제</button>
-      <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_update' %}" role="button" display="none">수정</a> 
+      <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_update' magazine.pk %}" role="button" display="none">수정</a> 
       {% endif %}
     </div>
   </div>
@@ -35,50 +38,35 @@
 
         <div class="mb-3 mt-3">
             <label for="title">제목:</label>
-            <div class="border bg-light rounded p-2" >{{ board.title }}</div>
+            <div class="border bg-light rounded p-2" >{{ magazine.title }}</div>
         </div>    
-        <div class="mb-3 mt-3">
-            <label for="content">내용:</label>
-            <div class="border bg-light rounded p-2" >{{ board.content }}</div>
-        </div> 
 
-        <a class="btn btn-outline-dark" href="{% url 'User:magazine_list' %}" role="button">목록</a>
+        <div class="mb-3 mt-3">
+            <label for="content">내용</label>
+            <div class="border bg-light rounded p-2 h-25" rows="20" >{{ magazine.content }}</div>
+        </div>    
+
+        <a class="btn btn-outline-dark" href="{% url 'User:magazine_list' %}">목록</a>
 
     </div>
 
 </div>
-{% comment %} 
-<form action="{% url 'magazine_delete' %}" name="delete" method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="id" value="{{ board.id }}">
-</form>
-<script>
-    function chkDelete(){
-        // 삭제 여부 확인
-      if (confirm("삭제하시겠습니까?") == true){
-          document.form.submit();
-      }else{      
-          return;
-      }
-    }
-</script> {% endcomment %}
 
-<form action="#" name="delete" method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="id" value="{{ board.id }}">
-</form>
+    <form action="{% url 'User:magazine_delete' %}" name="delete" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ magazine.id }}">
+    </form>
 
-<script>
+    <script>
     function chkDelete(){
-        // 삭제 여부 확인
-        var r = confirm("삭제하시겠습니까?");
-        if(r){
+        var d = confirm("삭제하시겠습니까?");
+        if(d){
             document.forms['delete'].submit();
         }
     }
-</script>
+    </script>
 
-
+</section>
 <br>
 <br>
 

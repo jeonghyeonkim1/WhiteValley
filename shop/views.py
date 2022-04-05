@@ -14,8 +14,8 @@ def home(req):
         'config': Config.objects.get(id=1),
         'currentpage': 'home',
         'notices': Board.objects.filter(tag="공지사항").order_by("-reg_date")[:12],
-        'faqs': Board.objects.filter(tag="FAQ").order_by("-reg_date")[:12],
-        'magazines': Board.objects.filter(tag="매거진").order_by("-reg_date")[:12]
+        'faqs': Board.objects.filter(tag="FAQ").order_by("-reg_date")[:4],
+        'magazines': Board.objects.filter(tag="매거진").order_by("-reg_date")[:4]
     }
 
     cookie_name = 'visited'
