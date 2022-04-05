@@ -1,5 +1,7 @@
 from django.urls import path
 from user import views
+from django.conf.urls.static import static
+from django.conf import settings # settings.py 파일임
 
 app_name = "User"
 
@@ -14,8 +16,7 @@ urlpatterns = [
     # 매거진
     path('list/', views.magazine_list, name="magazine_list"),
     path('detail/<int:pk>/', views.magazine_detail, name="magazine_detail"), 
-    # path('update/<int:pk>/', views.magazine_update, name="magazine_update"),
-    path('update/', views.magazine_update, name="magazine_update"),
+    path('update/<int:pk>/', views.magazine_update, name="magazine_update"),
     path('write/', views.magazine_write, name="magazine_write"),
     path('delete/', views.magazine_delete, name="magazine_delete"),
 
@@ -25,3 +26,8 @@ urlpatterns = [
     path('mypage/modify/check/', views.info_modify, name="info_modify"),
     path('mypage/modify/detail/', views.info_modify_detail, name="info_modify_detail"),
 ]
+# MEDIA 경로 추가
+urlpatterns += static(  # 정규표현식 사용가능
+    settings.MEDIA_URL,
+    document_root = settings.MEDIA_ROOT
+)

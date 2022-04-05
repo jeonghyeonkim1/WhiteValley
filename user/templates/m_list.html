@@ -16,9 +16,9 @@
 <div class="row">
   <div class="col-12">
     {% if session.admin %}
-    <button type="button" class="btn btn-outline-dark float-end" onclick="chkDelete()" display="none">삭제</button>
-    <a class="btn btn-outline-dark float-end" href="{% url 'User:magazine_write' %}" role="button" display="none">작성</a>
-    <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_update' %}" role="button" display="none">수정</a> 
+    <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_write' %}" role="button" display="none">작성</a>
+    {% comment %} <button type="button" class="btn btn-outline-dark float-end" onclick="chkDelete()" display="none">삭제</button>
+    <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_update' %}" role="button" display="none">수정</a>  {% endcomment %}
     {% endif %}
   </div>
 </div>
@@ -28,15 +28,14 @@
     <div class="row">
         {% for board in boards %}
         <div class="card col-lg-6 mb-4">
-            <div class="admin_show">
+            {% comment %} <div class="admin_show">
                 {% if session.admin %}
                 <input class="form-check-input" type="checkbox" id="flexCheckDefault"display: "none";>
                 {% endif %}
-            </div>
+            </div> {% endcomment %}
                 <a href="{% url 'User:magazine_detail' board.id %} "><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
                 <a href="{% url 'User:magazine_detail' board.id %}" style="text-decoration:none">
                 <h5 class="card-title">{{ board.title }}</h5>
-                {% comment %} <p class="card-text">내용 {{ board.content }}</p> 모든 내용이 출력된다. {% endcomment %}
                 </a>
                 <div class="small text-muted">등록일 : {{ board.reg_date|date:"Y-m-d" }}</div>
         </div>
@@ -81,18 +80,6 @@
     {% endif %}
 </ul>
 
-
-
-<script>
-    function chkDelete(){
-        // 삭제 여부 확인
-      if (confirm("삭제하시겠습니까?") == true){
-          document.form.submit();
-      }else{      
-          return;
-      }
-    }
-</script>
 
 <br>
 <br>

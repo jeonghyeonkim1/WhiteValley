@@ -6,7 +6,10 @@ from shop.models import Config
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import Http404
 from cs.models import Board
+from cs.models import B_Photo
 from django.core.paginator import Paginator  
+
+
 # Create your views here.
 def login(request):
     context = {
@@ -184,79 +187,65 @@ def magazine_list(request):
 
 
 def magazine_detail(request, pk):
-    board = Board.objects.get(pk=pk)
-    board.view_cnt += 1
-    board.save()
+
+    magazine = Board.objects.get(pk=pk)
+    magazine.view_cnt += 1
+    magazine.save()
 
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'magazine',
-        'board' : board,
+        'magazine' : magazine,
     }
 
     return render(request, 'm_detail.html', context)
 
-def magazine_update(request):
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'magazine',
-    }
+def magazine_update(request, pk):
 
-    return render(request, 'm_update.html')
+    if request.method == "GET":
+        magazine = Board.objects.get(pk=pk)
+        context = {
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'magazine',
+            'magazine' : magazine,
+        }
 
-# def magazine_update(request, pk):
-
-#     context = {
-#         'session': request.session,
-#         'config': Config.objects.get(id=1),
-#         'currentpage': 'magazine',
-#         'board' : board,
-#     }
-
-#     if request.method == "GET":
-#         try:
-#             board = Board.objects.get(pk=pk)
-#         except Board.DoesNotExist:
-#             raise Http404('게시글을 찾을수 없습니다')
-
-#         return render(request, 'm_update.html', context)
+        return render(request, 'm_update.html', context)
     
-#     elif request.method == "POST":
-#         title = request.POST['title']
-#         content = request.POST['content']
+    elif request.method == "POST":
+        title = request.POST['title']
+        content = request.POST['content']
 
-#         # 수정
-#         board = Board.objects.get(pk=pk)
-#         board.title = title
-#         board.content = content
-#         board.save()   # UPDATE
+        magazine = Board.objects.get(pk=pk)
+        magazine.title = title
+        magazine.content = content
+        magazine.save()
 
-#         return render(request, 'm_updateOk.html', {"pk": board.pk })
-#     return render(request, 'm_update.html', pk)
+        return render(request, 'm_updateOk.html', {"pk": magazine.pk})
 
 def magazine_write(request):
-
+  
     context = {
             'session': request.session,
             'config': Config.objects.get(id=1),
-            'currentpage': 'magazine'
+            'currentpage': 'magazine',            
     }
     if request.method == 'GET':
         return render(request, 'm_write.html', context)
-
+  
     elif request.method == 'POST':
         user = User.objects.get(id=request.session['admin'])
         tag = request.POST['magazine']
         title = request.POST['title']
         content = request.POST['content']
-
-
+        uploadedFile = request.FILES["uploadedFile"]
+        photo = B_Photo.objects.get(b.pk, photo = uploadedFile)
         b = Board(user = user, tag = tag, title = title, content = content)
-        b.save()
-        return render(request, 'm_writeOk.html', {"pk": b.pk})
-
+        photo.save()
+        return render(request, 'm_writeOk.html', {"pk": photo.pk})
+  
 def magazine_delete(request):
 
     context = {
@@ -266,11 +255,10 @@ def magazine_delete(request):
     }
     if request.method == "POST":
         id = request.POST['id']
-        board = Board.objects.get(id=id)
-        board.delete()
+        magazine = Board.objects.get(id=id)
+        magazine.delete()
 
     return render(request, 'm_deleteok.html', context)
-
 
 # ------------------------------------------------------------------------------------
 

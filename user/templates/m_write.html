@@ -8,11 +8,13 @@
 
 {% block contents %}
 
-<div class="title"> 
+<div class="title">
+    <br>
     <h3>매거진 > 작성</h3>
+    <br>
 </div>
 
-<form action="." method="POST">
+<form action="." method="POST" enctype="multipart/form-data">
     <input type="hidden" name="magazine" value="매거진">
     {% csrf_token %}
     <div class="col-lg-12">
@@ -23,11 +25,18 @@
         </div>
         <div class="mb-3 mt-3">
             <label for="content">내용:</label>
-            <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content"></textarea>
+            <textarea class="form-control" rows="20" id="content" placeholder="내용을 입력하세요" name="content"></textarea>
         </div>
     
-        <button type="submit" class="btn btn-outline-dark">작성완료</button>
-        <a class="btn btn-outline-dark" href="{% url 'User:magazine_list' %}">목록</a>
+        
+        
+        <div>
+            <input class="btn-outline-dark mt-3" type="file" name="uploadedFile"><br>
+            <button type="submit" class="btn btn-outline-dark mt-3 float-end">작성완료</button>
+            <a class="btn btn-outline-dark mt-3 float-end" href="{% url 'User:magazine_list' %}">목록</a>
+            <br>
+            <br>
+        </div>
 
     </div>
 </form>
