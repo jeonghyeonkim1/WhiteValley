@@ -187,7 +187,7 @@ def magazine_list(request):
 def magazine_detail(request, pk):
 
     magazine = Board.objects.get(pk=pk)
-    photos = B_Photo.objects.all()
+    photos = B_Photo.objects.get(board = pk)
     magazine.view_cnt += 1
     magazine.save()
 
@@ -198,7 +198,7 @@ def magazine_detail(request, pk):
         'magazine' : magazine,
         'photos' : photos,
     }
-
+    # print('포토는 ', photos)
     return render(request, 'm_detail.html', context)
 
 def magazine_update(request, pk):

@@ -32,6 +32,9 @@
         
         <div>
             <input class="btn-outline-dark mt-3" type="file" name="uploadedFile"><br>
+            {% if %}
+            <img src="test.jpg" onerror="this.src='noImg.jpg'">
+            {% endif %}
             <button type="submit" class="btn btn-outline-dark mt-3 float-end">작성완료</button>
             <a class="btn btn-outline-dark mt-3 float-end" href="{% url 'User:magazine_list' %}">목록</a>
             <br>
