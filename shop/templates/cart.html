@@ -32,16 +32,15 @@
             <div class="container">
                 <div class="rounded row">
                     <div class="border col-sm-1 d-flex justify-content-center align-items-center form-check form-switch">
-                        <input type="checkbox" class="form-check-input item_selector" id="flexSwitchCheckDefault" style="width: 70px; height: 35px;">
+                        <input type="checkbox" class="form-check-input item_selector" name="item_selector" id="flexSwitchCheckDefault" style="width: 70px; height: 35px;">
                     </div>
                     <div class="border col-sm-3 d-flex justify-content-center align-items-center">
                         <img class="w-100" src="{{ cart.product.img }}" alt="장바구니_이미지">
                     </div>
                     <div class="border col-sm-6 d-flex flex-column justify-content-center">
-                        <h5>사이즈: {{ cart.product.size }}<a class="text-dark">자세히 보기</a></h5>
+                        <h4><strong>{{ cart.user.nickname }} 님의 작품</strong></h4>
                         <hr>
-                        <h5>상태: </h5>
-                        <hr>
+                        <h5>사이즈: {{ cart.product.size }}</h5>
                         <h5>지금 주문 시: {{ current_time }} 도착 예정</h5>
                     </div>
                     <div class="border col-sm-2 d-flex justify-content-center align-items-center">
@@ -61,8 +60,12 @@
                     </div>
                     <div class="bg-dark text-white d-flex justify-content-end align-items-center p-3">
                         <div class="p-3 d-flex justify-content-center align-items-center text-light">
-                            <input type="hidden" value="{{ cart.product.type.price }}" id="orginal_price">
-                            <h6 class="me-3">해당상품 현재 가격: <strong>￦<input type="text" value="{{ cart.product.type.price }}" name="price"></strong></h6>
+                            <div class="input-group">
+                                <span class="input-group-text text-center bg-dark text-white fw-bold border-0">해당 상품 현재 가격:</span>
+                                    <input type="hidden" value="{{ cart.product.type.price }}" id="orginal_price">
+                                    <input type="text" value="{{ cart.product.type.price }}" name="price" class="form-control text-center bg-dark text-white fw-bold fs-3" aria-label="Amount (to the nearest dollar)" disabled>
+                                <span class="input-group-text text-center bg-dark text-white fw-bold">￦</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,9 +74,17 @@
     </div>
     
     <div class="bg-light border-top border-bottom border-3 p-5 m-3 fw-bold">
-        <div class="p-3 d-flex justify-content-center align-items-center"><h4 class="me-3">상품 총 가격: </h4><h2 class="text-danger"><strong>￦120000</strong></h2></div>
-        <div class="p-3 d-flex justify-content-center align-items-center text-secondary"><h6 class="me-1">총 적립 포인트: </h6> <h4><strong>￦12000</strong></h4></div>
+        <div class="input-group d-flex justify-content-center align-items-center">
+            <span class="input-group-text bg-light fw-bold border-0 fs-2">총 가격:</span>
+                <input type="text" value="0" name="total_price" class="border-0 bg-light text-center text-danger fw-bold fs-1" disabled>
+            <span class="input-group-text text-center bg-light fw-bold border-0 fs-2">￦</span>
+        </div>
+        <div class="mt-2 d-flex justify-content-center align-items-center border-top p-2">
+            <input type="hidden" value="{{ return_point }}" id="return_point">
+            <h6>(<input type="text" value="0" name="total_point" style="width: 55px;" class="border-0 bg-light fw-bold fs-5" disabled>원 적립 예정)</h6>
+        </div>
     </div>
+
     <div class="d-flex justify-content-evenly align-items-center mb-5">
         <a class="d-flex align-items-center justify-content-center fw-bold fs-3 btn btn-danger w-50 m-5" style="height: 70px;" onclick="location.href='{% url 'Recommendation:finished' %}'">계속 쇼핑하기</a>
         <a class="d-flex align-items-center justify-content-center fw-bold fs-3 btn btn-primary w-50 m-5" style="height: 70px;" onclick="location.href='{% url 'Order:payment' %}'">구매하러 가기</a>
