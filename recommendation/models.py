@@ -32,14 +32,10 @@ class Product(models.Model):
     user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name="작성자")
     title = models.ForeignKey('recommendation.Type', on_delete=models.CASCADE, verbose_name="타입명")
     size = models.CharField(max_length=10, verbose_name='크기')
-    color = models.CharField(max_length=300, verbose_name='배경색')
-    font = models.CharField(max_length=150, null=True, verbose_name='텍스트')
-    font_color = models.CharField(max_length=40, null=True, verbose_name='폰트색')
-    pattern = models.CharField(max_length=300, null=True, verbose_name='무늬')
-    pattern_color = models.CharField(max_length=300, null=True, verbose_name='무늬색')
     request = models.CharField(max_length=200, null=True, verbose_name='요청사항')
     view_cnt = models.IntegerField(default=0, verbose_name='조회수')
     reg_date = models.DateTimeField(auto_now_add=True, verbose_name='상품등록일')
+    img = models.CharField(max_length=300, verbose_name='이미지')
 
     class Meta:
         db_table = 't_product'
