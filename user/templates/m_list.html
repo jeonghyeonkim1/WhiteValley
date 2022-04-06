@@ -53,9 +53,9 @@
 
 <ul class="pagination justify-content-center">
     <!-- 이전페이지 -->
-    {% if magazine.has_previous %}
+    {% if board.has_previous %}
     <li class="page-item">
-        <a class="page-link" href="?page={{ magazine.previous_page_number }}">이전</a>
+        <a class="page-link" href="?page={{ board.previous_page_number }}">이전</a>
     </li>
     {% else %}
     <li class="page-item disabled">
@@ -63,8 +63,8 @@
     </li>
     {% endif %}
     <!-- 페이지리스트 -->
-    {% for page_number in magazine.paginator.page_range %}
-    {% if page_number == magazine.number %}
+    {% for page_number in board.paginator.page_range %}
+    {% if page_number == board.number %}
     <li class="page-item active" aria-current="page">
         <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
     </li>

@@ -22,14 +22,15 @@ class Order(models.Model):
         return f'{self.user} {self.product}'
 
 class Cart(models.Model):
-    user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name="작성자")
+    user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name="디자이너")
+    product = models.ForeignKey('recommendation.Product', on_delete=models.CASCADE, verbose_name="완성품")
     amount = models.IntegerField(default=1, verbose_name='갯수')
 
     class Meta:
         db_table = 'cart'
         verbose_name = '장바구니'
         verbose_name_plural = '장바구니(들)'
-        # unique_together = ('user', 'product')
+        unique_together = ('user', 'product')
 
     def __str__(self):
         return f'{self.user} {self.product}'
@@ -38,7 +39,7 @@ class Review(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, primary_key=True, verbose_name="주문번호")
     title = models.CharField(max_length=70, verbose_name='후기제목')
     contents = models.CharField(max_length=300, verbose_name='후기내용')
-    view_cnt = models.CharField(max_length=100, verbose_name='후기조회수')
+    view_cnt = models.IntegerField(default=0, verbose_name='후기조회수')
     reg_date = models.DateTimeField(auto_now_add=True, verbose_name='등록날짜')
 
     class Meta:
