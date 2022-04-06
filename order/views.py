@@ -4,7 +4,6 @@ from django.http import HttpResponse
 import urllib.request
 from user.models import User
 from recommendation.models import Type
-
 import os.path
 
 
@@ -115,7 +114,7 @@ def customend(request):
                 name = f'img{cnt}.jpg'
 
                 if os.path.exists(f'static/image/uploaded_img/{name}') == False:
-                    context['img_path'] = f'static/image/uploaded_img/{name}'
+                    context['img_path'] = f'/static/image/uploaded_img/{name}'
                     break
                 
 
