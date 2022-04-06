@@ -36,7 +36,7 @@
     {% endif %}
     <a class="btn btn-dark" href="{% url 'Cs:event_list' %}">목록가기</a>
 
-    <form action="#" name="delete" method="POST">
+    <form action="{% url 'Cs:event_delete' %}" name="delete" method="POST">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ event.id }}">
     </form>

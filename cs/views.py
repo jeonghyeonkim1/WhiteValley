@@ -127,7 +127,7 @@ def event_write(request):
         uploadedFile = request.FILES["uploadedFile"]
 
 
-        if len(re.findall(r'\W', uploadedFile.name)) > 0:
+        if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
             return HttpResponse(f'''
                 <script>
                     alert("파일 이름에 특수문자가 포함되어 있습니다!");
@@ -171,7 +171,7 @@ def event_detail(request, pk):
 
 
 def event_list(request):
-    all_events = Board.objects.filter(tag='이벤트').order_by('reg_date')
+    all_events = Board.objects.filter(tag='이벤트').order_by('-reg_date')
 
     page = int(request.GET.get('p', 1))
     paginator = Paginator(all_events, 6)

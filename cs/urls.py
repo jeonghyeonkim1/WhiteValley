@@ -16,6 +16,7 @@ urlpatterns = [
     path("event/detail/<int:pk>/", views.event_detail, name="event_detail"),
     path("event/list/", views.event_list, name="event_list"),
     path('event/update/<int:pk>/', views.event_update, name="event_update"),
+    path('delete/', views.event_delete, name="event_delete"),
 
     # 1:1문의
     path("oto/write/", views.oto_write, name="oto_write"),
