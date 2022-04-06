@@ -6,7 +6,7 @@ from django.http import Http404
 from cs.models import Board, B_Photo, Photo_Upload
 from django.core.paginator import Paginator  
 import re
-
+from django.core.mail import send_mail
 # Create your views here.
 def login(request):
     context = {
@@ -102,6 +102,12 @@ def register(request):
                 nickname = el
             )                
             user.save()
+            send_mail("안녕하세요. WhiteValley입니다.",
+            "안녕하세요. 회원가입을 축하드립니다. 정상적으로 이용이 가능합니다.",
+            "dbswlrl2@naver.com",
+            [user.email],
+            # html_message='hi.html',
+            fail_silently=False)
             return HttpResponse(f'''
                 <script>
                     alert("회원가입에 성공했습니다!")
