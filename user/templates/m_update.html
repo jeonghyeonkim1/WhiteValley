@@ -30,7 +30,7 @@
             <textarea class="form-control" rows="5" id="content" name="content" required>{{ magazine.content }}</textarea>
         </div>
 
-        <input class="btn-outline-dark mt-3" type="file" name="uploadedFile"><br>
+        {% comment %} <input class="btn-outline-dark mt-3" type="file" name="uploadedFile"><br> {% endcomment %}
         <a class="btn btn-outline-dark float-end" href="{% url 'User:magazine_list' %}">목록</a>
         <button type="submit" class="btn btn-outline-dark float-end">수정완료</button>
 

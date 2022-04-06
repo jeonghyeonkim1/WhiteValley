@@ -4,6 +4,11 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
 <script src="{% static 'js/cs.js' %}"></script>
+<script>
+    $(function(){
+        console.log($("#content").val());
+    });
+</script>
 {% endblock %}
 
 {% block contents %}
@@ -24,7 +29,8 @@
     </div>
     <div class="mb-3 mt-3">
         <label for="content">공지사항 내용</label>
-        <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" required></textarea>
+        <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" wrap="hard" required></textarea>
+
     </div>
     {% if session.admin %}
     {% csrf_token %}

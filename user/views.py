@@ -121,8 +121,9 @@ def find_pw(request):
 
     if request.method == 'GET':
         return render(request, 'find_pw.html', context)
+
     elif request.method == 'POST':
-        email = request.POST.get('useremail')
+        email = request.POST['useremail']
 
         if not email:
             context['error'] = '이메일 입력바랍니다.'
@@ -130,8 +131,8 @@ def find_pw(request):
             context['error'] = '이메일이 없습니다.'
         elif User.objects.filter(email = email):
 
-            return redirect(f'/whitevalley/user/chpw/${email}')  # 이메일 값을 url로 저장하고 보낸다.
-
+            return redirect(f'/whitevalley/user/chpw/${email}/')
+                            
         return render(request, 'find_pw.html', context)
 
 
@@ -187,7 +188,7 @@ def magazine_list(request):
 def magazine_detail(request, pk):
 
     magazine = Board.objects.get(pk=pk)
-    photos = B_Photo.objects.all()
+    photos = B_Photo.objects.get(board = pk)
     magazine.view_cnt += 1
     magazine.save()
 
@@ -198,7 +199,7 @@ def magazine_detail(request, pk):
         'magazine' : magazine,
         'photos' : photos,
     }
-
+    # print('포토는 ', photos)
     return render(request, 'm_detail.html', context)
 
 def magazine_update(request, pk):
@@ -298,19 +299,13 @@ def info_modify(req):
     real_password = req.GET["real_password"]
 
     if check_password(password, real_password):
-        res = render(req, HttpResponse(f'''
+        
+        return HttpResponse(f'''
             <script>
                 alert("인증이 완료되었습니다!!");
                 location.href="/whitevalley/user/mypage/modify/detail/"
             </script>
-        '''))
-
-        res.set_cookie(
-            key = 'modify_check',
-            value = True,
-        )
-        
-        return 
+        ''')
     else:
         return HttpResponse(f'''
             <script>

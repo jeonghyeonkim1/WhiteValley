@@ -30,11 +30,11 @@
         </div>
         <div>
             <label for="">이메일</label>
-            <div  class="col-4" style="display: inline-block; margin-bottom:15px"><input type="text" class="form-control" placeholder="필수"  required></div>
+            <div  class="col-4" style="display: inline-block; margin-bottom:15px"><input type="text" class="form-control" placeholder="필수" value="{{ user.email }}"  required></div>
         </div>
         <div>
             <label for="">연락처</label>
-            <div class="col-4" style="display: inline-block; margin-bottom:30px"><input id="usernum" type="text" class="form-control" placeholder="000-0000-0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"  required></div>
+            <div class="col-4" style="display: inline-block; margin-bottom:30px"><input id="usernum" type="text" class="form-control" value="{{ user.contact }}" placeholder="000-0000-0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"  required></div>
         </div>
     </div>
     <br>
@@ -61,7 +61,7 @@
         </div>
         <div>
             <label for="">연락처</label>
-            <div class="col-4" class="col-4" style="display: inline-block; margin-bottom:18px"><input type="text" class="form-control" placeholder="필수" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required></div>
+            <div class="col-4" class="col-4" style="display: inline-block; margin-bottom:18px"><input type="text" id="equalcontact" class="form-control" placeholder="필수" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required></div>
         </div>
         <div>
             <label for="">배송요청사항</label>
@@ -264,6 +264,7 @@
     $("#userequal")[0].addEventListener("click",function() {
         
         $("[name='receiver']").val($("[name='user']").val());
+        $("#equalcontact").val($("#usernum").val());
      
     })
 </script>

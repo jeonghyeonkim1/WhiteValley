@@ -8,14 +8,10 @@
 
 {% block contents %}
 <h2>1:1 문의</h2>
-{% if session.user %}
-    {% if session.admin %}
-    <h6>1:1 문의에 답변해주세요</h6>
-    {% else %}
-    <h6>내가 작성한 1:1 문의입니다.</h6>
-    {% endif %}
+{% if session.admin %}
+<h6>1:1 문의에 답변해주세요</h6>
 {% else %}
-    회원만 이용할 수 있는 페이지입니다.
+<h6>내가 작성한 1:1 문의입니다.</h6>
 {% endif %}
 <hr>
 
@@ -33,7 +29,6 @@
         </tr>
     </thead>
     <tbody>
-
         {% for oto in otos %}
         {% if session.admin %}
         <tr onclick="location.href='{% url 'Cs:oto_detail' oto.id %}'" style="cursor: pointer;">
@@ -54,20 +49,18 @@
 </table>
 <div class="row">
     <div class="col-12">
-        {% if session.user %} {% comment %} 로그인상태 {% endcomment %}
+        {% comment %} {% if session.user %} 로그인상태 {% endcomment %}
         {% if not session.admin %}
         <a class="btn btn-dark" href="{% url 'Cs:oto_write' %}" style="float: right;">문의하기</a>
         {% endif %}
-        {% else %}
-        <button type="button" class="btn btn-dark" onclick="chkLogin()" style="float: right;">문의하기</button>
-        {% endif %}
+        {% comment %} {% endif %} {% endcomment %}
 
-        <script>
+        {% comment %} <script>
             function chkLogin() {
                 alert('로그인 후 이용할 수 있습니다.');
-                location.href = "{% url 'User:user_login' %}"
+                location.href = "{% url 'Cs:oto_loading' %}"
             }
-        </script>
+        </script> {% endcomment %}
     </div>
 </div>
 
