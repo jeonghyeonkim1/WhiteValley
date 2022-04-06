@@ -46,7 +46,7 @@
                     </select>
                 </div> 
                 <form action="{% url 'Order:custom2' %}" method="GET">
-                    <input type="hidden" value="{% static 'image/products/s_black.jpg' %}" name="color_input">
+                    <input type="hidden" value="{% static 'image/products/shortw.png' %}" name="color_input">
                     <input type="hidden" value="M" name="type_size">
                     <input type="hidden" value="{{ type_price }}" name="type_price">
                     <input type="hidden" value="{{ type_title }}" name="type_title">
@@ -70,6 +70,9 @@
             $("[name='type_size']").val($(this).val());
         });
     })
+ 
+
+    
 </script>
 
 {% endblock %}

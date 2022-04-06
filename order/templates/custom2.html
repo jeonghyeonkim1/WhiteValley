@@ -197,6 +197,9 @@ $(document).ready(function(){
         if($("#selectpattern").val() == "p1"){
             patternimg_wrap.style.display = "none"
         }
+        else if($("#selectpattern").val() == "0"){
+            patternimg_wrap.style.display = "none"
+        }
         else{
             patternimg_wrap.style.display = "block"
             patternimg.setAttribute('src',$("#selectpattern").val())
