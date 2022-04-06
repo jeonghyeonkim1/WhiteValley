@@ -326,6 +326,7 @@ def info_modify_detail(req):
         'config': Config.objects.get(id=1),
         'currentpage': 'mypage'
     }
+    context['user'] = User.objects.get(id=req.session['user'])
     try:
         req.session['user']
     except:
@@ -335,18 +336,18 @@ def info_modify_detail(req):
                 history.back();
             </script>
         ''')
+    return render(req, 'mypage_modify.html', context)
+    # try:
+    #     req.COOKIES['modify_check']
+    # except:
+    #     return HttpResponse(f'''
+    #         <script>
+    #             alert("인증 유효기간이 지났습니다. 다시 인증해주세요.");
+    #             history.back();
+    #         </script>
+    #     ''')
 
-    try:
-        req.COOKIES['modify_check']
-    except:
-        return HttpResponse(f'''
-            <script>
-                alert("인증 유효기간이 지났습니다. 다시 인증해주세요.");
-                history.back();
-            </script>
-        ''')
-
-    render(req, 'mypage_modify.html', context)
+    
     
 
     
