@@ -27,6 +27,7 @@
             </div>
         </div>
     </div>
+    {% for cart in carts %}
     <div class="container">
         <div class="rounded row">
             <div class="border col-sm-1 d-flex justify-content-center align-items-center form-check form-switch">
@@ -36,7 +37,7 @@
                 <img class="w-100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGMxDdakcrizquJtRNmja_hae6nxjmogm67g&usqp=CAU" alt="장바구니_이미지">
             </div>
             <div class="border col-sm-6 d-flex flex-column justify-content-center">
-                <h5>옵션: ~~~~~~~~~~~~~~~...<a class="text-dark">자세히 보기</a></h5>
+                <h5>옵션: {{}}<a class="text-dark">자세히 보기</a></h5>
                 <hr>
                 <h5>상태: </h5>
                 <hr>
@@ -59,8 +60,8 @@
             </div>
         </div>
     </div>
-
-    <div class="container">
+    {% endfor %}
+    {% comment %} <div class="container">
         <div class="rounded row">
             <div class="border col-sm-1 d-flex justify-content-center align-items-center form-check form-switch">
                 <input type="checkbox" class="form-check-input item_selector" id="flexSwitchCheckDefault" style="width: 70px; height: 35px;">
@@ -91,7 +92,7 @@
                 <div class="p-3 d-flex justify-content-center align-items-center text-light"><h6 class="me-3">해당상품 현재 가격: </h6> <h4><strong>￦60000</strong></h4></div>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
     <div class="bg-light border-top border-bottom border-3 p-5 m-3 fw-bold">
         <div class="p-3 d-flex justify-content-center align-items-center"><h4 class="me-3">상품 총 가격: </h4><h2 class="text-danger"><strong>￦120000</strong></h2></div>
         <div class="p-3 d-flex justify-content-center align-items-center text-secondary"><h6 class="me-1">총 적립 포인트: </h6> <h4><strong>￦12000</strong></h4></div>
