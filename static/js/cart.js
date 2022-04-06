@@ -14,4 +14,20 @@ $(function () {
             }
         })
     })
+
+    
+
+    $("[name='amount']").change(function () {
+        for (let i = 0; i < $("[name='amount']").length; i++) {
+            if ($("[name='amount']")[i] == $(this)[0]) {
+                $("[name='price']")[i].value = $(this).val() * $("#orginal_price").val()
+            }
+        }
+
+        $("#amount_form").submit();
+    })
+
+    for (let i = 0; i < $("[name='amount']").length; i++) {
+        $("[name='price']")[i].value = $("[name='amount']")[i].value * $("#orginal_price").val()
+    }
 })

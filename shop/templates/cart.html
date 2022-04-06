@@ -2,7 +2,7 @@
 
 {% block attachment %}
     {% load static %}
-    <script src="{% static 'js/cart.js' %}?ver=3"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
     <style>
         .container {
             min-width: 768px;
@@ -27,72 +27,49 @@
             </div>
         </div>
     </div>
-    {% for cart in carts %}
-    <div class="container">
-        <div class="rounded row">
-            <div class="border col-sm-1 d-flex justify-content-center align-items-center form-check form-switch">
-                <input type="checkbox" class="form-check-input item_selector" id="flexSwitchCheckDefault" style="width: 70px; height: 35px;">
+    <div>
+        {% for cart in carts %}
+            <div class="container">
+                <div class="rounded row">
+                    <div class="border col-sm-1 d-flex justify-content-center align-items-center form-check form-switch">
+                        <input type="checkbox" class="form-check-input item_selector" id="flexSwitchCheckDefault" style="width: 70px; height: 35px;">
+                    </div>
+                    <div class="border col-sm-3 d-flex justify-content-center align-items-center">
+                        <img class="w-100" src="{{ cart.product.img }}" alt="장바구니_이미지">
+                    </div>
+                    <div class="border col-sm-6 d-flex flex-column justify-content-center">
+                        <h5>사이즈: {{ carts.product.size }}<a class="text-dark">자세히 보기</a></h5>
+                        <hr>
+                        <h5>상태: </h5>
+                        <hr>
+                        <h5>지금 주문 시: {{ current_time }} 도착 예정</h5>
+                    </div>
+                    <div class="border col-sm-2 d-flex justify-content-center align-items-center">
+                        <form action="{% url 'Main:cart_number' cart.id %}" method="POST" id="amount_form">
+                            {% csrf_token %}
+                            <select class="form-select" aria-label="Default select example" name="amount">
+                                <option value="1" {% if cart.amount == 1 %}selected{% endif %}>1</option>
+                                <option value="2" {% if cart.amount == 2 %}selected{% endif %}>2</option>
+                                <option value="3" {% if cart.amount == 3 %}selected{% endif %}>3</option>
+                                <option value="4" {% if cart.amount == 4 %}selected{% endif %}>4</option>
+                                <option value="5" {% if cart.amount == 5 %}selected{% endif %}>5</option>
+                                <option value="6" {% if cart.amount == 6 %}selected{% endif %}>6</option>
+                                <option value="7" {% if cart.amount == 7 %}selected{% endif %}>7</option>
+                                <option value="8" {% if cart.amount == 8 %}selected{% endif %}>8</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="bg-dark text-white d-flex justify-content-end align-items-center p-3">
+                        <div class="p-3 d-flex justify-content-center align-items-center text-light">
+                            <input type="hidden" value="{{ cart.product.type.price }}" id="orginal_price">
+                            <h6 class="me-3">해당상품 현재 가격: <strong>￦<input type="text" value="{{ cart.product.type.price }}" name="price"></strong></h6>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="border col-sm-3 d-flex justify-content-center align-items-center">
-                <img class="w-100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGMxDdakcrizquJtRNmja_hae6nxjmogm67g&usqp=CAU" alt="장바구니_이미지">
-            </div>
-            <div class="border col-sm-6 d-flex flex-column justify-content-center">
-                <h5>옵션: {{}}<a class="text-dark">자세히 보기</a></h5>
-                <hr>
-                <h5>상태: </h5>
-                <hr>
-                <h5>도착 예정 날짜: </h5>
-            </div>
-            <div class="border col-sm-2 d-flex justify-content-center align-items-center">
-                <select class="form-select" aria-label="Default select example">
-                    <option value="1" selected>1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                </select>
-            </div>
-            <div class="bg-dark text-white d-flex justify-content-end align-items-center p-3">
-                <div class="p-3 d-flex justify-content-center align-items-center text-light"><h6 class="me-3">해당상품 현재 가격: </h6> <h4><strong>￦60000</strong></h4></div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-    {% comment %} <div class="container">
-        <div class="rounded row">
-            <div class="border col-sm-1 d-flex justify-content-center align-items-center form-check form-switch">
-                <input type="checkbox" class="form-check-input item_selector" id="flexSwitchCheckDefault" style="width: 70px; height: 35px;">
-            </div>
-            <div class="border col-sm-3 d-flex justify-content-center align-items-center">
-                <img class="w-100" src="https://pbs.twimg.com/profile_images/1270347628568473600/iWfgRyNb_400x400.jpg" alt="장바구니_이미지">
-            </div>
-            <div class="border col-sm-6 d-flex flex-column justify-content-center">
-                <h5>옵션: ~~~~~~~~~~~~~~~...<a class="text-dark">자세히 보기</a></h5>
-                <hr>
-                <h5>상태: </h5>
-                <hr>
-                <h5>도착 예정 날짜: </h5>
-            </div>
-            <div class="border col-sm-2 d-flex justify-content-center align-items-center">
-                <select class="form-select" aria-label="Default select example">
-                    <option value="1" selected>1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                </select>
-            </div>
-            <div class="bg-dark text-white mb-5 d-flex justify-content-end align-items-center p-3">
-                <div class="p-3 d-flex justify-content-center align-items-center text-light"><h6 class="me-3">해당상품 현재 가격: </h6> <h4><strong>￦60000</strong></h4></div>
-            </div>
-        </div>
-    </div> {% endcomment %}
+    
     <div class="bg-light border-top border-bottom border-3 p-5 m-3 fw-bold">
         <div class="p-3 d-flex justify-content-center align-items-center"><h4 class="me-3">상품 총 가격: </h4><h2 class="text-danger"><strong>￦120000</strong></h2></div>
         <div class="p-3 d-flex justify-content-center align-items-center text-secondary"><h6 class="me-1">총 적립 포인트: </h6> <h4><strong>￦12000</strong></h4></div>

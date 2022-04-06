@@ -6,6 +6,7 @@ app_name = "Main"
 urlpatterns = [
     path('', views.home, name="home"),
     path('cart/', views.cart, name="cart"),
+    path('cart/<int:id>/', views.cart_number, name="cart_number"),
     path('admin/', views.admin, name="admin"),
     path('admin/member/', views.admin_member, name="admin_member"),
     path('admin/member/delete/<int:id>/', views.member_delete, name="member_delete"),

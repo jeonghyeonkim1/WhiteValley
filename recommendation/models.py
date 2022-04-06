@@ -43,7 +43,7 @@ class Product(models.Model):
         verbose_name_plural = '상품(들)'
 
     def __str__(self):
-        return f'{self.user}: {self.title}'
+        return f'{self.user}: {self.type}'
 
 class P_photo(models.Model):
     product = models.ForeignKey('recommendation.Product', on_delete=models.CASCADE, verbose_name="상품")

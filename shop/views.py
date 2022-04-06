@@ -43,16 +43,25 @@ def cart(req):
         'session': req.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'cart',
-<<<<<<< HEAD
-        'carts': Cart.objects.get(user=User.objects.get(id=req.session['user'])),
-        'sizes' : Product.objects.all(),
-=======
-        # 'cart': Cart.objects.get(user=User.objects.get(id=req.session['user']))
->>>>>>> 8000a36720b556d6bb02c9ba173c10b5fa55c43a
+        'carts': Cart.objects.filter(user=User.objects.get(id=req.session['user'])),
+        'current_time': datetime.datetime.now() + datetime.timedelta(days=2),
     }
 
-    
     return render(req, 'cart.html', context)
+
+def cart_number(req, id):
+    cart = Cart.objects.get(id=id)
+
+    cart.amount = req.POST['amount']
+
+    cart.save()
+
+    
+    return HttpResponse(f'''
+        <script>
+            history.back();
+        </script>
+    ''')
 
 
 # ADMIN -----------------------------------------------------------------------------------
