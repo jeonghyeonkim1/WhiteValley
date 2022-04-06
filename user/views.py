@@ -298,7 +298,10 @@ def info_modify(req):
     real_password = req.GET["real_password"]
 
     if check_password(password, real_password):
-        req.session['modify_check'] = True
+        res = render(req, 'mypage_modify.html', context)
+
+        res.set_cookie()
+        
         return HttpResponse(f'''
             <script>
                 alert("인증이 완료되었습니다!!");
@@ -315,6 +318,11 @@ def info_modify(req):
 
 
 def info_modify_detail(req):
+    context = {
+        'session': req.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'mypage'
+    }
     try:
         req.session['user']
     except:
@@ -326,7 +334,7 @@ def info_modify_detail(req):
         ''')
 
     try:
-        req.session['modify_check']
+        req.COOKIES['modify_check']
     except:
         return HttpResponse(f'''
             <script>
@@ -336,7 +344,7 @@ def info_modify_detail(req):
         ''')
     
 
-    return render(req, 'mypage_modify.html')
+    
 
 
 def api_login(req):
