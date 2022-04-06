@@ -121,8 +121,9 @@ def find_pw(request):
 
     if request.method == 'GET':
         return render(request, 'find_pw.html', context)
+
     elif request.method == 'POST':
-        email = request.POST.get('useremail')
+        email = request.POST['useremail']
 
         if not email:
             context['error'] = '이메일 입력바랍니다.'
@@ -130,8 +131,8 @@ def find_pw(request):
             context['error'] = '이메일이 없습니다.'
         elif User.objects.filter(email = email):
 
-            return redirect(f'/whitevalley/user/chpw/${email}')  # 이메일 값을 url로 저장하고 보낸다.
-
+            return redirect(f'/whitevalley/user/chpw/${email}/')
+                            
         return render(request, 'find_pw.html', context)
 
 

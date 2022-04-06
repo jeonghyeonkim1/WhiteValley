@@ -18,7 +18,7 @@ def notice_write(request):
         return render(request, 'notice_write.html', context)
 
     elif request.method == 'POST':
-        user = User.objects.get(id=request.session['admin'])
+        user = User.objects.get(id=request.session['user'])
         tag = request.POST['notice']
         title = request.POST['title']
         content = request.POST['content']
@@ -47,12 +47,12 @@ def notice_list(request):
     keyword = request.GET.get('keyword')
     
     if keyword:
-        all_notices = Board.objects.filter(title__contains=keyword).order_by('-reg_date')
+        all_notices = Board.objects.filter(tag='공지사항',title__contains=keyword).order_by('-reg_date')
     else:
         all_notices = Board.objects.filter(tag='공지사항').order_by('-reg_date')
 
     page = int(request.GET.get('p', 1))
-    paginator = Paginator(all_notices, 5)
+    paginator = Paginator(all_notices, 10)
     notices = paginator.get_page(page)
 
     context = {
@@ -249,7 +249,6 @@ def oto_detail(request, pk):
 
 
 def oto_list(request):
-    
     try:
         if request.session['admin']:
             all_otos = Inquire.objects.all().order_by('-reg_date')
@@ -270,8 +269,14 @@ def oto_list(request):
 
         return render(request, 'oto_list.html', context)
         
-    except KeyError:
-        return render(request, 'oto_list.html') 
+    except:
+        return HttpResponse(f'''
+        
+            <script>
+                alert("로그인이 필요합니다.");
+                location.href='/whitevalley/cs/oto_loading/';
+            </script>
+        ''')
   
 
 def oto_answer(request, pk):
@@ -298,6 +303,10 @@ def oto_answer(request, pk):
         oto.save()
 
         return render(request, 'oto_answerOk.html', {"pk": oto.pk})
+
+
+def oto_loading(request):
+    return render(request, 'oto_loading.html')
 
 
 # FAQ 페이지
@@ -401,14 +410,3 @@ def faq_delete(request):
         'currentpage': 'cs'
     }
     return render(request, 'faq_deleteOk.html', context)
-
-
-def sample(request):
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'cs'
-    }
-    return render(request, 'sample.html', context)
-
-
