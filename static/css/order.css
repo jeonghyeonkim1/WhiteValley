@@ -56,7 +56,7 @@
     background-color: rgba(80, 80, 80, 0.699);
 }
 .Btn{
-    width: 100%;
+    
     text-align: center;
 }
 .padd{
@@ -68,7 +68,8 @@
     font-size: 30px;
 }
 .selectcolor {
-    padding: 10px;
+    padding-left: 39px;
+    padding-bottom: 15px;
 }
 #color {
     width: 200px;
@@ -123,6 +124,7 @@
 .text_wrap{
     border-bottom: 2px solid black;
     margin-bottom: 30px;
+    margin-top: 50px;
 }
 .selectcolor .selectsize{
     display: flex;
@@ -312,6 +314,7 @@
 .customend_detail{
     padding-top: 1%;
     width: 600px;
+    margin-left: 50px;
 }
 @media (max-width: 1000px) {
     .slideshow-s{

@@ -33,7 +33,13 @@
                 <input class="form-check-input" type="checkbox" id="flexCheckDefault"display: "none";>
                 {% endif %}
             </div> {% endcomment %}
-                <a href="{% url 'User:magazine_detail' board.id %} "><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                {% for photo in photos %}
+                    {% if photo.board == board %}
+                    <div class='mb-3'>
+                        <a href="{% url 'User:magazine_detail' board.id %} "><img class="card-img-top" width="700" height="350" src="{{ photo.photo }}" alt="..."/></a>
+                    </div>
+                    {% endif %}
+                {% endfor %}
                 <a href="{% url 'User:magazine_detail' board.id %}" style="text-decoration:none">
                 <h5 class="card-title">{{ board.title }}</h5>
                 </a>
