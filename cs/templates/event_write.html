@@ -37,11 +37,12 @@
         {% comment %} <a href="#">{{ file.uploadedFile.url }}</a> {% endcomment %}
     </div>
 
-
+<div style="margin-bottom:80px;">
     {% if session.admin%}
     {% csrf_token %}
         <button type="submit" class="btn btn-dark">작성완료</button>
     {% endif %}
         <a class="btn btn-dark" href="{% url 'Cs:event_list' %}">목록가기</a>
+</div>
 </form>
 {% endblock %}

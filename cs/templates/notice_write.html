@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
 <script src="{% static 'js/cs.js' %}"></script>
 <script>
-    $(function(){
+    $(function () {
         console.log($("#content").val());
     });
 </script>
@@ -17,7 +17,7 @@
 <hr>
 <form action="." method="POST">
     <input type="hidden" name="notice" value="공지사항">
-    
+
     {% csrf_token %}
     <div class="mb-3 mt-3">
         <label>작성자</label>
@@ -29,13 +29,16 @@
     </div>
     <div class="mb-3 mt-3">
         <label for="content">공지사항 내용</label>
-        <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" wrap="hard" required></textarea>
+        <textarea class="form-control" rows="5" id="content" placeholder="내용을 입력하세요" name="content" wrap="hard"
+            required></textarea>
 
     </div>
-    {% if session.admin %}
-    {% csrf_token %}
+    <div style="margin-bottom:80px;">
+        {% if session.admin %}
+        {% csrf_token %}
         <button type="submit" class="btn btn-dark">작성완료</button>
-    {% endif %}
+        {% endif %}
         <a class="btn btn-dark" href="{% url 'Cs:notice_list' %}">목록가기</a>
+    </div>
 </form>
 {% endblock %}

@@ -29,7 +29,7 @@
         <label for="content">이벤트 내용</label>
         <div class="border bg-light rounded p-2" ><pre>{{ event.content }}</pre></div>
     </div>
-
+<div></div>
     {% if session.admin %}
         <a class="btn btn-dark" href="{% url 'Cs:event_update' 1 %}">수정하기</a>
         <button type="button" class="btn btn-dark" onclick="chkDelete()">삭제하기</button>

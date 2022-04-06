@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block attachment %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
-    <script src="{% static 'js/cs.js' %}"></script>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
+<script src="{% static 'js/cs.js' %}"></script>
 {% endblock %}
 
 {% block contents %}
@@ -28,11 +28,13 @@
     </div>
     <div class="mb-3 mt-3">
         <label for="answer">답변:</label>
-        <textarea class="form-control" rows="5" id="answer" name="answer" placeholder="답변을 적어주세요" required>{{ oto.answer }}</textarea>
+        <textarea class="form-control" rows="5" id="answer" name="answer" placeholder="답변을 적어주세요"
+            required>{{ oto.answer }}</textarea>
     </div>
-
-    <button type="submit" class="btn btn-dark">답변완료</button>
-    <a class="btn btn-dark" href="{% url 'Cs:oto_list' %}">목록가기</a>
+    <div style="margin-bottom:80px;">
+        <button type="submit" class="btn btn-dark">답변완료</button>
+        <a class="btn btn-dark" href="{% url 'Cs:oto_list' %}">목록가기</a>
+    </div>
 
 </form>
 {% endblock %}

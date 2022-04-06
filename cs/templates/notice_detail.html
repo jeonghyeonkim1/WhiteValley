@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block attachment %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
-    <script src="{% static 'js/cs.js' %}"></script>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/cs.css' %}?ver=1">
+<script src="{% static 'js/cs.js' %}"></script>
 {% endblock %}
 
 {% block contents %}
@@ -16,31 +16,34 @@
     <span class="float-end">조회수 {{ notice.view_cnt }}</span>
 </div>
 
-<section>   
+<section>
     <div class="mb-3 mt-3">
         <label for="title">제목</label>
-        <div class="border bg-light rounded p-2" >{{ notice.title }}</div>
-    </div>    
+        <div class="border bg-light rounded p-2">{{ notice.title }}</div>
+    </div>
     <div class="mb-3 mt-3">
         <label for="content">내용</label>
-        <div class="border bg-light rounded p-2" ><pre>{{ notice.content }}</pre></div>
-    </div>    
+        <div class="border bg-light rounded p-2">
+            <pre>{{ notice.content }}</pre>
+        </div>
+    </div>
 
-    {% if session.admin %}
+    <div style="margin-bottom:80px;">
+        {% if session.admin %}
         <a class="btn btn-dark" href="{% url 'Cs:notice_update' notice.id %}">수정하기</a>
         <button type="button" class="btn btn-dark" onclick="chkDelete()">삭제하기</button>
-    {% endif %}
+        {% endif %}
         <a class="btn btn-dark" href="{% url 'Cs:notice_list' %}">목록가기</a>
 
-    <form action="{% url 'Cs:notice_delete' %}" name="delete" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="id" value="{{ notice.id }}">
-    </form>
-
+        <form action="{% url 'Cs:notice_delete' %}" name="delete" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ notice.id }}">
+        </form>
+    </div>
     <script>
-        function chkDelete(){
+        function chkDelete() {
             var d = confirm("삭제하시겠습니까?");
-            if(d){
+            if (d) {
                 document.forms['delete'].submit();
             }
         }

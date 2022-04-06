@@ -28,16 +28,17 @@
         <label for="answer">답변</label>
         <div class="border bg-light rounded p-2">{{ oto.answer }}</div>
     </div>    
-
+<div style="margin-bottom:80px;">
     {% if session.admin %}
-        <a class="btn btn-dark" href="{% url 'Cs:oto_answer' oto.id %}">답변하기</a>
+    <a class="btn btn-dark" href="{% url 'Cs:oto_answer' oto.id %}">답변하기</a>
     {% endif %}
     <a class="btn btn-dark" href="{% url 'Cs:oto_list' %}">목록가기</a>
-
+    
     <form action="#" name="delete" method="POST">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ oto.id }}">
     </form>
+</div>
 
 
 </section>
