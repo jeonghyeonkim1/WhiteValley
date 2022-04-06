@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from user.models import User
+from order.models import Cart
 from cs.models import Board
 from shop.models import Config, Co_account
 import datetime
@@ -40,9 +41,11 @@ def cart(req):
     context = {
         'session': req.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'cart'
+        'currentpage': 'cart',
+        'cart': Cart.objects.get(user=User.objects.get(id=req.session['user']))
     }
 
+    
     return render(req, 'cart.html', context)
 
 
