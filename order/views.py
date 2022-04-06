@@ -10,32 +10,21 @@ import os.path
 
 # Create your views here.
 def order(request):
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'shopping',
+        'types': Type.objects.all()
+    }
+
     try:
-        context = {
-            'session': request.session,
-            'config': Config.objects.get(id=1),
-            'currentpage': 'shopping',
-            'types': Type.objects.all()
-        }
-        if request.session['user']:
-            
-            return render(request, 'order.html', context)
-        elif request.session['admin']:
-
+        if request.session['admin']:
             context['title'] = request.title
-
-            return render(request, 'order.html', context)
-        else:
-            return HttpResponse(f'''
-                <script>
-                    alert("로그인이 필요한 페이지입니다.");
-                    location.href='/whitevalley/shopping/loading2/';
-                </script>
-            ''')
         
+        return render(request, 'order.html', context)
+
     except:
         return HttpResponse(f'''
-        
             <script>
                 alert("로그인이 필요합니다.");
                 location.href='/whitevalley/shopping/loading2/';
@@ -44,87 +33,167 @@ def order(request):
         
     
 def order_des(request):
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'shopping',
-        'type_price': request.GET['type_price'],
-        'type_desc': request.GET['type_desc'],
-        'type_img': request.GET['type_img'],
-        'type_title': request.GET['type_title']
-    }
+    try:
+        request.session['user']
 
-    return render(request, 'order_des.html', context)
+        try:
+            context = {
+                'session': request.session,
+                'config': Config.objects.get(id=1),
+                'currentpage': 'shopping',
+                'type_price': request.GET['type_price'],
+                'type_desc': request.GET['type_desc'],
+                'type_img': request.GET['type_img'],
+                'type_title': request.GET['type_title']
+            }
+            
+            return render(request, 'order_des.html', context)
+
+        except:
+            return HttpResponse(f'''
+                <script>
+                    alert("타입 설정이 완료되지 않았습니다!");
+                    location.href='/whitevalley/shopping/order/';
+                </script>
+            ''')
+
+    except:
+        return HttpResponse(f'''
+            <script>
+                alert("로그인이 필요합니다.");
+                location.href='/whitevalley/shopping/loading2/';
+            </script>
+        ''')
+
+    
 
 def custom1(request):
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'shopping',
-        'type_price': request.GET['type_price'],
-        'type_title': request.GET['type_title']
-    }
+    try:
+        request.session['user']
+        try:
+            context = {
+                'session': request.session,
+                'config': Config.objects.get(id=1),
+                'currentpage': 'shopping',
+                'type_price': request.GET['type_price'],
+                'type_title': request.GET['type_title']
+            }
 
-    return render(request, 'custom1.html',context)
+            return render(request, 'custom1.html', context)
+
+        except:
+            return HttpResponse(f'''
+                <script>
+                    alert("타입 설정이 완료되지 않았습니다!");
+                    location.href='/whitevalley/shopping/order/';
+                </script>
+            ''')
+
+    except:
+        return HttpResponse(f'''
+            <script>
+                alert("로그인이 필요합니다.");
+                location.href='/whitevalley/shopping/loading2/';
+            </script>
+        ''')
+
+    
 
 def custom2(request):
-    color = request.GET.get('color_input')
-    size = request.GET.get('type_size')
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'shopping',
-        'color': color,
-        'type_size':size,
-        'type_price': request.GET['type_price'],
-        'type_title': request.GET['type_title']
-    }
+    try:
+        request.session['user']
+        try:
+            context = {
+                'session': request.session,
+                'config': Config.objects.get(id=1),
+                'currentpage': 'shopping',
+                'color': request.GET.get('color_input'),
+                'type_size': request.GET.get('type_size'),
+                'type_price': request.GET['type_price'],
+                'type_title': request.GET['type_title']
+            }
 
-    return render(request, 'custom2.html',context)
+            return render(request, 'custom2.html', context)
+
+        except:
+            return HttpResponse(f'''
+                <script>
+                    alert("타입 설정이 완료되지 않았습니다!");
+                    location.href='/whitevalley/shopping/order/';
+                </script>
+            ''')
+
+    except:
+        return HttpResponse(f'''
+            <script>
+                alert("로그인이 필요합니다.");
+                location.href='/whitevalley/shopping/loading2/';
+            </script>
+        ''')
+
 
 
 def customend(request):
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'shopping',
-        'type_size':request.POST['type_size'],
-        'type_price': request.POST['type_price'],
-        'type_title': request.POST['type_title']
-    }
-    context['user'] = User.objects.get(id=request.session['user'])
-    
+    try:
+        user = User.objects.get(id=request.session['user'])
 
-    if request.method == "POST":
-        if request.POST['t_input'] == "0" and request.POST['s_input'] == "0" and request.POST['i_input'] == "0":
+        try:
+            context = {
+                'session': request.session,
+                'config': Config.objects.get(id=1),
+                'currentpage': 'shopping',
+                'type_size':request.POST['type_size'],
+                'type_price': request.POST['type_price'],
+                'type_title': request.POST['type_title'],
+                'user': user
+            }
+
+            if request.method == "POST":
+                if request.POST['t_input'] == "0" and request.POST['s_input'] == "0" and request.POST['i_input'] == "0":
+                    return HttpResponse(f'''
+                        <script>
+                            alert("적어도 하나 이상이 커스텀을 적용시켜 완성해주세요!");
+                            history.back();
+                        </script>
+                    ''')
+                else:
+                
+                    url = request.POST['file_base']
+
+                    mem = urllib.request.urlopen(url).read()
+                    cnt = 0
+                    name = f'img{cnt}.jpg'
+
+                    while os.path.exists(f'static/image/uploaded_img/{name}'):
+                        cnt += 1
+                        name = f'img{cnt}.jpg'
+
+                        if os.path.exists(f'static/image/uploaded_img/{name}') == False:
+                            context['img_path'] = f'/static/image/uploaded_img/{name}'
+                            break
+                        
+
+                    with open(f"static/image/uploaded_img/{name}", mode="wb") as f:
+                        f.write(mem)
+                        print("이미지 저장 완료되었습니다.")
+
+                    return render(request, 'customend.html', context)
+
+        except:
             return HttpResponse(f'''
                 <script>
-                    alert("적어도 하나 이상이 커스텀을 적용시켜 완성해주세요!");
-                    window.history.back();
+                    alert("타입 설정이 완료되지 않았습니다!");
+                    location.href='/whitevalley/shopping/order/';
                 </script>
             ''')
-        else:
-        
-            url = request.POST['file_base']
 
-            mem = urllib.request.urlopen(url).read()
-            cnt = 0
-            name = f'img{cnt}.jpg'
-
-            while os.path.exists(f'static/image/uploaded_img/{name}'):
-                cnt += 1
-                name = f'img{cnt}.jpg'
-
-                if os.path.exists(f'static/image/uploaded_img/{name}') == False:
-                    context['img_path'] = f'/static/image/uploaded_img/{name}'
-                    break
-                
-
-            with open(f"static/image/uploaded_img/{name}", mode="wb") as f:
-                f.write(mem)
-                print("이미지 저장 완료되었습니다.")
-
-            return render(request, 'customend.html', context)
+    except:
+        return HttpResponse(f'''
+            <script>
+                alert("로그인이 필요합니다.");
+                location.href='/whitevalley/shopping/loading2/';
+            </script>
+        ''')
 
 
 def payment(request):
