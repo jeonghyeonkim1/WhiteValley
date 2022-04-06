@@ -23,6 +23,7 @@ urlpatterns = [
     path("oto/detail/<int:pk>", views.oto_detail, name="oto_detail"),
     path("oto/list/", views.oto_list, name="oto_list"),
     path('oto/answer/<int:pk>/', views.oto_answer, name="oto_answer"),
+    path('oto_loading/', views.oto_loading, name="oto_loading"),
 
     # FAQ
     path("faq/write/", views.faq_write, name="faq_write"),
@@ -30,6 +31,4 @@ urlpatterns = [
     path("faq/list/", views.faq_list, name="faq_list"),
     path('faq/update/<int:pk>/', views.faq_update, name="faq_update"),
     path('faq/delete/', views.faq_delete, name="faq_delete"),
-
-    path("sample/", views.sample, name="sample"),
 ]

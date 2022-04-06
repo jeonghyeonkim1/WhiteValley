@@ -30,11 +30,7 @@
             <input type="text" placeholder="궁금한점을 검색해보세요" name="keyword" style="width:250px; height:38px;">
             <button type="submit" class="btn btn-dark">검색</button>
         </div>
-        {% comment %} {% if keyword %}
-        <br><br>
-        <h6>'{{ keyword }}'에 대한 검색결과 입니다</h6>
-        {% endif %} {% endcomment %}
-
+        
         {% if all_notices %}
         {% for notice in notices %}
         <tr onclick="location.href='{% url 'Cs:notice_detail' notice.id %}'" style="cursor: pointer;">
