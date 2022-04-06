@@ -16,7 +16,7 @@
 <div class="row">
   <div class="col-12 mb-3">
     {% if session.admin %}
-    <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_write' %}" role="button" display="none">작성</a>
+    <a class="btn btn-outline-dark float-end col-2 " href="{% url 'User:magazine_write' %}" role="button" display="none">작성</a>
     {% comment %} <button type="button" class="btn btn-outline-dark float-end" onclick="chkDelete()" display="none">삭제</button>
     <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_update' %}" role="button" display="none">수정</a>  {% endcomment %}
     {% endif %}
