@@ -3,7 +3,8 @@ from shop.models import Config
 from django.http import HttpResponse
 import urllib.request
 from user.models import User
-from recommendation.models import Type
+from order.models import Cart
+from recommendation.models import Type, Product
 import os.path
 
 
@@ -87,7 +88,7 @@ def customend(request):
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        'size':request.POST['type_size'],
+        'type_size':request.POST['type_size'],
         'type_price': request.POST['type_price'],
         'type_title': request.POST['type_title']
     }
@@ -137,17 +138,25 @@ def payment(request):
     return render(request,'payment.html',context)
 
 def loading(request):
-    context={
+    context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        'type_price': request.POST['type_price'],
-        'type_size':request.POST['type_size'],
-        'amount':request.POST['order_amount'],
-        'req':request.POST['order_req'],
-        'tag':request.POST['product_tag'],
-
+        'tag': request.POST['product_tag']
     }
+
+    product = Product(
+        user = User.objects.get(id=request.session['user']),
+        type = Type.objects.get(title=request.POST['type_title']),
+        size = request.POST['type_size'],
+        request = request.POST['order_req'],
+        img = request.POST['img_path']
+    )
+
+    product.save()
+
+    Cart(user=product.user, product=product, amount=request.POST['order_amount']).save()
+
     return render(request, 'loading.html',context)
 
 def loading2(request):

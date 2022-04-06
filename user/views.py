@@ -298,16 +298,19 @@ def info_modify(req):
     real_password = req.GET["real_password"]
 
     if check_password(password, real_password):
-        res = render(req, 'mypage_modify.html', context)
-
-        res.set_cookie()
-        
-        return HttpResponse(f'''
+        res = render(req, HttpResponse(f'''
             <script>
                 alert("인증이 완료되었습니다!!");
                 location.href="/whitevalley/user/mypage/modify/detail/"
             </script>
-        ''')
+        '''))
+
+        res.set_cookie(
+            key = 'modify_check',
+            value = True,
+        )
+        
+        return 
     else:
         return HttpResponse(f'''
             <script>
@@ -342,6 +345,8 @@ def info_modify_detail(req):
                 history.back();
             </script>
         ''')
+
+    render(req, 'mypage_modify.html', context)
     
 
     

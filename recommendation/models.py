@@ -30,7 +30,7 @@ class T_photo(models.Model):
         
 class Product(models.Model):
     user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name="작성자")
-    title = models.ForeignKey('recommendation.Type', on_delete=models.CASCADE, verbose_name="타입명")
+    type = models.ForeignKey('recommendation.Type', on_delete=models.CASCADE, verbose_name="타입명")
     size = models.CharField(max_length=10, verbose_name='크기')
     request = models.CharField(max_length=200, null=True, verbose_name='요청사항')
     view_cnt = models.IntegerField(default=0, verbose_name='조회수')

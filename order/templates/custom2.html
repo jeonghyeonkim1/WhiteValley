@@ -83,13 +83,13 @@
        </div>
         <form action="{% url 'Order:customend' %}" method="POST" id="file_base">
            {% csrf_token %}
-            <input type="text" value="0" name="t_input" style="display: none;">
-           <input type="text" value="0" name="s_input" style="display: none;">
-           <input type="text" value="0" name="file_base" style="display: none;">
-           <input type="hidden" value="{{ type_price }}" name="type_price">
-           <input type="hidden" value="{{ type_size }}" name="type_size">
-           <input type="hidden" value="{{ type_title }}" name="type_title">
-           <input type="text" value="0" id="input_image" name="i_input" style="display: none;">
+            <input type="hidden" value="0" name="t_input" style="display: none;">
+            <input type="hidden" value="0" name="s_input" style="display: none;">
+            <input type="hidden" value="0" name="file_base" style="display: none;">
+            <input type="hidden" value="{{ type_price }}" name="type_price">
+            <input type="hidden" value="{{ type_size }}" name="type_size">
+            <input type="hidden" value="{{ type_title }}" name="type_title">
+            <input type="hidden" value="0" id="input_image" name="i_input" style="display: none;">
         </form>
        
       

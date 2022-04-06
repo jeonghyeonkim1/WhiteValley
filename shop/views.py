@@ -42,7 +42,7 @@ def cart(req):
         'session': req.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'cart',
-        'cart': Cart.objects.get(user=User.objects.get(id=req.session['user']))
+        # 'cart': Cart.objects.get(user=User.objects.get(id=req.session['user']))
     }
 
     
