@@ -45,6 +45,7 @@ def cart(req):
         'currentpage': 'cart',
         'carts': Cart.objects.filter(user=User.objects.get(id=req.session['user'])),
         'current_time': datetime.datetime.now() + datetime.timedelta(days=2),
+        'return_point': Config.objects.get(id=1).return_point
     }
 
     return render(req, 'cart.html', context)
