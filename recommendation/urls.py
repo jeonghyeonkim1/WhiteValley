@@ -6,7 +6,7 @@ app_name = "Recommendation"
 
 urlpatterns = [
     path('reviews/',views.reviews, name='reviews'),
-    path('reviews/product_reviews/',views.product_reviews, name='product_reviews'),
+    path('reviews/product_reviews/<int:id>/',views.product_reviews, name='product_reviews'),
     path('reviews_detail/',views.reviews_detail, name='reviews_detail'),
     path('tag_reviews/',views.tag_reviews, name='tag_reviews'),
     path('tag_reviews_detail/',views.tag_reviews_detail, name='tag_reviews_detail'),

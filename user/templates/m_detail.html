@@ -10,7 +10,7 @@
 
 <div class="title mb-3 mt-3">
     <br>
-    <h3>매거진 > {{ magazine.title }}</h3>
+    <h3>매거진</h3>
     <br>
 </div>
 
@@ -19,15 +19,16 @@
     <span class="float-start ms-4">id : {{ magazine.id }} </span>
     {% endif %}
     <span class="float-end ms-4">작성일 : {{ magazine.reg_date|date:"Y-m-d H:i:s" }} </span>
-    <span class="float-end">조회수 : {{ magazine.view_cnt }} </span>
+    <span class="float-end">조회수 : {{ magazine.view_cnt }} </span> 
+
 </div>
 
 <section> 
 <div class="row">
     <div class="col-12">
       {% if session.admin %}
-      <button type="button" class="btn btn-outline-dark float-end" onclick="chkDelete()" display="none">삭제</button>
-      <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_update' magazine.pk %}" role="button" display="none">수정</a> 
+      <button type="button" class="btn btn-outline-dark float-end col-2" onclick="chkDelete()" display="none">삭제</button>
+      <a class="btn btn-outline-dark float-end col-2 " href="{% url 'User:magazine_update' magazine.pk %}" role="button" display="none">수정</a> 
       {% endif %}
     </div>
   </div>
@@ -40,25 +41,27 @@
             {% comment %} <label for="title">제목:</label>
             <div class="border bg-light rounded p-2" >{{ magazine.title }}</div> {% endcomment %}
             <h2 >{{ magazine.title }}</h2>
-        </div>    
+        </div>
+
         <hr>
         <div class="mb-3 mt-3">
-            {% comment %} <label for="content">내용</label> {% endcomment %}
-
-            <div class="content border bg-light rounded" style="text-align : center;">
-            {% if photo.board == board %}
-                <div class='mb-3 mt-3'>
-                    <img class="imgshow " style="text-align : center" width="22%" height="22%" src="{{ photos.photo }}" alt="..."/>
-                </div>
+            {% comment %} <label for="content">내용</label>
+            <p class="form-control border bg-light rounded p-2 h-25 " rows="20" readonly> {% endcomment %}
+            <div class="imgshow" style="text-align : center;">
+                <br>
+                {% if photo.board == board %}
+                    <div class='mb-3 mt-3'>
+                        <img class="imgshow " style="text-align : center" width="auto" height="350" src="{{ photos.photo }}" alt="..."/>
+                    </div>
                 {% endif %}
-            <textarea class="form-control border bg-light rounded p-2 h-25 " rows="20" readonly>
-                {{ magazine.content }}
-            </textarea>
             </div>
-        </div>    
-
-        <a class="btn btn-outline-dark float-end col-4" href="{% url 'User:magazine_list' %}">목록</a>
-
+            <textarea style="resize: none; border:none; focus:none; width:100%;" rows="10">{{ magazine.content }}</textarea>
+            <hr>
+            </p>
+            
+        </div>
+        <a class="btn btn-outline-dark float-end mb-3 col-4" href="{% url 'User:magazine_list' %}">목록</a>
+        <br>
     </div>
 
 </div>

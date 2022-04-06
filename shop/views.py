@@ -48,12 +48,35 @@ def cart(req):
         'return_point': Config.objects.get(id=1).return_point
     }
 
+    if req.method == "POST":
+        cart = Cart.objects.filter(user=User.objects.get(id=req.session['user']))
+        for i in cart:
+            i.checked = req.POST['item_all_bool']
+            i.save()
+
     return render(req, 'cart.html', context)
 
 def cart_number(req, id):
     cart = Cart.objects.get(id=id)
 
     cart.amount = req.POST['amount']
+
+    cart.save()
+
+    
+    return HttpResponse(f'''
+        <script>
+            history.back();
+        </script>
+    ''')
+
+def cart_checked(req, id):
+    cart = Cart.objects.get(id=id)
+
+    if cart.checked:
+        cart.checked = False
+    else:
+        cart.checked = True
 
     cart.save()
 

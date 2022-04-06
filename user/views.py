@@ -6,7 +6,7 @@ from django.http import Http404
 from cs.models import Board, B_Photo, Photo_Upload
 from django.core.paginator import Paginator  
 import re
-
+from django.core.mail import send_mail
 # Create your views here.
 def login(request):
     context = {
@@ -102,6 +102,12 @@ def register(request):
                 nickname = el
             )                
             user.save()
+            send_mail("안녕하세요. WhiteValley입니다.",
+            "안녕하세요. 회원가입을 축하드립니다. 정상적으로 이용이 가능합니다.",
+            "dbswlrl2@naver.com",
+            [user.email],
+            # html_message='hi.html',
+            fail_silently=False)
             return HttpResponse(f'''
                 <script>
                     alert("회원가입에 성공했습니다!")
@@ -121,8 +127,9 @@ def find_pw(request):
 
     if request.method == 'GET':
         return render(request, 'find_pw.html', context)
+
     elif request.method == 'POST':
-        email = request.POST.get('useremail')
+        email = request.POST['useremail']
 
         if not email:
             context['error'] = '이메일 입력바랍니다.'
@@ -130,8 +137,8 @@ def find_pw(request):
             context['error'] = '이메일이 없습니다.'
         elif User.objects.filter(email = email):
 
-            return redirect(f'/whitevalley/user/chpw/${email}')  # 이메일 값을 url로 저장하고 보낸다.
-
+            return redirect(f'/whitevalley/user/chpw/${email}/')
+                            
         return render(request, 'find_pw.html', context)
 
 
@@ -298,19 +305,13 @@ def info_modify(req):
     real_password = req.GET["real_password"]
 
     if check_password(password, real_password):
-        res = render(req, HttpResponse(f'''
+        
+        return HttpResponse(f'''
             <script>
                 alert("인증이 완료되었습니다!!");
                 location.href="/whitevalley/user/mypage/modify/detail/"
             </script>
-        '''))
-
-        res.set_cookie(
-            key = 'modify_check',
-            value = True,
-        )
-        
-        return 
+        ''')
     else:
         return HttpResponse(f'''
             <script>
