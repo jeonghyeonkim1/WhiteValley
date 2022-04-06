@@ -2,14 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% comment %} <meta http-equiv="refresh" content="4;URL={% url 'Main:cart' %}"> {% endcomment %}
+    <meta http-equiv="refresh" content="4;URL={% url 'Main:cart' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
 </head>
 
 <style>
-
 .shadow{
   width:60px;
   height:4px;
@@ -216,17 +214,7 @@
         <div class="triangle"></div>
         <div class="logo">White Valley</div>
       <div class="shadow"></div>
-      </div>
-    <form action="{% url 'Main:cart' %}" method="GET">
-      <input type="text" value="" name="product_tag">
-      <input type="hidden" value="" name="order_req">
-      <input type="hidden" value="1" name="order_amount">
-      <input type="hidden">
-      <input type="hidden" value="{{ type_price }}" name="type_price">
-      <input type="hidden" value="{{ type_title }}" name="type_title">
-    </form>
+    </div>
 </body>
-<script>
-    
-</script>
+
 </html>
