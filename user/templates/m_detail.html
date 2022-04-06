@@ -27,8 +27,8 @@
 <div class="row">
     <div class="col-12">
       {% if session.admin %}
-      <button type="button" class="btn btn-outline-dark float-end" onclick="chkDelete()" display="none">삭제</button>
-      <a class="btn btn-outline-dark float-end " href="{% url 'User:magazine_update' magazine.pk %}" role="button" display="none">수정</a> 
+      <button type="button" class="btn btn-outline-dark float-end col-2" onclick="chkDelete()" display="none">삭제</button>
+      <a class="btn btn-outline-dark float-end col-2 " href="{% url 'User:magazine_update' magazine.pk %}" role="button" display="none">수정</a> 
       {% endif %}
     </div>
   </div>
@@ -48,19 +48,20 @@
             {% comment %} <label for="content">내용</label>
             <p class="form-control border bg-light rounded p-2 h-25 " rows="20" readonly> {% endcomment %}
             <div class="imgshow" style="text-align : center;">
+                <br>
                 {% if photo.board == board %}
                     <div class='mb-3 mt-3'>
-                        <img class="imgshow " style="text-align : center" width="22%" height="22%" src="{{ photos.photo }}" alt="..."/>
+                        <img class="imgshow " style="text-align : center" width="auto" height="350" src="{{ photos.photo }}" alt="..."/>
                     </div>
                 {% endif %}
             </div>
-                {{ magazine.content }}
+            <textarea style="resize: none; border:none; focus:none; width:100%;" rows="10">{{ magazine.content }}</textarea>
+            <hr>
             </p>
             
-        </div>    
-
-        <a class="btn btn-outline-dark float-end col-4" href="{% url 'User:magazine_list' %}">목록</a>
-
+        </div>
+        <a class="btn btn-outline-dark float-end mb-3 col-4" href="{% url 'User:magazine_list' %}">목록</a>
+        <br>
     </div>
 
 </div>

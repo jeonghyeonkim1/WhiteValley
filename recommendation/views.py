@@ -125,7 +125,7 @@ def product_reviews(request,id):
         rev.save()
 
         context['pk'] = rev.pk
-        return render(request, 'product_reviews.html',context)
+        return render(request, 'product_reviews_ok.html',context)
     
    
           

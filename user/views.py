@@ -6,7 +6,7 @@ from django.http import Http404
 from cs.models import Board, B_Photo, Photo_Upload
 from django.core.paginator import Paginator  
 import re
-
+from django.core.mail import send_mail
 # Create your views here.
 def login(request):
     context = {
@@ -102,6 +102,12 @@ def register(request):
                 nickname = el
             )                
             user.save()
+            send_mail("안녕하세요. WhiteValley입니다.",
+            "안녕하세요. 회원가입을 축하드립니다. 정상적으로 이용이 가능합니다.",
+            "dbswlrl2@naver.com",
+            [user.email],
+            # html_message='hi.html',
+            fail_silently=False)
             return HttpResponse(f'''
                 <script>
                     alert("회원가입에 성공했습니다!")
@@ -321,6 +327,7 @@ def info_modify_detail(req):
         'config': Config.objects.get(id=1),
         'currentpage': 'mypage'
     }
+    context['user'] = User.objects.get(id=req.session['user'])
     try:
         req.session['user']
     except:
@@ -330,18 +337,18 @@ def info_modify_detail(req):
                 history.back();
             </script>
         ''')
+    return render(req, 'mypage_modify.html', context)
+    # try:
+    #     req.COOKIES['modify_check']
+    # except:
+    #     return HttpResponse(f'''
+    #         <script>
+    #             alert("인증 유효기간이 지났습니다. 다시 인증해주세요.");
+    #             history.back();
+    #         </script>
+    #     ''')
 
-    try:
-        req.COOKIES['modify_check']
-    except:
-        return HttpResponse(f'''
-            <script>
-                alert("인증 유효기간이 지났습니다. 다시 인증해주세요.");
-                history.back();
-            </script>
-        ''')
-
-    render(req, 'mypage_modify.html', context)
+    
     
 
     
