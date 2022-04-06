@@ -64,11 +64,7 @@ def cart_number(req, id):
     cart.save()
 
     
-    return HttpResponse(f'''
-        <script>
-            history.back();
-        </script>
-    ''')
+    return redirect("/whitevalley/cart/")
 
 def cart_checked(req, id):
     cart = Cart.objects.get(id=id)
@@ -81,11 +77,20 @@ def cart_checked(req, id):
     cart.save()
 
     
+    return redirect("/whitevalley/cart/")
+
+def cart_delete(req, id):
+    cart = Cart.objects.get(id=id)
+
+    cart.delete()
+
     return HttpResponse(f'''
         <script>
-            history.back();
+            alert("제거되었습니다!");
+            location.href = '/whitevalley/cart/';
         </script>
     ''')
+
 
 
 # ADMIN -----------------------------------------------------------------------------------

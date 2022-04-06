@@ -22,7 +22,7 @@ def reviews(request):
     page_obj = paginator.get_page(page)
     
     context = {
-       'session': request.session,
+        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         'question_list': page_obj,
