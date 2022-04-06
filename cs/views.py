@@ -127,7 +127,7 @@ def event_write(request):
         uploadedFile = request.FILES["uploadedFile"]
 
 
-        if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
+        if len(re.findall(r'[^a-z | 0-9 | . | " " | ( | )]', uploadedFile.name)) > 0:
             return HttpResponse(f'''
                 <script>
                     alert("파일 이름에 특수문자가 포함되어 있습니다!");
@@ -135,10 +135,8 @@ def event_write(request):
                 </script>
             ''')
 
-        uploadedFileName = re.sub(r"\W | [^.] | [^_]", "", uploadedFile.name.replace(" ", "_").replace("(", "").replace(")", ""))
-
-    
-        Photo_Upload(title=uploadedFileName, photo=uploadedFile).save()
+        photo = Photo_Upload(title=uploadedFile.name, photo=uploadedFile)
+        photo.save()
 
         board = Board(
             user=user, 
@@ -151,7 +149,7 @@ def event_write(request):
         
         board.save()
 
-        B_Photo(board=board, photo=f'/static/image/{uploadedFileName}').save()
+        B_Photo(board=board, photo=f'/static/image/{photo.title}').save()
 
         return render(request, 'event_writeOk.html', {"pk": board.pk})
 

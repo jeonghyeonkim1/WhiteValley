@@ -13,8 +13,12 @@
 {% block contents %}
     <div class="container">
         <div class="bg-dark rounded pt-5 pb-5 row text-white text-center">
-            <div class="col-sm-1 form-check form-switch d-flex justify-content-center align-contents-center">
-                <input type="checkbox" class="form-check-input item_all_selector" style="width: 70px; height: 35px;" id="flexSwitchCheckDefault">
+            <div class="col-sm-1 d-flex justify-content-center align-contents-center">
+                <form action="." method="POST" id="item_all_form" class="d-flex justify-content-center align-items-center">
+                    {% csrf_token %}
+                    <input type="hidden" name="item_all_bool" value="{% if cart.checked %}True{% else %}False{% endif %}">
+                    <input type="checkbox" style="width: 30px; height: 30px;" id="item_all_selector" {% if cart.checked %}checked{% endif %}>
+                </form>
             </div>
             <div class="col-sm-3 d-flex justify-content-center align-items-center">
                 <h5><strong>상품 이미지</strong></h5>
@@ -31,9 +35,10 @@
         {% for cart in carts %}
             <div class="container">
                 <div class="rounded row">
-                    <div class="border col-sm-1 d-flex justify-content-center align-items-center form-check form-switch">
-                        <input type="checkbox" class="form-check-input item_selector" name="item_selector" id="flexSwitchCheckDefault" style="width: 70px; height: 35px;">
-                    </div>
+                    <form action="{% url 'Main:cart_checked' cart.id %}" method="POST" name="checked_form" class="border col-sm-1 d-flex justify-content-center align-items-center">
+                        {% csrf_token %}
+                        <input type="checkbox" style="width: 30px; height: 30px;" name="item_selector" {% if cart.checked %}checked{% endif %}>
+                    </form>
                     <div class="border col-sm-3 d-flex justify-content-center align-items-center">
                         <img class="w-100" src="{{ cart.product.img }}" alt="장바구니_이미지">
                     </div>
@@ -79,9 +84,9 @@
                 <input type="text" value="0" name="total_price" class="border-0 bg-light text-center text-danger fw-bold fs-1" disabled>
             <span class="input-group-text text-center bg-light fw-bold border-0 fs-2">￦</span>
         </div>
-        <div class="mt-2 d-flex justify-content-center align-items-center border-top p-2">
-            <input type="hidden" value="{{ return_point }}" id="return_point">
-            <h6>(<input type="text" value="0" name="total_point" style="width: 55px;" class="border-0 bg-light fw-bold fs-5" disabled>원 적립 예정)</h6>
+        <div class="mt-2 d-flex justify-content-center align-items-center p-2">
+            <input type="hidden" value="{{ return_point }}" id="return_point" disabled>
+            <input type="text" name="total_point" class="mt-3 border-0 text-center bg-light fw-bold" disabled>
         </div>
     </div>
 

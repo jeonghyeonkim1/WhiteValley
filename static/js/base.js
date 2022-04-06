@@ -1,7 +1,5 @@
 $(function () {
     // collapse 창
-    $("#nav_collapse").slideUp(0);
-
     shopping_collapse = 0;
     cs_collapse = 0;
     $("#nav_shopping").on('click', function () {

@@ -1,22 +1,4 @@
 $(function () {
-    $(".item_all_selector").click(function () {
-        if ($(".item_all_selector")[0].checked) {
-            $(".item_selector")[0].checked = true;
-        } else {
-            $(".item_selector")[0].checked = false;
-        }
-
-        $(".item_selector").each(function () {
-            if ($(".item_all_selector")[0].checked) {
-                $(this)[0].checked = true;
-            } else {
-                $(this)[0].checked = false;
-            }
-        })
-    })
-
-    
-    var cnt = 0
     $("[name='amount']").change(function () {
         for (let i = 0; i < $("[name='amount']").length; i++) {
             if ($("[name='amount']")[i] == $(this)[0]) {
@@ -26,13 +8,57 @@ $(function () {
 
         $("#amount_form").submit();
     })
-    
+
+    var cnt = 0
     for (let i = 0; i < $("[name='amount']").length; i++) {
-        $("[name='price']")[i].value = $("[name='amount']")[i].value * $("#orginal_price").val()
-        if ($("[name='item_selector']")[0].checked) {
-            cnt += parseInt($("[name='price']")[i].value)
+        if ($("[name='item_selector']")[i].checked) {
+            $("[name='price']")[i].value = $("[name='amount']")[i].value * $("#orginal_price").val();
+        } else {
+            $("[name='price']")[i].value = 0;
         }
-    }
-    $("[name='total_price']").val(cnt)
-    $("[name='total_point']").val(cnt/$("#return_point").val())
+
+        cnt += parseInt($("[name='price']")[i].value);
+    };
+    $("[name='total_price']").val(cnt);
+    $("[name='total_point']").val(`${cnt / $("#return_point").val()}원 적립 예정`);
+
+    $("[name='checked_form']").each(function () {
+        $(this).find("input").change(function () {
+            $(this).parent()[0].submit()
+        })
+    })
+
+    var cnt2 = 0
+    $("[name='item_selector']").each(function () {
+        if ($(this)[0].checked) {
+            cnt2++;
+        }
+
+        if (cnt2 == $("[name='item_selector']").length) {
+            $("#item_all_selector")[0].checked = true;
+        } else {
+            $("#item_all_selector")[0].checked = false;
+        }
+
+        $(this).change(function () {
+            if (!$(this)[0].checked) {
+                $("#item_all_selector")[0].checked = false;
+            }
+        })
+    });
+
+    $("#item_all_selector").change(function () {
+        if ($(this)[0].checked) {
+            $("[name='item_selector']").each(function () {
+                $(this)[0].checked = true;
+                $("[name='item_all_bool']").val("True");
+            });
+        } else {
+            $("[name='item_selector']").each(function () {
+                $(this)[0].checked = false;
+                $("[name='item_all_bool']").val("False");
+            });
+        }
+        $("#item_all_form").submit();
+    })
 })
