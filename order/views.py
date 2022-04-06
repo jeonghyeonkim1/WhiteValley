@@ -4,7 +4,6 @@ from django.http import HttpResponse
 import urllib.request
 from user.models import User
 from recommendation.models import Type
-
 import os.path
 
 
@@ -88,6 +87,7 @@ def customend(request):
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
+        'size':request.POST['type_size'],
         'type_price': request.POST['type_price'],
         'type_title': request.POST['type_title']
     }
@@ -115,7 +115,7 @@ def customend(request):
                 name = f'img{cnt}.jpg'
 
                 if os.path.exists(f'static/image/uploaded_img/{name}') == False:
-                    context['img_path'] = f'static/image/uploaded_img/{name}'
+                    context['img_path'] = f'/static/image/uploaded_img/{name}'
                     break
                 
 
@@ -124,19 +124,15 @@ def customend(request):
                 print("이미지 저장 완료되었습니다.")
 
             return render(request, 'customend.html', context)
-                
 
 
 def payment(request):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'shopping',
-        # 'type_price': request.GET['type_price'],
-        # 'amount':request.GET['order_amount']
+        'currentpage': 'shopping'
     }
     context['user'] = User.objects.get(id=request.session['user'])
-    # context['email'] = User.objects.get(id=request.session['email'])
 
     return render(request,'payment.html',context)
 
@@ -145,11 +141,11 @@ def loading(request):
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        'type_price': request.GET['type_price'],
-        'type_size':request.GET['type_size'],
-        'amount':request.GET['order_amount'],
-        'req':request.GET['order_req'],
-        'tag':request.GET['product_tag'],
+        'type_price': request.POST['type_price'],
+        'type_size':request.POST['type_size'],
+        'amount':request.POST['order_amount'],
+        'req':request.POST['order_req'],
+        'tag':request.POST['product_tag'],
 
     }
     return render(request, 'loading.html',context)

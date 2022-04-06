@@ -217,13 +217,15 @@
         <div class="logo">White Valley</div>
       <div class="shadow"></div>
       </div>
-    <form action="{% url 'Main:cart' %}" method="GET">
-      <input type="text" value="" name="product_tag">
-      <input type="hidden" value="" name="order_req">
-      <input type="hidden" value="1" name="order_amount">
-      <input type="hidden">
+    <form action="{% url 'Main:cart' %}" method="POST">
+      {% csrf_token %}
+      <input type="text" value="{{ tag }}" name="product_tag">
+      <input type="hidden" value="{{ req }}" name="order_req">
+      <input type="hidden" value="{{ amount }}" name="order_amount">
+      <input type="hidden" value="{{ type_size }}" name="type_size">
       <input type="hidden" value="{{ type_price }}" name="type_price">
       <input type="hidden" value="{{ type_title }}" name="type_title">
+      <input type="text" value="{{ img_path }}" name="img_path">
     </form>
 </body>
 <script>

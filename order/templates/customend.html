@@ -19,10 +19,11 @@
                 <div class="slideshow-s" style="">
                     <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
                     <div class="mySlides fades">
-                        <img style="width: 500px;" id="pimg3" src="/static/image/uploaded_img/test3.jpg" alt="">
+
+                        <img style="width: 500px;" id="pimg3" src="{{ img_path }}">
                     </div>
                     <div class="mySlides fades">
-                        <img  style="width: 500px;"  id="pimg3" src="/static/image/uploaded_img/test3.jpg" alt="">
+                        <img  style="width: 500px;"  id="pimg3" src="{{ img_path }}">
                     </div>
                 <a class="next" onclick="plusSlides(1)">&#10095;</a>    
                 </div>
@@ -75,12 +76,15 @@
            <p><label for="number">수량: </label><input id="amount" type="number" min="1" max="500" step="1" value="1"></p>
         </div> 
         <button id="CustomBtn2">Add to Cart</button>
-        <form  action="{% url 'Order:loading' %}" method="GET" class="Btn">
+        <form id="ff" action="{% url 'Order:loading' %}" method="POST" class="Btn">
+            {% csrf_token %}
             <input type="hidden" value="" name="product_tag">
             <input type="hidden" value="" name="order_req">
             <input type="hidden" value="1" name="order_amount">
+            <input type="hidden" value="{{ type_size }}" name="type_size">
             <input type="hidden" value="{{ type_price }}" name="type_price">
             <input type="hidden" value="{{ type_title }}" name="type_title">
+            <input type="hidden" value="{{ img_path }}" name="img_path">
         </form>
          </div>
         </div>
@@ -95,7 +99,7 @@
                 <div class="modal-body">완성품을 카드에 담으시겠습니까?</div>
                 <div class="modal-footer">
                     <a id="backbtn" class="btn">돌아가기</a>
-                    <button id="addbtn" class="btn btn-dark" type="button" data-dismiss="modal">예</button>
+                    <button form="ff" id="addbtn" class="btn btn-dark" data-dismiss="modal">예</button>
                 </div>
             </div>
         </div>
