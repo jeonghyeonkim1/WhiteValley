@@ -44,8 +44,10 @@
         </div>
         <div class="textbox" style=" margin-bottom:20px" name="aaa">
             <label for="" style="padding: 8px;">주소</label>
+
             <div class="col-2"  style="display: inline-block; margin:0px 3px 6px 16px;"><input id="sample4_postcode" type="text" class="form-control" id="adress1" name="adress1" placeholder="우편번호" disabled></div>
             <input type="button" class="btn btn-light" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
+
             <div class="col-7" style="display: flex; padding-left:69px">
                 <input id="sample4_roadAddress" type="text" class="form-control" style=" margin-right:10px" name="adress2" placeholder="도로명주소"> 
                 <input id="sample4_jibunAddress" type="text" class="form-control" name="adress3" placeholder="지번주소">
@@ -66,6 +68,7 @@
     </form>
 
 <script>
+
     $("[name='pw2']").change(function(){
         if($("[name='pw1']").val() != $(this).val()){
             $("[name='pw_check']").val("불일치")
@@ -82,6 +85,7 @@
         $("[name='adress7']").val($("[name='adress6']").val() + $(this).val())
     })
     
+
 
     function sample4_execDaumPostcode() {
         new daum.Postcode({
