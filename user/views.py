@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import render, HttpResponse, redirect
 from user.models import User
 from shop.models import Config
@@ -362,9 +363,14 @@ def info_modify_detail(req):
         'config': Config.objects.get(id=1),
         'currentpage': 'mypage'
     }
-    context['user'] = User.objects.get(id=req.session['user'])
+    
     try:
-        req.session['user']
+        user = User.objects.get(id=req.session['user'])
+        context['user']=user
+        
+        
+        context['adress'] = user.adress.split("_")
+
         
     except:
         return HttpResponse(f'''
@@ -382,6 +388,27 @@ def info_modify_detail(req):
                 history.back();
             </script>
         ''')
+
+    if req.method == "POST":
+        try:
+            user.adress = req.POST['adress7']
+            user.nickname = req.POST['nick']
+            user.contact = req.POST['cont']
+            user.save()
+            return HttpResponse(f'''
+            <script>
+                alert("변경되었습니다.");
+                location.href="/whitevalley/user/mypage/modify/detail/"
+            </script>
+        ''')
+        except: 
+            return HttpResponse(f'''
+            <script>
+                alert("모든 주소값을 기입해주세요.");
+                history.back();
+            </script>
+        ''')
+
 
     return render(req, 'mypage_modify.html', context)
 
