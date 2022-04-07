@@ -226,6 +226,9 @@ def payment(request):
             context['total_price'] = total_price
             context['total_point'] = total_price // 10
 
+        # if request.method == 'POST':
+            
+
         return render(request, 'payment.html', context)
     except:
         return HttpResponse(f'''
