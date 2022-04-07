@@ -120,11 +120,11 @@
     <hr>
 </div>
 
-<form action="{% url 'Recommendation:product_reviews' %}" method="POST">
+<form action="{% url 'Recommendation:product_reviews' product.id%}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 <div class="review-table">
     <div class="review-table__cell review-intake-head title">
-        <img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+        <img src="{{order.product.img}}"
             width="200" height="200" title="구매상품" alt="구매상품" />
 
         <span>
@@ -151,7 +151,7 @@
     <div class="field__title">사진첨부</div>
     <div class="insert">
         
-            <input type="file" onchange="addFile(this);" multiple />
+            <input type="file" id="uploadedFile"  name="uploadedFile" onchange="addFile(this);" multiple />
             <div class="file-list"></div>
         
     </div>
@@ -252,7 +252,7 @@
 
         $.ajax({
             method: 'POST',
-            url: '/register',
+            url: '/whitevalley/shopping/reviews/product_reviews/product.id',
             dataType: 'json',
             data: formData,
             async: true,
