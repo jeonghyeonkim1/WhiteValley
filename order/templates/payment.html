@@ -49,7 +49,7 @@
         <div>
             <label for="">주소</label>
             <input type="hidden" value="{{ user.adress }}" id="user_adress">
-            <div class="col-2"  style="display: inline-block; margin-bottom:6px; margin-left:16px"><input id="sample4_postcode" type="text" class="form-control" placeholder="우편번호" required></div>
+            <div class="col-2"  style="display: inline-block; margin-bottom:6px; margin-left:16px"><input id="sample4_postcode" type="text" class="form-control" placeholder="우편번호" name="adress0" required></div>
             <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
             <div style="display: flex;">
                 <div class="col-6" style="margin-bottom:6px; margin-left:53px;"><input id="sample4_roadAddress" type="text" class="form-control" placeholder="도로명주소"  name="adress1"></div>
@@ -311,13 +311,16 @@
     }
 
     $("#userequal")[0].addEventListener("click",function() {
+        list = []
         $("[name='receiver']").val($("[name='user']").val());
         $("#equalcontact").val($("#usernum").val());
-        $("[name='adress0']").val( adress.0 );
-        $("[name='adress1']").val( adress.1 );
-        $("[name='adress2']").val( adress.2 );
-        $("[name='adress3']").val( adress.3 );
-        $("[name='adress4']").val( adress.4 );
+        list = $("#user_adress").val().split("_");
+        $("[name='adress0']").val(list[0]);
+        $("[name='adress1']").val(list[1]);
+        $("[name='adress2']").val(list[2]);
+        $("[name='adress3']").val(list[4]);
+        $("[name='adress4']").val(list[3]);
+      
     })
 
     // 정현
