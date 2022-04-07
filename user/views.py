@@ -16,14 +16,15 @@ def login(request):
     }
 
     if request.method == "GET":
-        if request.session['user']:
+        try:
+            request.session['user']
             return HttpResponse(f'''
                 <script>
                     alert("이미 로그인상태 입니다.");
                     location.href = '/whitevalley/';
             ''')
-
-        return render(request, 'login.html', context) 
+        except:
+            return render(request, 'login.html', context) 
 
     elif request.method == 'POST':
         email = request.POST.get('email', None)
