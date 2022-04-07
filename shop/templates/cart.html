@@ -102,7 +102,7 @@
     </div>
 
     <div class="d-flex justify-content-evenly align-items-center mb-5">
-        <a class="d-flex align-items-center justify-content-center fw-bold fs-3 btn btn-danger w-50 m-5" style="height: 70px;" onclick="location.href='{% url 'Recommendation:finished' %}'">계속 쇼핑하기</a>
-        <a class="d-flex align-items-center justify-content-center fw-bold fs-3 btn btn-primary w-50 m-5" style="height: 70px;" onclick="location.href='{% url 'Order:payment' %}'">구매하러 가기</a>
+        <a class="d-flex align-items-center justify-content-center fw-bold fs-3 btn btn-danger w-50 m-5" style="height: 70px;" href="{% url 'Recommendation:finished' %}">계속 쇼핑하기</a>
+        <a class="d-flex align-items-center justify-content-center fw-bold fs-3 btn btn-primary w-50 m-5" style="height: 70px;" href="{% url 'Order:payment' %}">구매하러 가기</a>
     </div>
 {% endblock %}
