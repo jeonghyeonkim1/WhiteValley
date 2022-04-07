@@ -62,3 +62,10 @@ class R_photo(models.Model):
 
     def __str__(self):
         return f'{self.order} {self.photo}'
+
+class Review_photo_Upload(models.Model):
+    title = models.CharField(max_length=3000)
+    photo = models.FileField(upload_to="static/image/product_review/")
+
+    class Meta:
+        db_table = 'u_photos'

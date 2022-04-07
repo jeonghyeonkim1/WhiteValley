@@ -7,11 +7,13 @@
 {% endblock %}
 
 {% block contents %}
-<h2>FAQ</h2>
-<hr>
+<div style="margin-top:80px;">
+    <h2>FAQ</h2>
+    <hr>
+</div>
 <form action="." method="POST">
     <input type="hidden" name="faq" value="FAQ">
-    
+
     {% csrf_token %}
     <div class="mb-3 mt-3">
         <label>작성자</label>
@@ -23,12 +25,15 @@
     </div>
     <div class="mb-3 mt-3">
         <label for="content">Answer</label>
-        <textarea class="form-control" rows="5" id="content" placeholder="답변을 입력해주세요" name="content" required></textarea>
+        <textarea class="form-control" rows="5" id="content" placeholder="답변을 입력해주세요" name="content"
+            required></textarea>
     </div>
-    {% if session.admin %}
-    {% csrf_token %}
+    <div style="margin-bottom:80px;">
+        {% if session.admin %}
+        {% csrf_token %}
         <button type="submit" class="btn btn-dark">작성완료</button>
-    {% endif %}
+        {% endif %}
         <a class="btn btn-dark" href="{% url 'Cs:faq_list' %}">목록가기</a>
+    </div>
 </form>
 {% endblock %}

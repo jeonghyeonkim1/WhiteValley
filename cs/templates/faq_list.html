@@ -26,9 +26,11 @@
 {% endblock %}
 
 {% block contents %}
+<div style="margin-top: 80px;">
 <h2>FAQ</h2>
 <h6>검색 후 문의가 해결되지 않으면 1:1 문의를 이용해주세요.</h6>
 <hr>
+</div>
 <br><br>
 <table class="table table-hover">
     <thead>
@@ -50,24 +52,31 @@
     <br>
     <tbody>
         {% if all_faqs %}
-        {% for faq in faqs %}
-        <tr class="question" style="cursor: pointer;">
-            <td>Q</td>
-            <td>{{ faq.title }}</td>
-        </tr>
-        <tr class="answer" style="display: none; background-color: #fff1db; height: 100px;">
-            <td>A</td>
-            <td>{{ faq.content }}</td>
-        </tr>
-        {% endfor %}
+            {% for faq in faqs %}
+                {% if session.admin %}
+                    <tr onclick="location.href='{% url 'Cs:faq_detail' faq.id %}'" style="cursor: pointer;">
+                        <td>Q</td>
+                        <td>{{ faq.title }}</td>
+                    </tr>
+                {% else %}
+                    <tr class="question" style="cursor: pointer;">
+                        <td>Q</td>
+                        <td>{{ faq.title }}</td>
+                    </tr>
+                    <tr class="answer" style="display: none; background-color: #fff1db; height: 100px;">
+                        <td>A</td>
+                        <td>{{ faq.content }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
         {% else %}
-        {% if not keyword %}
-        <tr>
-            <td colspan="3">
-                일치하는 검색 결과가 없습니다.
-            </td>
-        </tr>
-        {% endif %}
+            {% if not keyword %}
+            <tr>
+                <td colspan="3">
+                    일치하는 검색 결과가 없습니다.
+                </td>
+            </tr>
+            {% endif %}
         {% endif %}
     </tbody>
 
@@ -83,7 +92,7 @@
     </div>
 </div>
 
-<div class="row mt-2">
+<div class="row mt-2" style="margin:80px;">
     <div class="col-12">
         <nav>
             <ul class="pagination justify-content-center">

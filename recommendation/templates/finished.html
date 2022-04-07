@@ -72,7 +72,7 @@ function removeCheck() {
 <div class="container">
         
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% for board in boards %}
+        {% for product in products %}
         <div class="col">
             {% if session.admin %}
             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
@@ -80,10 +80,10 @@ function removeCheck() {
             {% endif %}
             <a href=#
                 onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
-                <img alt="후기내용ㅇㅇㅇㅇㅇㅇㅇ"
-                    src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
+                <img alt=""
+                    src= "{{p_photo.photo}}"
                      style='margin: 10px; width:100%' class='imgform' />
-                <div style='text-align:center'>옵션 : {{board.title}}</div>
+                <div style='text-align:center'>옵션 : {{product.type}},{{product.size}}</div>
             </a>
         </div>
         {% endfor %}
