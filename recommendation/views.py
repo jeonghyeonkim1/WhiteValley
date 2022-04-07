@@ -22,7 +22,7 @@ def reviews(request):
     page_obj = paginator.get_page(page)
     
     context = {
-       'session': request.session,
+        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         'question_list': page_obj,
@@ -125,7 +125,7 @@ def product_reviews(request,id):
         rev.save()
 
         context['pk'] = rev.pk
-        return render(request, 'product_reviews.html',context)
+        return render(request, 'product_reviews_ok.html',context)
     
    
           

@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import render, HttpResponse, redirect
 from user.models import User
 from shop.models import Config
@@ -6,7 +7,8 @@ from django.http import Http404
 from cs.models import Board, B_Photo, Photo_Upload
 from django.core.paginator import Paginator  
 import re
-from django.core.mail import send_mail
+# from django.core.mail import send_mail #보내짐
+from django.core.mail import EmailMultiAlternatives
 # Create your views here.
 def login(request):
     context = {
@@ -16,7 +18,16 @@ def login(request):
     }
 
     if request.method == "GET":
-        return render(request, 'login.html', context)
+        try:
+            request.session['user']
+            return HttpResponse(f'''
+                <script>
+                    alert("이미 로그인상태 입니다.");
+                    location.href = '/whitevalley/';
+            ''')
+        except:
+            return render(request, 'login.html', context) 
+
     elif request.method == 'POST':
         email = request.POST.get('email', None)
         password = request.POST.get('password', None)
@@ -39,18 +50,38 @@ def login(request):
                 if user.password == password:
                     request.session['user'] = user.id
                     request.session['admin'] = user.admin
-                    return redirect('/whitevalley/')
+                    return HttpResponse(f'''
+                        <script>
+                            alert("로그인 성공하였습니다!");
+                            location.href = '/whitevalley/';
+                        </script>
+                    ''')
                 else:
                     context['error'] = '비밀번호가 틀렸습니다.'
+                    
             else:
                 if check_password(password, user.password):
                     request.session['user'] = user.id
                     request.session['admin'] = user.admin
-                    return redirect('/whitevalley/')
+                    return HttpResponse(f'''
+                        <script>
+                            alert("로그인 성공하였습니다!");
+                            location.href = '/whitevalley/';
+                        </script>
+                    ''')
                 else:
-                    context['error'] = '비밀번호가 틀렸습니다'                   
+                    context['error'] = '비밀번호가 틀렸습니다'
+
+    return HttpResponse(f'''
+        <script>
+            alert("로그인 실패하였습니다!");
+            history.back();
+        </script>
+    ''') 
+
+                     
         
-    return render(request, 'login.html', context)
+    
 
 
 def logout(request):
@@ -102,18 +133,29 @@ def register(request):
                 nickname = el
             )                
             user.save()
-            send_mail("안녕하세요. WhiteValley입니다.",
-            "안녕하세요. 회원가입을 축하드립니다. 정상적으로 이용이 가능합니다.",
-            "dbswlrl2@naver.com",
-            [user.email],
-            # html_message='hi.html',
-            fail_silently=False)
+            # send_mail("안녕하세요. WhiteValley입니다.",
+            # "안녕하세요. 회원가입을 축하드립니다. 정상적으로 이용이 가능합니다.",
+            # "dbswlrl2@naver.com",
+            # [user.email],
+            # # html_message='hi.html',
+            # fail_silently=False)
+
+            subject, from_email, to = '안녕하세요. White Vally입니다.', 'dbswlrl2@naver.com', user.email
+            text_content = 'This is an important message.'
+            html_content = '<a style="text-decoration:none;" href="http://127.0.0.1:8000/whitevalley/"><h3>White Vally</h3></a><br><h1>회원가입<h1><hr><br><strong>White Vally 회원가입을 축하드립니다.</strong><br>'
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+
             return HttpResponse(f'''
                 <script>
                     alert("회원가입에 성공했습니다!")
                     location.href = '/whitevalley/user/login/'
                 </script>
             ''')
+
+
+
 
         return render(request, 'register.html', context)
     
@@ -194,7 +236,7 @@ def magazine_list(request):
 def magazine_detail(request, pk):
 
     magazine = Board.objects.get(pk=pk)
-    photos = B_Photo.objects.get(board = pk)
+    photos = B_Photo.objects.get(board=pk)
     magazine.view_cnt += 1
     magazine.save()
 
@@ -239,40 +281,46 @@ def magazine_write(request):
             'config': Config.objects.get(id=1),
             'currentpage': 'magazine',            
     }
-    if request.method == 'GET':
-        return render(request, 'm_write.html', context)
-  
-    elif request.method == 'POST':
-        user = User.objects.get(id=request.session['admin'])
-        tag = request.POST['magazine']
-        title = request.POST['title']
-        content = request.POST['content']
-        uploadedFile = request.FILES["uploadedFile"]
 
-        if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
-            return HttpResponse(f'''
-                <script>
-                    alert("파일 이름에 특수문자가 포함되어 있습니다!");
-                    history.back();
-                </script>
-            ''')
+    try:
+        if request.method == 'GET':
+            return render(request, 'm_write.html', context)
+    
+        elif request.method == 'POST':
+            user = User.objects.get(id=request.session['user'])
+            tag = request.POST['magazine']
+            title = request.POST['title']
+            content = request.POST['content']
+            uploadedFile = request.FILES["uploadedFile"]
+            if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
+                return HttpResponse(f'''
+                    <script>
+                        alert("파일 이름에 특수문자가 포함되어 있습니다!");
+                        history.back();
+                    </script>
+                ''')
 
-        uploadedFileName = re.sub(r"\W | [^.] | [^_]", "", uploadedFile.name.replace(" ", "_").replace("(", "").replace(")", ""))
+            uploadedFileName = re.sub(r"\W | [^.] | [^_]", "", uploadedFile.name.replace(" ", "_").replace("(", "").replace(")", ""))
 
-        Photo_Upload(title=uploadedFileName, photo=uploadedFile).save()
+            Photo_Upload(title=uploadedFileName, photo=uploadedFile).save()
 
-        board = Board(
-            user=user,
-            tag=tag,
-            title=title, 
-            content=content, 
-        )
-        board.save()
+            board = Board(
+                user=user,
+                tag=tag,
+                title=title, 
+                content=content, 
+            )
+            board.save()
+            B_Photo(board=board, photo=f'/static/image/{uploadedFileName}').save()
+            return render(request, 'm_writeOk.html', {"pk": board.pk})
+    except:
+        return HttpResponse(f'''
+            <script>
+                alert("사진 첨부해주세요!");
+                history.back();
+            </script>
+        ''')
 
-        B_Photo(board=board, photo=f'/static/image/{uploadedFileName}').save()
-
-        return render(request, 'm_writeOk.html', {"pk": board.pk})
-  
 def magazine_delete(request):
 
     context = {
@@ -305,13 +353,20 @@ def info_modify(req):
     real_password = req.GET["real_password"]
 
     if check_password(password, real_password):
-        
-        return HttpResponse(f'''
+        res = HttpResponse(f'''
             <script>
                 alert("인증이 완료되었습니다!!");
                 location.href="/whitevalley/user/mypage/modify/detail/"
             </script>
         ''')
+
+        res.set_cookie(
+            key='modify_check',
+            value=True,
+            expires=300
+        )
+        
+        return res
     else:
         return HttpResponse(f'''
             <script>
@@ -327,8 +382,15 @@ def info_modify_detail(req):
         'config': Config.objects.get(id=1),
         'currentpage': 'mypage'
     }
+    
     try:
-        req.session['user']
+        user = User.objects.get(id=req.session['user'])
+        context['user']=user
+        
+        
+        context['adress'] = user.adress.split("_")
+
+        
     except:
         return HttpResponse(f'''
             <script>
@@ -336,7 +398,6 @@ def info_modify_detail(req):
                 history.back();
             </script>
         ''')
-
     try:
         req.COOKIES['modify_check']
     except:
@@ -347,7 +408,30 @@ def info_modify_detail(req):
             </script>
         ''')
 
-    render(req, 'mypage_modify.html', context)
+    if req.method == "POST":
+        try:
+            user.adress = req.POST['adress7']
+            user.nickname = req.POST['nick']
+            user.contact = req.POST['cont']
+            user.save()
+            return HttpResponse(f'''
+            <script>
+                alert("변경되었습니다.");
+                location.href="/whitevalley/user/mypage/modify/detail/"
+            </script>
+        ''')
+        except: 
+            return HttpResponse(f'''
+            <script>
+                alert("모든 주소값을 기입해주세요.");
+                history.back();
+            </script>
+        ''')
+
+
+    return render(req, 'mypage_modify.html', context)
+
+    
     
 
     
