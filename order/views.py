@@ -202,9 +202,11 @@ def payment(request):
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping'
     }
-    context['user'] = User.objects.get(id=request.session['user'])
+    user = User.objects.get(id=request.session['user'])
+    context['user'] = user
+    context['cart'] = Cart.objects.filter(user=user, checked=True)
 
-    return render(request,'payment.html',context)
+    return render(request, 'payment.html', context)
 
 def loading(request):
     context = {

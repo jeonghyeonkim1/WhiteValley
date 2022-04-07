@@ -31,7 +31,7 @@ def home(req):
     res.set_cookie(
         key=cookie_name,
         value=cookie_value,
-        expires=360
+        expires=3600
     )
 
     return res
@@ -39,57 +39,93 @@ def home(req):
 
 # CART ----------------------------------------------------------------------------------
 def cart(req):
-    context = {
-        'session': req.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'cart',
-        'carts': Cart.objects.filter(user=User.objects.get(id=req.session['user'])),
-        'current_time': datetime.datetime.now() + datetime.timedelta(days=2),
-        'return_point': Config.objects.get(id=1).return_point
-    }
+    try:
+        context = {
+            'session': req.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cart',
+            'carts': Cart.objects.filter(user=User.objects.get(id=req.session['user'])),
+            'current_time': datetime.datetime.now() + datetime.timedelta(days=2),
+            'return_point': Config.objects.get(id=1).return_point
+        }
 
-    if req.method == "POST":
-        cart = Cart.objects.filter(user=User.objects.get(id=req.session['user']))
-        for i in cart:
-            i.checked = req.POST['item_all_bool']
-            i.save()
+        if req.method == "POST":
+            cart = Cart.objects.filter(user=User.objects.get(id=req.session['user']))
+            for i in cart:
+                i.checked = req.POST['item_all_bool']
+                i.save()
 
-    return render(req, 'cart.html', context)
+        return render(req, 'cart.html', context)
+    
+    except:
+        return HttpResponse(f'''
+            <script>
+                alert("로그인이 필요합니다.");
+                location.href='/whitevalley/shopping/loading2/';
+            </script>
+        ''')
 
 def cart_number(req, id):
-    cart = Cart.objects.get(id=id)
+    try:
+        cart = Cart.objects.get(id=id)
 
-    cart.amount = req.POST['amount']
+        cart.amount = req.POST['amount']
 
-    cart.save()
+        cart.save()
 
-    
-    return redirect("/whitevalley/cart/")
+        
+        return redirect("/whitevalley/cart/")
+    except:
+        return HttpResponse(f'''
+            <script>
+                alert("올바른 경로가 아닙니다!");
+                location.href = "/whitevalley/";
+            </script>
+        ''')
 
 def cart_checked(req, id):
-    cart = Cart.objects.get(id=id)
+    try:
+        cart = Cart.objects.get(id=id)
 
-    if cart.checked:
-        cart.checked = False
-    else:
-        cart.checked = True
+        if cart.checked:
+            cart.checked = False
+        else:
+            cart.checked = True
 
-    cart.save()
+        cart.save()
 
-    
-    return redirect("/whitevalley/cart/")
+        
+        return redirect("/whitevalley/cart/")
+
+    except:
+        return HttpResponse(f'''
+            <script>
+                alert("올바른 경로가 아닙니다!");
+                location.href = "/whitevalley/";
+            </script>
+        ''')
 
 def cart_delete(req, id):
-    cart = Cart.objects.get(id=id)
+    try:
+        cart = Cart.objects.get(id=id)
 
-    cart.delete()
+        cart.delete()
 
-    return HttpResponse(f'''
-        <script>
-            alert("제거되었습니다!");
-            location.href = '/whitevalley/cart/';
-        </script>
-    ''')
+        return HttpResponse(f'''
+            <script>
+                alert("제거되었습니다!");
+                location.href = '/whitevalley/cart/';
+            </script>
+        ''')
+
+    except:
+        return HttpResponse(f'''
+            <script>
+                alert("올바른 경로가 아닙니다!");
+                location.href = "/whitevalley/";
+            </script>
+        ''')
+    
 
 
 

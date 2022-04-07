@@ -16,7 +16,15 @@ def login(request):
     }
 
     if request.method == "GET":
-        return render(request, 'login.html', context)
+        if request.session['user']:
+            return HttpResponse(f'''
+                <script>
+                    alert("이미 로그인상태 입니다.");
+                    location.href = '/whitevalley/';
+            ''')
+
+        return render(request, 'login.html', context) 
+
     elif request.method == 'POST':
         email = request.POST.get('email', None)
         password = request.POST.get('password', None)
@@ -39,18 +47,38 @@ def login(request):
                 if user.password == password:
                     request.session['user'] = user.id
                     request.session['admin'] = user.admin
-                    return redirect('/whitevalley/')
+                    return HttpResponse(f'''
+                        <script>
+                            alert("로그인 성공하였습니다!");
+                            location.href = '/whitevalley/';
+                        </script>
+                    ''')
                 else:
                     context['error'] = '비밀번호가 틀렸습니다.'
+                    
             else:
                 if check_password(password, user.password):
                     request.session['user'] = user.id
                     request.session['admin'] = user.admin
-                    return redirect('/whitevalley/')
+                    return HttpResponse(f'''
+                        <script>
+                            alert("로그인 성공하였습니다!");
+                            location.href = '/whitevalley/';
+                        </script>
+                    ''')
                 else:
-                    context['error'] = '비밀번호가 틀렸습니다'                   
+                    context['error'] = '비밀번호가 틀렸습니다'
+
+    return HttpResponse(f'''
+        <script>
+            alert("로그인 실패하였습니다!");
+            history.back();
+        </script>
+    ''') 
+
+                     
         
-    return render(request, 'login.html', context)
+    
 
 
 def logout(request):
@@ -194,7 +222,7 @@ def magazine_list(request):
 def magazine_detail(request, pk):
 
     magazine = Board.objects.get(pk=pk)
-    photos = B_Photo.objects.get(board = pk)
+    photos = B_Photo.objects.get(board=pk)
     magazine.view_cnt += 1
     magazine.save()
 
@@ -254,7 +282,7 @@ def magazine_write(request):
                 <script>
                     alert("파일 이름에 특수문자가 포함되어 있습니다!");
                     history.back();
-                </script>
+                </scrip>
             ''')
 
         uploadedFileName = re.sub(r"\W | [^.] | [^_]", "", uploadedFile.name.replace(" ", "_").replace("(", "").replace(")", ""))
