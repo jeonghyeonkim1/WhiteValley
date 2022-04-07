@@ -29,9 +29,9 @@
         </div>
         <div class="textbox" style="display: flex; margin-bottom:20px">
             <label for="">PW</label>
-            <div style=" padding-left:43px; padding-right:30px;"><input type="text" class="form-control col-4" name="pw1"></div>
+            <div style=" padding-left:43px; padding-right:30px;"><input type="password" class="form-control col-4" name="pw1"></div>
             <label for="">확인</label>
-            <div style="padding-left:20px"><input type="text" class="form-control col-4" placeholder="PW 재확인" name="pw2"></div>
+            <div style="padding-left:20px"><input type="password" class="form-control col-4" placeholder="PW 재확인" name="pw2"></div>
             <input name="pw_check" value="상태" style="width: 60px;background-color: white; margin-left:15px; border-radius:15px; text-align:center;"disabled></input>
         </div>
         <div class="textbox" style="display: flex; margin-bottom:20px">
@@ -42,17 +42,17 @@
             <label for="">연락처</label>
             <div style=" padding-left:20px"><input type="text" class="form-control col-4" value="{{ user.contact }}" name="cont"></div>
         </div>
-        <div class="textbox" style=" margin-bottom:20px">
+        <div class="textbox" style=" margin-bottom:20px" name="aaa">
             <label for="" style="padding: 8px;">주소</label>
-            <div class="col-2"  style="display: inline-block; margin:0px 3px 6px 16px;"><input id="sample4_postcode" type="text" class="form-control" name="adress1" placeholder="우편번호"></div>
+            <div class="col-2"  style="display: inline-block; margin:0px 3px 6px 16px;"><input id="sample4_postcode" type="text" class="form-control" id="adress1" name="adress1" placeholder="우편번호" disabled></div>
             <input type="button" class="btn btn-light" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
             <div class="col-7" style="display: flex; padding-left:69px">
                 <input id="sample4_roadAddress" type="text" class="form-control" style=" margin-right:10px" name="adress2" placeholder="도로명주소"> 
                 <input id="sample4_jibunAddress" type="text" class="form-control" name="adress3" placeholder="지번주소">
             </div>
             <div class="col-4" style="display: flex; margin:8px 0 0 69px;">
-                <input id="sample4_detailAddress" type="text" class="form-control" style=" margin-right:10px" name="adress4" placeholder="상세주소">
-                <input id="sample4_extraAddress" type="text" class="form-control" name="adress5" placeholder="참고항목">
+                <input id="sample4_detailAddress" type="text" class="form-control" style=" margin-right:10px" name="adress5" placeholder="상세주소">
+                <input id="sample4_extraAddress" type="text" class="form-control" name="adress4" placeholder="참고항목">
             </div>
         </div>
         <div style="margin:0 0 200px 0; padding:40px 0 0 800px;" id="footer">
@@ -60,7 +60,8 @@
             <button class="btn btn-dark" name="my_change" type="submit()">변경</button>
         </div>
         <div>
-            <input type="text" name="adress6">
+            <input type="hidden" name="adress6">
+            <input type="hidden" name="adress7">
         </div>
     </form>
 
@@ -73,14 +74,14 @@
             $("[name='pw_check']").val("일치")
             $("[name='pw_check']").css("color","blue")
         }
-    })
+    });
     $("[name='my_change']").click(function(){
         alert("변경되었습니다.")
+    });
+    $("[name='adress5']").change(function(){
+        $("[name='adress7']").val($("[name='adress6']").val() + $(this).val())
     })
-    $("[name='adress1']").change(function(){
-        let adress = $(this).val()  
-        $('[name="adress6"]').val(adress)
-    })
+    
 
     function sample4_execDaumPostcode() {
         new daum.Postcode({
@@ -106,12 +107,21 @@
                     extraRoadAddr = ' (' + extraRoadAddr + ')';
                 }
 
+
+                var adress = "";
+
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('sample4_postcode').value = data.zonecode;
                 document.getElementById("sample4_roadAddress").value = roadAddr;
                 document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
                 document.getElementById("sample4_detailAddress").focus();
+                adress += $("[name='adress1']").val();
+                adress += "_" + $("[name='adress2']").val();
+                adress += "_" + $("[name='adress3']").val();
+                adress += "_" + $("[name='adress4']").val();
                 
+                $("[name='adress6']").val(adress)
+
                 // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
                 if(roadAddr !== ''){
                     document.getElementById("sample4_extraAddress").value = extraRoadAddr;
