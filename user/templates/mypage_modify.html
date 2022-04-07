@@ -21,16 +21,17 @@
     <div style="display: inline-block; margin:50px 0 0 0; border-bottom:1px solid rgb(172, 172, 172);">
         <legend>My Information</legend>
     </div>
-    <form action="" method="POST" id="myform">
+    <form action="{% url 'User:info_modify_detail' %}" method="POST" id="myform">
+        {% csrf_token %}
         <div class="textbox" style="display: flex; margin:50px 0 20px 0">
             <label for="">ID</label>
             <div style="padding-left:50px; padding-right:20px"><input type="text" class="form-control col-4" value="{{ user.email }}"></div>
         </div>
         <div class="textbox" style="display: flex; margin-bottom:20px">
             <label for="">PW</label>
-            <div style=" padding-left:43px; padding-right:30px;"><input type="password" class="form-control col-4" name="pw1"></div>
+            <div style=" padding-left:43px; padding-right:30px;"><input type="text" class="form-control col-4" name="pw1"></div>
             <label for="">확인</label>
-            <div style="padding-left:20px"><input type="password" class="form-control col-4" placeholder="PW 재확인" name="pw2"></div>
+            <div style="padding-left:20px"><input type="text" class="form-control col-4" placeholder="PW 재확인" name="pw2"></div>
             <input name="pw_check" value="상태" style="width: 60px;background-color: white; margin-left:15px; border-radius:15px; text-align:center;"disabled></input>
         </div>
         <div class="textbox" style="display: flex; margin-bottom:20px">
@@ -43,20 +44,23 @@
         </div>
         <div class="textbox" style=" margin-bottom:20px">
             <label for="" style="padding: 8px;">주소</label>
-            <div class="col-2"  style="display: inline-block; margin:0px 3px 6px 16px;"><input id="sample4_postcode" type="text" class="form-control" placeholder="우편번호"></div>
+            <div class="col-2"  style="display: inline-block; margin:0px 3px 6px 16px;"><input id="sample4_postcode" type="text" class="form-control" name="adress1" placeholder="우편번호"></div>
             <input type="button" class="btn btn-light" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
             <div class="col-7" style="display: flex; padding-left:69px">
-                <input id="sample4_roadAddress" type="text" class="form-control" placeholder="도로명주소" style=" margin-right:10px"> 
-                <input id="sample4_jibunAddress" type="text" class="form-control" placeholder="지번주소">
+                <input id="sample4_roadAddress" type="text" class="form-control" style=" margin-right:10px" name="adress2" placeholder="도로명주소"> 
+                <input id="sample4_jibunAddress" type="text" class="form-control" name="adress3" placeholder="지번주소">
             </div>
             <div class="col-4" style="display: flex; margin:8px 0 0 69px;">
-                <input id="sample4_detailAddress" type="text" class="form-control" placeholder="상세주소" style=" margin-right:10px">
-                <input id="sample4_extraAddress" type="text" class="form-control" placeholder="참고항목">
+                <input id="sample4_detailAddress" type="text" class="form-control" style=" margin-right:10px" name="adress4" placeholder="상세주소">
+                <input id="sample4_extraAddress" type="text" class="form-control" name="adress5" placeholder="참고항목">
             </div>
         </div>
         <div style="margin:0 0 200px 0; padding:40px 0 0 800px;" id="footer">
-            <button class="btn btn-dark" style="margin-right:10px;" onclick="history.back()">돌아가기</button>
+            <button class="btn btn-dark" style="margin-right:10px;" onclick="location.href='{% url 'User:info_modify' %}'">돌아가기</button>
             <button class="btn btn-dark" name="my_change" type="submit()">변경</button>
+        </div>
+        <div>
+            <input type="text" name="adress6">
         </div>
     </form>
 
@@ -72,6 +76,10 @@
     })
     $("[name='my_change']").click(function(){
         alert("변경되었습니다.")
+    })
+    $("[name='adress1']").change(function(){
+        let adress = $(this).val()  
+        $('[name="adress6"]').val(adress)
     })
 
     function sample4_execDaumPostcode() {
@@ -113,19 +121,7 @@
 
                 var guideTextBox = document.getElementById("guide");
                 // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
-                {% comment %} if(data.autoRoadAddress) {
-                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
-                    guideTextBox.style.display = 'block';
-
-                } else if(data.autoJibunAddress) {
-                    var expJibunAddr = data.autoJibunAddress;
-                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
-                    guideTextBox.style.display = 'block';
-                } else {
-                    guideTextBox.innerHTML = '';
-                    guideTextBox.style.display = 'none';
-                } {% endcomment %}
+             
             }
         }).open();
     }
