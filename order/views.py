@@ -206,6 +206,7 @@ def payment(request):
     try:
         user = User.objects.get(id=request.session['user'])
         context['user'] = user
+        context['adress'] = user.adress.split("_")
         cart = Cart.objects.filter(user=user, checked=True)
         context['cart'] = cart
 

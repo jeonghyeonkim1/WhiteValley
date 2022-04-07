@@ -13,7 +13,7 @@
 
 {% block contents %}
 
-<div class="paytext" style="margin-top: 200px; margin-bottom:100px; border-bottom: 3px solid rgb(172, 172, 172);">
+<div class="paytext mt-5 mb-5 pt-3" style="border-bottom: 3px solid rgb(172, 172, 172);">
     <div class="">
         <h1>주문 상세 입력</h1>
     </div>
@@ -62,7 +62,7 @@
         <div class="row mb-4">
             <label class="text-center col-sm-2 col-form-label">주소</label>
             <div class="col-sm-7">
-                <input id="sample4_postcode" type="text" class="form-control" placeholder="우편번호" required>
+                <input id="sample4_postcode" name="adress1" type="text" class="form-control" placeholder="우편번호" required>
             </div>
             <div class="col-sm-3 d-flex justify-content-center">
                 <input type="button" class="w-100 btn btn-dark" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
@@ -72,25 +72,25 @@
         <div class="row mb-4">
             <div class="col-sm-2"></div>
             <div class="col-sm-6">
-                <input id="sample4_roadAddress" type="text" class="form-control" placeholder="도로명주소" name="adress1">
+                <input id="sample4_roadAddress" name="adress2" type="text" class="form-control" placeholder="도로명주소" name="adress1">
             </div>
             <div class="col-sm-4">
-                <input id="sample4_jibunAddress" type="text" class="form-control" placeholder="지번주소" name="adress2">
+                <input id="sample4_jibunAddress" name="adress3" type="text" class="form-control" placeholder="지번주소" name="adress2">
             </div>
         </div>
         <div class="row mb-4">
             <div class="col-sm-2"></div>
             <div class="col-sm-6">
-                <input id="sample4_detailAddress" type="text" class="form-control" placeholder="상세주소" name="adress3" required>
+                <input id="sample4_detailAddress" name="adress4" type="text" class="form-control" placeholder="상세주소" name="adress3" required>
             </div>
             <div class="col-sm-4">
-                <input id="sample4_extraAddress" type="text" class="form-control" value="" placeholder="참고항목" name="adress4">
+                <input id="sample4_extraAddress" name="adress5" type="text" class="form-control" value="" placeholder="참고항목" name="adress4">
             </div>
         </div>
         <div class="row mb-4">
             <label class="text-center col-sm-2 col-form-label">연락처</label>
             <div class="col-sm-10">
-                <input type="text" id="equalcontact" class="form-control" placeholder="필수" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required>
+                <input type="text" id="equalcontact" name="contact" class="form-control" placeholder="필수" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required>
             </div>
         </div>
         <div class="row mb-2">
@@ -104,7 +104,7 @@
             <div class="col-sm-10">
                 <select type="text" id="selbox" class="form-control" placeholder="필수">
                     <optgroup label="---------" data-max-options="1">
-                        <option value="1">문앞</option>
+                        <option value="문앞">문앞</option>
                         <option value="2">직접 받고 부재 시 문앞</option>
                         <option value="3">경비실</option>
                         <option value="4">택배함</option>
@@ -348,9 +348,10 @@
         $("#pay4").css("display","block");
     }
 
-    $("#userequal")[0].addEventListener("click",function() {
+    $("#userequal").click(function() {
         $("[name='receiver']").val($("[name='user']").val());
         $("#equalcontact").val($("#usernum").val());
+        $("")
     })
 
     // 정현
