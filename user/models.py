@@ -16,7 +16,7 @@ class User(models.Model):
     # 적립금
     point = models.IntegerField(default=0, verbose_name="적립금")
     # 주소
-    adress = models.CharField(max_length=300, null=True, verbose_name="주소")
+    adress = models.CharField(max_length=300, default="____", verbose_name="주소")
     # 가입일
     reg_date = models.DateTimeField(auto_now_add=True, verbose_name="가입일")
 

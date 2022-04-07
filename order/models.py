@@ -24,7 +24,7 @@ class Order(models.Model):
 class Cart(models.Model):
     user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name="디자이너")
     product = models.ForeignKey('recommendation.Product', on_delete=models.CASCADE, verbose_name="완성품")
-    checked = models.BooleanField(default=False, verbose_name='체크여부')
+    checked = models.BooleanField(default=True, verbose_name='체크여부')
     amount = models.IntegerField(default=1, verbose_name='갯수')
 
     class Meta:
@@ -54,7 +54,7 @@ class Review(models.Model):
 class R_photo(models.Model):
     order = models.ForeignKey(Review, on_delete=models.CASCADE, verbose_name="주문번호")
     photo = models.CharField(max_length=300, verbose_name='사진')
-
+    
     class Meta:
         db_table = 'r_photo'
         verbose_name = '리뷰사진'

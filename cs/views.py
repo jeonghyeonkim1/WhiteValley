@@ -320,7 +320,7 @@ def faq_write(request):
         return render(request, 'faq_write.html', context)
 
     elif request.method == 'POST':
-        user = User.objects.get(id=request.session['admin'])
+        user = User.objects.get(id=request.session['user'])
         tag = request.POST['faq']
         title = request.POST['title']
         content = request.POST['content']
