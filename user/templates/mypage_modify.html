@@ -45,7 +45,7 @@
         <div class="textbox" style=" margin-bottom:20px">
             <label for="" style="padding: 8px;">주소</label>
             <div class="col-2"  style="display: inline-block; margin:0px 3px 6px 16px;"><input id="sample4_postcode" type="text" class="form-control" name="adress1" placeholder="우편번호"></div>
-            <input type="button" class="btn btn-light" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
+            <input type="button" class="btn btn-light" onclick="sample4_execDaumPostcode()" value="우편번호 찾기" id="btn">
             <div class="col-7" style="display: flex; padding-left:69px">
                 <input id="sample4_roadAddress" type="text" class="form-control" style=" margin-right:10px" name="adress2" placeholder="도로명주소"> 
                 <input id="sample4_jibunAddress" type="text" class="form-control" name="adress3" placeholder="지번주소">
@@ -65,21 +65,23 @@
     </form>
 
 <script>
-    $("[name='pw2']").change(function(){
-        if($("[name='pw1']").val() != $(this).val()){
-            $("[name='pw_check']").val("불일치")
-            $("[name='pw_check']").css("color","red")
-        }else{
-            $("[name='pw_check']").val("일치")
-            $("[name='pw_check']").css("color","blue")
-        }
-    })
-    $("[name='my_change']").click(function(){
-        alert("변경되었습니다.")
-    })
-    $("[name='adress1']").change(function(){
-        let adress = $(this).val()  
-        $('[name="adress6"]').val(adress)
+    $(function() {
+        $("[name='pw2']").change(function(){
+            if($("[name='pw1']").val() != $(this).val()){
+                $("[name='pw_check']").val("불일치")
+                $("[name='pw_check']").css("color","red")
+            }else{
+                $("[name='pw_check']").val("일치")
+                $("[name='pw_check']").css("color","blue")
+            }
+        })
+        $("[name='my_change']").click(function(){
+            alert("변경되었습니다.")
+        })
+        $("[name='adress1']").change(function(){
+            let adress = $(this).val()  
+            $('[name="adress6"]').val(adress)
+        })
     })
 
     function sample4_execDaumPostcode() {

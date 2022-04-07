@@ -333,13 +333,20 @@ def info_modify(req):
     real_password = req.GET["real_password"]
 
     if check_password(password, real_password):
-        
-        return HttpResponse(f'''
+        res = HttpResponse(f'''
             <script>
                 alert("인증이 완료되었습니다!!");
                 location.href="/whitevalley/user/mypage/modify/detail/"
             </script>
         ''')
+
+        res.set_cookie(
+            key='modify_check',
+            value=True,
+            expires=300
+        )
+        
+        return res
     else:
         return HttpResponse(f'''
             <script>
@@ -358,6 +365,7 @@ def info_modify_detail(req):
     context['user'] = User.objects.get(id=req.session['user'])
     try:
         req.session['user']
+        
     except:
         return HttpResponse(f'''
             <script>
@@ -365,16 +373,17 @@ def info_modify_detail(req):
                 history.back();
             </script>
         ''')
+    try:
+        req.COOKIES['modify_check']
+    except:
+        return HttpResponse(f'''
+            <script>
+                alert("인증 유효기간이 지났습니다. 다시 인증해주세요.");
+                history.back();
+            </script>
+        ''')
+
     return render(req, 'mypage_modify.html', context)
-    # try:
-    #     req.COOKIES['modify_check']
-    # except:
-    #     return HttpResponse(f'''
-    #         <script>
-    #             alert("인증 유효기간이 지났습니다. 다시 인증해주세요.");
-    #             history.back();
-    #         </script>
-    #     ''')
 
     
     

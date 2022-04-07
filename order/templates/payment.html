@@ -94,18 +94,44 @@
 <div name="cashForm" class="cashform" action="" >
     <div style="margin-bottom:60px; border-bottom: 1px solid black;">
         <legend>금액</legend>
-        <div style="border-top: 1px solid black; padding-top:20px;">
-            <label for="" style="margin:30px;">총 상품 가격</label>
-            <input type="text" value="30,000">
+        <div class="text-center row g-3 align-items-center">
+            <div class="col-2">
+                <label for="inputPassword6" class="col-form-label">총 결제금액</label>
+            </div>
+            <div class="col-6">
+                <input type="text" value="{{ total_price }}" class="form-control">
+            </div>
+            <div class="col-auto">
+                <span id="passwordHelpInline" class="form-text">
+                    * 적립금이 포함되지 않은 가격입니다.
+                </span>
+            </div>
         </div>
-        <div>
-            <label for=""  style="margin:30px 50px;">적립금</label>
-            <input type="text" value="1,500">
-            <input type="text" value="나의 적립금">
+        <div class="text-center row g-3 align-items-center">
+            <div class="col-2">
+                <label for="inputPassword6" class="col-form-label">적립될 포인트</label>
+            </div>
+            <div class="col-6">
+                <input type="text" value="{{ total_point }}" class="form-control">
+            </div>
+            <div class="col-auto">
+                <span id="passwordHelpInline" class="form-text">
+                    * 총 결제 금액의 {{ config.return_point }}% 가 적립됩니다.
+                </span>
+            </div>
         </div>
-        <div>
-            <label for=""  style="margin:30px;">총 결제 금액</label>
-            <input type="text" value="금액처리하기">
+        <div class="text-center     row g-3 align-items-center">
+            <div class="col-2">
+                <label for="inputPassword6" class="col-form-label">내 적립금</label>
+            </div>
+            <div class="col-6">
+                <input type="text" value="{{ user.point }}" class="form-control">
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary">
+                    적용
+                </button>
+            </div>
         </div>
     </div>
 </div>
