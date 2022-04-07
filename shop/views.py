@@ -65,6 +65,8 @@ def cart(req):
             </script>
         ''')
 
+        
+
 def cart_number(req, id):
     try:
         cart = Cart.objects.get(id=id)

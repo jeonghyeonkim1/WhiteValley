@@ -206,7 +206,7 @@ def payment(request):
     context['user'] = user
     cart = Cart.objects.filter(user=user, checked=True)
     context['cart'] = cart
-
+    
     total_price = 0
     for i in cart:
         total_price += i.product.type.price * i.amount
