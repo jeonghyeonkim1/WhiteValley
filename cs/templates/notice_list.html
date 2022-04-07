@@ -7,9 +7,11 @@
 {% endblock %}
 
 {% block contents %}
-<h2>공지사항</h2>
-<h6>다양한 정보와 새로운 소식을 알려드립니다.</h6>
-<hr>
+<div style="margin-top: 80px;">
+    <h2>공지사항</h2>
+    <h6>다양한 정보와 새로운 소식을 알려드립니다.</h6>
+    <hr>
+</div>
 <div class="mb-3 mt-3">
     <span class="float-start me-2">총 {{ notices.paginator.count }}개</span>
     <span class="float-start">page {{ notices.number }}/{{ notices.paginator.num_pages }}</span>
@@ -30,7 +32,7 @@
             <input type="text" placeholder="궁금한점을 검색해보세요" name="keyword" style="width:250px; height:38px;">
             <button type="submit" class="btn btn-dark">검색</button>
         </div>
-        
+
         {% if all_notices %}
         {% for notice in notices %}
         <tr onclick="location.href='{% url 'Cs:notice_detail' notice.id %}'" style="cursor: pointer;">
@@ -60,7 +62,7 @@
     </div>
 </div>
 
-<div class="row mt-2">
+<div class="row mt-2" style="margin:80px;">
     <div class="col-12">
         <nav>
             <ul class="pagination justify-content-center">
