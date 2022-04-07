@@ -202,27 +202,36 @@ def payment(request):
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping'
     }
-    user = User.objects.get(id=request.session['user'])
-    context['user'] = user
-    cart = Cart.objects.filter(user=user, checked=True)
-    context['cart'] = cart
+    try:
+        user = User.objects.get(id=request.session['user'])
+        context['user'] = user
+        cart = Cart.objects.filter(user=user, checked=True)
+        context['cart'] = cart
 
-    total_price = 0
-    for i in cart:
-        total_price += i.product.type.price * i.amount
+        total_price = 0
+        for i in cart:
+            total_price += i.product.type.price * i.amount
+        
+        if total_price == 0:
+            return HttpResponse(f'''
+                <script>
+                    alert("구매하실 수 있는 물품이 없습니다!");
+                    location.href = '/whitevalley/shopping/order/';
+                </script>
+            ''')
+        else:
+            context['total_price'] = total_price
+            context['total_point'] = total_price // 10
+
+        return render(request, 'payment.html', context)
     
-    if total_price == 0:
+    except:
         return HttpResponse(f'''
             <script>
-                alert("구매하실 수 있는 물품이 없습니다!");
-                location.href = '/whitevalley/shopping/order/';
+                alert("로그인이 필요합니다.");
+                location.href='/whitevalley/shopping/loading2/';
             </script>
         ''')
-    else:
-        context['total_price'] = total_price
-        context['total_point'] = total_price // 10
-
-    return render(request, 'payment.html', context)
 
 def loading(request):
     context = {
