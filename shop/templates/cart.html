@@ -2,7 +2,7 @@
 
 {% block attachment %}
     {% load static %}
-    <script src="{% static 'js/cart.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}?ver=1"></script>
     <style>
         .container {
             min-width: 768px;
@@ -23,11 +23,14 @@
             <div class="col-sm-3 d-flex justify-content-center align-items-center">
                 <h5><strong>상품 이미지</strong></h5>
             </div>
-            <div class="col-sm-6 d-flex justify-content-center align-items-center">
+            <div class="col-sm-5 d-flex justify-content-center align-items-center">
                 <h5><strong>상품 상세 설명</strong></h5>
             </div>
             <div class="col-sm-2 d-flex justify-content-center align-items-center">
                 <h5><strong>상품 수량</strong></h5>
+            </div>
+            <div class="col-sm-1 d-flex justify-content-center align-items-center text-danger">
+                <h5><strong>삭제</strong></h5>
             </div>
         </div>
     </div>
@@ -42,7 +45,7 @@
                     <div class="border col-sm-3 d-flex justify-content-center align-items-center">
                         <img class="w-100" src="{{ cart.product.img }}" alt="장바구니_이미지">
                     </div>
-                    <div class="border col-sm-6 d-flex flex-column justify-content-center">
+                    <div class="border col-sm-5 d-flex flex-column justify-content-center">
                         <h4><strong>{{ cart.user.nickname }} 님의 작품</strong></h4>
                         <hr>
                         <h5>사이즈: {{ cart.product.size }}</h5>
@@ -61,6 +64,14 @@
                                 <option value="7" {% if cart.amount == 7 %}selected{% endif %}>7</option>
                                 <option value="8" {% if cart.amount == 8 %}selected{% endif %}>8</option>
                             </select>
+                        </form>
+                    </div>
+                    <div class="border col-sm-1 d-flex justify-content-center align-items-center">
+                        <form id="item_delete" action="{% url 'Main:cart_delete' cart.id %}" method="POST">
+                            {% csrf_token %}
+                                <button class="btn btn-danger">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
                         </form>
                     </div>
                     <div class="bg-dark text-white d-flex justify-content-end align-items-center p-3">
