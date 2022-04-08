@@ -1,7 +1,8 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.db.models import Count
 from user.models import User
-from order.models import Cart
+from order.models import Cart, Order
 from recommendation.models import Product
 from cs.models import Board
 from shop.models import Config, Co_account
@@ -19,6 +20,14 @@ def home(req):
         'faqs': Board.objects.filter(tag="FAQ").order_by("-reg_date")[:4],
         'magazines': Board.objects.filter(tag="매거진").order_by("-reg_date")[:4]
     }
+
+    # best cody
+    context['best_cody'] = Product.objects.get(id=Order.objects.values('product').annotate(
+        count=Count('product')
+    ).order_by('-count')[0]['product'])
+    context['best_cody_count'] = Order.objects.values('product').annotate(count=Count('product'))[0]['count']
+
+    # best tag
 
     cookie_name = 'visited'
     cookie_value = True
@@ -40,21 +49,32 @@ def home(req):
 # CART ----------------------------------------------------------------------------------
 def cart(req):
     try:
-        context = {
-            'session': req.session,
-            'config': Config.objects.get(id=1),
-            'currentpage': 'cart',
-            'carts': Cart.objects.filter(user=User.objects.get(id=req.session['user'])),
-            'current_time': datetime.datetime.now() + datetime.timedelta(days=2),
-        }
+        req.session['user']
+        try:
+            context = {
+                'session': req.session,
+                'config': Config.objects.get(id=1),
+                'currentpage': 'cart',
+                'carts': Cart.objects.filter(user=User.objects.get(id=req.session['user'])),
+                'current_time': datetime.datetime.now() + datetime.timedelta(days=2),
+            }
 
-        if req.method == "POST":
-            cart = Cart.objects.filter(user=User.objects.get(id=req.session['user']))
-            for i in cart:
-                i.checked = req.POST['item_all_bool']
-                i.save()
+            if req.method == "POST":
+                req.POST['product_tag']
+                cart = Cart.objects.filter(user=User.objects.get(id=req.session['user']))
+                for i in cart:
+                    i.checked = req.POST['item_all_bool']
+                    i.save()
 
-        return render(req, 'cart.html', context)
+            return render(req, 'cart.html', context)
+        
+        except:
+            return HttpResponse(f'''
+                <script>
+                    alert("구매하실 물품이 없습니다!");
+                    location.href='/whitevalley/shopping/loading2/';
+                </script>
+            ''')
     
     except:
         return HttpResponse(f'''
@@ -315,6 +335,19 @@ def admin_point(req):
             ''')
 
     elif req.method == "POST":
+        if (int(req.POST['sign_point']) < 0 or
+            int(req.POST['return_point']) < 0 or
+            int(req.POST['review_point']) < 0 or
+            int(req.POST['best_point']) < 0 or
+            int(req.POST['min_amount']) < 0 or
+            int(req.POST['max_point']) < 0):
+            return HttpResponse(f'''
+                <script>
+                    alert("0 이상의 숫자를 기입해주세요!");
+                    location.href = '/whitevalley/admin/point/'
+                </script>
+            ''')
+
         config = Config.objects.get(id=1)
 
         config.tag_show = req.POST['tag_expose']
@@ -327,7 +360,12 @@ def admin_point(req):
 
         config.save()
 
-        return redirect('/whitevalley/admin/point/')
+        return HttpResponse(f'''
+            <script>
+                alert("수정되었습니다!");
+                location.href = '/whitevalley/admin/point/'
+            </script>
+        ''')
 
 
 def admin_account(req):

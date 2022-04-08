@@ -2,9 +2,10 @@ from django.db import models
 from recommendation.models import Product
 
 class Order(models.Model):
-    user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name="작성자")
+    user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name="구매자")
     product = models.ForeignKey('recommendation.Product', on_delete=models.CASCADE, verbose_name='상품번호')
-    date = models.DateTimeField(auto_now_add=True, verbose_name='등록일')
+    amount = models.IntegerField(verbose_name='상품갯수')
+    date = models.DateTimeField(auto_now_add=True, verbose_name='구매일')
     state = models.CharField(max_length=10, verbose_name='상태')
     delivery_req = models.CharField(max_length=100, verbose_name='배송요청사항')
     r_name = models.CharField(max_length=80, verbose_name='받는분이름')
@@ -14,7 +15,7 @@ class Order(models.Model):
     r_pw = models.IntegerField(default=0, verbose_name='공동현관비밀번호')
 
     class Meta:
-        db_table = 'order'
+        db_table = 't_order'
         verbose_name = '주문'
         verbose_name_plural = '주문(들)'
 
@@ -28,7 +29,7 @@ class Cart(models.Model):
     amount = models.IntegerField(default=1, verbose_name='갯수')
 
     class Meta:
-        db_table = 'cart'
+        db_table = 't_cart'
         verbose_name = '장바구니'
         verbose_name_plural = '장바구니(들)'
         unique_together = ('user', 'product')
@@ -44,7 +45,7 @@ class Review(models.Model):
     reg_date = models.DateTimeField(auto_now_add=True, verbose_name='등록날짜')
 
     class Meta:
-        db_table = 'review'
+        db_table = 't_review'
         verbose_name = '리뷰'
         verbose_name_plural = '리뷰(들)'
 
@@ -62,3 +63,10 @@ class R_photo(models.Model):
 
     def __str__(self):
         return f'{self.order} {self.photo}'
+
+class Review_photo_Upload(models.Model):
+    title = models.CharField(max_length=3000)
+    photo = models.FileField(upload_to="static/image/product_review/")
+
+    class Meta:
+        db_table = 'u_photos'

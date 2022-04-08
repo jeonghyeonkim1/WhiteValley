@@ -13,7 +13,7 @@
 
 {% block contents %}
 
-<div class="paytext" style="margin-top: 200px; margin-bottom:100px; border-bottom: 3px solid rgb(172, 172, 172);">
+<div class="paytext mt-5 mb-5 pt-3" style="border-bottom: 3px solid rgb(172, 172, 172);">
     <div class="">
         <h1>주문 상세 입력</h1>
     </div>
@@ -31,7 +31,7 @@
         <div class="row mb-3">
             <label class="text-center col-sm-2 col-form-label">주문자</label>
             <div class="col-sm-10" style="display: inline-block; margin-bottom:15px">
-                <input type="text" class="form-control" placeholder="필수" value="{{ user }}" disabled>
+                <input type="text" class="form-control" placeholder="필수" name="user" value="{{ user }}" disabled>
             </div>
         </div>
         <div class="row mb-3">
@@ -63,7 +63,7 @@
             <label class="text-center col-sm-2 col-form-label">주소</label>
             <input type="hidden" value="{{ user.adress }}" id="user_adress">
             <div class="col-sm-7">
-                <input id="sample4_postcode" type="text" class="form-control" placeholder="우편번호" required name="adress0">
+                <input id="sample4_postcode" name="adress0" type="text" class="form-control" placeholder="우편번호" required>
             </div>
             <div class="col-sm-3 d-flex justify-content-center">
                 <input type="button" class="w-100 btn btn-dark" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
@@ -73,19 +73,19 @@
         <div class="row mb-4">
             <div class="col-sm-2"></div>
             <div class="col-sm-6">
-                <input id="sample4_roadAddress" type="text" class="form-control" placeholder="도로명주소" name="adress1">
+                <input id="sample4_roadAddress" name="adress1" type="text" class="form-control" placeholder="도로명주소" name="adress1">
             </div>
             <div class="col-sm-4">
-                <input id="sample4_jibunAddress" type="text" class="form-control" placeholder="지번주소" name="adress2">
+                <input id="sample4_jibunAddress" name="adress2" type="text" class="form-control" placeholder="지번주소" name="adress2">
             </div>
         </div>
         <div class="row mb-4">
             <div class="col-sm-2"></div>
             <div class="col-sm-6">
-                <input id="sample4_detailAddress" type="text" class="form-control" placeholder="상세주소" name="adress3" required>
+                <input id="sample4_detailAddress" name="adress4" type="text" class="form-control" placeholder="상세주소" name="adress3" required>
             </div>
             <div class="col-sm-4">
-                <input id="sample4_extraAddress" type="text" class="form-control" value="" placeholder="참고항목" name="adress4">
+                <input id="sample4_extraAddress" name="adress3" type="text" class="form-control" value="" placeholder="참고항목" name="adress4">
             </div>
         </div>
         <div class="row mb-4">
@@ -103,7 +103,7 @@
         <div class="row mb-3">
             <label class="text-center col-sm-2 col-form-label">배송위치</label>
             <div class="col-sm-10">
-                <select type="text" id="selbox" class="form-control" placeholder="필수">
+                <select type="text" id="selbox" name="location" class="form-control" placeholder="필수">
                     <optgroup label="---------" data-max-options="1">
                         <option value="문앞">문앞</option>
                         <option value="2">직접 받고 부재 시 문앞</option>
@@ -140,7 +140,7 @@
                 <label for="inputPassword6" class="col-form-label">총 결제금액</label>
             </div>
             <div class="col-6">
-                <input type="text" id="total_price" value="{{ total_price }}" class="form-control" disabled>
+                <input type="number" id="total_price" value="{{ total_price }}" class="form-control" disabled>
             </div>
             <div class="col-auto">
                 <span id="total_warning" class="form-text">
@@ -154,7 +154,7 @@
                 <label for="inputPassword6" class="col-form-label">적립될 포인트</label>
             </div>
             <div class="col-6">
-                <input type="text" value="{{ total_point }}" class="form-control" disabled>
+                <input type="number" value="{{ total_point }}" class="form-control" name="plus_point" disabled>
             </div>
             <div class="col-auto">
                 <span id="passwordHelpInline" class="form-text">
@@ -167,15 +167,10 @@
                 <label for="inputPassword6" class="col-form-label">내 적립금</label>
             </div>
             <div class="col-3">
-                <input type="text" value="{{ user.point }}" class="form-control" id="own_point" disabled>
+                <input type="number" value="{{ user.point }}" class="form-control" id="own_point" disabled>
             </div>
             <div class="col-3">
-                <input type="text" class="form-control" id="use_point" placeholder="사용할 포인트를 기입해주세요.">
-            </div>
-            <div class="col-auto">
-                <button type="button" class="btn btn-primary" id="apply_point">
-                    적용
-                </button>
+                <input type="number" class="form-control" id="use_point" placeholder="사용할 포인트를 기입해주세요." {% if total_price < config.min_amount %}disabled{% endif %}>
             </div>
         </div>
     </div>
@@ -260,7 +255,8 @@
 </div>
 </form>
 
-<input type="hidden" value="{{ user }}" name="user">
+<input type="hidden" value="{{ config.min_amount }}" name="min_amount">
+<input type="hidden" value="{{ config.max_point }}" name="max_point">
 <p class="padd"></p>
 
 <script>
@@ -349,52 +345,70 @@
         $("#pay4").css("display","block");
     }
 
-    $("#userequal")[0].addEventListener("click",function() {
-        list = []
+    $("#userequal").click(function() {
         $("[name='receiver']").val($("[name='user']").val());
         $("#equalcontact").val($("#usernum").val());
-        list = $("#user_adress").val().split("_");
-        $("[name='adress0']").val(list[0]);
-        $("[name='adress1']").val(list[1]);
-        $("[name='adress2']").val(list[2]);
-        $("[name='adress3']").val(list[4]);
-        $("[name='adress4']").val(list[3]);
+        for (var i = 0; i < $("#user_adress").val().split("_").length; i++) {
+            $(`[name='adress${i}']`).val($("#user_adress").val().split("_")[i])
+        }
     })
 
     // 정현
+    var original_total_price = $("#total_price").val()
     var original_point = $("#own_point").val()
     $(function() {
         $("#use_point").on("keyup", function() {
-            $("#own_point").val(original_point - $("#use_point").val())
+            $("#own_point").val(parseInt(original_point - $("#use_point").val()))
+
+            if (parseInt($("#use_point").val()) <= parseInt($("[name='max_point']").val()) &&
+                parseInt($("#total_price").val()) >= parseInt($("[name='min_amount']").val())) {
+                $("#total_price").val(parseInt(original_total_price - $("#use_point").val()))
+            } 
+
+            if (parseInt($("#total_price").val()) < parseInt($("[name='min_amount']").val())) {
+                alert(`총 구매액이 ${$("[name='min_amount']").val()}원 이상일 때 포인트를 사용하실 수 있습니다!`);
+                $("#total_price").val(parseInt(original_total_price))
+                $("#use_point").val("")
+                $("#own_point").val(parseInt(original_point))
+                $("#total_warning div:last").hide()
+                $("#total_warning div:first").show()
+            } else if (parseInt($("#use_point").val()) <= 0) {
+                alert("0원 이상을 기입해주세요!");
+                $("#total_price").val(parseInt(original_total_price))
+                $("#use_point").val("")
+                $("#own_point").val(parseInt(original_point))
+                $("#total_warning div:last").hide()
+                $("#total_warning div:first").show()
+            } else if (parseInt($("#use_point").val()) > parseInt($("[name='max_point']").val())) {
+                alert(`최대 ${$("[name='max_point']").val()} 포인트까지 사용이 가능합니다!`);
+                $("#total_price").val(parseInt(original_total_price))
+                $("#use_point").val("")
+                $("#own_point").val(parseInt(original_point))
+                $("#total_warning div:last").hide()
+                $("#total_warning div:first").show()
+            } else if (parseInt($("#use_point").val()) > parseInt($("#own_point").val())) {
+                alert(`보유하신 포인트가 부족합니다!`);
+                $("#total_price").val(parseInt(original_total_price))
+                $("#use_point").val("")
+                $("#own_point").val(parseInt(original_point))
+                $("#total_warning div:last").hide()
+                $("#total_warning div:first").show()
+            }
+        })
+
+        $("#pay_form").on('submit', function() {
+            if (!$("#pay_checking")[0].checked) {
+                alert("동의 항목에 체크해주세요!");
+                return false;
+            }
+            
+            if (confirm("구매를 확정하시겠습니까?")) {
+                return true;
+            }
+
+            return false;
         })
     })
-
-    var original_total_price = $("#total_price").val()
-    $("#apply_point").click(function() {
-        $("#total_price").val(original_total_price - $("#use_point").val())
-
-        if ($("#use_point").val() != 0) {
-            $("#total_warning div:first").hide()
-            $("#total_warning div:last").show()
-        } else {
-            $("#total_warning div:last").hide()
-            $("#total_warning div:first").show()
-        }
-    })
-
-    $("#pay_form").on('submit', function() {
-        if (!$("#pay_checking")[0].checked) {
-            alert("동의 항목에 체크해주세요!");
-            return false;
-        }
-        
-        if (confirm("구매를 확정하시겠습니까?")) {
-            return true;
-        }
-
-        return false;
-    })
-
 </script>
 
 {% endblock %}

@@ -35,58 +35,67 @@
         </div>
     </div>
     <div>
-        {% for cart in carts %}
-            <div class="container">
-                <div class="rounded row">
-                    <form action="{% url 'Main:cart_checked' cart.id %}" method="POST" name="checked_form" class="border col-sm-1 d-flex justify-content-center align-items-center">
-                        {% csrf_token %}
-                        <input type="checkbox" style="width: 30px; height: 30px;" name="item_selector" {% if cart.checked %}checked{% endif %}>
-                    </form>
-                    <div class="border col-sm-3 d-flex justify-content-center align-items-center">
-                        <img class="w-100" src="{{ cart.product.img }}" alt="장바구니_이미지">
-                    </div>
-                    <div class="border col-sm-5 d-flex flex-column justify-content-center">
-                        <h4><strong>{{ cart.user.nickname }} 님의 작품</strong></h4>
-                        <hr>
-                        <h5>사이즈: {{ cart.product.size }}</h5>
-                        <h5>지금 주문 시: {{ current_time }} 도착 예정</h5>
-                    </div>
-                    <div class="border col-sm-2 d-flex justify-content-center align-items-center">
-                        <form action="{% url 'Main:cart_number' cart.id %}" method="POST" id="amount_form">
+        {% if carts %}
+            {% for cart in carts %}
+                <div class="container">
+                    <div class="rounded row">
+                        <form action="{% url 'Main:cart_checked' cart.id %}" method="POST" name="checked_form" class="border col-sm-1 d-flex justify-content-center align-items-center">
                             {% csrf_token %}
-                            <select class="form-select" aria-label="Default select example" name="amount">
-                                <option value="1" {% if cart.amount == 1 %}selected{% endif %}>1</option>
-                                <option value="2" {% if cart.amount == 2 %}selected{% endif %}>2</option>
-                                <option value="3" {% if cart.amount == 3 %}selected{% endif %}>3</option>
-                                <option value="4" {% if cart.amount == 4 %}selected{% endif %}>4</option>
-                                <option value="5" {% if cart.amount == 5 %}selected{% endif %}>5</option>
-                                <option value="6" {% if cart.amount == 6 %}selected{% endif %}>6</option>
-                                <option value="7" {% if cart.amount == 7 %}selected{% endif %}>7</option>
-                                <option value="8" {% if cart.amount == 8 %}selected{% endif %}>8</option>
-                            </select>
+                            <input type="checkbox" style="width: 30px; height: 30px;" name="item_selector" {% if cart.checked %}checked{% endif %}>
                         </form>
-                    </div>
-                    <div class="border col-sm-1 d-flex justify-content-center align-items-center">
-                        <form id="item_delete" action="{% url 'Main:cart_delete' cart.id %}" method="POST">
-                            {% csrf_token %}
-                                <button class="btn btn-danger">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                        </form>
-                    </div>
-                    <div class="bg-dark text-white d-flex justify-content-end align-items-center p-3">
-                        <div class="p-3 d-flex justify-content-center align-items-center text-light">
-                            <div class="input-group">
-                                <span class="input-group-text text-center bg-dark text-white fw-bold border-0">해당 상품 현재 가격:</span>
-                                    <input type="hidden" value="{{ cart.product.type.price }}" id="orginal_price">
-                                    <input type="text" value="{{ cart.product.type.price }}" name="price" class="form-control text-center bg-dark text-white fw-bold fs-3" aria-label="Amount (to the nearest dollar)" disabled>
-                                <span class="input-group-text text-center bg-dark text-white fw-bold">￦</span>
+                        <div class="border col-sm-3 d-flex justify-content-center align-items-center">
+                            <img class="w-100" src="{{ cart.product.img }}" alt="장바구니_이미지">
+                        </div>
+                        <div class="border col-sm-5 d-flex flex-column justify-content-center">
+                            <h4><strong>{{ cart.user.nickname }} 님의 작품</strong></h4>
+                            <hr>
+                            <h5>사이즈: {{ cart.product.size }}</h5>
+                            <h5>지금 주문 시: {{ current_time }} 도착 예정</h5>
+                        </div>
+                        <div class="border col-sm-2 d-flex justify-content-center align-items-center">
+                            <form action="{% url 'Main:cart_number' cart.id %}" method="POST" id="amount_form">
+                                {% csrf_token %}
+                                <select class="form-select" aria-label="Default select example" name="amount">
+                                    <option value="1" {% if cart.amount == 1 %}selected{% endif %}>1</option>
+                                    <option value="2" {% if cart.amount == 2 %}selected{% endif %}>2</option>
+                                    <option value="3" {% if cart.amount == 3 %}selected{% endif %}>3</option>
+                                    <option value="4" {% if cart.amount == 4 %}selected{% endif %}>4</option>
+                                    <option value="5" {% if cart.amount == 5 %}selected{% endif %}>5</option>
+                                    <option value="6" {% if cart.amount == 6 %}selected{% endif %}>6</option>
+                                    <option value="7" {% if cart.amount == 7 %}selected{% endif %}>7</option>
+                                    <option value="8" {% if cart.amount == 8 %}selected{% endif %}>8</option>
+                                </select>
+                            </form>
+                        </div>
+                        <div class="border col-sm-1 d-flex justify-content-center align-items-center">
+                            <form id="item_delete" action="{% url 'Main:cart_delete' cart.id %}" method="POST">
+                                {% csrf_token %}
+                                    <button class="btn btn-danger">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                            </form>
+                        </div>
+                        <div class="bg-dark text-white d-flex justify-content-end align-items-center p-3">
+                            <div class="p-3 d-flex justify-content-center align-items-center text-light">
+                                <div class="input-group">
+                                    <span class="input-group-text text-center bg-dark text-white fw-bold border-0">해당 상품 현재 가격:</span>
+                                        <input type="hidden" value="{{ cart.product.type.price }}" id="orginal_price">
+                                        <input type="text" value="{{ cart.product.type.price }}" name="price" class="form-control text-center bg-dark text-white fw-bold fs-3" aria-label="Amount (to the nearest dollar)" disabled>
+                                    <span class="input-group-text text-center bg-dark text-white fw-bold">￦</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+            {% else %}
+                <div class="d-flex justify-content-center align-items-center p-5 m-5 text-danger">
+                    <h1>표시할 물품이 없습니다.</h1>
+                </div>
+                <div class="d-flex justify-content-center align-items-center m-5 text-danger">
+                    <a class="btn btn-outline-dark fw-bold" href="{% url 'Order:order' %}">커스텀 하러 하기</a>
+                </div>
+        {% endif %}
     </div>
     
     <div class="bg-light border-top border-bottom border-3 p-5 m-3 fw-bold">
