@@ -60,6 +60,7 @@ def cart(req):
             }
 
             if req.method == "POST":
+                req.POST['product_tag']
                 cart = Cart.objects.filter(user=User.objects.get(id=req.session['user']))
                 for i in cart:
                     i.checked = req.POST['item_all_bool']
