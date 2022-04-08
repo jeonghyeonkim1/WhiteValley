@@ -136,9 +136,9 @@ def register(request):
             # # html_message='hi.html',
             # fail_silently=False)
 
-            subject, from_email, to = '안녕하세요. White Vally입니다.', 'dbswlrl2@naver.com', user.email
+            subject, from_email, to = '안녕하세요. Plain Vally입니다.', 'dbswlrl2@naver.com', user.email
             text_content = 'This is an important message.'
-            html_content = '<a style="text-decoration:none;" href="http://127.0.0.1:8000/whitevalley/"><h3>White Vally</h3></a><br><h1>회원가입<h1><hr><br><strong>White Vally 회원가입을 축하드립니다.</strong><br>'
+            html_content = '<br><h1>회원가입 완료<h1><hr><br><strong>White Vally 회원가입을 축하드립니다.</strong><br>신규 회원 가입 해택으로 적립금 0000pt 지급되었습니다.<br>지금 바로, White Valley <a style="text-decoration:none;" href="http://127.0.0.1:8000/whitevalley/user/login/"> 로그인</a> 후 마이페이지에서 확인해보세요.<br><br><hr><h6>본 메일은 발신 전용 메일이며, 회신되지 않으므로 문의사항은 홈페이지 내 <a style="text-decoration:none;" href="http://127.0.0.1:8000/whitevalley/cs/faq/list/">고객센터</a>를 이용해주세요.<br>고객센터 TEL: 0000-0000<br>주식회사 Plain Valley | 서울특별시 강남구 신사동 640-2 로빈명품관  | 사업자등록번호 : 000-00-0000<br>| 대표 : OOO COPYRIGHTS (C)Plain Valley ALL RIGHTS RESERVED.<h6>'
             msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
@@ -210,10 +210,19 @@ def chpw(request, email):
 def magazine_list(request):
 
     allmagazine = Board.objects.filter(tag='매거진').order_by('-reg_date')
-    page = request.GET.get('page', '1')
-    paginator = Paginator(allmagazine, 10)
-    page_obj = paginator.get_page(page)
+    write_pages = int(request.session.get('write_pages', 5))
+    per_page = request.session.get('per_page', 10)
+    page = request.GET.get('page', 1)
     photos = B_Photo.objects.all()
+    paginator = Paginator(allmagazine, per_page) 
+    page_obj = paginator.get_page(page)
+
+    start_page = ((int)((page_obj.number - 1) / write_pages) * write_pages) + 1
+    end_page = start_page + write_pages - 1
+
+    if end_page >= paginator.num_pages:
+        end_page = paginator.num_pages
+
 
     context = {
         'session': request.session,
@@ -221,10 +230,13 @@ def magazine_list(request):
         'currentpage': 'magazine',
         'boards': page_obj,
         'photos' : photos,
+        'write_pages': write_pages,
+        'start_page': start_page,
+        'end_page': end_page,
+        'page_range': range(start_page, end_page + 1),
     }
 
     return render(request, 'm_list.html', context)
-
 
 def magazine_detail(request, pk):
 
@@ -245,6 +257,9 @@ def magazine_detail(request, pk):
 
 def magazine_update(request, pk):
 
+    magazine = Board.objects.get(pk=pk)
+    photos = B_Photo.objects.get(board=pk)
+
     if request.method == "GET":
         magazine = Board.objects.get(pk=pk)
         context = {
@@ -252,6 +267,7 @@ def magazine_update(request, pk):
             'config': Config.objects.get(id=1),
             'currentpage': 'magazine',
             'magazine' : magazine,
+            'photos': photos,
         }
 
         return render(request, 'm_update.html', context)
@@ -287,6 +303,7 @@ def magazine_write(request):
             uploadedFile = request.FILES["uploadedFile"]
             if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
                 return HttpResponse(f'''
+                
                     <script>
                         alert("파일 이름에 특수문자가 포함되어 있습니다!");
                         history.back();

@@ -28,16 +28,11 @@
     <div class="row">
         {% for board in boards %}
         <div class="card col-lg-6 mb-4 mr-2">
-            {% comment %} <div class="admin_show">
-                {% if session.admin %}
-                <input class="form-check-input" type="checkbox" id="flexCheckDefault"display: "none";>
-                {% endif %}
-            </div> {% endcomment %}
                 {% for photo in photos %}
                     {% if photo.board == board %}
                     <div class="mt-3" style="text-align : center;" >
                         <a href="{% url 'User:magazine_detail' board.id %} ">
-                            <img class="card-img-top" src="{{ photo.photo }}" style="width:auto; height:350px" alt="..."/>
+                            <img class="card-img-top" src="{{ photo.photo }}" style="max-width:75%; width:auto; height:350px" alt="..."/>
                         </a>
                         <hr>
                     </div>
@@ -55,7 +50,7 @@
 </div>
 
 
-<ul class="pagination justify-content-center">
+{% comment %} <ul class="pagination justify-content-center">
     <!-- 이전페이지 -->
     {% if boards.has_previous %}
     <li class="page-item">
@@ -88,6 +83,39 @@
         <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
     </li>
     {% endif %}
+</ul> {% endcomment %}
+
+
+<ul class="pagination justify-content-center" style='margin:50px'>
+    {% if boards.has_previous %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ boards.previous_page_number }}">이전</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+    </li>
+    {% endif %}
+
+    {% if boards.paginator.num_pages %}
+        {% for page in page_range %}
+            {% if boards.number != page %}
+                <li class="page-item" aria-current="page"><a class="page-link" href="{% url 'User:magazine_list' %}?page={{ page }}">{{ page }}</a></li>
+            {% else %}
+                <li class="page-item active" aria-current="page"><a class="page-link" href="#" title="현재페이지">{{ page }}</a></li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}   
+
+    {% if boards.has_next %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ boards.next_page_number }}">다음</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+    </li>
+    {% endif %} 
 </ul>
 
 

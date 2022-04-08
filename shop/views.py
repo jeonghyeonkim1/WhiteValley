@@ -22,11 +22,14 @@ def home(req):
     }
 
     # best cody
-    context['best_cody'] = Product.objects.get(id=Order.objects.values('product').annotate(
+    try:
+        context['best_cody'] = Product.objects.get(id=Order.objects.values('product').annotate(
         count=Count('product')
-    ).order_by('-count')[0]['product'])
-    context['best_cody_count'] = Order.objects.values('product').annotate(count=Count('product'))[0]['count']
-
+        ).order_by('-count')[0]['product'])
+        context['best_cody_count'] = Order.objects.values('product').annotate(count=Count('product'))[0]['count']
+    except:
+        pass
+    
     # best tag
 
     cookie_name = 'visited'

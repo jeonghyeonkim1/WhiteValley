@@ -21,10 +21,8 @@
         color : white;
         
     }
-
     .reviewPdtV15 {
-        margin: 30px;
-       
+        margin: 30px;  
     }
     .pdtBox{
         display: flex;
@@ -45,12 +43,10 @@
     .pdtReviewV15{
         margin : 30px;
     }
-	.closebtn{
+	.closebtn, .callbtn{
 		padding: 10px;
 		width: 200px;
 		border-radius: 10px;
-		color : white;
-		background-color: #000000;
 		font-size : 20px;
 		margin-bottom: 20px
 	
@@ -58,12 +54,13 @@
 	.finalP{
 		color: red
 	}
-
-	.pdtInfo a:hover{
-		background-color:gold
+	@media (max-width: 750px)  {
+		.reviewPdtV15{
+			display: none;
+		}
 	}
-	.callbtn{
-		float:right;
+	#txt1 {
+		color:rgb(185, 185, 185);
 	}
 </style>
 </head>
@@ -80,40 +77,40 @@
 						<div class="pdtBox">
 							<div class="pdtPhoto"><a href="{% url 'Order:order' %}" target='_blank'><img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='180px' height='140px' alt=""></a></div>
 							<div class="pdtInfo">
-								<p class="pdtBrand tPad15"><a href="{% url 'Order:order' %}" target='_blank' style="text-decoration:none; color:blue">> VIEWLAP</a></p>
-								<p class="pdtName tPad07"><a href="{% url 'Order:order' %}" target='_blank' style="text-decoration:none; color:blue" >> 무지 반팔 커스텀</a></p>
-								<p class="pdtPrice">
-									<span class="finalP">9,930원</span>
-								</p>
+								<div class="pdtBrand tPad15" style="border-bottom: 1px solid  rgb(184, 184, 184);">
+									<input style="border: 0px; height:70px;font-size:20px;background-color:transparent; font-weight: bold ;" type="text" disabled value="***님 커스텀">
+									<input style="border: 0px;background-color:transparent; padding-left:10px;width:100px;color:rgb(185, 185, 185)" type="text" disabled value="2022-04-08">						
+								</div>
+								<div class="purchaseOption">
+									<div>
+										<d id="txt1" style="color:gray;">구매옵션:</d> 
+										<input id="txt1" style="margin-left:10px; border: 0px;background-color:transparent; width: 40px;height:40px;"  value="반팔" disabled >
+										<input id="txt1" style="border: 0px;background-color:transparent;height:40px; width: 40px;"  value="(XL)" disabled >	
+										<input style="border: 0px;background-color:transparent;"class="finalP" value="19,900원" disabled>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-					<button type="button" class="btn btn-warning callbtn" onclick="window.open('{% url 'Order:order' %}')" target='_blank'>커스텀페이지로 이동</button>
 					
-					<hr>
 					<div class="review pdtReviewV15 tMar10">
-
 						<tr>
 							<td class="comment">
-								
-									<div class="purchaseOption"><em><strong>구매옵션</strong> : 반팔(자동),XL</em></div>
+								<div class="ct" style="padding-left:75%">
+									<button class="btn btn-dark">#태그1</button>
+									<button class="btn btn-dark">#태그2</button>
+								</div>
+								<hr>
+								<div class="imgArea">
+									<img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='730px' height='700px' id="file1"><br/>	
+								</div>
+								<hr>
+								<div>
 								
 									<div class="textArea">
 										<p>커스텀 이뻐요 </p>
 									</div>
-									<hr>
-									<div class="imgArea">
-										
-										<img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='730px' height='700px' id="file1"><br/>
-										
-									</div>
-								
-							</td>
-							<td class="ct" >
-								<div style=" text-align: left; color: blue">#여름 #파티 #일상</div>
-								<div style=" text-align: right;">2022/03/31</div>
-								<div style=" text-align: right;">닉네임</div>
-
+								</div>
 							</td>
 						</tr>
 						</tbody>
@@ -125,7 +122,8 @@
 		</div>
 		<div class="popFooter">
 			<div class="btnArea" style=" text-align: center;">
-                <button type="button" class="closebtn" onclick="window.close();" >닫기</button>
+				<button type="button" class="btn btn-dark callbtn" onclick="window.open('{% url 'Order:order' %}')" target='_blank'>장바구니에 담기</button>
+                <button type="button" class="btn btn-dark closebtn" onclick="window.close();" >닫기</button>
 			</div>
 		</div>
 	</div>
