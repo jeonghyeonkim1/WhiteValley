@@ -4,7 +4,7 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <style>
     @media (max-width: 1500px) {
-       #footer button{
+       #footer > .btn{ 
            width:40%;
            margin:60px 0 100px 0;
        }
@@ -29,9 +29,9 @@
         </div>
         <div class="textbox" style="display: flex; margin-bottom:20px">
             <label for="">PW</label>
-            <div style=" padding-left:43px; padding-right:30px;"><input type="text" style="-webkit-text-security: disc;" class="form-control col-4" name="pw1"></div>
+            <div style=" padding-left:43px; padding-right:30px;"><input type="text" style="-webkit-text-security: disc;" placeholder="클릭하여 변경" class="form-control col-4" name="pw1" id="pw1" readonly></div>
             <label for="">확인</label>
-            <div style="padding-left:20px"><input type="text" style="-webkit-text-security: disc;" class="form-control col-4" placeholder="PW 재확인" name="pw2"></div>
+            <div style="padding-left:20px"><input type="text" style="-webkit-text-security: disc;" class="form-control col-4" placeholder="PW 재확인" name="pw2" disabled></div>
             <input name="pw_check" value="상태" style="width: 60px;background-color: white; margin-left:15px; border-radius:15px; text-align:center;"disabled></input>
         </div>
         <div class="textbox" style="display: flex; margin-bottom:20px">
@@ -68,25 +68,34 @@
     </form>
 
 <script>
+    $("#pw1").click(function() {
+        if(confirm("비밀번호를 변경하시겠습니까?")){
+            $("[name='pw1']").removeAttr('readonly');
+            $("[name='pw2']").removeAttr('disabled');
+        }
+    })
 
-    $("[name='pw1']").on('keyup', function(){
-        if($("[name='pw2']").val() != $(this).val()){
-            $("[name='pw_check']").val("불일치")
-            $("[name='pw_check']").css("color","red")
-        }else{
-            $("[name='pw_check']").val("일치")
-            $("[name='pw_check']").css("color","blue")
-        }
-    });
-    $("[name='pw2']").on('keyup', function(){
-        if($("[name='pw1']").val() != $(this).val()){
-            $("[name='pw_check']").val("불일치")
-            $("[name='pw_check']").css("color","red")
-        }else{
-            $("[name='pw_check']").val("일치")
-            $("[name='pw_check']").css("color","blue")
-        }
-    });
+    if($("#pw1").attr("readonly",false)){
+        $("[name='pw1']").on('keyup', function(){
+            if($("[name='pw2']").val() != $(this).val()){
+                $("[name='pw_check']").val("불일치")
+                $("[name='pw_check']").css("color","red")
+            }else{
+                $("[name='pw_check']").val("일치")
+                $("[name='pw_check']").css("color","blue")
+            }
+            });
+        $("[name='pw2']").on('keyup', function(){
+            if($("[name='pw1']").val() != $(this).val()){
+                $("[name='pw_check']").val("불일치")
+                $("[name='pw_check']").css("color","red")
+            }else{
+                $("[name='pw_check']").val("일치")
+                $("[name='pw_check']").css("color","blue")
+            }
+        });
+    }
+    
     $("[name='adress4']").on('keyup', function(){
         $("[name='adress7']").val($("[name='adress6']").val()+ $(this).val())
     })
