@@ -395,7 +395,7 @@ def info_modify_detail(req):
     
     try:
         user = User.objects.get(id=req.session['user'])
-        context['user'] = user
+        context['user'] = User.objects.get(id=req.session['user'])
         context['adress'] = user.adress.split("_")
 
     except:
@@ -424,18 +424,13 @@ def info_modify_detail(req):
                         history.back();
                     </script>
                 ''')
-            elif (req.POST['pw1'] or req.POST['pw2']) == "":
-                return HttpResponse(f'''
-                    <script>
-                        alert("비밀번호가 입력되지 않았습니다!");
-                        history.back();
-                    </script>
-                ''')
-
+            
+            elif (req.POST['pw1'] or req.POST['pw2']) != "":
+                user.password = make_password(req.POST['pw1'])
+                
             user.adress = req.POST['adress7']
             user.nickname = req.POST['nick']
             user.contact = req.POST['cont']
-            user.password = make_password(req.POST['pw1'])
 
             user.save()
 
