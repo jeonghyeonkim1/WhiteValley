@@ -54,7 +54,14 @@
 	.finalP{
 		color: red
 	}
-
+	@media (max-width: 750px)  {
+		.reviewPdtV15{
+			display: none;
+		}
+	}
+	#txt1 {
+		color:rgb(185, 185, 185);
+	}
 </style>
 </head>
 <body>
@@ -71,37 +78,39 @@
 							<div class="pdtPhoto"><a href="{% url 'Order:order' %}" target='_blank'><img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='180px' height='140px' alt=""></a></div>
 							<div class="pdtInfo">
 								<div class="pdtBrand tPad15" style="border-bottom: 1px solid  rgb(184, 184, 184);">
-									<input style="border: 0px;height:70px;font-size:20px;background-color:transparent;" type="text" disabled value="***님 커스텀">
-									<input style="border: 0px;background-color:transparent;" type="text" disabled value="2022-04-08">						
+									<input style="border: 0px; height:70px;font-size:20px;background-color:transparent; font-weight: bold ;" type="text" disabled value="***님 커스텀">
+									<input style="border: 0px;background-color:transparent; padding-left:10px;width:100px;color:rgb(185, 185, 185)" type="text" disabled value="2022-04-08">						
 								</div>
-								<div class="pdtName tPad07">
-									<input style="border: 0px;background-color:transparent;height:40px;"  value="반팔" disabled >
-								</div>
-								<div class="pdtPrice">
-									<input style="border: 0px;background-color:transparent;" class="finalP" value="19,900원" disabled>
+								<div class="purchaseOption">
+									<div>
+										<d id="txt1" style="color:gray;">구매옵션:</d> 
+										<input id="txt1" style="margin-left:10px; border: 0px;background-color:transparent; width: 40px;height:40px;"  value="반팔" disabled >
+										<input id="txt1" style="border: 0px;background-color:transparent;height:40px; width: 40px;"  value="(XL)" disabled >	
+										<input style="border: 0px;background-color:transparent;"class="finalP" value="19,900원" disabled>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<hr>
+					
 					<div class="review pdtReviewV15 tMar10">
 						<tr>
 							<td class="comment">
-								<td class="ct" >
-								<div style=" text-align: left; color: blue">#여름 #파티 #일상</div>
-							</td>
-							<div class="imgArea">
-								<img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='730px' height='700px' id="file1"><br/>	
-							</div>
-							<hr>
-							<div>
-								<div class="purchaseOption">
-									<em><strong>구매옵션</strong> : 반팔(자동),XL</em>
+								<div class="ct" style="padding-left:75%">
+									<button class="btn btn-dark">#태그1</button>
+									<button class="btn btn-dark">#태그2</button>
 								</div>
-								<div class="textArea">
-									<p>커스텀 이뻐요 </p>
+								<hr>
+								<div class="imgArea">
+									<img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='730px' height='700px' id="file1"><br/>	
 								</div>
-							</div>
+								<hr>
+								<div>
+								
+									<div class="textArea">
+										<p>커스텀 이뻐요 </p>
+									</div>
+								</div>
 							</td>
 						</tr>
 						</tbody>
