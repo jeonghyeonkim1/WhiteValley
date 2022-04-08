@@ -203,7 +203,6 @@ def payment(request):
         'currentpage': 'shopping'
     }
 
-    # try:
     user = User.objects.get(id=request.session['user'])
     context['user'] = user
     cart = Cart.objects.filter(user=user, checked="True")
