@@ -18,23 +18,22 @@ def reviews(request):
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        'R_photo' : R_photo.objects.filter(order=Review.objects.all()),
-
-
     }
+
+    try:
+        context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user']))
+    except:
+        pass
         
-    # List =[]
+    List =[]
 
-    # for order in Order.objects.all():
-    #     try:
-    #         List.append([Review.objects.get(order=order), R_photo.objects.filter(order=Review.objects.get(order=order))[0]])
-    #     except:
-    #         pass
+    for order in Order.objects.all():
+        List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
 
-    # context['reviews'] = List
+    context['reviews'] = List
 
     page = request.GET.get('page', '1')
-    paginator = Paginator(R_photo, 9)  # 페이지당 몇개씩 보여주기
+    paginator = Paginator(List, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     context['question_list'] = page_obj
     
@@ -75,7 +74,8 @@ def product_reviews(request,id):
         )
         
         rev.save()
-        # R_photo(rev=rev, photo=f'/static/image/product_review/{uploadedFile.name}').save()
+        
+        R_photo(rev=rev, photo=f'/static/image/product_review/{uploadedFile.name}').save()
 
         return render(request, 'product_reviews_ok.html', {"pk": rev.pk})
 
