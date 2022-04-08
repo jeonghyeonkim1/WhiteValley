@@ -78,7 +78,7 @@ $(function () {
 
         if ($(this).text() == "BEST 코디") {
             $("#best_img").hide();
-            $("#best_img img")[0].src = "http://maybnous.com/file_data/seulgikim/2019/01/29/f34ca27ff87662feaf085171f7511a6a.jpg"
+            $("#best_img img").attr("src", $("#best_cody_img").val())
             $("#best_img").fadeIn();
             $("#best_desc").children().each(function () {
                 $(this).hide();

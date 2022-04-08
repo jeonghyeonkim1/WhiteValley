@@ -79,11 +79,7 @@ def login(request):
         </script>
     ''') 
 
-                     
-        
     
-
-
 def logout(request):
     del(request.session["user"])
     del(request.session["admin"])
@@ -153,9 +149,6 @@ def register(request):
                     location.href = '/whitevalley/user/login/'
                 </script>
             ''')
-
-
-
 
         return render(request, 'register.html', context)
     

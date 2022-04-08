@@ -3,7 +3,7 @@
 {% block attachment %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
-    <script src="{% static 'js/home.js' %}"></script>
+    <script src="{% static 'js/home.js' %}?ver=1"></script>
 {% endblock %}
 
 {% block contents %}
@@ -83,20 +83,26 @@
                     <div class="row">
                         <div class="col-sm" id="best_img">
                             <div class="h-100 d-flex justify-content-center align-items-center">
-                                <a href="#"><img class="w-100" src="http://maybnous.com/file_data/seulgikim/2019/01/29/f34ca27ff87662feaf085171f7511a6a.jpg" alt="best코디"></a>
+                                <input type="hidden" value="{{ best_cody.img }}" id="best_cody_img">
+                                <input type="hidden" value="" id="best_tag_img">
+                                <input type="hidden" value="" id="best_photo_img">
+                                <a href="#"><img class="w-100" src="{{ best_cody.img }}" alt="best코디"></a>
                             </div>
                         </div>
                         <div class="col-sm d-flex flex-column justify-content-center" id="best_desc">
                             <div id="best_desc1">
-                                <h4>(USER)님의 작품</h4>
-                                <h5>태그:</h5>
+                                <h4>{{ best_cody.user }}님의 작품</h4>
+                                <hr>
                                 <ul class="list-unstyled">
-                                    <li><strong>옵션</strong></li>
-                                    <li>옵션1</li>
-                                    <li>옵션2</li>
+                                    <li><strong><옵션></strong></li>
+                                    <li>종류: {{ best_cody.type }}</li>
+                                    <li>사이즈: {{ bets_cody.size }}</li>
+                                    <li>태그: </li>
                                 </ul>
-                                <h5>조회수:</h5>
-                                <h5>판매횟수:</h5>
+                                <hr>
+                                <h5>조회수: {{ best_cody.view_cnt }}</h5>
+                                <h5>판매횟수: {{ best_cody_count }} </h5>
+                                <h5>디자인날짜: {{ best_cody.reg_date | date:"Y년 m월 d일" }}</h5>
                             </div>
                             <div id="best_desc2" class="h-100">
                                 <select class="form-select h-100 text-center bg-dark text-light" size="5" multiple aria-label="multiple select example">
