@@ -18,9 +18,7 @@ def reviews(request):
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        'R_photo' : R_photo.objects.filter(order=Review.objects.all()),
-
-
+        'R_photo' : R_photo.objects.filter(review=Review.objects.all())
     }
         
     # List =[]
@@ -32,9 +30,9 @@ def reviews(request):
     #         pass
 
     # context['reviews'] = List
-
+    all_review = R_photo.objects.filter(review=Review.objects.all())
     page = request.GET.get('page', '1')
-    paginator = Paginator(R_photo, 9)  # 페이지당 몇개씩 보여주기
+    paginator = Paginator(all_review, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     context['question_list'] = page_obj
     
