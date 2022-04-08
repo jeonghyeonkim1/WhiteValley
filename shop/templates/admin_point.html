@@ -2,7 +2,7 @@
 
 {% block attachment %}
     {% load static %}
-    <script src="{% static 'js/admin.js' %}"></script>
+    <script src="{% static 'js/admin.js' %}?ver=1"></script>
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
 {% endblock %}
 
@@ -37,12 +37,9 @@
                         <input type="hidden" name="tag_expose" value="{{ config.tag_show }}">
                         {% if config.tag_show %}
                             <button type="button" class="w-50 btn btn-primary fw-bold" id="tag_show" disabled>SHOW</button>
-                        {% else %}
-                            <button type="button" class="w-50 btn btn-outline-primary fw-bold" id="tag_show">SHOW</button>
-                        {% endif %}
-                        {% if config.tag_show %}
                             <button type="button" class="w-50 btn btn-outline-danger fw-bold" id="tag_hide">HIDE</button>
                         {% else %}
+                            <button type="button" class="w-50 btn btn-outline-primary fw-bold" id="tag_show">SHOW</button>
                             <button type="button" class="w-50 btn btn-danger fw-bold" id="tag_hide" disabled>HIDE</button>
                         {% endif %}
                     </div>

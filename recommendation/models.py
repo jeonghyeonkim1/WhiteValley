@@ -1,4 +1,3 @@
-from tabnanny import verbose
 from django.db import models
 
 class Type(models.Model):
@@ -59,7 +58,8 @@ class P_photo(models.Model):
 
 
 class Tag_list(models.Model):
-    name = models.ManyToManyField('recommendation.Product', verbose_name='태그이름')
+    name = models.CharField(max_length=30, verbose_name='태그이름')
+    product = models.ManyToManyField('recommendation.Product', verbose_name='물품')
     
     class Meta:
         db_table = 't_tag_list'
@@ -67,4 +67,4 @@ class Tag_list(models.Model):
         verbose_name_plural = '태그(들)'
 
     def __str__(self):
-        return self.name
+        return f'{self.name}: {self.product}에 연결됨'

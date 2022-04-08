@@ -1,6 +1,5 @@
 /* order.html */
 .ordertext{
-    margin-top: 200px;
     border-bottom: 1px solid rgb(201, 199, 199);
 }
 #te{
@@ -81,9 +80,6 @@
     width: 200px;
     height: 40px;
     text-align: center;
-}
-.Btn{
-    
 }
 #CustomBtn2{
     display: inline-block;
@@ -376,9 +372,9 @@
 
     transition: background-color 0.6s ease;
   }
-  .active, .dot:hover {
+  /* .active, .dot:hover {
     background-color: #717171;
-  }
+  } */
   .fades {
     -webkit-animation-name: fade;
     -webkit-animation-duration: 1.5s;

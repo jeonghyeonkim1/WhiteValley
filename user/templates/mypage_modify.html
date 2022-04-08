@@ -58,7 +58,7 @@
             </div>
         </div>
         <div style="margin:0 0 200px 0; padding:40px 0 0 800px;" id="footer">
-            <button class="btn btn-dark" style="margin-right:10px;" onclick="location.href='{% url 'User:mypage' %}'">돌아가기</button>
+            <a class="btn btn-dark" style="margin-right:10px;" href="{% url 'User:mypage' %}">돌아가기</a>
             <button class="btn btn-dark" name="my_change" type="submit()">변경</button>
         </div>
         <div>
@@ -77,9 +77,6 @@
             $("[name='pw_check']").val("일치")
             $("[name='pw_check']").css("color","blue")
         }
-    });
-    $("[name='my_change']").click(function(){
-        alert("변경되었습니다.")
     });
     $("[name='adress4']").change(function(){
         $("[name='adress7']").val($("[name='adress6']").val()+ $(this).val())

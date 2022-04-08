@@ -3,7 +3,7 @@
 {% block attachment %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/order.css' %}?ver=1">
-    <script src="{% static 'js/customend.js' %}"></script>
+    <script src="{% static 'js/customend.js' %}?ver=1"></script>
 {% endblock %}
 
 {% block contents %}
@@ -119,6 +119,7 @@
     });
     $("[name='tagselect']").change(function(){
         $("[name='product_tag']").val($(this).val());
+        console.log($("[name='product_tag']").val())
     });
     $("#reqinput").change(function(){
         $("[name='order_req']").val($(this).val());
