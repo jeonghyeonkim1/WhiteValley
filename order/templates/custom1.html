@@ -14,24 +14,15 @@
     <div class="custom1">
         <div class="custom1_top">
             <div class="pimg_wrap">
-                <img id="pimg" src="{% static 'image/products/shortw.png' %}" alt="sample">
+                <img id="pimg" src="{{ type_current.img }}" alt="sample">
             </div>     
         <div class="custom1_detail">
             <p id="product_type" >{{ type_title }}<br>
             <div class="selectcolor"> 
                 <select id="color" name="color">
-                    <option value="{% static 'image/products/shortw.png' %}">White</option>
-                    <option value="{% static 'image/products/s_ivory.png' %}">Ivory</option>
-                    <option value="{% static 'image/products/s_black.jpg' %}">Black</option>
-                    <option value="{% static 'image/products/s_red.png' %}">Red</option>
-                    <option value="{% static 'image/products/s_orange.png' %}">Orange</option>
-                    <option value="{% static 'image/products/s_yellow.png' %}">Yellow</option>
-                    <option value="{% static 'image/products/s_green.jpg' %}">Green</option>
-                    <option value="{% static 'image/products/s_blue.png' %}">Blue</option>
-                    <option value="{% static 'image/products/s_babypink.png' %}">BabyPink</option>
-                    <option value="{% static 'image/products/s_navy.jpg' %}">Navy</option>
-                    <option value="{% static 'image/products/s_gray.png' %}">Gray</option>
-                    <option value="{% static 'image/products/s_purple.png' %}">Purple</option>
+                    {% for color in type_colors %}
+                        <option value="{{ color.photo }}" {% if color.color == "흰색" %}selected{% endif %}>{{ color.color }}</option>
+                    {% endfor %}
                 </select>
             </div>
                 <div class="selectsize"> 

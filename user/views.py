@@ -395,12 +395,9 @@ def info_modify_detail(req):
     
     try:
         user = User.objects.get(id=req.session['user'])
-        context['user']=user
-        
-        
+        context['user'] = user
         context['adress'] = user.adress.split("_")
 
-        
     except:
         return HttpResponse(f'''
             <script>
@@ -414,22 +411,40 @@ def info_modify_detail(req):
         return HttpResponse(f'''
             <script>
                 alert("인증 유효기간이 지났습니다. 다시 인증해주세요.");
-                history.back();
+                location.href = '/whitevalley/user/mypage/';
             </script>
         ''')
 
     if req.method == "POST":
         try:
+            if check_password(req.POST['pw2'], make_password(req.POST['pw1'])) == False:
+                return HttpResponse(f'''
+                    <script>
+                        alert("비밀번호가 일치하지 않습니다!");
+                        history.back();
+                    </script>
+                ''')
+            elif (req.POST['pw1'] or req.POST['pw2']) == "":
+                return HttpResponse(f'''
+                    <script>
+                        alert("비밀번호가 입력되지 않았습니다!");
+                        history.back();
+                    </script>
+                ''')
+
             user.adress = req.POST['adress7']
             user.nickname = req.POST['nick']
             user.contact = req.POST['cont']
+            user.password = make_password(req.POST['pw1'])
+
             user.save()
+
             return HttpResponse(f'''
-            <script>
-                alert("변경되었습니다.");
-                location.href="/whitevalley/user/mypage/modify/detail/"
-            </script>
-        ''')
+                <script>
+                    alert("변경되었습니다.");
+                    location.href="/whitevalley/user/mypage/"
+                </script>
+            ''')
         except: 
             return HttpResponse(f'''
             <script>
