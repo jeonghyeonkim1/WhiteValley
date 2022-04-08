@@ -60,7 +60,7 @@
 		}
 	}
 	#txt1 {
-		color:rgb(185, 185, 185);
+		color:rgb(58, 58, 58);
 	}
 </style>
 </head>
@@ -79,14 +79,14 @@
 							<div class="pdtInfo">
 								<div class="pdtBrand tPad15" style="border-bottom: 1px solid  rgb(184, 184, 184);">
 									<input style="border: 0px; height:70px;font-size:20px;background-color:transparent; font-weight: bold ;" type="text" disabled value="***님 커스텀">
-									<input style="border: 0px;background-color:transparent; padding-left:10px;width:100px;color:rgb(185, 185, 185)" type="text" disabled value="2022-04-08">						
+															
 								</div>
 								<div class="purchaseOption">
 									<div>
-										<d id="txt1" style="color:gray;">구매옵션:</d> 
+										<d id="txt1">구매옵션:</d> 
 										<input id="txt1" style="margin-left:10px; border: 0px;background-color:transparent; width: 40px;height:40px;"  value="반팔" disabled >
-										<input id="txt1" style="border: 0px;background-color:transparent;height:40px; width: 40px;"  value="(XL)" disabled >	
-										<input style="border: 0px;background-color:transparent;"class="finalP" value="19,900원" disabled>
+										<input id="txt1" style="border: 0px; background-color:transparent; height:40px; width: 40px;"  value="(XL)" disabled >	
+										<input style="border: 0px;background-color:transparent; width:200px;padding-left:90px;"class="finalP" value="19,900원" disabled>
 									</div>
 								</div>
 							</div>
@@ -106,11 +106,12 @@
 								</div>
 								<hr>
 								<div>
-								
-									<div class="textArea">
-										<p>커스텀 이뻐요 </p>
+									<button class="btn btn-light" style="margin:2px 0 20px 0;" disabled>후기</button>
+									<input style="border: 0px;background-color:transparent; padding-left:10px;width:100px;color:rgb(185, 185, 185); float:right;" type="text" disabled value="2022-04-08">
+									<div class="textArea" >
+										<input style="padding-left:10px; border:0; background-color:transparent;" value="커스텀 이뻐요" disabled>
 									</div>
-								</div>
+								</div><hr>
 							</td>
 						</tr>
 						</tbody>
@@ -119,10 +120,11 @@
 				</div>
 				<!-- //content -->
 			</div>
+			
 		</div>
-		<div class="popFooter">
+		<div class="popFooter" style="margin-bottom:70px;">
 			<div class="btnArea" style=" text-align: center;">
-				<button type="button" class="btn btn-dark callbtn" onclick="window.open('{% url 'Order:order' %}')" target='_blank'>장바구니에 담기</button>
+				<button type="button" class="btn btn-dark callbtn" onclick="window.open('{% url 'Main:cart' %}')" target='_blank'>장바구니에 담기</button>
                 <button type="button" class="btn btn-dark closebtn" onclick="window.close();" >닫기</button>
 			</div>
 		</div>

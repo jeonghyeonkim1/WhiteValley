@@ -17,6 +17,7 @@ class Type(models.Model):
 class T_photo(models.Model):
     title = models.ForeignKey('recommendation.Type', on_delete=models.CASCADE, verbose_name="타입명")
     photo = models.CharField(max_length=300, verbose_name='타입이미지')
+    color = models.CharField(max_length=300, verbose_name='타입색')
 
     class Meta:
         db_table = 't_photo'
@@ -58,7 +59,7 @@ class P_photo(models.Model):
 
 
 class Tag_list(models.Model):
-    name = models.CharField(max_length=30, verbose_name='태그이름')
+    name = models.CharField(max_length=30, primary_key=True, verbose_name='태그이름')
     product = models.ManyToManyField('recommendation.Product', verbose_name='물품')
     
     class Meta:

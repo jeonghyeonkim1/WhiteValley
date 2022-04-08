@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.db.models import Count
 from user.models import User
 from order.models import Cart, Order
-from recommendation.models import Product
+from recommendation.models import Product, Tag_list
 from cs.models import Board
 from shop.models import Config, Co_account
 import datetime
@@ -14,12 +14,32 @@ def home(req):
     context = {
         'cookies': req.COOKIES,
         'session': req.session,
-        'config': Config.objects.get(id=1),
         'currentpage': 'home',
         'notices': Board.objects.filter(tag="공지사항").order_by("-reg_date")[:12],
         'faqs': Board.objects.filter(tag="FAQ").order_by("-reg_date")[:4],
         'magazines': Board.objects.filter(tag="매거진").order_by("-reg_date")[:4]
     }
+
+    # 최초 접속 config 생성 및 admin 계정 생성
+    try:
+        context['config'] = Config.objects.get(id=1)
+    except:
+        Config(name='Plain Valley', ceo='양윤직', number='1111-1111111-11', address='독도', email='plainvalley@email.com', site_name='WHITE VALLEY', sale_time='MON-FRIㅣ09:30 - 17:00', lunch_time='LUNCH ㅣ 12:30 - 13:30', holiday='SAT, SUN, HOLIDAY ㅣ OFF', sign_point=5000, return_point=10, review_point=3000, best_point=100000, min_amount=12000, max_point=18000).save()
+        return redirect("/whitevalley/")
+
+    try:
+        User.objects.get(admin="True")
+    except:
+        print("어드민 계정 생성")
+        User(admin=True, email='admin@email.com', nickname='admin', password='1234', contact='01000000000').save()
+        return redirect("/whitevalley/")
+
+    if len(Tag_list.objects.all()) > 0:
+        pass
+    else:
+        List = ['봄', '여름', '가을', '겨울', '데일리', '힙합', '캐주얼', '모던', '러블리', '가족', '친구', '단체', '자유']
+        for i in List:
+            Tag_list(name=i).save()
 
     # best cody
     try:
