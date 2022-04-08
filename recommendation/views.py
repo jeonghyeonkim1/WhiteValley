@@ -11,35 +11,88 @@ from math import ceil
 from django.http import Http404, HttpResponse
 import re
 
-
+# 리뷰 리스트
 def reviews(request):
-    
-    
     
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        'orders' : Order.objects.filter(user=User.objects.get(id=request.session['user'])),
+        'R_photo' : R_photo.objects.filter(order=Review.objects.all()),
+
+
     }
+        
+    # List =[]
 
-    List =[]
+    # for order in Order.objects.all():
+    #     try:
+    #         List.append([Review.objects.get(order=order), R_photo.objects.filter(order=Review.objects.get(order=order))[0]])
+    #     except:
+    #         pass
 
-    for order in Order.objects.all():
-        try:
-            List.append([Review.objects.get(order=order), R_photo.objects.filter(order=Review.objects.get(order=order))[0]])
-        except:
-            pass
-
-    context['reviews'] = List
+    # context['reviews'] = List
 
     page = request.GET.get('page', '1')
-    paginator = Paginator(List, 8)  # 페이지당 몇개씩 보여주기
+    paginator = Paginator(R_photo, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     context['question_list'] = page_obj
     
     return render(request, 'reviews.html',context)
 
+# 리뷰작성
+def product_reviews(request,id):
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'shopping',
+        'product' : Product.objects.get(id=id),
+    }
+    context['user'] = User.objects.get(id=request.session['user'])
+    if request.method == 'GET':
+        return render(request, 'product_reviews.html', context)
+
+    elif request.method == 'POST':
+        title = request.POST['title']
+        contents = request.POST['contents']
+        uploadedFile = request.FILES["uploadedFile"]
+
+        
+
+        if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
+            return HttpResponse(f'''
+                <script>
+                    alert("파일 이름에 특수문자가 포함되어 있습니다!");
+                    history.back();
+                </script>
+            ''')
+        Review_photo_Upload(title=uploadedFile.name, photo=uploadedFile).save()
+
+        rev = Review(
+            order=Order.objects.get(user=User.objects.get(id=request.session['user']),product=Product.objects.get(id=id)),
+            title=title, 
+            contents=contents, 
+        )
+        
+        rev.save()
+        # R_photo(rev=rev, photo=f'/static/image/product_review/{uploadedFile.name}').save()
+
+        return render(request, 'product_reviews_ok.html', {"pk": rev.pk})
+
+        # return render(request, 'product_reviews_ok.html', {"pk": rev.pk})
+
+# 리뷰 업데이트
+def product_reviews_update(request):
+    context = {
+    'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'shopping',
+        
+    }
+
+    return render(request, 'product_reviews_update.html',context)
+
+# 리뷰 디테일
 def reviews_detail(request):
     context = {
        'session': request.session,
@@ -49,6 +102,20 @@ def reviews_detail(request):
 
     return render(request, 'reviews_detail.html',context)
 
+# 리뷰 삭제
+def product_reviews_delete(request):
+    context = {
+       'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'shopping'
+    }
+
+    # order 에서 product 에 review 삭제 경로
+
+    return render(request, 'product_reviews_delete_ok.html',context)
+
+
+# 태그 리뷰리스트
 def tag_reviews(request):
     all_board = Board.objects.all()
     page = request.GET.get('page', '1')
@@ -66,6 +133,7 @@ def tag_reviews(request):
 
     return render(request, 'tag_reviews.html',context)
 
+# 태그 리뷰리스트
 def tag_reviews_detail(request):
     context = {
        'session': request.session,
@@ -75,9 +143,9 @@ def tag_reviews_detail(request):
 
     return render(request, 'tag_reviews_detail.html',context)
 
+# 완성품 리스트
 def finished(request):
-    all_product = Product.objects.all()
-    all_p_photo = P_photo.objects.all()
+    all_product = Product.objects.all().order_by('-reg_date')
     page = request.GET.get('page', '1')
     paginator = Paginator(all_product, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
@@ -87,7 +155,7 @@ def finished(request):
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         'question_list': page_obj,
-        'products' : all_product
+        'products' : page_obj
         
     }
         
@@ -96,6 +164,7 @@ def finished(request):
 
     return render(request, 'finished.html',context)
 
+# 완성품 디테일
 def finished_detail(request):
     context = {
        'session': request.session,
@@ -105,94 +174,7 @@ def finished_detail(request):
 
     return render(request, 'finished_detail.html',context)
 
-# 리뷰작성
-def product_reviews(request,id):
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'shopping',
-        'product' : Product.objects.get(id=id),
-    }
-    context['user'] = User.objects.get(id=request.session['user'])
-    if request.method == 'GET':
-        return render(request, 'product_reviews.html', context)
 
-    elif request.method == 'POST':
-        order = Order.objects.get(user=User.objects.get(id=request.session['user']))
-        title = request.POST['title']
-        contents = request.POST['contents']
-        uploadedFile = request.FILES["uploadedFile"]
-
-
-        if len(re.findall(r'[^a-z | 0-9 | . | " " | ( | )]', uploadedFile.name)) > 0:
-            return HttpResponse(f'''
-                <script>
-                    alert("파일 이름에 특수문자가 포함되어 있습니다!");
-                    history.back();
-                </script>
-            ''')
-        photo = Review_photo_Upload(title=uploadedFile.name, photo=uploadedFile)
-        photo.save()
-
-        rev = Review(
-            order=order, 
-            title=title, 
-            contents=contents, 
-        )
-        
-        rev.save()
-
-        return render(request, 'product_reviews_ok.html', {"pk": rev.pk})
-        # R_photo(rev=rev, photo=f'/static/image/product_review/{photo.title}').save()
-
-        # return render(request, 'product_reviews_ok.html', {"pk": rev.pk})
-
-
-   
-    # context = {
-    # 'session': request.session,
-    # 'config': Config.objects.get(id=1),
-    # 'currentpage': 'shopping',
-    # # 'order' : Order.objects.filter(user=User.objects.get(id=request.session['user'])),
-    # 'product' : Product.objects.get(id=id),
-    # 'user' : User.objects.get(id=request.session['user'])
-    # }
-    # # context['user'] = User.objects.get(id=request.session['user'])
-    
-    # if request.method == 'GET':
-    #     return render(request, 'product_reviews.html', context)
-
-    # elif request.method == 'POST':
-    #     order = Order.objects.get(user=User.objects.get(id=request.session['user']))
-    #     title = request.POST['title']
-    #     contents = request.POST['contents']
-    #     uploadedFile = request.FILES['uploadedFile']
-
-    #     if len(re.findall(r'[^a-z | 0-9 | . | " " | ( | )]', uploadedFile.name)) > 0:
-    #         return HttpResponse(f'''
-    #             <script>
-    #                 alert("파일 이름에 특수문자가 포함되어 있습니다!");
-    #                 history.back();
-    #             </script>
-    #         ''')
-
-    #     # uploadedFileName = re.sub(r"\W | [^.] | [^_]", "", uploadedFile.name.replace(" ", "_").replace("(", "").replace(")", ""))
-    #     # Review_photo_Upload(uploadedFileName=uploadedFileName , photo=uploadedFile).save()
-    #     photo = Review_photo_Upload(title=uploadedFile.name , photo=uploadedFile)
-    #     photo.save()
-    #     rev = Review(
-    #         order=order, 
-    #         title=title, 
-    #         contents=contents, 
-    #         # photo=uploadedFile
-    #         )
-    #     rev.save()
-
-    #     R_photo(rev=rev, photo=f'/static/image/product_review/{photo.title}').save()
-
-    #     context['pk'] = rev.pk
-    #     return render(request, 'product_reviews_ok.html',context)
-    
    
           
 

@@ -38,8 +38,8 @@
 
 {% block contents %}
 <div class="container">
-    <div class="row" style='height:200px;'>
-        <div class="col-sm-12 bg-light text-dark" style='border-radius:24px'>
+    <div class="row" style=' height:200px'>
+        <div class="col-sm-12 bg-light text-dark" style='border-radius:24px'></div>
         <h1 class='text-center'>BEST REVIEW</h1>
         <div class='text-center termbtn' style="margin: top 50px">
             <a class="btn btn-outline-dark" href="/whitevalley/shopping/finished">완성품</a>
@@ -47,12 +47,11 @@
             <a class="btn text-white" style="background-color: #000000;" href="/whitevalley/shopping/reviews">상품후기</a>
         </div>
         <hr>
-        </div>
     </div>
 </div>
 <p></p>
 <div class="container">
-    <select class="form-control"  style="width:80px;">
+    <select class="form-control">
         <option>최신순 ></option>
         <option>인기순 ></option>
     </select>
@@ -124,7 +123,7 @@
                                 <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">View</button>
                                 <button type="button" class="btn btn-sm btn-outline-secondary">장바구니담기</button>
                             </div>
-                            <small class="text-muted">{{review.reg_date}}</small>
+                            <small class="text-muted">날짜</small>
                         </div>
                     </div>
                 </div>

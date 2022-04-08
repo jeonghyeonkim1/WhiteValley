@@ -97,7 +97,7 @@
 {% endblock %}
 
 {% block contents %}
-<h2>리뷰작성</h2>
+<h2>리뷰수정</h2>
 <hr id='bol'>
 <div class='revhead'>
     <img class="my-review-profile__frame__image js_reviewProfileImage"
@@ -136,7 +136,7 @@
 </div>
 <div class="mb-3 mt-3">
     <label for="title">제목:</label>
-    <input type="text" class="form-control" id="title" placeholder="리뷰제목을 입력하세요" name="title" required>
+    <input type="text" class="form-control" id="title" placeholder="리뷰제목을 입력하세요" name="title"  required>
 </div>
 
 
@@ -164,8 +164,5 @@
     <button class="cancel-button" type="button" onclick="history.back()">취소하기</button>
 </div>
 
-</form>
-
-    
 
 {% endblock %}
