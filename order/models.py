@@ -53,7 +53,7 @@ class Review(models.Model):
         return f'{self.order} {self.title}'
 
 class R_photo(models.Model):
-    order = models.ForeignKey(Review, on_delete=models.CASCADE, verbose_name="주문번호")
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, verbose_name="주문번호")
     photo = models.CharField(max_length=300, verbose_name='사진')
     
     class Meta:
