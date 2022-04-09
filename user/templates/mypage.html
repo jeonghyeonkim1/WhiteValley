@@ -90,7 +90,7 @@
         <h4><strong>이메일: {{ user.email }}</strong></h4>
         <h4><strong>연락처: {{ user.contact }}</strong></h4>
         <h4><strong>적립금: {{ user.point }}</strong></h4>
-        <h4><strong>가입일: {{ user.reg_date }}</strong></h4>
+        <h4><strong>가입일: {{ user.reg_date | date:"Y-m-d"}}</strong></h4>
     </div>
     <hr>
     <div class="container mb-5 text-center">

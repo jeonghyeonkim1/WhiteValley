@@ -38,7 +38,7 @@ class Cart(models.Model):
         return f'{self.user} {self.product}'
 
 class Review(models.Model):
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, primary_key=True, verbose_name="주문번호")
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name="주문번호")
     title = models.CharField(max_length=70, verbose_name='후기제목')
     contents = models.CharField(max_length=300, verbose_name='후기내용')
     view_cnt = models.IntegerField(default=0, verbose_name='후기조회수')

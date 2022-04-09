@@ -120,7 +120,7 @@
     <hr>
 </div>
 
-<form action="{% url 'Recommendation:product_reviews' product.id %}" method="POST" enctype="multipart/form-data">
+<form action="{% url 'Recommendation:product_reviews' review.id %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 <div class="review-table">
     <div class="review-table__cell review-intake-head title">
@@ -136,13 +136,13 @@
 </div>
 <div class="mb-3 mt-3">
     <label for="title">제목:</label>
-    <input type="text" class="form-control" id="title" placeholder="리뷰제목을 입력하세요" name="title"  required>
+    <input type="text" class="form-control" id="title" placeholder="리뷰제목을 입력하세요" value="{{review.title}}" name="title"  required>
 </div>
 
 
 <div class="mb-3 mt-3">
     <label class='my__rev' for="contents">상세리뷰</label>
-    <textarea class="form-control" rows="5" id="contents" placeholder="상품 품질에 대한 고객님의 솔직한 리뷰를 남겨주세요." name="contents"
+    <textarea class="form-control" rows="5" id="contents" placeholder="상품 품질에 대한 고객님의 솔직한 리뷰를 남겨주세요." value="{{review.contents}}" name="contents"
         required></textarea>
 </div>
 <hr style='color: black'>
