@@ -10,6 +10,9 @@ from django.core.paginator import Paginator
 import re
 # from django.core.mail import send_mail #보내짐
 from django.core.mail import EmailMultiAlternatives
+from order.models import Order
+
+
 # Create your views here.
 def login(request):
     context = {
@@ -401,6 +404,7 @@ def mypage(req):
     
 
     context['user'] = User.objects.get(id=req.session['user'])
+    context['orders'] = Order.objects.filter(user = req.session['user'])
 
     return render(req, 'mypage.html', context)
 
