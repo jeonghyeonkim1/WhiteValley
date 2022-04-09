@@ -102,16 +102,19 @@
                 <span>
                     옵션: {{order.product.type}}, 사이즈: {{order.product.size}}
                 </span>
-                
+                {% if rev_del != '리뷰없음' %}
                 {% for rev in rev_del %}
-                    {% if rev.order == order %}
+                    {% if rev.order.product == order.product %}
                         <a class='btn btn-outline-primary float-end mb-3 col-2' href="{% url 'Recommendation:product_reviews'  order.product.id %}">리뷰작성</a>
                     {% else %}
                         <button class='btn btn-outline-danger float-end mb-3 col-1'>삭제</button>
                         <a class='btn btn-outline-warning float-end mb-3 col-1' href="{% url 'Recommendation:product_reviews'  order.product.id %}">수정</a>
                     {% endif %}
                 {% endfor %}
-                
+                {% else %}
+                    <a class='btn btn-outline-primary float-end mb-3 col-2' href="{% url 'Recommendation:product_reviews'  order.product.id %}">리뷰작성</a>
+
+                {% endif %}
                 
                 <p>구매일자 : {{order.product.reg_date}}</p>
                 <form action="{% url 'Recommendation:product_reviews_delete' %}" name="delete" method="POST">

@@ -26,9 +26,11 @@ def reviews(request):
     context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user']))
     
         
-    
-    context['rev_del'] = Review.objects.all()
-    
+    review = Review.objects.all()
+    if len(review) != 0:
+        context['rev_del'] = review
+    else:
+        context['rev_del'] = '리뷰없음'
 
     List =[]
 
@@ -202,7 +204,7 @@ def finished(request):
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         'question_list': page_obj,
-        'products' : page_obj
+        'products' : page_obj,
         
     }
         
@@ -210,16 +212,19 @@ def finished(request):
 
 
 # 완성품 디테일
-def finished_detail(request):
+def finished_detail(request,pk):
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        'order' : order
+
     }
-    order = Order.objects.get(id=id)
-    order.view_cnt += 1
-    order.save()
+    
+    product = Product.objects.get(pk=pk)
+    product.view_cnt += 1
+    product.save()
+    
+    context['product'] = product
 
 
     return render(request, 'finished_detail.html',context)
