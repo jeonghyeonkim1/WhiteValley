@@ -288,13 +288,13 @@
                     style='padding: 10px; display: block; margin-left:auto;'>
                 {% endif %}
                 <a href=#
-                    onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">
+                    onclick="window.open('{% url 'Recommendation:tag_reviews_detail' tag_product.id %}','name','resizable=no width=800 height=1000');return false">
                     <img alt="후기내용"
                         src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4"
                          style='margin: 10px; width:100%' class='imgform' />
                     
                     <div style='text-align:center'>
-                        <button class="btn"  value="">***님</button>
+                        <button class="btn"  value="">{{tag_product.user.nickname}} 님</button>
                     </div>    
                 </a>
             </div>
