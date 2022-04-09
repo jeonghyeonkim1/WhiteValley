@@ -21,7 +21,7 @@
         <span class="float-end">조회수 : {{ magazine.view_cnt }} </span>
     </div>
     <hr>
-    <form action="." method="POST" >
+    <form action="." method="POST" enctype="multipart/form-data" >
         {% csrf_token %}  
         <div class="mb-3 mt-3">
             <label for="title">제목</label>
@@ -53,6 +53,11 @@
 <br>
 <br>
 
+<script>
+
+    $("[name='uploadedFile']").change(function() {console.log($(this).val())})
+
+</script>
 
 
 

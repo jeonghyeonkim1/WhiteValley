@@ -257,6 +257,31 @@ def magazine_detail(request, pk):
 
 def magazine_update(request, pk):
 
+    # magazine = Board.objects.get(pk=pk)
+    # photos = B_Photo.objects.get(board=pk)
+
+    # if request.method == "GET":
+    #     magazine = Board.objects.get(pk=pk)
+    #     context = {
+    #         'session': request.session,
+    #         'config': Config.objects.get(id=1),
+    #         'currentpage': 'magazine',
+    #         'magazine' : magazine,
+    #         'photos': photos,
+    #     }
+
+    #     return render(request, 'm_update.html', context)
+    # elif request.method == "POST":
+    #     title = request.POST['title']
+    #     content = request.POST['content']
+
+    #     magazine = Board.objects.get(pk=pk)
+    #     magazine.title = title
+    #     magazine.content = content
+    #     magazine.save()
+    #     return render(request, 'm_updateOk.html', {"pk": magazine.pk})
+
+
     magazine = Board.objects.get(pk=pk)
     photos = B_Photo.objects.get(board=pk)
 
@@ -274,39 +299,31 @@ def magazine_update(request, pk):
     elif request.method == "POST":
         title = request.POST['title']
         content = request.POST['content']
+        uploadedFile = request.FILES["uploadedFile"]
+
+        uploadedFileName = re.sub(r"\W | [^.] | [^_]", "", uploadedFile.name.replace(" ", "_").replace("(", "").replace(")", ""))
+
+        Photo_Upload(title=uploadedFileName, photo=uploadedFile).save()
 
         magazine = Board.objects.get(pk=pk)
         magazine.title = title
         magazine.content = content
+
         magazine.save()
-        return render(request, 'm_updateOk.html', {"pk": magazine.pk})
-    # elif request.method == "POST":
-    #     title = request.POST['title']
-    #     content = request.POST['content']
-    #     uploadedFile = request.FILES["uploadedFile"]
-    #     if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
-    #         return HttpResponse(f'''
-            
-    #             <script>
-    #                 alert("파일 이름에 특수문자가 포함되어 있습니다!");
-    #                 history.back();
-    #             </script>
-    #         ''')
 
-    #     uploadedFileName = re.sub(r"\W | [^.] | [^_]", "", uploadedFile.name.replace(" ", "_").replace("(", "").replace(")", ""))
+        context = {
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'magazine',
+            "pk" : magazine.pk,
+        }
 
-    #     Photo_Upload(title=uploadedFileName, photo=uploadedFile).save()
-
-    #     magazine = Board.objects.get(pk=pk)
+        photo = B_Photo.objects.get(board = magazine)
+        photo.photo = f'/static/image/{uploadedFile}'
+        photo.save()
         
-    #     magazine = Board(
-    #         title=title, 
-    #         content=content, 
-    #     )
-    #     magazine.save()
-    #     B_Photo(magazine=magazine, photo=f'/static/image/{uploadedFileName}').save()
+        return render(request, 'm_updateOk.html', context)
 
-    #     return render(request, 'm_updateOk.html', {"pk": magazine.pk})
 
 def magazine_write(request):
   
@@ -326,6 +343,7 @@ def magazine_write(request):
             title = request.POST['title']
             content = request.POST['content']
             uploadedFile = request.FILES["uploadedFile"]
+            # print('업1!!!!', uploadedFile)
             if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
                 return HttpResponse(f'''
                 
