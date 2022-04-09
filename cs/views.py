@@ -188,12 +188,53 @@ def event_list(request):
 
 
 def event_update(request, pk):
-    context = {
-        'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'cs'
-    }
-    return render(request, 'event_update.html', context)
+    if request.method == 'GET':
+        event = Board.objects.get(pk=pk)
+        context = {
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cs',
+            'event': event
+        }
+        return render(request, 'event_update.html', context)
+
+    elif request.method == 'POST':
+        title = request.POST['title']
+        content = request.POST['content']
+        e_start = request.POST['e_start']
+        e_end = request.POST['e_end']
+        uploadedFile = request.FILES.get("uploadedFile")
+
+        if len(re.findall(r'[^a-z | 0-9 | . | " " | ( | )]', uploadedFile.name)) > 0:
+            return HttpResponse(f'''
+                <script>
+                    alert("파일 이름에 특수문자가 포함되어 있습니다!");
+                    history.back();
+                </script>
+            ''')
+
+        Photo_Upload(title=uploadedFile.name, photo=uploadedFile).save()
+
+        event = Board.objects.get(pk=pk)
+        event.title = title
+        event.content = content
+        event.e_start = e_start
+        event.e_ent = e_end
+        event.save()
+        
+        context = {
+            'session': request.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cs',
+            'pk': event.pk
+        }
+
+        photo = B_Photo.objects.get(board=event)
+        photo.photo = f'/static/image/{uploadedFile}'
+        photo.save()
+
+        return render(request, 'event_updateOk.html', context)
+
 
 
 def event_delete(request):

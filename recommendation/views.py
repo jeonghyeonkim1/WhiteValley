@@ -22,15 +22,13 @@ def reviews(request):
 
     }
    
-    try:
-        context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user']))
-    except:
-        pass
+    
+    context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user']))
+    
         
-    try:
-        context['rev_del'] = Review.objects.all()
-    except:
-        pass
+    
+    context['rev_del'] = Review.objects.all()
+    
 
     List =[]
 
@@ -216,8 +214,13 @@ def finished_detail(request):
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'shopping'
+        'currentpage': 'shopping',
+        'order' : order
     }
+    order = Order.objects.get(id=id)
+    order.view_cnt += 1
+    order.save()
+
 
     return render(request, 'finished_detail.html',context)
 

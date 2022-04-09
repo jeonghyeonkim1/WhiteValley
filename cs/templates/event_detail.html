@@ -35,7 +35,7 @@
     </div>
     <div style="margin-bottom:80px;">
         {% if session.admin %}
-        <a class="btn btn-dark" href="{% url 'Cs:event_update' 1 %}">수정하기</a>
+        <a class="btn btn-dark" href="{% url 'Cs:event_update' event.id %}">수정하기</a>
         <button type="button" class="btn btn-dark" onclick="chkDelete()">삭제하기</button>
         {% endif %}
         <a class="btn btn-dark" href="{% url 'Cs:event_list' %}">목록가기</a>
