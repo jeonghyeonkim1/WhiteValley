@@ -1,3 +1,4 @@
+from http.client import HTTPResponse
 from django.shortcuts import render
 from shop.models import Config
 from user.models import User
@@ -20,13 +21,16 @@ def reviews(request):
         'currentpage': 'shopping',
 
     }
-
+   
     try:
         context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user']))
     except:
         pass
         
+    
+    
     List =[]
+
 
 
     for order in Order.objects.all():
@@ -41,8 +45,11 @@ def reviews(request):
     paginator = Paginator(List, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     context['question_list'] = page_obj
-    
     return render(request, 'reviews.html',context)
+
+    
+
+       
 
 # 리뷰작성
 def product_reviews(request,id):
@@ -141,10 +148,17 @@ def product_reviews_delete(request):
     }
 
     if request.method == 'POST':
-        id = request.POST['id']
-        review = Review.objects.get(id=id)
-        review.delete()
-
+        try:
+            id = request.POST['id']
+            review = Review.objects.get(order=Order.objects.get(id=id))
+            review.delete()
+        except:
+            return HTTPResponse('''
+                <script>
+                alert('리뷰작성이 완료되지 않았습니다.')
+                </script>
+            ''')
+    
 
     return render(request, 'product_reviews_delete_ok.html',context)
 
