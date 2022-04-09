@@ -18,21 +18,22 @@ def reviews(request):
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        'R_photo' : R_photo.objects.filter(review=Review.objects.all())
+        # 'R_photo' : R_photo.objects.filter(review=Review.objects.all())
+
     }
         
-    # List =[]
+    List =[]
 
-    # for order in Order.objects.all():
-    #     try:
-    #         List.append([Review.objects.get(order=order), R_photo.objects.filter(order=Review.objects.get(order=order))[0]])
-    #     except:
-    #         pass
+    for order in Order.objects.all():
+        try:
+            List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
+        except:
+            pass
 
-    # context['reviews'] = List
-    all_review = R_photo.objects.filter(review=Review.objects.all())
+    context['reviews'] = List
+    
     page = request.GET.get('page', '1')
-    paginator = Paginator(all_review, 9)  # 페이지당 몇개씩 보여주기
+    paginator = Paginator(List, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     context['question_list'] = page_obj
     
@@ -73,30 +74,55 @@ def product_reviews(request,id):
         )
         
         rev.save()
-        # R_photo(rev=rev, photo=f'/static/image/product_review/{uploadedFile.name}').save()
+        R_photo(review=rev, photo=f'/static/image/product_review/{uploadedFile.name}').save()
 
         return render(request, 'product_reviews_ok.html', {"pk": rev.pk})
 
         # return render(request, 'product_reviews_ok.html', {"pk": rev.pk})
 
 # 리뷰 업데이트
-def product_reviews_update(request):
+def product_reviews_update(request, pk):
     context = {
-    'session': request.session,
+        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         
     }
 
-    return render(request, 'product_reviews_update.html',context)
+    if request.method == 'GET':
+        try:
+            context['review'] =  Review.objects.get(pk=pk)
+        except Review.DoesNotExist:
+            raise Http404('해당 리뷰를 찾을 수 없습니다.')   
+        return render(request, 'product_reviews_update.html', context)
+
+    elif request.method == 'POST':
+        title = request.POST['title']
+        contents = request.POST['contents']
+        
+        review = Review.objects.get(pk=pk)
+        review.title = title
+        review.contents = contents
+        review.save()
+
+    return render(request, 'product_reviews_update_ok.html',{'pk':review.pk})
 
 # 리뷰 디테일
-def reviews_detail(request):
+def reviews_detail(request,pk):
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'shopping'
+        'currentpage': 'shopping',
+        'review' : review
     }
+
+    try:
+        review = Review.objects.get(pk=pk)
+
+        review.view_cnt += 1
+        review.save()
+    except Review.DoesNotExist:
+        raise Http404('해당 게시글을 찾을 수 없습니다.')
 
     return render(request, 'reviews_detail.html',context)
 
@@ -108,7 +134,11 @@ def product_reviews_delete(request):
         'currentpage': 'shopping'
     }
 
-    # order 에서 product 에 review 삭제 경로
+    if request.method == 'POST':
+        id = request.POST['id']
+        review = Review.objects.get(id=id)
+        review.delete()
+
 
     return render(request, 'product_reviews_delete_ok.html',context)
 
@@ -131,7 +161,7 @@ def tag_reviews(request):
 
     return render(request, 'tag_reviews.html',context)
 
-# 태그 리뷰리스트
+# 태그 리뷰 디테일
 def tag_reviews_detail(request):
     context = {
        'session': request.session,
@@ -157,10 +187,8 @@ def finished(request):
         
     }
         
-
-    
-
     return render(request, 'finished.html',context)
+
 
 # 완성품 디테일
 def finished_detail(request):

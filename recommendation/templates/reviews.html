@@ -81,13 +81,13 @@
       <div class="modal-body">
         <h5>최근 구매 내역</h5>
         
-        {% for orderd in orders %}
-        <div><img src="{{ orderd.product.img }}" style='width:20%; heigth=20%' alt="">
-        <span>옵션: {{orderd.product.type}},{{orderd.product.size}}</span>
-        <a class='btn btn-outline-danger float-end mb-3 col-1'  href="{% url 'Recommendation:product_reviews'  orderd.product.id %}">삭제</a>
-        <a class='btn btn-outline-warning float-end mb-3 col-1'  href="{% url 'Recommendation:product_reviews'  orderd.product.id %}">수정</a>
-        <a class='btn btn-outline-primary float-end mb-3 col-2'  href="{% url 'Recommendation:product_reviews'  orderd.product.id %}">리뷰작성</a>
-        <p>구매일자 : {{orderd.product.reg_date}}</p>
+        {% for review in order %}
+        <div><img src="{{ reivew.product.img }}" style='width:20%; heigth=20%' alt="">
+        <span>옵션: {{review.product.type}},{{review.product.size}}</span>
+        <a class='btn btn-outline-danger float-end mb-3 col-1'  href="{% url 'Recommendation:product_reviews'  review.product.id %}">삭제</a>
+        <a class='btn btn-outline-warning float-end mb-3 col-1'  href="{% url 'Recommendation:product_reviews'  review.product.id %}">수정</a>
+        <a class='btn btn-outline-primary float-end mb-3 col-2'  href="{% url 'Recommendation:product_reviews'  review.product.id %}">리뷰작성</a>
+        <p>구매일자 : {{review.product.reg_date}}</p>
         </div>
         <hr>
         {% endfor %}
@@ -116,7 +116,7 @@
 
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-5">
-        {% for photo in R_photo %}
+        {% for photo in reviews %}
             <div class="col">
                 <div class="card shadow-sm">
                     <div class="card-body">
