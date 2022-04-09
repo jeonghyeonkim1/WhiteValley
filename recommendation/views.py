@@ -5,7 +5,7 @@ from user.models import User
 from cs.models import Board
 from order.models import Review
 from order.models import R_photo,Order,Review_photo_Upload
-from recommendation.models import Product, P_photo
+from recommendation.models import Product, P_photo,Tag_list
 from . import models
 from django.core.paginator import Paginator
 from math import ceil
@@ -166,29 +166,35 @@ def product_reviews_delete(request):
 
 # 태그 리뷰리스트
 def tag_reviews(request):
-    all_board = Board.objects.all()
+    all_product_tag = Product.objects.all().order_by('-reg_date')
     page = request.GET.get('page', '1')
-    paginator = Paginator(all_board, 9)  # 페이지당 몇개씩 보여주기
+    paginator = Paginator(all_product_tag, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
+    # tag_list = Tag_list.objects.get(product=Product.objects.get(user=User.objects.get(id=request.session['user'])))
     
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         'question_list': page_obj,
-        'boards' : page_obj
+        'tag_product' : page_obj
         
     }
 
     return render(request, 'tag_reviews.html',context)
 
 # 태그 리뷰 디테일
-def tag_reviews_detail(request):
+def tag_reviews_detail(request,pk):
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping'
     }
+    tag_product = Product.objects.get(pk=pk)
+    
+    tag_product.save()
+    context['tag_product'] = tag_product
+
 
     return render(request, 'tag_reviews_detail.html',context)
 
