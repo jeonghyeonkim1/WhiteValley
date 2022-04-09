@@ -62,7 +62,7 @@ class R_photo(models.Model):
         verbose_name_plural = '리뷰사진(들)'
 
     def __str__(self):
-        return f'{self.order} {self.photo}'
+        return f'{self.review} {self.photo}'
 
 class Review_photo_Upload(models.Model):
     title = models.CharField(max_length=3000)

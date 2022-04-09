@@ -18,11 +18,16 @@ def reviews(request):
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        # 'R_photo' : R_photo.objects.filter(review=Review.objects.all())
 
     }
+
+    try:
+        context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user']))
+    except:
+        pass
         
     List =[]
+
 
     for order in Order.objects.all():
         try:
@@ -31,7 +36,7 @@ def reviews(request):
             pass
 
     context['reviews'] = List
-    
+
     page = request.GET.get('page', '1')
     paginator = Paginator(List, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
@@ -68,12 +73,13 @@ def product_reviews(request,id):
         Review_photo_Upload(title=uploadedFile.name, photo=uploadedFile).save()
 
         rev = Review(
-            order=Order.objects.get(user=User.objects.get(id=request.session['user']),product=Product.objects.get(id=id)),
+            order=Order.objects.get(user=User.objects.get(id=request.session['user']), product=Product.objects.get(id=id)),
             title=title, 
             contents=contents, 
         )
         
         rev.save()
+
         R_photo(review=rev, photo=f'/static/image/product_review/{uploadedFile.name}').save()
 
         return render(request, 'product_reviews_ok.html', {"pk": rev.pk})

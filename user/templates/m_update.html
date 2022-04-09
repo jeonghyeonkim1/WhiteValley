@@ -21,7 +21,7 @@
         <span class="float-end">조회수 : {{ magazine.view_cnt }} </span>
     </div>
     <hr>
-    <form action="." method="POST" >
+    <form action="." method="POST" enctype="multipart/form-data" >
         {% csrf_token %}  
         <div class="mb-3 mt-3">
             <label for="title">제목</label>
@@ -42,7 +42,7 @@
             <textarea class="form-control" style="resize: none; border: none;" rows="10" id="content" name="content" required>{{ magazine.content }}</textarea>
         </div>
 
-        {% comment %} <input class="btn-outline-dark mt-3" type="file" name="uploadedFile"><br> {% endcomment %}
+        <input class="btn-outline-dark mt-3" type="file" name="uploadedFile"><br>
         <a class="btn btn-outline-dark float-end col-2 ml-3" href="{% url 'User:magazine_list' %}">목록</a>
 
         <button type="submit" class="btn btn-outline-dark float-end col-2">수정완료</button>
@@ -53,6 +53,11 @@
 <br>
 <br>
 
+<script>
+
+    $("[name='uploadedFile']").change(function() {console.log($(this).val())})
+
+</script>
 
 
 
