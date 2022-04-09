@@ -290,16 +290,20 @@ def payment(request):
                         r_name = request.POST['receiver'],
                         r_adress = adress,
                         r_contact = request.POST['contact'],
-                        r_location = request.POST['location']
+                        r_location = request.POST['location'],
+                        r_pw = request.POST['r_pw']
                     ).save()
 
                     i.delete()
+                
+                user.point = user.point + (total_price // 10)
 
                 try:
-                    user.point = user.point - int(request.POST['use_point']) + (total_price // 10)
-                    user.save()
+                    user.point = user.point - int(request.POST['use_point'])
                 except:
                     pass
+
+                user.save()
 
                 return HttpResponse(f'''
                     <script>

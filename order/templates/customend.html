@@ -68,7 +68,21 @@
             <textarea id="reqinput" class="form-control w-50" row="2" placeholder="커스텀상품에 관해 요청사항이 있을 시 자세히 작성해주세요."></textarea>
         </div>
         <div class="amount"> 
-           <p><label for="number">수량: </label><input id="amount" type="number" min="1" max="500" step="1" value="1"></p>
+            <p>
+               <label for="number">수량: </label>
+                <select id="amount">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </p>
         </div> 
         <button id="CustomBtn2">Add to Cart</button>
         <form id="ff" action="{% url 'Order:loading' %}" method="POST" class="Btn">
