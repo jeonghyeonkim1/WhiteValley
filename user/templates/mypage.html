@@ -9,6 +9,9 @@
         #link_icon div:hover {
             transform: scale(106%);
         }
+        table, tr, td {
+            border:1px solid gray;
+        }
     </style>
     <script>
         $(function() {
@@ -24,6 +27,42 @@
 {% endblock %}
 
 {% block contents %}
+<div class="modal fade" id="my_list" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="True">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>나의 주문 목록</h3>
+            </div>
+            <div class="modal-body" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;">
+                <div>
+                    <table>
+                        <th>날짜</th>
+                    {% for order in orders %}
+                            <tr>
+                                <td>
+                                    {{ order.product }}
+                                </td>
+                                <td>
+                                    {{ order.amout}}
+                                </td>
+                                <td>
+                                    {{ order.date }}
+                                </td>
+                                <td>
+                                    {{ order.state }}
+                                </td>
+                            </tr>
+                    {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="" class="btn">확인</a>
+            </div>
+        </div>
+
+    </div>
+</div>
     <div class="w-100 p-4 bg-dark rounded-pill text-light d-flex flex-column justify-content-around align-items-center">
         <h2><strong>{{ user.nickname }}</strong> 님 환영합니다.</h2>
     </div>
@@ -99,11 +138,20 @@
                 </div>
             </div>
             <div class="mb-3 col-sm-3 d-flex justify-content-center align-item-center">
-                <div class="m-3 text-light bg-dark w-75 h-100 d-flex flex-column justify-content-center align-item-center" style="border-radius: 20px; cursor: pointer;" onclick="location.href='.'">
+                <div class="m-3 text-light bg-dark w-75 h-100 d-flex flex-column justify-content-center align-item-center" style="border-radius: 20px; cursor: pointer;" id="my_list_wrap">
                     <i class="fa-solid fa-magnifying-glass-dollar mb-2 display-1"></i>
                     <h5>내 주문목록</h5>
                 </div>
             </div>
+            
         </div>
     </div>
+
+
+<script>
+    $("#my_list_wrap").click(function(e){
+        e.preventDefault();
+        $("#my_list").modal("show");
+    });
+</script>
 {% endblock %}
