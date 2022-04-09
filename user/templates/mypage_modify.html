@@ -31,7 +31,7 @@
             <label for="">PW</label>
             <div style=" padding-left:43px; padding-right:30px;"><input type="text" style="-webkit-text-security: disc;" placeholder="클릭하여 변경" class="form-control col-4" name="pw1" id="pw1" readonly></div>
             <label for="">확인</label>
-            <div style="padding-left:20px"><input type="text" style="-webkit-text-security: disc;" class="form-control col-4" placeholder="PW 재확인" name="pw2" disabled></div>
+            <div style="padding-left:20px"><input type="text" style="-webkit-text-security: disc;" class="form-control col-4" placeholder="PW 재확인" name="pw2" id="pw2" readonly></div>
             <input name="pw_check" value="상태" style="width: 60px;background-color: white; margin-left:15px; border-radius:15px; text-align:center;"disabled></input>
         </div>
         <div class="textbox" style="display: flex; margin-bottom:20px">
@@ -63,15 +63,17 @@
         </div>
         <div>
             <input type="hidden" name="adress6">
-            <input type="hidden" name="adress7">
+            <input type="hidden" name="adress7" value="{{ user.adress }}">
         </div>
     </form>
 
 <script>
     $("#pw1").click(function() {
-        if(confirm("비밀번호를 변경하시겠습니까?")){
-            $("[name='pw1']").removeAttr('readonly');
-            $("[name='pw2']").removeAttr('disabled');
+        if(confirm("비밀번호를 변경하시겠습니까?") == true){
+            $("#pw1").removeAttr('readonly');
+            $("#pw2").removeAttr('readonly');
+        }else{
+            $("#pw1").attr('readonly',true);
         }
     })
 

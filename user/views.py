@@ -1,3 +1,4 @@
+from turtle import Turtle
 from urllib import request
 from django.shortcuts import render, HttpResponse, redirect
 from user.models import User
@@ -416,37 +417,49 @@ def info_modify_detail(req):
         ''')
 
     if req.method == "POST":
-        try:
-            if check_password(req.POST['pw2'], make_password(req.POST['pw1'])) == False:
-                return HttpResponse(f'''
+        # try:
+            if (req.POST['pw1'] or req.POST['pw2']) != "":
+                if check_password(req.POST['pw2'], make_password(req.POST['pw1'])) == False:
+                    return HttpResponse(f'''
                     <script>
                         alert("비밀번호가 일치하지 않습니다!");
                         history.back();
                     </script>
                 ''')
-            elif (req.POST['pw1'] or req.POST['pw2']) != "":
-                user.password = make_password(req.POST['pw1'])
-
-            user.adress = req.POST['adress7']
-            user.nickname = req.POST['nick']
-            user.contact = req.POST['cont']
-            user.password = make_password(req.POST['pw1'])
-
-            user.save()
-
-            return HttpResponse(f'''
-                <script>
-                    alert("변경되었습니다.");
-                    location.href="/whitevalley/user/mypage/"
-                </script>
-            ''')
-        except: 
-            return HttpResponse(f'''
-            <script>
-                alert("모든 주소값을 기입해주세요.");
-                history.back();
-            </script>
-        ''')
+                elif check_password(req.POST['pw2'], make_password(req.POST['pw1'])) == True:
+                    user.password = make_password(req.POST['pw1'])
+                    user.adress = req.POST['adress7']
+                    user.nickname = req.POST['nick']
+                    user.contact = req.POST['cont']
+                    user.save()
+                    return HttpResponse(f'''
+                    <script>
+                        alert("변경되었습니다.");
+                        location.href="/whitevalley/user/mypage/"
+                    </script>
+                    ''')
+            elif (req.POST['pw1'] or req.POST['pw2']) == "":
+                user.adress = req.POST['adress7']
+                user.nickname = req.POST['nick']
+                user.contact = req.POST['cont']
+                user.save()
+                return HttpResponse(f'''
+                    <script>
+                        alert("변경되었습니다.");
+                        location.href="/whitevalley/user/mypage/"
+                    </script>
+                    ''')
+        # except: 
+        #     user.adress = req.POST['adress7']
+        #     user.nickname = req.POST['nick']
+        #     user.contact = req.POST['cont']
+        #     user.save()
+        #     return HttpResponse(f'''
+        #     <script>
+        #         alert("변경되었습니다.");
+        #         location.href="/whitevalley/user/mypage/"
+        #     </script>
+        # ''')
 
 
     return render(req, 'mypage_modify.html', context)
