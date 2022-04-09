@@ -36,18 +36,16 @@
 </style>
 
 <script>
-    $(function() {
-        function chkDelete(){
+    function chkDelete(){
         // 삭제 여부 확인
             if(confirm('삭제하시겠습니까?')){
                 $("[name='delete']").submit();
             }
         }
-        function gologin() {
-            alert('로그인 후 이용할 수 있습니다.');
-            location.href = "{% url 'User:user_login' %}"
-        }
-    })
+    function gologin() {
+        alert('로그인 후 이용할 수 있습니다.');
+        location.href = "{% url 'User:user_login' %}"
+    }
 </script>
 {% endblock %}
 
@@ -101,21 +99,16 @@
                 <img src="{{ order.product.img }}" style='width:20%; heigth=20%' alt="">
                 <span>
                     옵션: {{order.product.type}}, 사이즈: {{order.product.size}}
-                </span>
-                {% if rev_del != '리뷰없음' %}
-                {% for rev in rev_del %}
-                    {% if rev.order.product == order.product %}
-                        <a class='btn btn-outline-primary float-end mb-3 col-2' href="{% url 'Recommendation:product_reviews'  order.product.id %}">리뷰작성</a>
+                </span> 
+                    {% if order.reviewed %}
+                        <button class='btn btn-outline-danger float-end mb-3 col-1' onclick="chkDelete()">삭제</button>
+                        <a class='btn btn-outline-warning float-end mb-3 col-1' href="{% url 'Recommendation:product_reviews' order.product.id %}">수정</a>
                     {% else %}
-                        <button class='btn btn-outline-danger float-end mb-3 col-1'>삭제</button>
-                        <a class='btn btn-outline-warning float-end mb-3 col-1' href="{% url 'Recommendation:product_reviews'  order.product.id %}">수정</a>
+                        <a class='btn btn-outline-primary float-end mb-3 col-2' href="{% url 'Recommendation:product_reviews' order.product.id %}">리뷰작성</a>
                     {% endif %}
-                {% endfor %}
-                {% else %}
-                    <a class='btn btn-outline-primary float-end mb-3 col-2' href="{% url 'Recommendation:product_reviews'  order.product.id %}">리뷰작성</a>
-
-                {% endif %}
-                
+                    
+                    
+                    
                 <p>구매일자 : {{order.product.reg_date}}</p>
                 <form action="{% url 'Recommendation:product_reviews_delete' %}" name="delete" method="POST">
                     {% csrf_token %}
@@ -124,6 +117,7 @@
             </div>
             <hr>
         {% endfor %}
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -145,7 +139,6 @@
 
 
         {% for review in reviews %}
-
             <div class="col">
                 <div class="card shadow-sm">
                     <div class="card-body">
