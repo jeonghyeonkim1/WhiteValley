@@ -1,5 +1,3 @@
-from turtle import Turtle
-from urllib import request
 from django.shortcuts import render, HttpResponse, redirect
 from user.models import User
 from shop.models import Config
@@ -91,7 +89,7 @@ def logout(request):
     return redirect('/whitevalley/')
 
 def register(request):
-# GET방식. 회원 가입 폼
+
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
@@ -102,7 +100,6 @@ def register(request):
 
         return render(request, 'register.html', context)
 
-    # POST방식. 회원 가입 처리
     elif request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -117,7 +114,7 @@ def register(request):
             context['error'] = '사용중인 이메일입니다.'
         else:
             cnt = 0
-            el = email.split("@")[0] # 이메일에서 @ 전까지를 닉네임이므로 값가져와서 split
+            el = email.split("@")[0]
 
             while 1:
                 try:
@@ -256,35 +253,10 @@ def magazine_detail(request, pk):
         'magazine' : magazine,
         'photos' : photos,
     }
-    # print('포토는 ', photos)
+
     return render(request, 'm_detail.html', context)
 
 def magazine_update(request, pk):
-
-    # magazine = Board.objects.get(pk=pk)
-    # photos = B_Photo.objects.get(board=pk)
-
-    # if request.method == "GET":
-    #     magazine = Board.objects.get(pk=pk)
-    #     context = {
-    #         'session': request.session,
-    #         'config': Config.objects.get(id=1),
-    #         'currentpage': 'magazine',
-    #         'magazine' : magazine,
-    #         'photos': photos,
-    #     }
-
-    #     return render(request, 'm_update.html', context)
-    # elif request.method == "POST":
-    #     title = request.POST['title']
-    #     content = request.POST['content']
-
-    #     magazine = Board.objects.get(pk=pk)
-    #     magazine.title = title
-    #     magazine.content = content
-    #     magazine.save()
-    #     return render(request, 'm_updateOk.html', {"pk": magazine.pk})
-
 
     magazine = Board.objects.get(pk=pk)
     photos = B_Photo.objects.get(board=pk)
@@ -347,7 +319,6 @@ def magazine_write(request):
             title = request.POST['title']
             content = request.POST['content']
             uploadedFile = request.FILES["uploadedFile"]
-            # print('업1!!!!', uploadedFile)
             if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
                 return HttpResponse(f'''
                 

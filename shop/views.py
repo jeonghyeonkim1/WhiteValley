@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Count
+from order.models import R_photo
 from user.models import User
-from order.models import Cart, Order
+from order.models import Cart, Order, Review
 from recommendation.models import Product, Tag_list
 from cs.models import Board
 from shop.models import Config, Co_account
 import datetime
 from django.core.paginator import Paginator
+from django.db.models import Max, Min, Avg, Sum
 
 # HOME --------------------------------------------------------------------------------
 def home(req):
@@ -43,14 +45,48 @@ def home(req):
 
     # best cody
     try:
-        context['best_cody'] = Product.objects.get(id=Order.objects.values('product').annotate(
+        best_cody = Product.objects.get(id=Order.objects.values('product').annotate(
         count=Count('product')
         ).order_by('-count')[0]['product'])
+        context['best_cody'] = best_cody
         context['best_cody_count'] = Order.objects.values('product').annotate(count=Count('product'))[0]['count']
+        context['best_cody_tag'] = Tag_list.objects.get(product=best_cody)
     except:
         pass
     
     # best tag
+    try:
+        tag_dict = {}
+        for t1 in Tag_list.objects.all():
+            for t2 in t1.product.all().order_by('-view_cnt'):
+                tag_dict[t1.name] = t2
+        context['all_tags'] = tag_dict.items()
+        context['spring'] = tag_dict['봄']
+    except:
+        pass
+
+    # best review
+    try:
+        context['best_review'] = Review.objects.all().order_by('-view_cnt')[0]
+        context['best_review_img'] = R_photo.objects.get(review=Review.objects.all().order_by('-view_cnt')[0]).photo
+        context['best_review_tag'] = Tag_list.objects.get(product=Review.objects.all().order_by('-view_cnt')[0].order.product)
+    except:
+        pass
+
+    # best seller
+    try:
+        best_seller = Order.objects.values('product').annotate(Sum('amount')).order_by('-amount')
+
+        Dict = {}
+
+        for i in best_seller:
+            Dict[Product.objects.get(id=i['product']).user] = Dict.get(Product.objects.get(id=i['product']).user, 0) + Product.objects.get(id=i['product']).type.price * i['amount__sum']
+
+        sorted_dict = sorted(Dict.items(), key = lambda item: item[1])
+
+        context['best_seller'] = sorted_dict[0]
+    except:
+        pass
 
     cookie_name = 'visited'
     cookie_value = True

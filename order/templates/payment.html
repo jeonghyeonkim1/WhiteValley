@@ -110,17 +110,17 @@
                     <option value="택배함">택배함</option>
                     <option value="기타사항">기타사항</option>
                 </select>
-                <input id="direct1" class="form-control" type="text" placeholder="상세사항" style="display: none;">
+                <input id="direct1" class="form-control" name="location_etc" type="text" placeholder="상세사항" style="display: none;">
             </div>
         </div>
         <div class="row mb-3">
             <label class="text-center col-sm-2 col-form-label">공동현관</label>
             <div class="col-sm-10">
-                <select type="text" id="selbox2" class="form-control" placeholder="필수">
+                <select type="text" id="selbox2" name="r_pw" class="form-control" placeholder="필수">
                     <option>공동현관 출입번호 없음.</option>
                     <option value="기타사항">공동현관 출입번호 있음.&nbsp&nbsp&#9660</option>
                 </select>
-                <input id="direct2" class="form-control" name="r_pw" type="text" placeholder="예시: #1234*" style="display: none;">
+                <input id="direct2" class="form-control" name="r_pw_etc" type="text" placeholder="예시: #1234*" style="display: none;">
             </div>
         </div>
     </div>
@@ -358,17 +358,27 @@
 
     $("#selbox1").change(function(){
         if($(this).val() == '기타사항'){
-            $("#direct1").show();
+            $("#direct1")
+                .attr("required", true)
+                .show();
         } else {
-            $("#direct1").hide();
+            $("#direct1")
+                .attr("required", false)
+                .val("")
+                .hide();
         }
     });
     
     $("#selbox2").change(function(){
         if($(this).val() == '기타사항'){
-            $("#direct2").show();
+            $("#direct2")
+                .attr("required", true)
+                .show();
         } else {
-            $("#direct2").hide();
+            $("#direct2")
+                .attr("required", false)
+                .val("")
+                .hide();
         }
     });
 
