@@ -20,9 +20,16 @@ def reviews(request):
 
     }
    
-    
-    context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user']))
-    
+    try:
+        context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user']))
+    except:
+        return HttpResponse(f'''
+            <script>
+            alert('로그인이 필요합니다')
+            location.href='/whitevalley/user/login/'
+            </script>
+        ''')
+
     List = []
 
     for order in Order.objects.all():
@@ -96,6 +103,7 @@ def product_reviews_update(request, pk):
         'currentpage': 'shopping',
         
     }
+    context['user'] = User.objects.get(id=request.session['user'])
 
     if request.method == 'GET':
         try:
@@ -160,20 +168,23 @@ def product_reviews_delete(request):
 
 # 태그 리뷰리스트
 def tag_reviews(request):
-    all_product_tag = Product.objects.all().order_by('-reg_date')
+    all_product_tag = Product.objects.all()
     page = request.GET.get('page', '1')
     paginator = Paginator(all_product_tag, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     # tag_list = Tag_list.objects.get(product=Product.objects.get(user=User.objects.get(id=request.session['user'])))
     
+
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         'question_list': page_obj,
-        'tag_product' : page_obj
+        'tag_product' : page_obj,
         
     }
+
+    
 
     return render(request, 'tag_reviews.html',context)
 
@@ -185,8 +196,8 @@ def tag_reviews_detail(request,pk):
         'currentpage': 'shopping'
     }
     tag_product = Product.objects.get(pk=pk)
-    
     tag_product.save()
+
     context['tag_product'] = tag_product
 
 

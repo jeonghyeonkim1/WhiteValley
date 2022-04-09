@@ -75,18 +75,18 @@
 				<div class="popReviewV15">
 					<div class="reviewPdtV15">
 						<div class="pdtBox">
-							<div class="pdtPhoto"><a href="{% url 'Order:order' %}" target='_blank'><img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='180px' height='140px' alt=""></a></div>
+							<div class="pdtPhoto"><a href="{% url 'Order:order' %}" target='_blank'><img src="{{tag_product.type.img}}" width='180px' height='140px' alt=""></a></div>
 							<div class="pdtInfo">
 								<div class="pdtBrand tPad15" style="border-bottom: 1px solid  rgb(184, 184, 184);">
-									<input style="border: 0px; height:70px;font-size:20px;background-color:transparent; font-weight: bold ;" type="text" disabled value="***님 커스텀">
+									<input style="border: 0px; height:70px;font-size:20px;background-color:transparent; font-weight: bold ;" type="text" disabled value="{{tag_product.user.nickname}} 님 커스텀">
 															
 								</div>
 								<div class="purchaseOption">
 									<div>
 										<d id="txt1">구매옵션:</d> 
-										<input id="txt1" style="margin-left:10px; border: 0px;background-color:transparent; width: 40px;height:40px;"  value="반팔" disabled >
-										<input id="txt1" style="border: 0px; background-color:transparent; height:40px; width: 40px;"  value="(XL)" disabled >	
-										<input style="border: 0px;background-color:transparent; width:200px;padding-left:90px;"class="finalP" value="19,900원" disabled>
+										<input id="txt1" style="margin-left:10px; border: 0px;background-color:transparent; width: 60px;height:40px;"  value="{{tag_product.type}}" disabled >
+										<input id="txt1" style="border: 0px; background-color:transparent; height:40px; width: 40px;"  value="({{tag_product.size}})" disabled >	
+										<input style="border: 0px;background-color:transparent; width:200px;padding-left:90px;"class="finalP" value="{{tag_product.type.price}}원" disabled>
 									</div>
 								</div>
 							</div>
@@ -102,15 +102,16 @@
 								</div>
 								<hr>
 								<div class="imgArea">
-									<img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='730px' height='700px' id="file1"><br/>	
+									<img src="{{tag_product.img}}" width='730px' height='700px' id="file1"><br/>	
 								</div>
 								<hr>
 								<div>
-									<button class="btn btn-light" style="margin:2px 0 20px 0;" disabled>후기</button>
-									<input style="border: 0px;background-color:transparent; padding-left:10px;width:100px;color:rgb(185, 185, 185); float:right;" type="text" disabled value="2022-04-08">
+									<button class="btn btn-light" style="margin:2px 0 20px 0;" disabled></button>
+									<input style="border: 1px; width:200px; background-color:transparent;color:rgb(185, 185, 185);  float:right;" type="text" disabled value="{{tag_product.reg_date}}">
 									<div class="textArea" >
-										<input style="padding-left:10px; border:0; background-color:transparent;" value="커스텀 이뻐요" disabled>
+										<input style="padding-left:10px; border:0; background-color:transparent;" value="" disabled>
 									</div>
+									<p>- Check List -<br> - 활용도 높은 무지티<br> - 높은 퀄리티가 느껴지는 탄탄한 질감<br> - 코디하기 좋은 컬러감<br>  SIZE (단위 : cm)<br> M : 어깨 54 가슴 64 소매 63 암홀 27 총장 78<br> L : 어깨 56 가슴 66 소매 64 암홀 28 총장 80<br><br>  측정 방법에 따라 오차가 생길 수 있습니다. (1~3cm) <br><br> FABRIC 면65%, 레이온34%, 스판1%<br><br>  DETAIL INFO<br> 신축성 / 좋음 □  보통 ■  없음 □<br> 두께감 / 두툼 □  보통 ■  얇음 □<br> 계절감 / 봄 ■  여름 □  가을 ■  겨울 □
 								</div><hr>
 							</td>
 						</tr>
