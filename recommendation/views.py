@@ -28,7 +28,10 @@ def reviews(request):
     List =[]
 
     for order in Order.objects.all():
-        List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
+        try:
+            List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
+        except:
+            pass
 
     context['reviews'] = List
 
@@ -68,14 +71,14 @@ def product_reviews(request,id):
         Review_photo_Upload(title=uploadedFile.name, photo=uploadedFile).save()
 
         rev = Review(
-            order=Order.objects.get(user=User.objects.get(id=request.session['user']),product=Product.objects.get(id=id)),
+            order=Order.objects.get(user=User.objects.get(id=request.session['user']), product=Product.objects.get(id=id)),
             title=title, 
             contents=contents, 
         )
         
         rev.save()
-        
-        R_photo(rev=rev, photo=f'/static/image/product_review/{uploadedFile.name}').save()
+
+        R_photo(review=rev, photo=f'/static/image/product_review/{uploadedFile.name}').save()
 
         return render(request, 'product_reviews_ok.html', {"pk": rev.pk})
 

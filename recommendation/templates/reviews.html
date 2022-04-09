@@ -117,18 +117,17 @@
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-5">
         {% for review in reviews %}
-            {{ review }}
             <div class="col">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <img src="!" style='width:100%; height:100%' alt="">
-                        <p class="card-text">!</p>
+                        <img src="{{ review.1.photo }}" style='width:100%; height:100%' alt="">
+                        <p class="card-text">{{ review.0.title }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.open('/whitevalley/shopping/tag_reviews_detail/','name','resizable=no width=800 height=1000');return false">View</button>
                                 <button type="button" class="btn btn-sm btn-outline-secondary">장바구니담기</button>
                             </div>
-                            <small class="text-muted">!</small>
+                            <small class="text-muted">{{ review.0.view_cnt }}</small>
                         </div>
                     </div>
                 </div>
