@@ -27,11 +27,12 @@ def reviews(request):
     except:
         pass
         
-    
-    
+    try:
+        context['rev_del'] = Review.objects.all()
+    except:
+        pass
+
     List =[]
-
-
 
     for order in Order.objects.all():
         try:
