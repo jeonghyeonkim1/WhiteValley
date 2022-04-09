@@ -8,12 +8,12 @@ class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True, verbose_name='구매일')
     state = models.CharField(max_length=10, verbose_name='상태')
     reviewed = models.BooleanField(default=False, verbose_name='리뷰작성여부')
-    delivery_req = models.CharField(max_length=100, verbose_name='배송요청사항')
+    delivery_req = models.CharField(max_length=100, null=True, verbose_name='배송요청사항')
     r_name = models.CharField(max_length=80, verbose_name='받는분이름')
     r_adress = models.CharField(max_length=300, verbose_name='받는분주소')
     r_contact = models.CharField(max_length=300, verbose_name='연락처')
     r_location = models.CharField(max_length=80, verbose_name='배송위치')
-    r_pw = models.IntegerField(default=0, verbose_name='공동현관비밀번호')
+    r_pw = models.CharField(max_length=80, null=True, verbose_name='공동현관비밀번호')
 
     class Meta:
         db_table = 't_order'

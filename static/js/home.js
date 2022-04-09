@@ -79,6 +79,7 @@ $(function () {
         if ($(this).text() == "BEST 코디") {
             $("#best_img").hide();
             $("#best_img img").attr("src", $("#best_cody_img").val())
+            $("#best_img a").attr("href", $("#best_cody_url").val())
             $("#best_img").fadeIn();
             $("#best_desc").children().each(function () {
                 $(this).hide();
@@ -87,7 +88,8 @@ $(function () {
 
         } else if ($(this).text() == "BEST 깔맞춤") {
             $("#best_img").hide();
-            $("#best_img img")[0].src = "https://image.hmall.com/static/2/3/41/27/2127413260_0.jpg?RS=600x600&AR=0"
+            $("#best_img img").attr("src", $("#tag_selector").val())
+            $("#best_img a").attr("href", $("#best_tag_url").val())
             $("#best_img").fadeIn();
             $("#best_desc").children().each(function () {
                 $(this).hide();
@@ -96,7 +98,8 @@ $(function () {
             
         } else if ($(this).text() == "BEST 포토후기") {
             $("#best_img").hide();
-            $("#best_img img")[0].src = "https://i.pinimg.com/236x/2d/7b/90/2d7b90bd27f9fd3066da2f601af4a4c6.jpg"
+            $("#best_img img").attr("src", $("#best_photo_img").val())
+            $("#best_img a").attr("href", $("#best_photo_url").val())
             $("#best_img").fadeIn();
             $("#best_desc").children().each(function () {
                 $(this).hide();
@@ -111,6 +114,24 @@ $(function () {
             $("#best_desc4").fadeIn();
         }
     })
+    
+    $("#tag_selector").change(function () {
+        $("#best_img img").attr("src", $(this).val()[0])
+        $(this).children().each(function () {
+            if ($(this)[0].selected) {
+                $("#best_img a").attr("href", `/whitevalley/shopping/finished_detail/${$(this).attr('id')}/`)     
+            }
+        })
+    })
+
+    // img hover
+    $("#best_img").on('mouseenter', function () {
+        $(this).animate({opacity: 0.7}, 100)
+    })
+    $("#best_img").on('mouseleave', function () {
+        $(this).animate({opacity: 1}, 100)
+    })
+
 
     // kakaomap
     function MapWalker(position){
