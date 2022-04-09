@@ -7,6 +7,7 @@ class Order(models.Model):
     amount = models.IntegerField(verbose_name='상품갯수')
     date = models.DateTimeField(auto_now_add=True, verbose_name='구매일')
     state = models.CharField(max_length=10, verbose_name='상태')
+    reviewed = models.BooleanField(default=False, verbose_name='리뷰작성여부')
     delivery_req = models.CharField(max_length=100, verbose_name='배송요청사항')
     r_name = models.CharField(max_length=80, verbose_name='받는분이름')
     r_adress = models.CharField(max_length=300, verbose_name='받는분주소')
@@ -50,7 +51,7 @@ class Review(models.Model):
         verbose_name_plural = '리뷰(들)'
 
     def __str__(self):
-        return f'{self.order} {self.title}'
+        return f'{self.order.product.id} {self.title}'
 
 class R_photo(models.Model):
     review = models.ForeignKey(Review, on_delete=models.CASCADE, verbose_name="주문번호")

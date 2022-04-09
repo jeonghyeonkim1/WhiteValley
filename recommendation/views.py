@@ -1,4 +1,3 @@
-from http.client import HTTPResponse
 from django.shortcuts import render
 from shop.models import Config
 from user.models import User
@@ -14,7 +13,6 @@ import re
 
 # 리뷰 리스트
 def reviews(request):
-    
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
@@ -25,14 +23,7 @@ def reviews(request):
     
     context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user']))
     
-        
-    review = Review.objects.all()
-    if len(review) != 0:
-        context['rev_del'] = review
-    else:
-        context['rev_del'] = '리뷰없음'
-
-    List =[]
+    List = []
 
     for order in Order.objects.all():
         try:
@@ -69,8 +60,6 @@ def product_reviews(request,id):
         contents = request.POST['contents']
         uploadedFile = request.FILES["uploadedFile"]
 
-        
-
         if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
             return HttpResponse(f'''
                 <script>
@@ -79,7 +68,7 @@ def product_reviews(request,id):
                 </script>
             ''')
         Review_photo_Upload(title=uploadedFile.name, photo=uploadedFile).save()
-
+        
         rev = Review(
             order=Order.objects.get(user=User.objects.get(id=request.session['user']), product=Product.objects.get(id=id)),
             title=title, 
@@ -87,12 +76,17 @@ def product_reviews(request,id):
         )
         
         rev.save()
-
+        
         R_photo(review=rev, photo=f'/static/image/product_review/{uploadedFile.name}').save()
 
-        return render(request, 'product_reviews_ok.html', {"pk": rev.pk})
+        order = Order.objects.get(user=User.objects.get(id=request.session['user']), product=Product.objects.get(id=id))
+        order.reviewed = True
+        order.save()
 
-        # return render(request, 'product_reviews_ok.html', {"pk": rev.pk})
+        context['pk'] = rev.pk
+
+        return render(request, 'product_reviews_ok.html', context)
+
 
 # 리뷰 업데이트
 def product_reviews_update(request, pk):
@@ -120,6 +114,7 @@ def product_reviews_update(request, pk):
         review.save()
 
     return render(request, 'product_reviews_update_ok.html',{'pk':review.pk})
+
 
 # 리뷰 디테일
 def reviews_detail(request,pk):
@@ -150,11 +145,10 @@ def product_reviews_delete(request):
 
     if request.method == 'POST':
         try:
-            id = request.POST['id']
-            review = Review.objects.get(order=Order.objects.get(id=id))
+            review = Review.objects.get(order=Order.objects.get(id=request.POST['id']))
             review.delete()
         except:
-            return HTTPResponse('''
+            return HttpResponse('''
                 <script>
                 alert('리뷰작성이 완료되지 않았습니다.')
                 </script>

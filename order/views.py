@@ -290,8 +290,8 @@ def payment(request):
                         r_name = request.POST['receiver'],
                         r_adress = adress,
                         r_contact = request.POST['contact'],
-                        r_location = request.POST['location'],
-                        r_pw = request.POST['r_pw']
+                        r_location = request.POST['location']
+                        # r_pw = request.POST['r_pw']
                     ).save()
 
                     i.delete()
