@@ -129,11 +129,13 @@ def reviews_detail(request,pk):
        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        'review' : review
     }
 
     try:
         review = Review.objects.get(pk=pk)
+        context['review'] = review
+        photo = R_photo.objects.get(review=review)
+        context['photo'] = photo
 
         review.view_cnt += 1
         review.save()
