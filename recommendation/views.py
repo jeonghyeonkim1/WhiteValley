@@ -20,7 +20,7 @@ def reviews(request):
     }
    
     try:
-        context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user']))
+        context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user'])).order_by('-date')
     except:
         return HttpResponse(f'''
             <script>
@@ -31,13 +31,16 @@ def reviews(request):
 
     List = []
 
-    for order in Order.objects.all():
-        try:
-            List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
-        except:
-            pass
+    if request.method == 'GET':
+        for order in Order.objects.all():
+            try:
+                List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
+            except:
+                pass
+        context['reviews'] = List
 
-    context['reviews'] = List
+    
+
 
     page = request.GET.get('page', '1')
     paginator = Paginator(List, 9)  # 페이지당 몇개씩 보여주기
@@ -106,7 +109,7 @@ def product_reviews_update(request, pk):
 
     if request.method == 'GET':
         try:
-            context['review'] =  Review.objects.get(pk=pk)
+            context['review'] =  Review.objects.get(order=pk)
         except Review.DoesNotExist:
             raise Http404('해당 리뷰를 찾을 수 없습니다.')   
         return render(request, 'product_reviews_update.html', context)
@@ -114,13 +117,33 @@ def product_reviews_update(request, pk):
     elif request.method == 'POST':
         title = request.POST['title']
         contents = request.POST['contents']
+        uploadedFile = request.FILES["uploadedFile"]
         
-        review = Review.objects.get(pk=pk)
-        review.title = title
-        review.contents = contents
+        if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
+            return HttpResponse(f'''
+                <script>
+                    alert("파일 이름에 특수문자가 포함되어 있습니다!");
+                    history.back();
+                </script>
+            ''')
+        Review_photo_Upload(title=uploadedFile.name, photo=uploadedFile).save()
+        
+       
+        rev = Review.objects.get(pk=pk)
+        rev.title = title
+        rev.contents = contents
+        rev.save()
+
+
+        
+
+        review = R_photo.objects.get(review=pk)
+        review.photo = f'/static/image/product_review/{uploadedFile.name}'
         review.save()
 
-    return render(request, 'product_reviews_update_ok.html',{'pk':review.pk})
+        context['pk'] = review.pk
+
+    return render(request, 'product_reviews_update_ok.html',context)
 
 
 # 리뷰 디테일
@@ -153,15 +176,15 @@ def product_reviews_delete(request):
     }
 
     if request.method == 'POST':
-        try:
-            review = Review.objects.get(order=Order.objects.get(id=request.POST['id']))
-            review.delete()
-        except:
-            return HttpResponse('''
-                <script>
-                alert('리뷰작성이 완료되지 않았습니다.')
-                </script>
-            ''')
+        review = Review.objects.get(order=Order.objects.get(id=request.POST['id']))
+        review.delete()
+        # try:
+        # except:
+        #     return HttpResponse('''
+        #         <script>
+        #         alert('리뷰작성이 완료되지 않았습니다.')
+        #         </script>
+        #     ''')
     
 
     return render(request, 'product_reviews_delete_ok.html',context)
