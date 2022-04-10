@@ -124,12 +124,12 @@
     {% csrf_token %}
 <div class="review-table">
     <div class="review-table__cell review-intake-head title">
-        <img src="사진"
+        <img src="{{review.order.product.img}}"
             width="200" height="200" title="구매상품" alt="구매상품" />
 
         <span>
-            <div class="review-intake-form">상품내역 : 무지 반팔</div>
-            <div class="review-intake-form">상품옵션 : </div>
+            <div class="review-intake-form">상품내역 : {{review.order.product.type}}</div>
+            <div class="review-intake-form">상품옵션 : {{review.order.product.size}}</div>
         </span>
     </div>
     <hr style='color: black'>

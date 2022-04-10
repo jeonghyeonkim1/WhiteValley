@@ -196,13 +196,15 @@ def product_reviews_delete(request, id):
 
 # 태그 리뷰리스트
 def tag_reviews(request):
-    all_product_tag = Product.objects.all()
-    page = request.GET.get('page', '1')
-    paginator = Paginator(all_product_tag, 9)  # 페이지당 몇개씩 보여주기
-    page_obj = paginator.get_page(page)
-    # tag_list = Tag_list.objects.get(product=Product.objects.get(user=User.objects.get(id=request.session['user'])))
     
-
+    list = []
+    for i in Product.objects.all():
+        list.append((i, i.tag_list_set.all()[0].name))
+    
+    page = request.GET.get('page', '1')
+    paginator = Paginator(list, 9)  # 페이지당 몇개씩 보여주기
+    page_obj = paginator.get_page(page)
+    
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
@@ -218,16 +220,22 @@ def tag_reviews(request):
 
 # 태그 리뷰 디테일
 def tag_reviews_detail(request,pk):
+    
+
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
-        'currentpage': 'shopping'
+        'currentpage': 'shopping',
+        
     }
     tag_product = Product.objects.get(pk=pk)
     tag_product.save()
 
     context['tag_product'] = tag_product
-
+    
+    # 태그를 불러오는 파트
+    tag = Tag_list.objects.filter(product=Product.objects.get(pk=pk))
+    context['tag'] = tag
 
     return render(request, 'tag_reviews_detail.html',context)
 

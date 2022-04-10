@@ -97,8 +97,9 @@
 						<tr>
 							<td class="comment">
 								<div class="ct" style="padding-left:75%">
-									<button class="btn btn-dark">#태그1</button>
-									<button class="btn btn-dark">#태그2</button>
+									{% for tags in tag %}
+									<button class="btn btn-dark">#{{tags.name}}</button>
+									{% endfor %}
 								</div>
 								<hr>
 								<div class="imgArea">
