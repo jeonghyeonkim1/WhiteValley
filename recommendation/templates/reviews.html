@@ -49,6 +49,11 @@
             $(this).parent().submit();
         })
     })
+    function gologin2() {
+        alert('로그인 후 이용할 수 있습니다.');
+        location.href = "{% url 'User:user_login' %}"
+    }
+    
 </script>
 {% endblock %}
 
@@ -143,11 +148,13 @@
                         <p class="card-text">{{ review.0.title }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.open('{% url 'Recommendation:reviews_detail' review.0.id %}','name','resizable=no width=800 height=1000');return false">View</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick= "location.href='{% url 'Recommendation:reviews_detail' review.0.id %}'">View</button>
+                                {% if session.user %}
                                 <form action="" method="POST">
                                     {% csrf_token %}
                                     <button class="btn btn-sm btn-outline-secondary">장바구니담기</button>
                                 </form>
+                                {% endif %}
                             </div>
                             <small class="text-muted">조회수 : {{ review.0.view_cnt }}</small>
                         </div>

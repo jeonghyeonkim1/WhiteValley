@@ -66,7 +66,7 @@ def reviews(request):
 
 
     page = request.GET.get('page', '1')
-    paginator = Paginator(List, 9)  # 페이지당 몇개씩 보여주기
+    paginator = Paginator(List, 8)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     context['question_list'] = page_obj
     return render(request, 'reviews.html',context)
@@ -229,7 +229,7 @@ def tag_reviews(request):
         list.append((i, i.tag_list_set.all()[0].name))
     
     page = request.GET.get('page', '1')
-    paginator = Paginator(list, 9)  # 페이지당 몇개씩 보여주기
+    paginator = Paginator(list, 12)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     
     context = {
@@ -247,8 +247,6 @@ def tag_reviews(request):
 
 # 태그 리뷰 디테일
 def tag_reviews_detail(request,pk):
-    
-
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
@@ -259,6 +257,30 @@ def tag_reviews_detail(request,pk):
     tag_product.save()
 
     context['tag_product'] = tag_product
+
+    if request.method == "POST":
+        try:
+            Cart(
+                user=User.objects.get(id=request.session['user']),
+                product=tag_product,
+                amount=1,
+                checked=True
+            ).save()
+
+            return HttpResponse(f'''
+                <script>
+                    alert("장바구니에 성공적으로 담겼습니다!");
+                    location.href = '/whitevalley/cart/';
+                </script>
+            ''')
+        except:
+            return HttpResponse(f'''
+                <script>
+                    alert("이미 장바구니에 해당 상품이 존재합니다!");
+                    history.back();
+                </script>
+            ''')
+
     
     # 태그를 불러오는 파트
     tag = Tag_list.objects.filter(product=Product.objects.get(pk=pk))

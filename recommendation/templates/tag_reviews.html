@@ -337,8 +337,13 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
               <button type="button" class="btn btn-sm btn-outline-secondary"
-                onclick="window.open('{% url 'Recommendation:tag_reviews_detail' tag.0.id %}','name','resizable=no width=800 height=1000');return false">View</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary">장바구니담기</button>
+                onclick="location.href='{% url 'Recommendation:tag_reviews_detail' tag.0.id %}'">View</button>
+              {% if session.user %}
+              <form action="{% url 'Recommendation:tag_reviews_detail' tag.0.id %}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-outline-secondary">장바구니담기</button>
+              </form>
+              {% endif %}
             </div>
             <small class="text-muted"> {{tag.0.user.nickname}} 님</small>
           </div>
