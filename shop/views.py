@@ -10,6 +10,7 @@ from shop.models import Config, Co_account
 import datetime
 from django.core.paginator import Paginator
 from django.db.models import Max, Min, Avg, Sum
+import itertools
 
 # HOME --------------------------------------------------------------------------------
 def home(req):
@@ -61,10 +62,10 @@ def home(req):
             for t2 in t1.product.all().order_by('-view_cnt'):
                 tag_dict[t1.name] = t2
         context['all_tags'] = tag_dict.items()
-        context['spring'] = tag_dict['봄']
+        context['first_tag'] = tag_dict[next(iter(tag_dict))]
     except:
         pass
-    print(tag_dict)
+
     # best review
     try:
         context['best_review'] = Review.objects.all().order_by('-view_cnt')[0]

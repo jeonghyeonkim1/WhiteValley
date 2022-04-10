@@ -85,7 +85,7 @@
                             <div class="h-100 d-flex justify-content-center align-items-center">
                                 <input type="hidden" value="{{ best_cody.img }}" id="best_cody_img">
                                 <input type="hidden" value="{% url 'Recommendation:finished_detail' best_cody.id %}" id="best_cody_url">
-                                <input type="hidden" value="{% url 'Recommendation:finished_detail' spring.id %}" id="best_tag_url">
+                                <input type="hidden" value="{% url 'Recommendation:finished_detail' first_tag.id %}" id="best_tag_url">
                                 <input type="hidden" value="{{ best_review_img }}" id="best_photo_img">
                                 <input type="hidden" value="{% url 'Recommendation:reviews_detail' best_review.order.product.id %}" id="best_photo_url">
                                 <a href="{% url 'Recommendation:finished_detail' best_cody.id %}"><img class="w-100" src="{{ best_cody.img }}" alt="best코디"></a>
