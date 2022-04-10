@@ -56,10 +56,10 @@
                     <a onclick="" id="addbtn" href={% url 'Order:order' %} class="btn btn-dark" type="button" data-dismiss="modal">추가</a>
                 </div>
                 <form action="{% url 'Order:order' %}" method="GET">
-                    <input type="text" name="title">
-                    <input type="text" name="price">
-                    <input type="text" name="description">
-                    <input type="text" name="img">
+                    <input type="hidden" name="title">
+                    <input type="hidden" name="price">
+                    <input type="hidden" name="description">
+                    <input type="hidden" name="img">
                 </form>
             </div>
         </div>
