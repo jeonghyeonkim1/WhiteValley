@@ -86,9 +86,29 @@
                                 {{ order.r_location }}
                             </td>
                         </tr>
-                        <tr>
+                        <tr style="background-color:rgba(231, 231, 231, 0.63);">
                             <td colspan="9" class="text-center">
-                                {{ order.pk }}
+                                <div>
+                                    <div style="display: flex;">
+                                      <h5>상세 주소</h5>  
+                                    </div>
+                                    <div>{{ order.r_adress }}</div>
+                                </div>                 
+                                <div>
+                                    <div style="display: flex;">
+                                        <h5>상품 이미지</h5>
+                                    </div>
+                                    <div>
+                                        <img src="{{ order.product.img }}" alt="">
+                                    </div>
+                                </div>  
+                                <div>
+                                    <div style="display: flex; padding:10px;">
+                                        <h5 style="padding-top:11px;">수량/가격:</h5>
+                                        <button class="btn" disabled>{{ order.amount }}</button>
+                                        <button class="btn" disabled>/{{ order.product.type.price }}</button>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}
@@ -203,6 +223,5 @@
             })
         }
     })
-    
 </script>
 {% endblock %}
