@@ -9,9 +9,17 @@
         #link_icon div:hover {
             transform: scale(106%);
         }
-        table, tr, td {
-            border:1px solid gray;
+        table, tr, td, thead {
+            {% comment %} border:1px solid rgb(150, 150, 150); {% endcomment %}
+            padding:15px;
         }
+        thead{
+            text-align:center;
+        }
+        .modal-content.modal-f {
+            width:1100px;
+        }
+        
     </style>
     <script>
         $(function() {
@@ -28,22 +36,37 @@
 
 {% block contents %}
 <div class="modal fade" id="my_list" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="True">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content modal-f">
             <div class="modal-header">
-                <h3>나의 주문 목록</h3>
+                <h3>주문 목록</h3>
             </div>
-            <div class="modal-body" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;">
+            <div class="modal-body" style="  max-height:85%;  margin-top: 50px; margin-bottom:50px;">
+                <div style="margin-top:-20px;">{{ user }} 님의 주문 목록</div>
                 <div>
-                    <table>
-                        <th>날짜</th>
-                    {% for order in orders %}
+                    <table class="table table-hover">
+                        <thead>
+                            <th>No.</th>
+                            <th>제작인:제품</th>
+                            <th>수량</th>
+                            <th>주문일</th>
+                            <th>상태</th>
+                            <th>받는분</th>
+                            <th>배송주소</th>
+                            <th>요청사항</th>
+                            <th>배송위치</th>
+                        </thead>
+                        <tbody>
+                        {% for order in orders %}
                             <tr>
+                                <td>
+                                    {{ order.pk }}
+                                </td>
                                 <td>
                                     {{ order.product }}
                                 </td>
                                 <td>
-                                    {{ order.amout}}
+                                    {{ order.amount }}
                                 </td>
                                 <td>
                                     {{ order.date }}
@@ -51,11 +74,28 @@
                                 <td>
                                     {{ order.state }}
                                 </td>
+                                <td>
+                                    {{ order.r_name }}
+                                </td>
+                                <td>
+                                    {{ order.r_adress }}
+                                </td>
+                                <td>
+                                    {{ order.delivery_req }}
+                                </td>
+                                <td>
+                                    {{ order.r_location }}
+                                </td>
                             </tr>
-                    {% endfor %}
+                        {% endfor %}
+                        </tbody>
                     </table>
                 </div>
             </div>
+            <div >
+                <button class="btn" disabled style="padding-bottom:10px;">총 구매 수량:{{ cnt }}</button><br>
+                <button class="btn" disabled >총 구매 금액:{{ total }}</button>
+            </div> 
             <div class="modal-footer">
                 <a href="" class="btn">확인</a>
             </div>
@@ -153,5 +193,9 @@
         e.preventDefault();
         $("#my_list").modal("show");
     });
+    for(i=0; i<total1.length+1; i++){
+        $("[name='total2']").val($("[name='total1']").val());
+    }
+    
 </script>
 {% endblock %}

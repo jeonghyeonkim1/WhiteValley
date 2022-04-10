@@ -401,10 +401,18 @@ def mypage(req):
         'currentpage': 'mypage'
     }
 
-    
-
     context['user'] = User.objects.get(id=req.session['user'])
-    context['orders'] = Order.objects.filter(user = req.session['user'])
+    orders = Order.objects.filter(user = req.session['user'])
+    context['orders'] = orders
+
+    cnt = 0;
+    total = 0;
+    for i in orders:
+        cnt += i.amount
+        total += i.product.type.price
+    
+    context['cnt'] = cnt
+    context['total'] = total
 
     return render(req, 'mypage.html', context)
 
@@ -466,8 +474,8 @@ def info_modify_detail(req):
         ''')
 
     if req.method == "POST":
-        try:
-            if (req.POST['pw1'] and req.POST['pw2']) != "":
+        # try:
+            if (req.POST['pw1'] or req.POST['pw2']) != "":
                 if check_password(req.POST['pw2'], make_password(req.POST['pw1'])) == False:
                     return HttpResponse(f'''
                     <script>
@@ -487,24 +495,28 @@ def info_modify_detail(req):
                         location.href="/whitevalley/user/mypage/"
                     </script>
                     ''')
-            else:
+            elif (req.POST['pw1'] or req.POST['pw2']) == "":
+                user.adress = req.POST['adress7']
+                user.nickname = req.POST['nick']
+                user.contact = req.POST['cont']
+                user.save()
                 return HttpResponse(f'''
                     <script>
-                        alert("비밀번호를 모두 기재해주세요!");
-                        history.back();
+                        alert("변경되었습니다.");
+                        location.href="/whitevalley/user/mypage/"
                     </script>
                     ''')
-        except: 
-            user.adress = req.POST['adress7']
-            user.nickname = req.POST['nick']
-            user.contact = req.POST['cont']
-            user.save()
-            return HttpResponse(f'''
-            <script>
-                alert("변경되었습니다.");
-                location.href="/whitevalley/user/mypage/"
-            </script>
-        ''')
+        # except: 
+        #     user.adress = req.POST['adress7']
+        #     user.nickname = req.POST['nick']
+        #     user.contact = req.POST['cont']
+        #     user.save()
+        #     return HttpResponse(f'''
+        #     <script>
+        #         alert("변경되었습니다.");
+        #         location.href="/whitevalley/user/mypage/"
+        #     </script>
+        # ''')
 
 
     return render(req, 'mypage_modify.html', context)
