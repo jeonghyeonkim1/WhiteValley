@@ -118,7 +118,9 @@ $(function () {
     })
     
     $("#tag_selector").change(function () {
-        $("#best_img img").attr("src", $(this).val()[0])
+        $("#best_img img").hide();
+        $("#best_img img").attr("src", $(this).val()[0]);
+        $("#best_img img").fadeIn();
         $(this).children().each(function () {
             if ($(this)[0].selected) {
                 $("#best_img a").attr("href", `/whitevalley/shopping/finished_detail/${$(this).attr('id')}/`)     

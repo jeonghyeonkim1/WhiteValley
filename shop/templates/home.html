@@ -3,7 +3,7 @@
 {% block attachment %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
-    <script src="{% static 'js/home.js' %}?ver=1"></script>
+    <script src="{% static 'js/home.js' %}"></script>
 {% endblock %}
 
 {% block contents %}
@@ -101,18 +101,22 @@
                         </div>
                         <div class="col-sm d-flex flex-column justify-content-center" id="best_desc">
                             <div id="best_desc1">
-                                <h2>{{ best_cody.user }}님의 작품</h2>
-                                <hr>
-                                <ul class="list-unstyled">
-                                    <li><strong><옵션></strong></li>
-                                    <li>종류: {{ best_cody.type }}</li>
-                                    <li>사이즈: {{ best_cody.size }}</li>
-                                    <li>태그: {{ best_cody_tag.name }}</li>
-                                </ul>
-                                <hr>
-                                <h5>조회수: {{ best_cody.view_cnt }}</h5>
-                                <h5>판매횟수: {{ best_cody_count }} </h5>
-                                <h5>디자인날짜: {{ best_cody.reg_date | date:"Y년 m월 d일" }}</h5>
+                                {% if best_cody != "완성품없음" %}
+                                    <h2>{{ best_cody.user }}님의 작품</h2>
+                                    <hr>
+                                    <ul class="list-unstyled">
+                                        <li><strong><옵션></strong></li>
+                                        <li>종류: {{ best_cody.type }}</li>
+                                        <li>사이즈: {{ best_cody.size }}</li>
+                                        <li>태그: {{ best_cody_tag.name }}</li>
+                                    </ul>
+                                    <hr>
+                                    <h5>조회수: {{ best_cody.view_cnt }}</h5>
+                                    <h5>판매횟수: {{ best_cody_count }} </h5>
+                                    <h5>디자인날짜: {{ best_cody.reg_date | date:"Y년 m월 d일" }}</h5>
+                                {% else %}
+                                    <h1>완성품 없음</h1>
+                                {% endif %}
                             </div>
                             <div id="best_desc2" class="h-100">
                                 <select class="form-select h-100 text-center bg-dark text-light" id="tag_selector" size="5" multiple aria-label="multiple select example">
@@ -141,10 +145,14 @@
                             <div id="best_desc4">
                                 <div class="col-sm d-flex flex-column justify-content-center align-items-center h-100">
                                     <div class="text-center">
-                                        <h1>{{ best_seller.0 }}님</h1>
-                                        <h4>상품 총 매출(누적)</h4>
-                                        <hr>
-                                        <h1><strong>{{ best_seller.1 }}￦</strong></h1>
+                                        {% if best_seller != "셀러없음" %}
+                                            <h1>{{ best_seller.0 }}님</h1>
+                                            <h4>상품 총 매출(누적)</h4>
+                                            <hr>
+                                            <h1><strong>{{ best_seller.1 }}￦</strong></h1>
+                                        {% else %}
+                                            <h1>User or Order or Product Data is Empty</h1>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
