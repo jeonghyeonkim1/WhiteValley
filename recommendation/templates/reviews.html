@@ -44,6 +44,11 @@
         alert('로그인 후 이용할 수 있습니다.');
         location.href = "{% url 'User:user_login' %}"
     }
+    $(function() {
+        $("[name='order_selector']").change(function() {
+            $(this).parent().submit();
+        })
+    })
 </script>
 {% endblock %}
 
@@ -62,10 +67,13 @@
 </div>
 <p></p>
 <div class="container">
-    <select class="form-control">
-        <option>최신순 ></option>
-        <option>인기순 ></option>
-    </select>
+    <form action="." method="POST">
+        {% csrf_token %}
+        <select class="form-control" name="order_selector">
+            <option value="new_list" {% if order_method == "new_list" %}selected{% endif %}>최신순 ></option>
+            <option value="good_list" {% if order_method == "good_list" %}selected{% endif %}>인기순 ></option>
+        </select>
+    </form>
 
 
 

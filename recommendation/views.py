@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render
 from shop.models import Config
 from user.models import User
@@ -31,15 +32,33 @@ def reviews(request):
 
     List = []
 
-    for order in Order.objects.all():
-        try:
-            List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
-        except:
-            pass
+    if request.method == "GET":
+        for order in Order.objects.all():
+            try:
+                List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
+            except:
+                pass
+
+    elif request.method == "POST":
+        if request.POST['order_selector'] == "new_list":
+            context['order_method'] = 'new_list'
+            for order in Order.objects.all():
+                try:
+                    List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
+                except:
+                    pass
+        else:
+            context['order_method'] = 'good_list'
+            for order in Order.objects.all():
+                try:
+                    List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
+                except:
+                    pass
+            
+            List = sorted(List, key=lambda r: r[0].view_cnt, reverse=True)
 
     context['reviews'] = List
 
-    
 
 
     page = request.GET.get('page', '1')
