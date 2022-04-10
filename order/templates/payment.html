@@ -173,7 +173,7 @@
                 <input type="number" value="{{ user.point }}" class="form-control" id="own_point" disabled>
             </div>
             <div class="col-3">
-                <input type="number" class="form-control" id="use_point" placeholder="사용할 포인트를 기입해주세요." {% if total_price < config.min_amount %}disabled{% endif %}>
+                <input type="number" class="form-control" name="use_point" id="use_point" placeholder="사용할 포인트를 기입해주세요." {% if total_price < config.min_amount %}disabled{% endif %}>
             </div>
         </div>
     </div>
@@ -415,7 +415,7 @@
                 $("#own_point").val(parseInt(original_point))
                 $("#total_warning div:last").hide()
                 $("#total_warning div:first").show()
-            } else if (parseInt($("#use_point").val()) > parseInt($("#own_point").val())) {
+            } else if (parseInt($("#use_point").val()) > original_point) {
                 alert(`보유하신 포인트가 부족합니다!`);
                 $("#total_price").val(parseInt(original_total_price))
                 $("#use_point").val("")

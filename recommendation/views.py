@@ -38,6 +38,8 @@ def reviews(request):
                 List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
             except:
                 pass
+            
+        List = sorted(List, key=lambda r: r[0].reg_date, reverse=True)
 
     elif request.method == "POST":
         if request.POST['order_selector'] == "new_list":
@@ -47,6 +49,8 @@ def reviews(request):
                     List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
                 except:
                     pass
+            List = sorted(List, key=lambda r: r[0].reg_date, reverse=True)
+            
         else:
             context['order_method'] = 'good_list'
             for order in Order.objects.all():
@@ -110,6 +114,10 @@ def product_reviews(request,id):
         order = Order.objects.get(user=User.objects.get(id=request.session['user']), product=Product.objects.get(id=id))
         order.reviewed = True
         order.save()
+
+        user = User.objects.get(id=request.session['user'])
+        user.point = user.point + Config.objects.get(id=1).review_point
+        user.save()
 
         context['pk'] = rev.pk
 
