@@ -64,7 +64,7 @@ def home(req):
         context['spring'] = tag_dict['봄']
     except:
         pass
-
+    print(tag_dict)
     # best review
     try:
         context['best_review'] = Review.objects.all().order_by('-view_cnt')[0]

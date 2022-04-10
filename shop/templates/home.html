@@ -109,7 +109,7 @@
                             <div id="best_desc2" class="h-100">
                                 <select class="form-select h-100 text-center bg-dark text-light" id="tag_selector" size="5" multiple aria-label="multiple select example">
                                     {% for name, product in all_tags %}
-                                        <option class="p-3" value="{{ product.img }}" id="{{ product.id }}" {% if name == '봄' %}selected{% endif %}>{{ name }}</option>
+                                        <option class="p-3" value="{{ product.img }}" id="{{ product.id }}">{{ name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>

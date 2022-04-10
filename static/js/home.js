@@ -68,6 +68,8 @@ $(function () {
     })
 
     // BEST
+    $("#tag_selector").children()[0].selected = true
+
     $("#best_btn button").click(function () {
         $("#best_btn button").css("border", "3px solid #fff").css("backgroundColor", "#262626").css("color", "#fff");
         $("#best_btn button").each(function () {
