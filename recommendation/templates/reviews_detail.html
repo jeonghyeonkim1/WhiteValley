@@ -73,15 +73,15 @@
 							<div class="pdtPhoto rounded"><a href="{% url 'Order:order' %}" target='_blank'><img src="{{ review.order.product.img }}" width='180px' height='180px' alt=""></a></div>
 							<div class="pdtInfo">
 								<div class="pdtBrand tPad15" style="border-bottom: 1px solid  rgb(184, 184, 184);">
-									<input class="text-center" style="border: 0px; height:70px;font-size:20px;background-color:transparent; font-weight: bold ;" type="text" disabled value="{{  }} 님 커스텀">
+									<input class="text-center" style="border: 0px; height:70px;font-size:20px;background-color:transparent; font-weight: bold ;" type="text" disabled value="{{review.order.user.nickname}} 님 커스텀">
 															
 								</div>
 								<div class="purchaseOption">
 									<div>
 										<d id="txt1">구매옵션:</d> 
-										<input id="txt1" style="margin-left:10px; border: 0px;background-color:transparent; width: 60px;height:40px;"  value="{{product.type}}" disabled >
-										<input id="txt1" style="border: 0px; background-color:transparent; height:40px; width: 40px;"  value="({{product.size}})" disabled >	
-										<input style="border: 0px;background-color:transparent; width:200px;padding-left:90px;"class="finalP" value="{{product.type.price}}원" disabled>
+										<input id="txt1" style="margin-left:10px; border: 0px;background-color:transparent; width: 60px;height:40px;"  value="{{review.order.product.type}}" disabled >
+										<input id="txt1" style="border: 0px; background-color:transparent; height:40px; width: 40px;"  value="({{review.order.product.size}})" disabled >	
+										<input style="border: 0px;background-color:transparent; width:200px;padding-left:90px;"class="finalP" value="{{review.order.product.type.price}}원" disabled>
 									</div>
 								</div>
 							</div>
@@ -90,6 +90,7 @@
 					
 					<div class="review pdtReviewV15 tMar10">
 						<tr>
+							
 							<td class="comment">
 								<div class="imgArea d-flex justify-content-center align-items-center p-5">
 									<img src="{{ photo.photo }}" id="file1"><br/>	
@@ -102,6 +103,8 @@
 									<div class="textArea" >
 										<input style="padding-left:10px; border:0; background-color:transparent;" value="" disabled>
 									</div>
+									<p>{{review.contents}}</p>
+									<hr>
 									<p>- Check List -<br> - 활용도 높은 무지티<br> - 높은 퀄리티가 느껴지는 탄탄한 질감<br> - 코디하기 좋은 컬러감<br>  SIZE (단위 : cm)<br> M : 어깨 54 가슴 64 소매 63 암홀 27 총장 78<br> L : 어깨 56 가슴 66 소매 64 암홀 28 총장 80<br><br>  측정 방법에 따라 오차가 생길 수 있습니다. (1~3cm) <br><br> FABRIC 면65%, 레이온34%, 스판1%<br><br>  DETAIL INFO<br> 신축성 / 좋음 □  보통 ■  없음 □<br> 두께감 / 두툼 □  보통 ■  얇음 □<br> 계절감 / 봄 ■  여름 □  가을 ■  겨울 □
 								</div><hr>
 							</td>
