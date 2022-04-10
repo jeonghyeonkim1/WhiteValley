@@ -39,37 +39,36 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content modal-f">
             <div class="modal-header">
-                <h3>주문 목록</h3>
+                <h3>{{ user }} 님 주문 목록</h3>
             </div>
             <div class="modal-body" style="  max-height:85%;  margin-top: 50px; margin-bottom:50px;">
-                <div style="margin-top:-20px;">{{ user }} 님의 주문 목록</div>
                 <div>
                     <table class="table table-hover">
                         <thead>
                             <th>No.</th>
-                            <th>제작인:제품</th>
+                            <th>디자이너</th>
                             <th>수량</th>
                             <th>주문일</th>
                             <th>상태</th>
-                            <th>받는분</th>
+                            <th>수령인</th>
                             <th>배송주소</th>
                             <th>요청사항</th>
                             <th>배송위치</th>
                         </thead>
                         <tbody>
                         {% for order in orders %}
-                            <tr>
+                            <tr style="cursor: pointer;">
                                 <td>
                                     {{ order.pk }}
                                 </td>
                                 <td>
-                                    {{ order.product }}
+                                    {{ order.product.user.nickname }}
                                 </td>
                                 <td>
                                     {{ order.amount }}
                                 </td>
                                 <td>
-                                    {{ order.date }}
+                                    {{ order.date | date:"Y-m-d" }}
                                 </td>
                                 <td>
                                     {{ order.state }}
@@ -78,7 +77,7 @@
                                     {{ order.r_name }}
                                 </td>
                                 <td>
-                                    {{ order.r_adress }}
+                                    {{ order.r_adress | truncatechars:"25" }}
                                 </td>
                                 <td>
                                     {{ order.delivery_req }}
