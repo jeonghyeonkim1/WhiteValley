@@ -84,20 +84,22 @@
                         <div class="col-sm" id="best_img">
                             <div class="h-100 d-flex justify-content-center align-items-center">
                                 <input type="hidden" value="{{ best_cody.img }}" id="best_cody_img">
-                                <input type="hidden" value="" id="best_tag_img">
-                                <input type="hidden" value="" id="best_photo_img">
-                                <a href="#"><img class="w-100" src="{{ best_cody.img }}" alt="best코디"></a>
+                                <input type="hidden" value="{% url 'Recommendation:finished_detail' best_cody.id %}" id="best_cody_url">
+                                <input type="hidden" value="{% url 'Recommendation:finished_detail' spring.id %}" id="best_tag_url">
+                                <input type="hidden" value="{{ best_review_img }}" id="best_photo_img">
+                                <input type="hidden" value="{% url 'Recommendation:reviews_detail' best_review.order.product.id %}" id="best_photo_url">
+                                <a href="{% url 'Recommendation:finished_detail' best_cody.id %}"><img class="w-100" src="{{ best_cody.img }}" alt="best코디"></a>
                             </div>
                         </div>
                         <div class="col-sm d-flex flex-column justify-content-center" id="best_desc">
                             <div id="best_desc1">
-                                <h4>{{ best_cody.user }}님의 작품</h4>
+                                <h2>{{ best_cody.user }}님의 작품</h2>
                                 <hr>
                                 <ul class="list-unstyled">
                                     <li><strong><옵션></strong></li>
                                     <li>종류: {{ best_cody.type }}</li>
                                     <li>사이즈: {{ best_cody.size }}</li>
-                                    <li>태그: </li>
+                                    <li>태그: {{ best_cody_tag.name }}</li>
                                 </ul>
                                 <hr>
                                 <h5>조회수: {{ best_cody.view_cnt }}</h5>
@@ -105,41 +107,38 @@
                                 <h5>디자인날짜: {{ best_cody.reg_date | date:"Y년 m월 d일" }}</h5>
                             </div>
                             <div id="best_desc2" class="h-100">
-                                <select class="form-select h-100 text-center bg-dark text-light" size="5" multiple aria-label="multiple select example">
-                                    <option class="p-3">봄</option>
-                                    <option class="p-3">여름</option>
-                                    <option class="p-3">가을</option>
-                                    <option class="p-3">겨울</option>
-                                    <option class="p-3">청바지</option>
-                                    <option class="p-3">반바지</option>
-                                    <option class="p-3">스키니</option>
-                                    <option class="p-3">정장</option>
+                                <select class="form-select h-100 text-center bg-dark text-light" id="tag_selector" size="5" multiple aria-label="multiple select example">
+                                    {% for name, product in all_tags %}
+                                        <option class="p-3" value="{{ product.img }}" id="{{ product.id }}" {% if name == '봄' %}selected{% endif %}>{{ name }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div id="best_desc3">
-                                <h4>(USER)님의 작품</h4>
-                                <h5>태그:</h5>
-                                <ul class="list-unstyled">
-                                    <li><strong>옵션</strong></li>
-                                    <li>옵션1</li>
-                                    <li>옵션2</li>
-                                </ul>
-                                <h5>조회수:</h5>
-                                <h5>판매횟수:</h5>
-                                <button class="btn btn-outline-light w-100 mt-5">구매하러 가기</button>
+                                <h4>{{ best_review.order.user.nickname }}님의 후기</h4>
+                                <hr>
+                                <h5>{{ best_review.title }}</h5>
+                                <h5>{{ best_review.contents | truncatechars:"10" }}</h5>
+                                <hr>
+                                <h5>디자이너: {{ best_review.order.product.user.nickname }}</h5>
+                                <h5>태그: {{ best_review_tag.name }}</h5>
+                                <h5>종류: {{ best_review.order.product.type.title }}</h5>
+                                <h5>사이즈: {{ best_review.order.product.size }}</h5>
+                                <h5>조회수: {{ best_review.view_cnt }}</h5>
+                                <h5>작성일: {{ best_review.reg_date | date:"Y-m-d H:i:s" }}</h5>
+                                <a class="btn btn-outline-light w-100 mt-5" href="{% url 'Recommendation:finished_detail' best_review.order.product.id %}">구매하러 가기</a>
                             </div>
                             <div id="best_desc4">
                                 <div class="col-sm d-flex flex-column justify-content-center align-items-center h-100">
                                     <div class="text-center">
-                                        <h2>(USER)님의 상품(들)</h2>
-                                        <h4>누적판매금액</h4>
+                                        <h1>{{ best_seller.0 }}님</h1>
+                                        <h4>상품 총 매출(누적)</h4>
                                         <hr>
-                                        <h1><strong>200000000￦</strong></h1>
+                                        <h1><strong>{{ best_seller.1 }}￦</strong></h1>
                                     </div>
                                 </div>
-                                <h6 class="text-danger">* 해당 내용은 실시간으로 갱신됩니다.</h6>
                             </div>
                         </div>
+                        <h6 class="text-danger mt-2">* 해당 내용은 실시간으로 갱신됩니다.</h6>
                     </div>
                 </div>
             </div>

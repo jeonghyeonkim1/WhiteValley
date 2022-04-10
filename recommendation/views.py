@@ -1,11 +1,10 @@
-from http.client import HTTPResponse
 from django.shortcuts import render
 from shop.models import Config
 from user.models import User
 from cs.models import Board
 from order.models import Review
 from order.models import R_photo,Order,Review_photo_Upload
-from recommendation.models import Product, P_photo
+from recommendation.models import Product, P_photo,Tag_list
 from . import models
 from django.core.paginator import Paginator
 from math import ceil
@@ -14,7 +13,6 @@ import re
 
 # 리뷰 리스트
 def reviews(request):
-    
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
@@ -22,15 +20,17 @@ def reviews(request):
 
     }
    
-    
-    context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user']))
-    
-        
-    
-    context['rev_del'] = Review.objects.all()
-    
+    try:
+        context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user']))
+    except:
+        return HttpResponse(f'''
+            <script>
+            alert('로그인이 필요합니다')
+            location.href='/whitevalley/user/login/'
+            </script>
+        ''')
 
-    List =[]
+    List = []
 
     for order in Order.objects.all():
         try:
@@ -67,8 +67,6 @@ def product_reviews(request,id):
         contents = request.POST['contents']
         uploadedFile = request.FILES["uploadedFile"]
 
-        
-
         if len(re.findall(r'\W | [^.]', uploadedFile.name)) > 0:
             return HttpResponse(f'''
                 <script>
@@ -77,7 +75,7 @@ def product_reviews(request,id):
                 </script>
             ''')
         Review_photo_Upload(title=uploadedFile.name, photo=uploadedFile).save()
-
+        
         rev = Review(
             order=Order.objects.get(user=User.objects.get(id=request.session['user']), product=Product.objects.get(id=id)),
             title=title, 
@@ -85,12 +83,17 @@ def product_reviews(request,id):
         )
         
         rev.save()
-
+        
         R_photo(review=rev, photo=f'/static/image/product_review/{uploadedFile.name}').save()
 
-        return render(request, 'product_reviews_ok.html', {"pk": rev.pk})
+        order = Order.objects.get(user=User.objects.get(id=request.session['user']), product=Product.objects.get(id=id))
+        order.reviewed = True
+        order.save()
 
-        # return render(request, 'product_reviews_ok.html', {"pk": rev.pk})
+        context['pk'] = rev.pk
+
+        return render(request, 'product_reviews_ok.html', context)
+
 
 # 리뷰 업데이트
 def product_reviews_update(request, pk):
@@ -100,6 +103,7 @@ def product_reviews_update(request, pk):
         'currentpage': 'shopping',
         
     }
+    context['user'] = User.objects.get(id=request.session['user'])
 
     if request.method == 'GET':
         try:
@@ -118,6 +122,7 @@ def product_reviews_update(request, pk):
         review.save()
 
     return render(request, 'product_reviews_update_ok.html',{'pk':review.pk})
+
 
 # 리뷰 디테일
 def reviews_detail(request,pk):
@@ -148,11 +153,10 @@ def product_reviews_delete(request):
 
     if request.method == 'POST':
         try:
-            id = request.POST['id']
-            review = Review.objects.get(order=Order.objects.get(id=id))
+            review = Review.objects.get(order=Order.objects.get(id=request.POST['id']))
             review.delete()
         except:
-            return HTTPResponse('''
+            return HttpResponse('''
                 <script>
                 alert('리뷰작성이 완료되지 않았습니다.')
                 </script>
@@ -164,29 +168,38 @@ def product_reviews_delete(request):
 
 # 태그 리뷰리스트
 def tag_reviews(request):
-    all_board = Board.objects.all()
+    all_product_tag = Product.objects.all()
     page = request.GET.get('page', '1')
-    paginator = Paginator(all_board, 9)  # 페이지당 몇개씩 보여주기
+    paginator = Paginator(all_product_tag, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
+    # tag_list = Tag_list.objects.get(product=Product.objects.get(user=User.objects.get(id=request.session['user'])))
     
+
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         'question_list': page_obj,
-        'boards' : page_obj
+        'tag_product' : page_obj,
         
     }
+
+    
 
     return render(request, 'tag_reviews.html',context)
 
 # 태그 리뷰 디테일
-def tag_reviews_detail(request):
+def tag_reviews_detail(request,pk):
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping'
     }
+    tag_product = Product.objects.get(pk=pk)
+    tag_product.save()
+
+    context['tag_product'] = tag_product
+
 
     return render(request, 'tag_reviews_detail.html',context)
 
@@ -202,7 +215,7 @@ def finished(request):
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         'question_list': page_obj,
-        'products' : page_obj
+        'products' : page_obj,
         
     }
         
@@ -210,16 +223,19 @@ def finished(request):
 
 
 # 완성품 디테일
-def finished_detail(request):
+def finished_detail(request,pk):
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        'order' : order
+
     }
-    order = Order.objects.get(id=id)
-    order.view_cnt += 1
-    order.save()
+    
+    product = Product.objects.get(pk=pk)
+    product.view_cnt += 1
+    product.save()
+    
+    context['product'] = product
 
 
     return render(request, 'finished_detail.html',context)
