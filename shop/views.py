@@ -53,7 +53,7 @@ def home(req):
         context['best_cody_count'] = Order.objects.values('product').annotate(count=Count('product'))[0]['count']
         context['best_cody_tag'] = Tag_list.objects.get(product=best_cody)
     except:
-        pass
+        context['best_cody'] = "완성품없음"
     
     # best tag
     try:
@@ -64,7 +64,7 @@ def home(req):
         context['all_tags'] = tag_dict.items()
         context['first_tag'] = tag_dict[next(iter(tag_dict))]
     except:
-        pass
+        context['first_tag'] = "태그없음"
 
     # best review
     try:
@@ -72,7 +72,7 @@ def home(req):
         context['best_review_img'] = R_photo.objects.get(review=Review.objects.all().order_by('-view_cnt')[0]).photo
         context['best_review_tag'] = Tag_list.objects.get(product=Review.objects.all().order_by('-view_cnt')[0].order.product)
     except:
-        pass
+        context['best_review'] = "리뷰없음"
 
     # best seller
     try:
@@ -87,7 +87,7 @@ def home(req):
 
         context['best_seller'] = sorted_dict[0]
     except:
-        pass
+        context['best_seller'] = "셀러없음"
 
     cookie_name = 'visited'
     cookie_value = True

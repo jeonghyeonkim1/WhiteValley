@@ -31,13 +31,13 @@ def reviews(request):
 
     List = []
 
-    if request.method == 'GET':
-        for order in Order.objects.all():
-            try:
-                List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
-            except:
-                pass
-        context['reviews'] = List
+    for order in Order.objects.all():
+        try:
+            List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
+        except:
+            pass
+
+    context['reviews'] = List
 
     
 
@@ -168,7 +168,7 @@ def reviews_detail(request,pk):
     return render(request, 'reviews_detail.html',context)
 
 # 리뷰 삭제
-def product_reviews_delete(request):
+def product_reviews_delete(request, id):
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
@@ -176,7 +176,11 @@ def product_reviews_delete(request):
     }
 
     if request.method == 'POST':
-        review = Review.objects.get(order=Order.objects.get(id=request.POST['id']))
+        order = Order.objects.get(id=id)
+        order.reviewed = False
+        order.save()
+        
+        review = Review.objects.get(order=order)
         review.delete()
         # try:
         # except:

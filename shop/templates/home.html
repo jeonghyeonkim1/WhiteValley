@@ -3,7 +3,7 @@
 {% block attachment %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
-    <script src="{% static 'js/home.js' %}?ver=1"></script>
+    <script src="{% static 'js/home.js' %}"></script>
 {% endblock %}
 
 {% block contents %}
@@ -84,27 +84,39 @@
                         <div class="col-sm" id="best_img">
                             <div class="h-100 d-flex justify-content-center align-items-center">
                                 <input type="hidden" value="{{ best_cody.img }}" id="best_cody_img">
-                                <input type="hidden" value="{% url 'Recommendation:finished_detail' best_cody.id %}" id="best_cody_url">
-                                <input type="hidden" value="{% url 'Recommendation:finished_detail' spring.id %}" id="best_tag_url">
+                                {% if best_cody != "완성품없음" %}
+                                    <input type="hidden" value="{% url 'Recommendation:finished_detail' best_cody.id %}" id="best_cody_url">
+                                {% endif %}
+                                {% if first_tag != "태그없음" %}
+                                    <input type="hidden" value="{% url 'Recommendation:finished_detail' first_tag.id %}" id="best_tag_url">
+                                {% endif %}
                                 <input type="hidden" value="{{ best_review_img }}" id="best_photo_img">
-                                <input type="hidden" value="{% url 'Recommendation:reviews_detail' best_review.order.product.id %}" id="best_photo_url">
-                                <a href="{% url 'Recommendation:finished_detail' best_cody.id %}"><img class="w-100" src="{{ best_cody.img }}" alt="best코디"></a>
+                                {% if best_review != "리뷰없음" %}
+                                    <input type="hidden" value="{% url 'Recommendation:reviews_detail' best_review.order.product.id %}" id="best_photo_url">
+                                {% endif %}
+                                {% if best_cody != "완성품없음" %}
+                                    <a href="{% url 'Recommendation:finished_detail' best_cody.id %}"><img class="w-100" src="{{ best_cody.img }}" alt="best코디"></a>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-sm d-flex flex-column justify-content-center" id="best_desc">
                             <div id="best_desc1">
-                                <h2>{{ best_cody.user }}님의 작품</h2>
-                                <hr>
-                                <ul class="list-unstyled">
-                                    <li><strong><옵션></strong></li>
-                                    <li>종류: {{ best_cody.type }}</li>
-                                    <li>사이즈: {{ best_cody.size }}</li>
-                                    <li>태그: {{ best_cody_tag.name }}</li>
-                                </ul>
-                                <hr>
-                                <h5>조회수: {{ best_cody.view_cnt }}</h5>
-                                <h5>판매횟수: {{ best_cody_count }} </h5>
-                                <h5>디자인날짜: {{ best_cody.reg_date | date:"Y년 m월 d일" }}</h5>
+                                {% if best_cody != "완성품없음" %}
+                                    <h2>{{ best_cody.user }}님의 작품</h2>
+                                    <hr>
+                                    <ul class="list-unstyled">
+                                        <li><strong><옵션></strong></li>
+                                        <li>종류: {{ best_cody.type }}</li>
+                                        <li>사이즈: {{ best_cody.size }}</li>
+                                        <li>태그: {{ best_cody_tag.name }}</li>
+                                    </ul>
+                                    <hr>
+                                    <h5>조회수: {{ best_cody.view_cnt }}</h5>
+                                    <h5>판매횟수: {{ best_cody_count }} </h5>
+                                    <h5>디자인날짜: {{ best_cody.reg_date | date:"Y년 m월 d일" }}</h5>
+                                {% else %}
+                                    <h1>완성품 없음</h1>
+                                {% endif %}
                             </div>
                             <div id="best_desc2" class="h-100">
                                 <select class="form-select h-100 text-center bg-dark text-light" id="tag_selector" size="5" multiple aria-label="multiple select example">
@@ -125,15 +137,22 @@
                                 <h5>사이즈: {{ best_review.order.product.size }}</h5>
                                 <h5>조회수: {{ best_review.view_cnt }}</h5>
                                 <h5>작성일: {{ best_review.reg_date | date:"Y-m-d H:i:s" }}</h5>
-                                <a class="btn btn-outline-light w-100 mt-5" href="{% url 'Recommendation:finished_detail' best_review.order.product.id %}">구매하러 가기</a>
+                                {% if best_review != "리뷰없음" %}
+                                    <a class="btn btn-outline-light w-100 mt-5" href="{% url 'Recommendation:finished_detail' best_review.order.product.id %}">구매하러 가기</a>
+                                {% endif %}
+                                
                             </div>
                             <div id="best_desc4">
                                 <div class="col-sm d-flex flex-column justify-content-center align-items-center h-100">
                                     <div class="text-center">
-                                        <h1>{{ best_seller.0 }}님</h1>
-                                        <h4>상품 총 매출(누적)</h4>
-                                        <hr>
-                                        <h1><strong>{{ best_seller.1 }}￦</strong></h1>
+                                        {% if best_seller != "셀러없음" %}
+                                            <h1>{{ best_seller.0 }}님</h1>
+                                            <h4>상품 총 매출(누적)</h4>
+                                            <hr>
+                                            <h1><strong>{{ best_seller.1 }}￦</strong></h1>
+                                        {% else %}
+                                            <h1>User or Order or Product Data is Empty</h1>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
