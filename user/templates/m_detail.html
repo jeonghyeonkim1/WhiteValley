@@ -8,19 +8,11 @@
 
 {% block contents %}
 
-<div class="title mb-3 mt-3">
+<div class="title mb-5 mt-5">
     <br>
-    <h3>매거진</h3>
-    <br>
-</div>
-
-<div class="mb-3 mt-3 clearfix">
-    {% if session.admin %}
-    <span class="float-start ms-4">id : {{ magazine.id }} </span>
-    {% endif %}
-    <span class="float-end ms-4">작성일 : {{ magazine.reg_date|date:"Y-m-d H:i:s" }} </span>
-    <span class="float-end">조회수 : {{ magazine.view_cnt }} </span> 
-
+    <h2>매거진</h2>
+    <h6>다양한 브랜드의 컬렉션을 집중 소개하며 커스텀 주문에 도움을 줄 유용한 가이드를 담은 콘텐츠를 제공합니다.</h6>
+    <hr>
 </div>
 
 <section> 
@@ -34,15 +26,24 @@
   </div>
   
 
-<div class="content">
+<div class="content" >
     <div class="col-lg-12" >
 
         <div class="ml-3 mb-3 mt-3">
             <h2 >{{ magazine.title }}</h2>
+
+            <div class="mb-3 mt-3 clearfix">
+                {% if session.admin %}
+                <div class="float-start ms-4">게시물 번호 : {{ magazine.id }} </div>
+                {% endif %}
+                <div class="float-end ms-4">작성일 : {{ magazine.reg_date|date:"Y-m-d H:i:s" }} </div>
+                <div class="float-end">조회수 : {{ magazine.view_cnt }} </div> 
+            </div>
+            <hr>
         </div>
 
-        <hr>
-        <div class="mb-3 mt-3">
+
+        <div class="mb-3 mt-3" >
             <div class="imgshow" style="text-align : center;">
                 <br>
                 {% if photo.board == board %}
@@ -51,13 +52,14 @@
                     </div>
                 {% endif %}
             </div>
+            <br>
             <pre style="width:100%;" rows="10">{{ magazine.content }}</pre>
-            <br>
-            <br>
-            <hr>
-            </p>
-            
         </div>
+            <br>
+            <br>
+            <hr>            
+        </div>
+        <br>
         <a class="btn btn-outline-dark float-end mb-3 col-4" href="{% url 'User:magazine_list' %}">목록</a>
         <br>
     </div>

@@ -87,12 +87,7 @@ def home(req):
 
         context['best_seller'] = sorted_dict[0]
     except:
-        return HttpResponse(f'''
-            <script>
-                alert("best seller의 문제");
-                history.back();
-            </script>
-        ''')
+        context['best_seller'] = "셀러없음"
 
     cookie_name = 'visited'
     cookie_value = True

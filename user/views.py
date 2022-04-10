@@ -260,7 +260,7 @@ def magazine_update(request, pk):
 
     magazine = Board.objects.get(pk=pk)
     photos = B_Photo.objects.get(board=pk)
-
+ 
     if request.method == "GET":
         magazine = Board.objects.get(pk=pk)
         context = {
@@ -297,7 +297,7 @@ def magazine_update(request, pk):
         photo = B_Photo.objects.get(board = magazine)
         photo.photo = f'/static/image/{uploadedFile}'
         photo.save()
-        
+
         return render(request, 'm_updateOk.html', context)
 
 
