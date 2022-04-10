@@ -2,12 +2,86 @@
 
 {% block attachment %}
     {% load static %}
-    <script src="{% static 'js/cart.js' %}?ver=1"></script>
+
     <style>
         .container {
             min-width: 768px;
         }
     </style>
+
+    <script>
+       $(function () {
+            $("[name='amount']").change(function () {
+                for (let i = 0; i < $("[name='amount']").length; i++) {
+                    if ($("[name='amount']")[i] == $(this)[0]) {
+                        $("[name='price']")[i].value = $(this).val() * $("#orginal_price").val()
+                    }
+                }
+
+                $(this).parent().submit();
+            })
+
+            var cnt2 = 0
+            $("[name='item_selector']").each(function () {
+                if ($(this)[0].checked) {
+                    cnt2++;
+                }
+
+                if (cnt2 == $("[name='item_selector']").length) {
+                    $("#item_all_selector")[0].checked = true;
+                } else {
+                    $("#item_all_selector")[0].checked = false;
+                }
+
+                $(this).change(function () {
+                    if (!$(this)[0].checked) {
+                        $("#item_all_selector")[0].checked = false;
+                    }
+                })
+            });
+
+            var cnt = 0
+            for (let i = 0; i < $("[name='amount']").length; i++) {
+                if ($("[name='item_selector']")[i].checked) {
+                    $("[name='price']")[i].value = $("[name='amount']")[i].value * $("#orginal_price").val();
+                } else {
+                    $("[name='price']")[i].value = 0;
+                }
+
+                cnt += parseInt($("[name='price']")[i].value);
+            };
+            $("[name='total_price']").val(cnt);
+            $("[name='total_point']").val(`${cnt / $("#return_point").val()}원 적립 예정`);
+
+            $("[name='checked_form']").each(function () {
+                $(this).find("input").change(function () {
+                    $(this).parent()[0].submit()
+                })
+            })
+
+            $("#item_all_selector").change(function () {
+                if ($(this)[0].checked) {
+                    $("[name='item_selector']").each(function () {
+                        $(this)[0].checked = true;
+                        $("[name='item_all_bool']").val("True");
+                    });
+                } else {
+                    $("[name='item_selector']").each(function () {
+                        $(this)[0].checked = false;
+                        $("[name='item_all_bool']").val("False");
+                    });
+                }
+                $("#item_all_form").submit();
+            })
+
+            $("#item_delete").on('submit', function () {
+                if (confirm("해당 상품을 장바구니에서 제거하시겠습니까?")) {
+                    return true;
+                }
+                return false;
+            })
+        }) 
+    </script>
 {% endblock %}
 
 {% block contents %}
@@ -50,7 +124,7 @@
                             <h4><strong>{{ cart.user.nickname }} 님의 작품</strong></h4>
                             <hr>
                             <h5>사이즈: {{ cart.product.size }}</h5>
-                            <h5>지금 주문 시: {{ current_time }} 도착 예정</h5>
+                            <h5>지금 주문 시: {{ current_time | date:"Y/m/d" }} 도착 예정</h5>
                         </div>
                         <div class="border col-sm-2 d-flex justify-content-center align-items-center">
                             <form action="{% url 'Main:cart_number' cart.id %}" method="POST" id="amount_form">
@@ -64,6 +138,8 @@
                                     <option value="6" {% if cart.amount == 6 %}selected{% endif %}>6</option>
                                     <option value="7" {% if cart.amount == 7 %}selected{% endif %}>7</option>
                                     <option value="8" {% if cart.amount == 8 %}selected{% endif %}>8</option>
+                                    <option value="8" {% if cart.amount == 9 %}selected{% endif %}>9</option>
+                                    <option value="8" {% if cart.amount == 10 %}selected{% endif %}>10</option>
                                 </select>
                             </form>
                         </div>

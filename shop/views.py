@@ -85,7 +85,26 @@ def home(req):
 
         sorted_dict = sorted(Dict.items(), key = lambda item: item[1])
 
-        context['best_seller'] = sorted_dict[0]
+        cnt = 0
+        while 1:
+            if sorted_dict[cnt][0].prized == False:
+                context['best_seller'] = sorted_dict[cnt]
+                today = datetime.date.today()
+                first_day = today.replace(day=1)
+                if first_day.strftime('%d') == today.strftime('%d'):
+                    user = User.objects.get(id=sorted_dict[cnt][0].id)
+                    user.point = user.point + Config.objects.get(id=1).best_point
+                    user.prized = True
+                    user.save()
+                    break
+
+            if sorted_dict[cnt] == sorted_dict[-1]:
+                print("셀러 없어요")
+                context['best_seller'] = "셀러없음"
+                break
+
+            cnt += 1
+
     except:
         context['best_seller'] = "셀러없음"
 
@@ -110,31 +129,21 @@ def home(req):
 def cart(req):
     try:
         req.session['user']
-        try:
-            context = {
-                'session': req.session,
-                'config': Config.objects.get(id=1),
-                'currentpage': 'cart',
-                'carts': Cart.objects.filter(user=User.objects.get(id=req.session['user'])),
-                'current_time': datetime.datetime.now() + datetime.timedelta(days=2),
-            }
+        context = {
+            'session': req.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cart',
+            'carts': Cart.objects.filter(user=User.objects.get(id=req.session['user'])),
+            'current_time': datetime.datetime.now() + datetime.timedelta(days=2),
+        }
 
-            if req.method == "POST":
-                req.POST['product_tag']
-                cart = Cart.objects.filter(user=User.objects.get(id=req.session['user']))
-                for i in cart:
-                    i.checked = req.POST['item_all_bool']
-                    i.save()
+        if req.method == "POST":
+            cart = Cart.objects.filter(user=User.objects.get(id=req.session['user']))
+            for i in cart:
+                i.checked = req.POST['item_all_bool']
+                i.save()
 
-            return render(req, 'cart.html', context)
-        
-        except:
-            return HttpResponse(f'''
-                <script>
-                    alert("구매하실 물품이 없습니다!");
-                    location.href='/whitevalley/shopping/loading2/';
-                </script>
-            ''')
+        return render(req, 'cart.html', context)
     
     except:
         return HttpResponse(f'''
@@ -268,7 +277,7 @@ def admin_member(req):
             if req.session['admin']:
                 context['date'] = "전체"
                 context['order'] = "가입일순"
-                context['users'] = User.objects.all().order_by('-reg_date')
+                context['users'] = User.objects.filter(admin=False).order_by('-reg_date')
                 page = int(req.GET.get('page', 1))
             else:
                 return HttpResponse(f'''
