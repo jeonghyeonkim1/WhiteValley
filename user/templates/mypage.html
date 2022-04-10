@@ -29,88 +29,79 @@
                     return false;
                 }
                 return true;
-           })
-        })
-    </script>
-{% endblock %}
-
-{% block contents %}
-<div class="modal fade" id="my_list" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="True">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content modal-f">
-            <div class="modal-header">
-                <h3>{{ user }} 님 주문 목록</h3>
+            })     
+        })   
+    </script>    
+    {% endblock %}    
+    
+    {% block contents %}
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>{{ user }} 님 주문 목록</h3>  
+          </div>
+          <div class="modal-body">
+            <div>
+                <table class="table table-hover">
+                    <thead>
+                        <th>No.</th>
+                        <th>디자이너</th>
+                        <th>수량</th>
+                        <th>주문일</th>
+                        <th>상태</th>
+                        <th>수령인</th>
+                        <th>배송주소</th>
+                        <th>요청사항</th>
+                        <th>배송위치</th>
+                    </thead>
+                    <tbody class="mytable">
+                    {% for order in orders %}
+                        <tr style="cursor: pointer;">
+                            <td>
+                                {{ order.pk }}
+                            </td>
+                            <td>
+                                {{ order.product.user.nickname }}
+                            </td>
+                            <td>
+                                {{ order.amount }}
+                            </td>
+                            <td>
+                                {{ order.date | date:"Y-m-d" }}
+                            </td>
+                            <td>
+                                {{ order.state }}
+                            </td>
+                            <td>
+                                {{ order.r_name }}
+                            </td>
+                            <td>
+                                {{ order.r_adress | truncatechars:"25" }}
+                            </td>
+                            <td>
+                                {{ order.delivery_req }}
+                            </td>
+                            <td>
+                                {{ order.r_location }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                {{ order.pk }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            <div class="modal-body" style="  max-height:85%;  margin-top: 50px; margin-bottom:50px;">
-                <div>
-                    <table class="table table-hover">
-                        <thead>
-                            <th>No.</th>
-                            <th>디자이너</th>
-                            <th>수량</th>
-                            <th>주문일</th>
-                            <th>상태</th>
-                            <th>수령인</th>
-                            <th>배송주소</th>
-                            <th>요청사항</th>
-                            <th>배송위치</th>
-                        </thead>
-                        <tbody class="mytable">
-                        {% for order in orders %}
-                            <tr style="cursor: pointer;">
-                                <td>
-                                    {{ order.pk }}
-                                </td>
-                                <td>
-                                    {{ order.product.user.nickname }}
-                                </td>
-                                <td>
-                                    {{ order.amount }}
-                                </td>
-                                <td>
-                                    {{ order.date | date:"Y-m-d" }}
-                                </td>
-                                <td>
-                                    {{ order.state }}
-                                </td>
-                                <td>
-                                    {{ order.r_name }}
-                                </td>
-                                <td>
-                                    {{ order.r_adress | truncatechars:"25" }}
-                                </td>
-                                <td>
-                                    {{ order.delivery_req }}
-                                </td>
-                                <td>
-                                    {{ order.r_location }}
-                                </td>
-                            </tr>
-                            <input type="text" value="{{ order.amount }}" name="input1">
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div >
-                <button class="btn" disabled style="padding-bottom:10px;">총 구매 수량:{{ cnt }}</button><br>
-                <button class="btn" disabled >총 구매 금액:{{ total }}</button>
-            </div> 
-            <div class="modal-footer">
-                <a href="" class="btn">확인</a>
-            </div>
+          </div>
+          <div class="modal-footer">
+            Footer
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<div class="modal fade" id="my_list_detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="True">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content modal-f">
-            <div class="modal-header"><input type="text" value="" name="input2"></div>
-            <div class="modal-body"></div>
-            <div class="modal-footer"></div>
-        </div>
-    </div>
-</div>
     <div class="w-100 p-4 bg-dark rounded-pill text-light d-flex flex-column justify-content-around align-items-center">
         <h2><strong>{{ user.nickname }}</strong> 님 환영합니다.</h2>
     </div>
@@ -185,7 +176,7 @@
                     <h5>내 포토후기</h5>
                 </div>
             </div>
-            <div class="mb-3 col-sm-3 d-flex justify-content-center align-item-center">
+            <div class="mb-3 col-sm-3 d-flex justify-content-center align-item-center" data-bs-toggle="modal" href="#exampleModalToggle" role="button">
                 <div class="m-3 text-light bg-dark w-75 h-100 d-flex flex-column justify-content-center align-item-center" style="border-radius: 20px; cursor: pointer;" id="my_list_wrap">
                     <i class="fa-solid fa-magnifying-glass-dollar mb-2 display-1"></i>
                     <h5>내 주문목록</h5>
@@ -202,11 +193,15 @@
         $("#my_list").modal("show");
     });
 
+    var cnt = 0
     $(".mytable").children().each(function() {
-        $(this).click(function(){
-            $("#my_list_detail").modal("show");
-            $("[name='input2']").val($(this).input1.val());
-        })     
+        cnt++;
+
+        if (cnt % 2 == 1) {
+            $(this).click(function() {
+                $(this).next().slideToggle();
+            })
+        }
     })
     
 </script>
