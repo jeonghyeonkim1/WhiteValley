@@ -375,7 +375,7 @@ def mypage(req):
     context['user'] = User.objects.get(id=req.session['user'])
     orders = Order.objects.filter(user = req.session['user'])
     context['orders'] = orders
-
+   
     cnt = 0
     total = 0
     for i in orders:
