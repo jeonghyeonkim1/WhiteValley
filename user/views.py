@@ -376,8 +376,8 @@ def mypage(req):
     orders = Order.objects.filter(user = req.session['user'])
     context['orders'] = orders
 
-    cnt = 0;
-    total = 0;
+    cnt = 0
+    total = 0
     for i in orders:
         cnt += i.amount
         total += i.product.type.price
