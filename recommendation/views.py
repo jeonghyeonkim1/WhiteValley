@@ -3,9 +3,8 @@ from shop.models import Config
 from user.models import User
 from cs.models import Board
 from order.models import Review
-from order.models import R_photo,Order,Review_photo_Upload
-from recommendation.models import Product, P_photo,Tag_list
-from . import models
+from order.models import R_photo, Order, Review_photo_Upload, Cart
+from recommendation.models import Product, P_photo, Tag_list
 from django.core.paginator import Paginator
 from math import ceil
 from django.http import Http404, HttpResponse
@@ -130,11 +129,13 @@ def reviews_detail(request,pk):
        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        'review' : review
     }
 
     try:
         review = Review.objects.get(pk=pk)
+        context['review'] = review
+        photo = R_photo.objects.get(review=review)
+        context['photo'] = photo
 
         review.view_cnt += 1
         review.save()
@@ -205,19 +206,30 @@ def tag_reviews_detail(request,pk):
 
 # 완성품 리스트
 def finished(request):
-    all_product = Product.objects.all().order_by('-reg_date')
+    context = {
+        'session': request.session,
+        'config': Config.objects.get(id=1),
+        'currentpage': 'shopping',
+    }
+    if request.method == "GET":
+        all_product = Product.objects.all().order_by('-reg_date')
+        context['order_method'] = "최신순"
+    elif request.method == "POST":
+        if request.POST['order_filter'] == "new_list":
+            all_product = Product.objects.all().order_by('-reg_date')
+            context['order_method'] = "최신순"
+        else:
+            all_product = Product.objects.all().order_by('-view_cnt')
+            context['order_method'] = "인기순"
+
+    
     page = request.GET.get('page', '1')
     paginator = Paginator(all_product, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     
-    context = {
-       'session': request.session,
-        'config': Config.objects.get(id=1),
-        'currentpage': 'shopping',
-        'question_list': page_obj,
-        'products' : page_obj,
-        
-    }
+    context['question_list'] = page_obj
+    context['products'] = page_obj
+
         
     return render(request, 'finished.html',context)
 
@@ -236,6 +248,30 @@ def finished_detail(request,pk):
     product.save()
     
     context['product'] = product
+
+    if request.method == "POST":
+        try:
+            Cart(
+                user=User.objects.get(id=request.session['user']),
+                product=product,
+                amount=1,
+                checked=True
+            ).save()
+
+            return HttpResponse(f'''
+                <script>
+                    alert("장바구니에 성공적으로 담겼습니다!");
+                    location.href = '/whitevalley/cart/';
+                </script>
+            ''')
+        except:
+            return HttpResponse(f'''
+                <script>
+                    alert("이미 장바구니에 해당 상품이 존재합니다!");
+                    history.back();
+                </script>
+            ''')
+
 
 
     return render(request, 'finished_detail.html',context)

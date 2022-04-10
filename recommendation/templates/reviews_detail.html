@@ -5,9 +5,9 @@
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>whitevalley : 포토후기</title>
+	<title>whitevalley : 태그별 맞춤</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<style>
+{% comment %} <style>
     * {
         margin: 0;
         padding: 0;
@@ -21,10 +21,8 @@
         color : white;
         
     }
-
     .reviewPdtV15 {
-        margin: 30px;
-       
+        margin: 30px;  
     }
     .pdtBox{
         display: flex;
@@ -45,64 +43,67 @@
     .pdtReviewV15{
         margin : 30px;
     }
-	.closebtn{
+	.closebtn, .callbtn{
 		padding: 10px;
 		width: 200px;
 		border-radius: 10px;
-		color : white;
-		background-color: #000000;
 		font-size : 20px;
 		margin-bottom: 20px
 	
 	}
-	.callbtn{
-		float:right;
+	.finalP{
+		color: red
 	}
-</style>
+	#txt1 {
+		color:rgb(58, 58, 58);
+	}
+</style> {% endcomment %}
 </head>
 <body>
 	<div class="heightgird">
 		<div class="popWrap">
-			<div class="popHeader" style='border: 1px solid #212529'>
-				<div class='header' ><h2>포토후기</h2></div>
+			<div class="popHeader bg-dark text-white p-3">
+				<div class='header'><h2>{{ review.order.user.nickname | upper }}님 PHOTO REVIEW</h2></div>
 			</div>
 			<div class="popContent">
 				<!-- content -->
 				<div class="popReviewV15">
 					<div class="reviewPdtV15">
-						<div class="pdtBox">
-							<div class="pdtPhoto"><a href="/whitevalley/shopping/order/" target='_blank'><img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='180px' height='140px' alt=""></a></div>
+						<div class="pdtBox d-flex justify-content-center align-items-center p-4 bg-light">
+							<div class="pdtPhoto rounded"><a href="{% url 'Order:order' %}" target='_blank'><img src="{{ review.order.product.img }}" width='180px' height='180px' alt=""></a></div>
 							<div class="pdtInfo">
-								<p class="pdtBrand tPad15"><a href="/whitevalley/shopping/order/" target='_blank' style="text-decoration:none; color:black">VIEWLAP</a></p>
-								<p class="pdtName tPad07"><a href="/whitevalley/shopping/order/" target='_blank' style="text-decoration:none; color:black" >무지 반팔 커스텀</a></p>
-								<p class="pdtPrice">
-                                    
-									<span class="finalP">9,930원</span>
-								</p>
+								<div class="pdtBrand tPad15" style="border-bottom: 1px solid  rgb(184, 184, 184);">
+									<input class="text-center" style="border: 0px; height:70px;font-size:20px;background-color:transparent; font-weight: bold ;" type="text" disabled value="{{  }} 님 커스텀">
+															
+								</div>
+								<div class="purchaseOption">
+									<div>
+										<d id="txt1">구매옵션:</d> 
+										<input id="txt1" style="margin-left:10px; border: 0px;background-color:transparent; width: 60px;height:40px;"  value="{{product.type}}" disabled >
+										<input id="txt1" style="border: 0px; background-color:transparent; height:40px; width: 40px;"  value="({{product.size}})" disabled >	
+										<input style="border: 0px;background-color:transparent; width:200px;padding-left:90px;"class="finalP" value="{{product.type.price}}원" disabled>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-					<button type="button" class="btn btn-warning callbtn" onclick="window.open('/whitevalley/shopping/order/')" target='_blank'>커스텀페이지로 이동</button>
-
-					<hr>
+					
 					<div class="review pdtReviewV15 tMar10">
-
 						<tr>
 							<td class="comment">
-								
-									<div class="purchaseOption"><em><strong>구매옵션</strong> : 반팔(자동),XL</em></div>
-								
-									<div class="textArea">
-										<p>커스텀 이뻐요 </p>
+								<div class="imgArea d-flex justify-content-center align-items-center p-5">
+									<img src="{{ photo.photo }}" id="file1"><br/>	
+								</div>
+								<input style="border: 1px; width:200px; background-color:transparent;color:rgb(185, 185, 185);  float:right;" type="text" disabled value="{{ review.reg_date }}">
+								<hr>
+								<div class="text-center mb-5 pb-5">
+									<button class="btn btn-light" style="margin:2px 0 20px 0;" disabled></button>
+									
+									<div class="textArea" >
+										<input style="padding-left:10px; border:0; background-color:transparent;" value="" disabled>
 									</div>
-									<hr>
-									<div class="imgArea">
-										<img src="https://tumblbug-pci.imgix.net/e2b2dae3a23cb6d9d6385f6714c1f7dd41ecb83e/4ac088af753421fcc88019295eaf8ff15f4f2d10/23484adc1636acfe9e3bd5537dcdf081c530a68c/43aea57a-534a-4288-8c16-db8fee23ea6e.png?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=2e18441c127577abcccfbb2209f2f3f4" width='730px' height='700px' id="file1"><br/>
-									</div>
-							</td>
-							<td class="ct" >
-								<div style=" text-align: right;">2022/03/31</div>
-								<div style=" text-align: right;">닉네임</div>
+									<p>- Check List -<br> - 활용도 높은 무지티<br> - 높은 퀄리티가 느껴지는 탄탄한 질감<br> - 코디하기 좋은 컬러감<br>  SIZE (단위 : cm)<br> M : 어깨 54 가슴 64 소매 63 암홀 27 총장 78<br> L : 어깨 56 가슴 66 소매 64 암홀 28 총장 80<br><br>  측정 방법에 따라 오차가 생길 수 있습니다. (1~3cm) <br><br> FABRIC 면65%, 레이온34%, 스판1%<br><br>  DETAIL INFO<br> 신축성 / 좋음 □  보통 ■  없음 □<br> 두께감 / 두툼 □  보통 ■  얇음 □<br> 계절감 / 봄 ■  여름 □  가을 ■  겨울 □
+								</div><hr>
 							</td>
 						</tr>
 						</tbody>
@@ -111,10 +112,16 @@
 				</div>
 				<!-- //content -->
 			</div>
+			
 		</div>
-		<div class="popFooter">
-			<div class="btnArea" style=" text-align: center;">
-                <button type="button" class="closebtn" onclick="window.close();" >닫기</button>
+		<div class="popFooter" style="margin-bottom:70px;">
+			<div class="btnArea d-flex justify-content-center" style=" text-align: center;">
+				<form action="." method="POST" class="me-1">
+					{% csrf_token %}
+					<input type="hidden" value="{{ product.id }}">
+					<button class="btn btn-dark callbtn" target='_blank'>장바구니에 담기</button>
+				</form>
+                <button type="button" class="ms-1 btn btn-dark closebtn" onclick="window.close();" >닫기</button>
 			</div>
 		</div>
 	</div>
