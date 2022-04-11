@@ -7,7 +7,6 @@ from django.http import Http404
 from cs.models import Board, B_Photo, Photo_Upload
 from django.core.paginator import Paginator  
 import re
-# from django.core.mail import send_mail #보내짐
 from django.core.mail import EmailMultiAlternatives
 from order.models import Order
 
