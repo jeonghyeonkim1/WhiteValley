@@ -267,7 +267,11 @@
                 </form>
             </div>
         </div>
-        <button data-bs-toggle="modal" href="#exampleModalToggle_userinfo" class="btn btn-outline-dark border-4 pb-2 mb-3" title="내 정보 수정하기"><i class="fa-solid fa-user-astronaut fs-4 mt-2"></i></button>
+        {% if session.kakao %}
+            <button class="btn btn-outline-dark border-4 pb-2 mb-3" id="kakao_alert" title="카카오 유저는 정보를 수정할 수 없습니다."><i class="fa-solid fa-user-astronaut fs-4 mt-2"></i></button>
+        {% else %}
+            <button data-bs-toggle="modal" href="#exampleModalToggle_userinfo" class="btn btn-outline-dark border-4 pb-2 mb-3" title="내 정보 수정하기"><i class="fa-solid fa-user-astronaut fs-4 mt-2"></i></button>
+        {% endif %}
         <h4><strong>이메일: {{ user.email }}</strong></h4>
         <h4><strong>연락처: {{ user.contact }}</strong></h4>
         <h4><strong>적립금: {{ user.point }}</strong></h4>
@@ -338,6 +342,10 @@
         e.preventDefault();
         $("#my_list_r").modal("show");
     });
+
+    $("#kakao_alert").click(function() {
+        alert("카카오 유저는 정보를 수정할 수 없습니다!");
+    })
 
     var cnt = 0
     $(".mytable").children().each(function() {
