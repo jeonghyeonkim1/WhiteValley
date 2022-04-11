@@ -204,7 +204,7 @@ def reviews_detail(request,pk):
         try:
             Cart(
                 user=User.objects.get(id=request.session['user']),
-                product=Product.objects.get(pk=pk),
+                product=Review.objects.get(pk=pk).order.product,
                 amount=1,
                 checked=True
             ).save()

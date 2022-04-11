@@ -50,43 +50,6 @@
     </div>
 </div>
 
-
-{% comment %} <ul class="pagination justify-content-center">
-    <!-- 이전페이지 -->
-    {% if boards.has_previous %}
-    <li class="page-item">
-        <a class="page-link" href="?page={{ boards.previous_page_number }}">이전</a>
-    </li>
-    {% else %}
-    <li class="page-item disabled">
-        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
-    </li>
-    {% endif %}
-    <!-- 페이지리스트 -->
-    {% for page_number in boards.paginator.page_range %}
-    {% if page_number == boards.number %}
-    <li class="page-item active" aria-current="page">
-        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-    </li>
-    {% else %}
-    <li class="page-item">
-        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-    </li>
-    {% endif %}
-    {% endfor %}
-    <!-- 다음페이지 -->
-    {% if boards.has_next %}
-    <li class="page-item">
-        <a class="page-link" href="?page={{ boards.next_page_number }}">다음</a>
-    </li>
-    {% else %}
-    <li class="page-item disabled">
-        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
-    </li>
-    {% endif %}
-</ul> {% endcomment %}
-
-
 <ul class="pagination justify-content-center" style='margin:50px'>
     {% if boards.has_previous %}
     <li class="page-item">
