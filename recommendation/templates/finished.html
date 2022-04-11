@@ -91,7 +91,7 @@ function removeCheck() {
                             {% endif %}
                             {% if session.admin %}
                                 <form action="{% url 'Recommendation:finished_delete' product.id %}">
-                                    <button class="btn btn-danger">삭제</button>
+                                    <button class="btn btn-danger" onclick='removeCheck()'>삭제</button>
                                 </form>
                             {% endif %}
                         </div>
