@@ -163,7 +163,7 @@ def custom2(request):
         except:
             return HttpResponse(f'''
                 <script>
-                    alert("타입 설정이 완료되지 않았습니다!");
+                    alert("타입 설정이 완료되지 않았습니다! 차례대로 진행해 주세요!");
                     location.href='/whitevalley/shopping/order/';
                 </script>
             ''')
@@ -198,6 +198,7 @@ def customend(request):
                     return HttpResponse(f'''
                         <script>
                             alert("적어도 하나 이상이 커스텀을 적용시켜 완성해주세요!");
+                            history.back();
                         </script>
                     ''')
                 else:
@@ -226,8 +227,8 @@ def customend(request):
         except:
             return HttpResponse(f'''
                 <script>
-                    alert("커스텀 완료후 되돌릴 수 없습니다!");
-                    location.href='/whitevalley/shopping/order/';
+                    alert("커스텀 상품이 초기화됩니다.");
+                    history.go(-3);
                 </script>
             ''')
 
