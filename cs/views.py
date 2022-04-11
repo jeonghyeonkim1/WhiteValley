@@ -1,11 +1,12 @@
+import re
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from cs.models import Board, Inquire, B_Photo, Photo_Upload
 from user.models import User
 from shop.models import Config
-import re
-
+from django.forms import ValidationError
+from django.utils.datastructures import MultiValueDictKeyError
 
 # 공지사항 페이지
 def notice_write(request):
@@ -113,7 +114,7 @@ def event_write(request):
         'config': Config.objects.get(id=1),
         'currentpage': 'cs'
     }
-
+    # try:
     if request.method == 'GET':
         return render(request, 'event_write.html', context)
 
@@ -153,7 +154,23 @@ def event_write(request):
 
         return render(request, 'event_writeOk.html', {"pk": board.pk})
 
+    # except ValidationError:
+    #     return HttpResponse(f'''
+    #         <script>
+    #             alert("이벤트 날짜를 지정해주세요");
+    #             history.back();
+    #         </script>
+    #     ''')
 
+    # except MultiValueDictKeyError:
+    #     return HttpResponse(f'''
+    #         <script>
+    #             alert("파일을 첨부해주세요");
+    #             history.back();
+    #         </script>
+    #     ''')
+
+    
 def event_detail(request, pk):
     event = Board.objects.get(pk=pk)
     event.view_cnt += 1
@@ -188,6 +205,7 @@ def event_list(request):
 
 
 def event_update(request, pk):
+    
     if request.method == 'GET':
         event = Board.objects.get(pk=pk)
         context = {

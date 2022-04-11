@@ -59,11 +59,24 @@ def reviews(request):
     context['reviews'] = List
 
 
-
+    write_pages = int(request.session.get('write_pages', 5)) # 페이징당 몇개의 페이지가 표시되는지
     page = request.GET.get('page', '1')
-    paginator = Paginator(List, 8)  # 페이지당 몇개씩 보여주기
+    paginator = Paginator(List, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     context['question_list'] = page_obj
+
+    start_page = ((int)((page_obj.number - 1) / write_pages) * write_pages) + 1
+    end_page = start_page + write_pages - 1
+
+    if end_page >= paginator.num_pages:
+        end_page = paginator.num_pages
+
+    context['write_pages']= write_pages
+    context['start_page']= start_page
+    context['end_page']= end_page
+    context['page_range']= range(start_page, end_page + 1)
+
+
     return render(request, 'reviews.html',context)
 
     
@@ -187,6 +200,29 @@ def reviews_detail(request,pk):
     except Review.DoesNotExist:
         raise Http404('해당 게시글을 찾을 수 없습니다.')
 
+    if request.method == "POST":
+        try:
+            Cart(
+                user=User.objects.get(id=request.session['user']),
+                product=Product.objects.get(pk=pk),
+                amount=1,
+                checked=True
+            ).save()
+
+            return HttpResponse(f'''
+                <script>
+                    alert("장바구니에 성공적으로 담겼습니다!");
+                    location.href = '/whitevalley/cart/';
+                </script>
+            ''')
+        except:
+            return HttpResponse(f'''
+                <script>
+                    alert("이미 장바구니에 해당 상품이 존재합니다!");
+                    history.back();
+                </script>
+            ''')
+
     return render(request, 'reviews_detail.html',context)
 
 # 리뷰 삭제
@@ -223,17 +259,28 @@ def tag_reviews(request):
     for i in Product.objects.all():
         list.append((i, i.tag_list_set.all()[0].name))
     
+    write_pages = int(request.session.get('write_pages', 5)) # 페이징당 몇개의 페이지가 표시되는지
     page = request.GET.get('page', '1')
     paginator = Paginator(list, 12)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     
+    start_page = ((int)((page_obj.number - 1) / write_pages) * write_pages) + 1
+    end_page = start_page + write_pages - 1
+
+    if end_page >= paginator.num_pages:
+        end_page = paginator.num_pages
+
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         'question_list': page_obj,
         'tag_product' : page_obj,
-        
+        'write_pages': write_pages,
+        'start_page': start_page,
+        'end_page': end_page,
+        'page_range': range(start_page, end_page + 1),
+
     }
 
     
@@ -301,11 +348,23 @@ def finished(request):
             all_product = Product.objects.all().order_by('-view_cnt')
             context['order_method'] = "인기순"
 
-    
+    write_pages = int(request.session.get('write_pages', 5)) # 페이징당 몇개의 페이지가 표시되는지
     page = request.GET.get('page', '1')
     paginator = Paginator(all_product, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     
+    start_page = ((int)((page_obj.number - 1) / write_pages) * write_pages) + 1
+    end_page = start_page + write_pages - 1
+
+    if end_page >= paginator.num_pages:
+        end_page = paginator.num_pages
+
+    context['write_pages']= write_pages
+    context['start_page']= start_page
+    context['end_page']= end_page
+    context['page_range']= range(start_page, end_page + 1)
+
+
     context['question_list'] = page_obj
     context['products'] = page_obj
 
