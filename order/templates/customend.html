@@ -107,7 +107,7 @@
                 </div>
                 <div class="modal-body">완성품을 카드에 담으시겠습니까?</div>
                 <div class="modal-footer">
-                    <a id="backbtn" class="btn">돌아가기</a>
+                    <a id="backbtn" class="btn">초기화</a>
                     <button form="ff" id="addbtn" class="btn btn-dark" data-dismiss="modal">예</button>
                 </div>
             </div>
@@ -115,6 +115,11 @@
     </div>
 
 <script>
+        history.pushState(null, null,"http://127.0.0.1:8000/whitevalley/shopping/order/order_des/customend");
+        window.onpopstate = function () {   
+            history.go(1);
+            alert("커스텀 완료후 이전페이지로 돌아갈 수 없습니다.")
+        };
     $("#CustomBtn2").click(function(){
         if($("#tagselect").val() == "0"){
             alert("태그는 필수 입니다.");
