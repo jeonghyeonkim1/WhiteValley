@@ -8,8 +8,7 @@ from cs.models import Board, B_Photo, Photo_Upload
 from django.core.paginator import Paginator  
 import re
 from django.core.mail import EmailMultiAlternatives
-from order.models import Order
-from order.models import Review
+from order.models import Order, Review, R_photo,Product
 
 
 # Create your views here.
@@ -389,7 +388,7 @@ def mypage(req):
             </script>
         ''')
 
-    orders = Order.objects.filter(user = req.session['user'])
+    orders = Order.objects.filter(user = req.session['user'], reviewed=True)
     if len(orders) != 0:
        
         context['orders'] = orders
@@ -401,18 +400,23 @@ def mypage(req):
     total = 0
     list = []
 
-    try:
-        for i in orders:
-            cnt += i.amount
-            total += i.product.type.price * i.amount
-            list.append(Review.objects.get(order = i))
-        context['reviews'] = list
-    except:
-        context['reviews'] = "리뷰없음"
+    for i in orders:
+        cnt += i.amount
+        total += i.product.type.price * i.amount
+        list.append([Review.objects.get(order = i), R_photo.objects.get(review = Review.objects.get(order = i))])
+    
+    
         
+    context['reviews'] = list
+    # context['r_photo'] = list2
     context['cnt'] = cnt
     context['total'] = total
 
+    try:
+        products = Product.objects.filter(user=User.objects.get(id=req.session['user'])).order_by('-reg_date')
+        context['products'] = products
+    except:
+        context['products'] = "완성품없음"
 
     for i in Order.objects.all():
         if datetime.datetime.now() - i.date.replace(tzinfo=None) > datetime.timedelta(days=2):
