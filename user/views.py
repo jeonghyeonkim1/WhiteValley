@@ -376,7 +376,8 @@ def mypage(req):
     total = 0
     for i in orders:
         cnt += i.amount
-        total += i.product.type.price
+        total += i.product.type.price * i.amount
+
     
     context['cnt'] = cnt
     context['total'] = total

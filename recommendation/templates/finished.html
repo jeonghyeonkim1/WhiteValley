@@ -79,12 +79,19 @@ function removeCheck() {
                     <img src="{{product.img}}" style='width:100%; height:100%' alt="">
                     <p class="card-text">옵션 : {{product.type}}/ 사이즈 : {{product.size}}</p>
                     <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='{% url 'Recommendation:finished_detail' product.id %}'">View</button>
+                        <div class="btn-group d-flex align-items-center">
+                            <div>
+                                <button type="button" class="btn btn-sm btn-outline-secondary p-2" onclick="location.href='{% url 'Recommendation:finished_detail' product.id %}'">View</button>
+                            </div>
                             {% if session.user %}
                                 <form action="{% url 'Recommendation:finished_detail' product.id %}" method="POST">
                                     {% csrf_token %}
-                                    <button class="btn btn-sm btn-outline-secondary">장바구니담기</button>
+                                    <button class="btn btn-sm btn-outline-secondary p-2">장바구니담기</button>
+                                </form>
+                            {% endif %}
+                            {% if session.admin %}
+                                <form action="{% url 'Recommendation:finished_delete' product.id %}">
+                                    <button class="btn btn-danger">삭제</button>
                                 </form>
                             {% endif %}
                         </div>

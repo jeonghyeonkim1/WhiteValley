@@ -67,7 +67,7 @@
             <label for="Request">요청사항</label>
             <textarea id="reqinput" class="form-control w-50" row="2" placeholder="커스텀상품에 관해 요청사항이 있을 시 자세히 작성해주세요."></textarea>
         </div>
-        <div class="amount"> 
+        {% comment %} <div class="amount"> 
             <p>
                <label for="number">수량: </label>
                 <select id="amount">
@@ -83,7 +83,7 @@
                     <option value="10">10</option>
                 </select>
             </p>
-        </div> 
+        </div>  {% endcomment %}
         <button id="CustomBtn2">Add to Cart</button>
         <form id="ff" action="{% url 'Order:loading' %}" method="POST" class="Btn">
             {% csrf_token %}
