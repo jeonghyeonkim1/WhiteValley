@@ -75,38 +75,38 @@ def home(req):
         context['best_review'] = "리뷰없음"
 
     # best seller
-    try:
-        best_seller = Order.objects.values('product').annotate(Sum('amount')).order_by('-amount')
+    best_seller = Order.objects.values('product').annotate(Sum('amount')).order_by('-amount')
 
-        Dict = {}
+    Dict = {}
 
-        for i in best_seller:
-            Dict[Product.objects.get(id=i['product']).user] = Dict.get(Product.objects.get(id=i['product']).user, 0) + Product.objects.get(id=i['product']).type.price * i['amount__sum']
+    for i in best_seller:
+        Dict[Product.objects.get(id=i['product']).user] = Dict.get(Product.objects.get(id=i['product']).user, 0) + Product.objects.get(id=i['product']).type.price * i['amount__sum']
 
-        sorted_dict = sorted(Dict.items(), key = lambda item: item[1])
+    sorted_dict = sorted(Dict.items(), key = lambda item: item[1])
 
-        cnt = 0
-        while 1:
-            if sorted_dict[cnt][0].prized == False:
-                context['best_seller'] = sorted_dict[cnt]
-                today = datetime.date.today()
-                first_day = today.replace(day=1)
-                if first_day.strftime('%d') == today.strftime('%d'):
-                    user = User.objects.get(id=sorted_dict[cnt][0].id)
-                    user.point = user.point + Config.objects.get(id=1).best_point
-                    user.prized = True
-                    user.save()
-                    break
+    cnt = 0
+    while 1:
+        try:
+            sorted_dict[cnt]
+        except:
+            break
 
-            if sorted_dict[cnt] == sorted_dict[-1]:
-                print("셀러 없어요")
-                context['best_seller'] = "셀러없음"
+        if sorted_dict[cnt][0].prized == False:
+            context['best_seller'] = sorted_dict[cnt]
+            print(sorted_dict[cnt])
+            today = datetime.date.today()
+            first_day = today.replace(day=1)
+            if first_day.strftime('%d') == today.strftime('%d'):
+                
+                user = User.objects.get(id=sorted_dict[cnt][0].id)
+                user.point = user.point + Config.objects.get(id=1).best_point
+                user.prized = True
+                user.save()
+                
                 break
 
-            cnt += 1
+        cnt += 1
 
-    except:
-        context['best_seller'] = "셀러없음"
 
     cookie_name = 'visited'
     cookie_value = True

@@ -26,12 +26,6 @@
             <label class="mb-3" for="title">제목 :</label>
             <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" name="title" required>
         </div>
-        <div style="text-align: center;" id="tool">
-            <i class="btn fa-solid fa-align-left" onclick="left()" type="button" title="왼쪽정렬" ></i>     
-            <i class="btn fa-solid fa-align-center" onclick="center()" type="button" title="가운데정렬" ></i>
-            <i class="btn fa-solid fa-align-right" onclick="right()" type="button" title="오른쪽정렬" ></i>
-            <i class="btn fa-solid fa-align-justify" onclick="justify()" type="button" title="양쪽정렬" ></i>
-        </div>
         <div class="mb-3 mt-3" >
             <label class="mb-3" for="content">내용 :</label>
             <textarea class="form-control" rows="20" id="content" placeholder="내용을 입력하세요" name="content" required></textarea>
@@ -48,22 +42,5 @@
 <br>
 <br>
 <br>
-
-<script>
-
-    function left(){
-        document.getElementById("content").style.textAlign='left';
-    }
-    function center(){
-        document.getElementById("content").style.textAlign='center';
-    }
-    function right(){
-        document.getElementById("content").style.textAlign='right';
-    }
-    function justify(){
-        document.getElementById("content").style.textAlign='justify';
-    }
-
-</script>
 
 {% endblock %}
