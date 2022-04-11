@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 import re
 from django.core.mail import EmailMultiAlternatives
 from order.models import Order
+from order.models import Review
 
 
 # Create your views here.
@@ -367,19 +368,40 @@ def mypage(req):
         'currentpage': 'mypage'
     }
 
-    context['user'] = User.objects.get(id=req.session['user'])
+    try:
+        context['user'] = User.objects.get(id=req.session['user'])
+    except: 
+        return HttpResponse(f'''
+            <script>
+                alert("로그인이 필요합니다!");
+                location.href = "/whitevalley/user/login/";
+            </script>
+        ''')
+
     orders = Order.objects.filter(user = req.session['user'])
-    context['orders'] = orders
+    if len(orders) != 0:
+       
+        context['orders'] = orders
+    else:
+        context['orders'] = "주문없음"
+    
    
     cnt = 0
     total = 0
-    for i in orders:
-        cnt += i.amount
-        total += i.product.type.price * i.amount
+    list = []
 
-    
+    try:
+        for i in orders:
+            cnt += i.amount
+            total += i.product.type.price * i.amount
+            list.append(Review.objects.get(order = i))
+        context['reviews'] = list
+    except:
+        context['reviews'] = "리뷰없음"
+        
     context['cnt'] = cnt
     context['total'] = total
+
 
     for i in Order.objects.all():
         if datetime.datetime.now() - i.date.replace(tzinfo=None) > datetime.timedelta(days=2):
