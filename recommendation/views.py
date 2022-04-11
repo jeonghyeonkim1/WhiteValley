@@ -38,6 +38,8 @@ def reviews(request):
                 List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
             except:
                 pass
+            
+        List = sorted(List, key=lambda r: r[0].reg_date, reverse=True)
 
     elif request.method == "POST":
         if request.POST['order_selector'] == "new_list":
@@ -47,6 +49,8 @@ def reviews(request):
                     List.append([Review.objects.get(order=order), R_photo.objects.filter(review=Review.objects.get(order=order))[0]])
                 except:
                     pass
+            List = sorted(List, key=lambda r: r[0].reg_date, reverse=True)
+            
         else:
             context['order_method'] = 'good_list'
             for order in Order.objects.all():
@@ -60,11 +64,24 @@ def reviews(request):
     context['reviews'] = List
 
 
-
+    write_pages = int(request.session.get('write_pages', 5)) # 페이징당 몇개의 페이지가 표시되는지
     page = request.GET.get('page', '1')
     paginator = Paginator(List, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     context['question_list'] = page_obj
+
+    start_page = ((int)((page_obj.number - 1) / write_pages) * write_pages) + 1
+    end_page = start_page + write_pages - 1
+
+    if end_page >= paginator.num_pages:
+        end_page = paginator.num_pages
+
+    context['write_pages']= write_pages
+    context['start_page']= start_page
+    context['end_page']= end_page
+    context['page_range']= range(start_page, end_page + 1)
+
+
     return render(request, 'reviews.html',context)
 
     
@@ -110,6 +127,10 @@ def product_reviews(request,id):
         order = Order.objects.get(user=User.objects.get(id=request.session['user']), product=Product.objects.get(id=id))
         order.reviewed = True
         order.save()
+
+        user = User.objects.get(id=request.session['user'])
+        user.point = user.point + Config.objects.get(id=1).review_point
+        user.save()
 
         context['pk'] = rev.pk
 
@@ -184,6 +205,29 @@ def reviews_detail(request,pk):
     except Review.DoesNotExist:
         raise Http404('해당 게시글을 찾을 수 없습니다.')
 
+    if request.method == "POST":
+        try:
+            Cart(
+                user=User.objects.get(id=request.session['user']),
+                product=Product.objects.get(pk=pk),
+                amount=1,
+                checked=True
+            ).save()
+
+            return HttpResponse(f'''
+                <script>
+                    alert("장바구니에 성공적으로 담겼습니다!");
+                    location.href = '/whitevalley/cart/';
+                </script>
+            ''')
+        except:
+            return HttpResponse(f'''
+                <script>
+                    alert("이미 장바구니에 해당 상품이 존재합니다!");
+                    history.back();
+                </script>
+            ''')
+
     return render(request, 'reviews_detail.html',context)
 
 # 리뷰 삭제
@@ -220,17 +264,28 @@ def tag_reviews(request):
     for i in Product.objects.all():
         list.append((i, i.tag_list_set.all()[0].name))
     
+    write_pages = int(request.session.get('write_pages', 5)) # 페이징당 몇개의 페이지가 표시되는지
     page = request.GET.get('page', '1')
-    paginator = Paginator(list, 9)  # 페이지당 몇개씩 보여주기
+    paginator = Paginator(list, 12)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     
+    start_page = ((int)((page_obj.number - 1) / write_pages) * write_pages) + 1
+    end_page = start_page + write_pages - 1
+
+    if end_page >= paginator.num_pages:
+        end_page = paginator.num_pages
+
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         'question_list': page_obj,
         'tag_product' : page_obj,
-        
+        'write_pages': write_pages,
+        'start_page': start_page,
+        'end_page': end_page,
+        'page_range': range(start_page, end_page + 1),
+
     }
 
     
@@ -239,8 +294,6 @@ def tag_reviews(request):
 
 # 태그 리뷰 디테일
 def tag_reviews_detail(request,pk):
-    
-
     context = {
        'session': request.session,
         'config': Config.objects.get(id=1),
@@ -251,6 +304,30 @@ def tag_reviews_detail(request,pk):
     tag_product.save()
 
     context['tag_product'] = tag_product
+
+    if request.method == "POST":
+        try:
+            Cart(
+                user=User.objects.get(id=request.session['user']),
+                product=tag_product,
+                amount=1,
+                checked=True
+            ).save()
+
+            return HttpResponse(f'''
+                <script>
+                    alert("장바구니에 성공적으로 담겼습니다!");
+                    location.href = '/whitevalley/cart/';
+                </script>
+            ''')
+        except:
+            return HttpResponse(f'''
+                <script>
+                    alert("이미 장바구니에 해당 상품이 존재합니다!");
+                    history.back();
+                </script>
+            ''')
+
     
     # 태그를 불러오는 파트
     tag = Tag_list.objects.filter(product=Product.objects.get(pk=pk))
@@ -276,11 +353,23 @@ def finished(request):
             all_product = Product.objects.all().order_by('-view_cnt')
             context['order_method'] = "인기순"
 
-    
+    write_pages = int(request.session.get('write_pages', 5)) # 페이징당 몇개의 페이지가 표시되는지
     page = request.GET.get('page', '1')
     paginator = Paginator(all_product, 9)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     
+    start_page = ((int)((page_obj.number - 1) / write_pages) * write_pages) + 1
+    end_page = start_page + write_pages - 1
+
+    if end_page >= paginator.num_pages:
+        end_page = paginator.num_pages
+
+    context['write_pages']= write_pages
+    context['start_page']= start_page
+    context['end_page']= end_page
+    context['page_range']= range(start_page, end_page + 1)
+
+
     context['question_list'] = page_obj
     context['products'] = page_obj
 

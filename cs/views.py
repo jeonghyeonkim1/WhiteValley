@@ -1,11 +1,12 @@
+import re
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from cs.models import Board, Inquire, B_Photo, Photo_Upload
 from user.models import User
 from shop.models import Config
-import re
-
+from django.forms import ValidationError
+from django.utils.datastructures import MultiValueDictKeyError
 
 # 공지사항 페이지
 def notice_write(request):
@@ -113,47 +114,63 @@ def event_write(request):
         'config': Config.objects.get(id=1),
         'currentpage': 'cs'
     }
+    try:
+        if request.method == 'GET':
+            return render(request, 'event_write.html', context)
 
-    if request.method == 'GET':
-        return render(request, 'event_write.html', context)
-
-    elif request.method == 'POST':
-        user = User.objects.get(id=request.session['user'])
-        tag = request.POST['event']
-        title = request.POST['title']
-        content = request.POST['content']
-        e_start = request.POST['e_start']
-        e_end = request.POST['e_end']
-        uploadedFile = request.FILES["uploadedFile"]
-
-
-        if len(re.findall(r'[^a-z | 0-9 | . | " " | ( | )]', uploadedFile.name)) > 0:
-            return HttpResponse(f'''
-                <script>
-                    alert("파일 이름에 특수문자가 포함되어 있습니다!");
-                    history.back();
-                </script>
-            ''')
-
-        photo = Photo_Upload(title=uploadedFile.name, photo=uploadedFile)
-        photo.save()
-
-        board = Board(
-            user=user, 
-            title=title, 
-            content=content, 
-            tag=tag,
-            e_start=e_start,
-            e_end=e_end,
-        )
-        
-        board.save()
-
-        B_Photo(board=board, photo=f'/static/image/{photo.title}').save()
-
-        return render(request, 'event_writeOk.html', {"pk": board.pk})
+        elif request.method == 'POST':
+            user = User.objects.get(id=request.session['user'])
+            tag = request.POST['event']
+            title = request.POST['title']
+            content = request.POST['content']
+            e_start = request.POST['e_start']
+            e_end = request.POST['e_end']
+            uploadedFile = request.FILES["uploadedFile"]
 
 
+            if len(re.findall(r'[^a-z | 0-9 | . | " " | ( | )]', uploadedFile.name)) > 0:
+                return HttpResponse(f'''
+                    <script>
+                        alert("파일 이름에 특수문자가 포함되어 있습니다!");
+                        history.back();
+                    </script>
+                ''')
+
+            photo = Photo_Upload(title=uploadedFile.name, photo=uploadedFile)
+            photo.save()
+
+            board = Board(
+                user=user, 
+                title=title, 
+                content=content, 
+                tag=tag,
+                e_start=e_start,
+                e_end=e_end,
+            )
+            
+            board.save()
+
+            B_Photo(board=board, photo=f'/static/image/{photo.title}').save()
+
+            return render(request, 'event_writeOk.html', {"pk": board.pk})
+
+    except ValidationError:
+        return HttpResponse(f'''
+            <script>
+                alert("이벤트 날짜를 지정해주세요");
+                history.back();
+            </script>
+        ''')
+
+    except MultiValueDictKeyError:
+        return HttpResponse(f'''
+            <script>
+                alert("파일을 첨부해주세요");
+                history.back();
+            </script>
+        ''')
+
+    
 def event_detail(request, pk):
     event = Board.objects.get(pk=pk)
     event.view_cnt += 1
@@ -188,6 +205,7 @@ def event_list(request):
 
 
 def event_update(request, pk):
+    
     if request.method == 'GET':
         event = Board.objects.get(pk=pk)
         context = {

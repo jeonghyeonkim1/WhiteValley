@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render, HttpResponse, redirect
 from user.models import User
 from shop.models import Config
@@ -127,7 +128,8 @@ def register(request):
                 email = email,
                 password = make_password(password),
                 contact = contact,
-                nickname = el
+                nickname = el,
+                point = Config.objects.get(id=1).sign_point
             )                
             user.save()
             # send_mail("안녕하세요. WhiteValley입니다.",
@@ -385,6 +387,11 @@ def mypage(req):
     
     context['cnt'] = cnt
     context['total'] = total
+
+    for i in Order.objects.all():
+        if datetime.datetime.now() - i.date.replace(tzinfo=None) > datetime.timedelta(days=2):
+            i.state = "배송완료"
+            i.save()
 
     return render(req, 'mypage.html', context)
 

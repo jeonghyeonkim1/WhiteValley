@@ -3,7 +3,7 @@
 {% block attachment %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
-    <script src="{% static 'js/home.js' %}"></script>
+    <script src="{% static 'js/home.js' %}?ver=1"></script>
 {% endblock %}
 
 {% block contents %}
@@ -92,7 +92,7 @@
                                 {% endif %}
                                 <input type="hidden" value="{{ best_review_img }}" id="best_photo_img">
                                 {% if best_review != "리뷰없음" %}
-                                    <input type="hidden" value="{% url 'Recommendation:reviews_detail' best_review.order.product.id %}" id="best_photo_url">
+                                    <input type="hidden" value="{% url 'Recommendation:reviews_detail' best_review.id %}" id="best_photo_url">
                                 {% endif %}
                                 {% if best_cody != "완성품없음" %}
                                     <a href="{% url 'Recommendation:finished_detail' best_cody.id %}"><img class="w-100" src="{{ best_cody.img }}" alt="best코디"></a>
@@ -149,7 +149,7 @@
                                             <h1>{{ best_seller.0 }}님</h1>
                                             <h4>상품 총 매출(누적)</h4>
                                             <hr>
-                                            <h1><strong>{{ best_seller.1 }}￦</strong></h1>
+                                            <h1><strong>￦{{ best_seller.1 }}</strong></h1>
                                         {% else %}
                                             <h1>User or Order or Product Data is Empty</h1>
                                         {% endif %}
