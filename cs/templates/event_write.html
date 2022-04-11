@@ -26,8 +26,8 @@
     </div>
     <div class="mb-3 mt-3">
         <label for="date">이벤트 날짜</label><br>
-        <input type="date" id="e_start" name="e_start" min="2022-03-01" max="9999-12-31"> ~
-        <input type="date" id="e_end" name="e_end" min="2022-03-01" max="9999-12-31">
+        <input type="date" id="e_start" name="e_start" min="2022-03-01" max="9999-12-31" required> ~
+        <input type="date" id="e_end" name="e_end" min="2022-03-01" max="9999-12-31" required>
     </div>
     <div class="mb-3 mt-3">
         <label for="content">이벤트 내용</label>
@@ -36,7 +36,7 @@
     </div>
     <div class="mb-3 mt-3">
         <label for="formFileSm" class="form-label">업로드 파일</label>
-        <input type="file" name="uploadedFile">
+        <input type="file" name="uploadedFile" required>
         {% comment %} <a href="#">{{ file.uploadedFile.url }}</a> {% endcomment %}
     </div>
 
