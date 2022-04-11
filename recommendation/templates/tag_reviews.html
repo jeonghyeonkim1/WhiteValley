@@ -298,30 +298,6 @@
   <hr style='margin-top:40px'>
 
 
-  {% comment %}<div class="container">
-    
-
-
-     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      {% for tag in tag_product %}
-      <div class="col">
-        {% if session.admin %}
-        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-          style='padding: 10px; display: block; margin-left:auto;'>
-        {% endif %}
-        <a href=#
-          onclick="window.open('{% url 'Recommendation:tag_reviews_detail' tag.id %}','name','resizable=no width=800 height=1000');return false">
-          <img alt="후기내용" src="{{tag.img}}" style='margin: 10px; width:100%' class='imgform' />
-
-          <div style='text-align:center'>
-            <button class="btn" value="">{{tag.user.nickname}} 님</button>
-          </div>
-        </a>
-      </div>
-      {% endfor %}
-    </div>
-  </div> {% endcomment %}
-
 
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-6">
     {% for tag in tag_product %}
@@ -337,8 +313,13 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
               <button type="button" class="btn btn-sm btn-outline-secondary"
-                onclick="window.open('{% url 'Recommendation:tag_reviews_detail' tag.0.id %}','name','resizable=no width=800 height=1000');return false">View</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary">장바구니담기</button>
+                onclick="location.href='{% url 'Recommendation:tag_reviews_detail' tag.0.id %}'">View</button>
+              {% if session.user %}
+              <form action="{% url 'Recommendation:tag_reviews_detail' tag.0.id %}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-outline-secondary">장바구니담기</button>
+              </form>
+              {% endif %}
             </div>
             <small class="text-muted"> {{tag.0.user.nickname}} 님</small>
           </div>
@@ -353,40 +334,49 @@
 
   {% comment %} 페이징 {% endcomment %}
   <ul class="pagination justify-content-center" style='margin:50px'>
-
+   
     {% if question_list.has_previous %}
     <li class="page-item">
-      <a class="page-link" href="?page={{ question_list.previous_page_number }}">이전</a>
+        <a class="page-link" href="?page={{ question_list.previous_page_number }}">이전</a>
     </li>
     {% else %}
     <li class="page-item disabled">
-      <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
     </li>
     {% endif %}
-
-    {% for page_number in question_list.paginator.page_range %}
-    {% if page_number == question_list.number %}
-    <li class="page-item active" aria-current="page">
-      <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-    </li>
-    {% else %}
-    <li class="page-item">
-      <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-    </li>
+    
+    {% if question_list.paginator.num_pages %}
+        {% for page in page_range %}
+            {% if question_list.number != page %}
+                <li class="page-item" aria-current="page"><a class="page-link" href="{% url 'Recommendation:tag_reviews' %}?page={{ page }}">{{ page }}</a></li>
+            {% else %}
+                <li class="page-item active" aria-current="page"><a class="page-link" href="#" title="현재페이지">{{ page }}</a></li>
+            {% endif %}
+        {% endfor %}
     {% endif %}
-    {% endfor %}
 
+    {% comment %} {% for page_number in question_list.paginator.page_range %}
+        {% if page_number == question_list.number %}
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+        {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+        {% endif %}
+    {% endfor %} {% endcomment %}
+   
     {% if question_list.has_next %}
     <li class="page-item">
-      <a class="page-link" href="?page={{ question_list.next_page_number }}">다음</a>
+        <a class="page-link" href="?page={{ question_list.next_page_number }}">다음</a>
     </li>
     {% else %}
     <li class="page-item disabled">
-      <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
     </li>
-    {% endif %}
-  </ul>
-</div>
+    {% endif %} 
+</ul>
 
 
   {% endblock %}

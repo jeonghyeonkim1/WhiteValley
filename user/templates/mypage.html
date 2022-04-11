@@ -146,7 +146,7 @@
     </div>
     <hr>
     <div class="container d-flex flex-column justify-content-center align-items-center">
-        <div class="modal fade" id="exampleModalToggle" from django.contrib.auth.hashers import make_password, check_passwordaria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal fade" id="exampleModalToggle_userinfo" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <form action="{% url 'User:info_modify' %}" method="GET" class="modal-content" id="pw_check">
                     <div class="modal-header">
@@ -164,7 +164,7 @@
                 </form>
             </div>
         </div>
-        <button data-bs-toggle="modal" href="#exampleModalToggle" class="btn btn-outline-dark border-4 pb-2 mb-3" title="내 정보 수정하기"><i class="fa-solid fa-user-astronaut fs-4 mt-2"></i></button>
+        <button data-bs-toggle="modal" href="#exampleModalToggle_userinfo" class="btn btn-outline-dark border-4 pb-2 mb-3" title="내 정보 수정하기"><i class="fa-solid fa-user-astronaut fs-4 mt-2"></i></button>
         <h4><strong>이메일: {{ user.email }}</strong></h4>
         <h4><strong>연락처: {{ user.contact }}</strong></h4>
         <h4><strong>적립금: {{ user.point }}</strong></h4>
