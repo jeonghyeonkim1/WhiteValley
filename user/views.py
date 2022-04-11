@@ -53,6 +53,7 @@ def login(request):
                 if user.password == password:
                     request.session['user'] = user.id
                     request.session['admin'] = user.admin
+
                     return HttpResponse(f'''
                         <script>
                             alert("로그인 성공하였습니다!");
@@ -507,6 +508,7 @@ def api_login(req):
     try:
         req.session['user'] = User.objects.get(email=email).id
         req.session['admin'] = User.objects.get(email=email).admin
+        req.session['kakao'] = req.POST['api_kakao']
 
         return HttpResponse(f'''
             <script>
@@ -531,6 +533,7 @@ def api_login(req):
 
         req.session['user'] = user.id
         req.session['admin'] = user.admin
+        req.session['kakao'] = req.POST['api_kakao']
 
         return HttpResponse(f'''
             <script>
