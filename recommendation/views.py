@@ -256,8 +256,10 @@ def product_reviews_delete(request, id):
 def tag_reviews(request):
     
     list = []
+    tag_list = {}
     for i in Product.objects.all():
         list.append((i, i.tag_list_set.all()[0].name))
+        tag_list[i.tag_list_set.all()[0].name] = tag_list.get(i.tag_list_set.all()[0].name, 0) + 1
     
     write_pages = int(request.session.get('write_pages', 5)) # 페이징당 몇개의 페이지가 표시되는지
     page = request.GET.get('page', '1')
@@ -270,8 +272,9 @@ def tag_reviews(request):
     if end_page >= paginator.num_pages:
         end_page = paginator.num_pages
 
+
     context = {
-       'session': request.session,
+        'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
         'question_list': page_obj,
@@ -283,7 +286,8 @@ def tag_reviews(request):
 
     }
 
-    
+    for i in Tag_list.objects.all():
+        context[i.name] = tag_list.get(i.name, 1) * 50
 
     return render(request, 'tag_reviews.html',context)
 
