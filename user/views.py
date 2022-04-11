@@ -88,7 +88,17 @@ def logout(request):
     del(request.session["user"])
     del(request.session["admin"])
 
-    return redirect('/whitevalley/')
+    try:
+        del(request.session['kakao'])
+    except:
+        pass
+
+    return HttpResponse(f'''
+        <script>
+            alert("로그아웃에 성공하였습니다!");
+            location.href = '/whitevalley/';
+        </script>
+    ''')
 
 def register(request):
 
@@ -548,13 +558,26 @@ def api_login(req):
             except:
                 break
 
-        user = User(email=email, nickname=nickname, password=password, contact='010-0000-0000')
+        user = User(
+            email=email,
+            nickname=nickname,
+            password=password,
+            contact='010-0000-0000',
+            point = Config.objects.get(id=1).sign_point
+        )
 
         user.save()
 
         req.session['user'] = user.id
         req.session['admin'] = user.admin
         req.session['kakao'] = req.POST['api_kakao']
+
+        subject, from_email, to = '안녕하세요. Plain Vally입니다.', 'dbswlrl2@naver.com', user.email
+        text_content = 'This is an important message.'
+        html_content = '<br><h1>회원가입 완료<h1><hr><br><strong>White Vally 회원가입을 축하드립니다.</strong><br>신규 회원 가입 해택으로 적립금 0000pt 지급되었습니다.<br>지금 바로, White Valley <a style="text-decoration:none;" href="http://127.0.0.1:8000/whitevalley/user/login/"> 로그인</a> 후 마이페이지에서 확인해보세요.<br><br><hr><h6>본 메일은 발신 전용 메일이며, 회신되지 않으므로 문의사항은 홈페이지 내 <a style="text-decoration:none;" href="http://127.0.0.1:8000/whitevalley/cs/faq/list/">고객센터</a>를 이용해주세요.<br>고객센터 TEL: 0000-0000<br>주식회사 Plain Valley | 서울특별시 강남구 신사동 640-2 로빈명품관  | 사업자등록번호 : 000-00-0000<br>| 대표 : OOO COPYRIGHTS (C)Plain Valley ALL RIGHTS RESERVED.<h6>'
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
 
         return HttpResponse(f'''
             <script>
