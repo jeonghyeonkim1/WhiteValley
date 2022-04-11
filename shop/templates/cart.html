@@ -12,19 +12,15 @@
     <script>
        $(function () {
             $("[name='amount']").change(function () {
-                console.log($("#original_price").val())
                 for (let i = 0; i < $("[name='amount']").length; i++) {
                     if ($("[name='amount']")[i] == $(this)[0]) {
-                        $("[name='price']")[i].value = $(this).val() * $("#original_price").val()
-                        console.log($("[name='amount']"))
-                        console.log($(this).val())
-                        console.log($("#original_price").val())
+                        $("[name='price']")[i].value = $(this).val() * $("[name='original_price']")[i].value
                     }
                 }
 
                 
 
-                // $(this).parent().submit();
+                $(this).parent().submit();
             })
 
             var cnt2 = 0
@@ -49,7 +45,7 @@
             var cnt = 0
             for (let i = 0; i < $("[name='amount']").length; i++) {
                 if ($("[name='item_selector']")[i].checked) {
-                    $("[name='price']")[i].value = $("[name='amount']")[i].value * $("#original_price").val();
+                    $("[name='price']")[i].value = $("[name='amount']")[i].value * $("[name='original_price']")[i].value;
                 } else {
                     $("[name='price']")[i].value = 0;
                 }
@@ -161,7 +157,7 @@
                             <div class="p-3 d-flex justify-content-center align-items-center text-light">
                                 <div class="input-group">
                                     <span class="input-group-text text-center bg-dark text-white fw-bold border-0"></span>
-                                        <input type="hidden" value="{{ cart.product.type.price }}" id="original_price">
+                                        <input type="hidden" value="{{ cart.product.type.price }}" name="original_price">
                                         <input type="text" value="{{ cart.product.type.price }}" name="price" class="form-control text-center bg-dark text-white fw-bold fs-3" aria-label="Amount (to the nearest dollar)" disabled>
                                     <span class="input-group-text text-center bg-dark text-white fw-bold">￦</span>
                                 </div>

@@ -9,6 +9,191 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
 
+    <script>
+        function sample4_execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                    // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var roadAddr = data.roadAddress; // 도로명 주소 변수
+                    var extraRoadAddr = ''; // 참고 항목 변수
+
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraRoadAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                    extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraRoadAddr !== ''){
+                        extraRoadAddr = ' (' + extraRoadAddr + ')';
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('sample4_postcode').value = data.zonecode;
+                    document.getElementById("sample4_roadAddress").value = roadAddr;
+                    document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+                    document.getElementById("sample4_detailAddress").focus();
+                    
+                    // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+                    if(roadAddr !== ''){
+                        document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+                    } else {
+                        document.getElementById("sample4_extraAddress").value = '';
+                    }
+
+                    var guideTextBox = document.getElementById("guide");
+                    // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                    {% comment %} if(data.autoRoadAddress) {
+                        var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                        guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                        guideTextBox.style.display = 'block';
+
+                    } else if(data.autoJibunAddress) {
+                        var expJibunAddr = data.autoJibunAddress;
+                        guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                        guideTextBox.style.display = 'block';
+                    } else {
+                        guideTextBox.innerHTML = '';
+                        guideTextBox.style.display = 'none';
+                    } {% endcomment %}
+                }
+            }).open();
+        }
+        
+        $(function() {
+            function re(){
+                document.getElementsByName['r1'].checked = false;
+            }
+            function ch1(e){
+                $("#pay1").css("display","block");
+                $("#pay2").css("display","none");
+                $("#pay3").css("display","none");
+                $("#pay4").css("display","none");
+            }
+            function ch2(e){
+                $("#pay1").css("display","none");
+                $("#pay2").css("display","block");
+                $("#pay3").css("display","none");
+                $("#pay4").css("display","none");
+            }
+            function ch3(e){
+                $("#pay1").css("display","none");
+                $("#pay2").css("display","none");
+                $("#pay3").css("display","block");
+                $("#pay4").css("display","none");
+            }
+            function ch4(e){
+                $("#pay1").css("display","none");
+                $("#pay2").css("display","none");
+                $("#pay3").css("display","none");
+                $("#pay4").css("display","block");
+            }
+
+            $("#userequal").click(function() {
+                $("[name='receiver']").val($("[name='user']").val());
+                $("#equalcontact").val($("#usernum").val());
+                for (var i = 0; i < $("#user_adress").val().split("_").length; i++) {
+                    $(`[name='adress${i}']`).val($("#user_adress").val().split("_")[i])
+                }
+            })
+
+            $("#selbox1").change(function(){
+                if($(this).val() == '기타사항'){
+                    $("#direct1")
+                        .attr("required", true)
+                        .show();
+                } else {
+                    $("#direct1")
+                        .attr("required", false)
+                        .val("")
+                        .hide();
+                }
+            });
+            
+            $("#selbox2").change(function(){
+                if($(this).val() == '기타사항'){
+                    $("#direct2")
+                        .attr("required", true)
+                        .show();
+                } else {
+                    $("#direct2")
+                        .attr("required", false)
+                        .val("")
+                        .hide();
+                }
+            });
+
+            // 정현
+            var original_total_price = $("#total_price").val()
+            var original_point = $("#own_point").val()
+            $(function() {
+                $("#use_point").on("keyup", function() {
+                    $("#own_point").val(parseInt(original_point - $("#use_point").val()))
+
+                    if ($("#use_point").val() == "") {
+                        $("#total_price").val(original_total_price)
+                    }
+
+                    if (parseInt($("#use_point").val()) <= parseInt($("[name='max_point']").val()) &&
+                        parseInt($("#total_price").val()) >= parseInt($("[name='min_amount']").val())) {
+                        $("#total_price").val(parseInt(original_total_price - $("#use_point").val()))
+                    } 
+
+                    if (original_total_price < parseInt($("[name='min_amount']").val())) {
+                        alert(parseInt($("#total_price").val()))
+                        alert(`총 구매액이 ${$("[name='min_amount']").val()}원 이상일 때 포인트를 사용하실 수 있습니다!`);
+                        $("#total_price").val(parseInt(original_total_price))
+                        $("#use_point").val("")
+                        $("#own_point").val(parseInt(original_point))
+                        $("#total_warning div:last").hide()
+                        $("#total_warning div:first").show()
+                    } else if (parseInt($("#use_point").val()) <= 0) {
+                        alert("0원 이상을 기입해주세요!");
+                        $("#total_price").val(parseInt(original_total_price))
+                        $("#use_point").val("")
+                        $("#own_point").val(parseInt(original_point))
+                        $("#total_warning div:last").hide()
+                        $("#total_warning div:first").show()
+                    } else if (parseInt($("#use_point").val()) > parseInt($("[name='max_point']").val())) {
+                        alert(`최대 ${$("[name='max_point']").val()} 포인트까지 사용이 가능합니다!`);
+                        $("#total_price").val(parseInt(original_total_price))
+                        $("#use_point").val("")
+                        $("#own_point").val(parseInt(original_point))
+                        $("#total_warning div:last").hide()
+                        $("#total_warning div:first").show()
+                    } else if (parseInt($("#use_point").val()) > original_point) {
+                        alert(`보유하신 포인트가 부족합니다!`);
+                        $("#total_price").val(parseInt(original_total_price))
+                        $("#use_point").val("")
+                        $("#own_point").val(parseInt(original_point))
+                        $("#total_warning div:last").hide()
+                        $("#total_warning div:first").show()
+                    }
+                })
+
+                $("#pay_form").on('submit', function() {
+                    if (!$("#pay_checking")[0].checked) {
+                        alert("동의 항목에 체크해주세요!");
+                        return false;
+                    }
+                    
+                    if (confirm("구매를 확정하시겠습니까?")) {
+                        return true;
+                    }
+
+                    return false;
+                })
+            })
+        })
+        
+    </script>
+
 {% endblock %}
 
 {% block contents %}
@@ -261,184 +446,5 @@
 <input type="hidden" value="{{ config.min_amount }}" name="min_amount">
 <input type="hidden" value="{{ config.max_point }}" name="max_point">
 <p class="padd"></p>
-
-<script>
-    function sample4_execDaumPostcode() {
-        new daum.Postcode({
-            oncomplete: function(data) {
-                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
-                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                var roadAddr = data.roadAddress; // 도로명 주소 변수
-                var extraRoadAddr = ''; // 참고 항목 변수
-
-                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                    extraRoadAddr += data.bname;
-                }
-                // 건물명이 있고, 공동주택일 경우 추가한다.
-                if(data.buildingName !== '' && data.apartment === 'Y'){
-                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                }
-                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-                if(extraRoadAddr !== ''){
-                    extraRoadAddr = ' (' + extraRoadAddr + ')';
-                }
-
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('sample4_postcode').value = data.zonecode;
-                document.getElementById("sample4_roadAddress").value = roadAddr;
-                document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
-                document.getElementById("sample4_detailAddress").focus();
-                
-                // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
-                if(roadAddr !== ''){
-                    document.getElementById("sample4_extraAddress").value = extraRoadAddr;
-                } else {
-                    document.getElementById("sample4_extraAddress").value = '';
-                }
-
-                var guideTextBox = document.getElementById("guide");
-                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
-                {% comment %} if(data.autoRoadAddress) {
-                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
-                    guideTextBox.style.display = 'block';
-
-                } else if(data.autoJibunAddress) {
-                    var expJibunAddr = data.autoJibunAddress;
-                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
-                    guideTextBox.style.display = 'block';
-                } else {
-                    guideTextBox.innerHTML = '';
-                    guideTextBox.style.display = 'none';
-                } {% endcomment %}
-            }
-        }).open();
-    }
-    
-
-    function re(){
-        document.getElementsByName['r1'].checked = false;
-    }
-    function ch1(e){
-        $("#pay1").css("display","block");
-        $("#pay2").css("display","none");
-        $("#pay3").css("display","none");
-        $("#pay4").css("display","none");
-    }
-    function ch2(e){
-        $("#pay1").css("display","none");
-        $("#pay2").css("display","block");
-        $("#pay3").css("display","none");
-        $("#pay4").css("display","none");
-    }
-    function ch3(e){
-        $("#pay1").css("display","none");
-        $("#pay2").css("display","none");
-        $("#pay3").css("display","block");
-        $("#pay4").css("display","none");
-    }
-    function ch4(e){
-        $("#pay1").css("display","none");
-        $("#pay2").css("display","none");
-        $("#pay3").css("display","none");
-        $("#pay4").css("display","block");
-    }
-
-    $("#userequal").click(function() {
-        $("[name='receiver']").val($("[name='user']").val());
-        $("#equalcontact").val($("#usernum").val());
-        for (var i = 0; i < $("#user_adress").val().split("_").length; i++) {
-            $(`[name='adress${i}']`).val($("#user_adress").val().split("_")[i])
-        }
-    })
-
-    $("#selbox1").change(function(){
-        if($(this).val() == '기타사항'){
-            $("#direct1")
-                .attr("required", true)
-                .show();
-        } else {
-            $("#direct1")
-                .attr("required", false)
-                .val("")
-                .hide();
-        }
-    });
-    
-    $("#selbox2").change(function(){
-        if($(this).val() == '기타사항'){
-            $("#direct2")
-                .attr("required", true)
-                .show();
-        } else {
-            $("#direct2")
-                .attr("required", false)
-                .val("")
-                .hide();
-        }
-    });
-
-    // 정현
-    var original_total_price = $("#total_price").val()
-    var original_point = $("#own_point").val()
-    $(function() {
-        $("#use_point").on("keyup", function() {
-            $("#own_point").val(parseInt(original_point - $("#use_point").val()))
-
-            if (parseInt($("#use_point").val()) <= parseInt($("[name='max_point']").val()) &&
-                parseInt($("#total_price").val()) >= parseInt($("[name='min_amount']").val())) {
-                $("#total_price").val(parseInt(original_total_price - $("#use_point").val()))
-            } 
-
-            if (original_total_price < parseInt($("[name='min_amount']").val())) {
-                alert(parseInt($("#total_price").val()))
-                alert(`총 구매액이 ${$("[name='min_amount']").val()}원 이상일 때 포인트를 사용하실 수 있습니다!`);
-                $("#total_price").val(parseInt(original_total_price))
-                $("#use_point").val("")
-                $("#own_point").val(parseInt(original_point))
-                $("#total_warning div:last").hide()
-                $("#total_warning div:first").show()
-            } else if (parseInt($("#use_point").val()) <= 0) {
-                alert("0원 이상을 기입해주세요!");
-                $("#total_price").val(parseInt(original_total_price))
-                $("#use_point").val("")
-                $("#own_point").val(parseInt(original_point))
-                $("#total_warning div:last").hide()
-                $("#total_warning div:first").show()
-            } else if (parseInt($("#use_point").val()) > parseInt($("[name='max_point']").val())) {
-                alert(`최대 ${$("[name='max_point']").val()} 포인트까지 사용이 가능합니다!`);
-                $("#total_price").val(parseInt(original_total_price))
-                $("#use_point").val("")
-                $("#own_point").val(parseInt(original_point))
-                $("#total_warning div:last").hide()
-                $("#total_warning div:first").show()
-            } else if (parseInt($("#use_point").val()) > original_point) {
-                alert(`보유하신 포인트가 부족합니다!`);
-                $("#total_price").val(parseInt(original_total_price))
-                $("#use_point").val("")
-                $("#own_point").val(parseInt(original_point))
-                $("#total_warning div:last").hide()
-                $("#total_warning div:first").show()
-            }
-        })
-
-        $("#pay_form").on('submit', function() {
-            if (!$("#pay_checking")[0].checked) {
-                alert("동의 항목에 체크해주세요!");
-                return false;
-            }
-            
-            if (confirm("구매를 확정하시겠습니까?")) {
-                return true;
-            }
-
-            return false;
-        })
-    })
-</script>
 
 {% endblock %}
