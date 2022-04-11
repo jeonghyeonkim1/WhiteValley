@@ -12,13 +12,19 @@
     <script>
        $(function () {
             $("[name='amount']").change(function () {
+                console.log($("#original_price").val())
                 for (let i = 0; i < $("[name='amount']").length; i++) {
                     if ($("[name='amount']")[i] == $(this)[0]) {
-                        $("[name='price']")[i].value = $(this).val() * $("#orginal_price").val()
+                        $("[name='price']")[i].value = $(this).val() * $("#original_price").val()
+                        console.log($("[name='amount']"))
+                        console.log($(this).val())
+                        console.log($("#original_price").val())
                     }
                 }
 
-                $(this).parent().submit();
+                
+
+                // $(this).parent().submit();
             })
 
             var cnt2 = 0
@@ -43,7 +49,7 @@
             var cnt = 0
             for (let i = 0; i < $("[name='amount']").length; i++) {
                 if ($("[name='item_selector']")[i].checked) {
-                    $("[name='price']")[i].value = $("[name='amount']")[i].value * $("#orginal_price").val();
+                    $("[name='price']")[i].value = $("[name='amount']")[i].value * $("#original_price").val();
                 } else {
                     $("[name='price']")[i].value = 0;
                 }
@@ -138,8 +144,8 @@
                                     <option value="6" {% if cart.amount == 6 %}selected{% endif %}>6</option>
                                     <option value="7" {% if cart.amount == 7 %}selected{% endif %}>7</option>
                                     <option value="8" {% if cart.amount == 8 %}selected{% endif %}>8</option>
-                                    <option value="8" {% if cart.amount == 9 %}selected{% endif %}>9</option>
-                                    <option value="8" {% if cart.amount == 10 %}selected{% endif %}>10</option>
+                                    <option value="9" {% if cart.amount == 9 %}selected{% endif %}>9</option>
+                                    <option value="10" {% if cart.amount == 10 %}selected{% endif %}>10</option>
                                 </select>
                             </form>
                         </div>
@@ -154,8 +160,8 @@
                         <div class="bg-dark text-white d-flex justify-content-end align-items-center p-3">
                             <div class="p-3 d-flex justify-content-center align-items-center text-light">
                                 <div class="input-group">
-                                    <span class="input-group-text text-center bg-dark text-white fw-bold border-0">해당 상품 현재 가격:</span>
-                                        <input type="hidden" value="{{ cart.product.type.price }}" id="orginal_price">
+                                    <span class="input-group-text text-center bg-dark text-white fw-bold border-0"></span>
+                                        <input type="hidden" value="{{ cart.product.type.price }}" id="original_price">
                                         <input type="text" value="{{ cart.product.type.price }}" name="price" class="form-control text-center bg-dark text-white fw-bold fs-3" aria-label="Amount (to the nearest dollar)" disabled>
                                     <span class="input-group-text text-center bg-dark text-white fw-bold">￦</span>
                                 </div>
