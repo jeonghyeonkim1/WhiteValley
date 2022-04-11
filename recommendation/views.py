@@ -21,14 +21,9 @@ def reviews(request):
     }
    
     try:
-        context['orders'] = Order.objects.filter(user=User.objects.get(id=request.session['user'])).order_by('-date')
+        context['orders'] = Order.objects.filter(user=request.session['user']).order_by('-date')
     except:
-        return HttpResponse(f'''
-            <script>
-            alert('로그인이 필요합니다')
-            location.href='/whitevalley/user/login/'
-            </script>
-        ''')
+        pass
 
     List = []
 
@@ -361,7 +356,15 @@ def finished_detail(request,pk):
     return render(request, 'finished_detail.html',context)
 
 
-   
+def finished_delete(req, id):
+    Product.objects.get(id=id).delete()
+
+    return HttpResponse(f'''
+        <script>
+            alert("완성품이 삭제되었습니다!");
+            location.href = '/whitevalley/shopping/finished/';
+        </script>
+    ''')
           
 
     

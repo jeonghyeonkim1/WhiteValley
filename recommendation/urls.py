@@ -14,4 +14,5 @@ urlpatterns = [
     path('tag_reviews_detail/<int:pk>/',views.tag_reviews_detail, name='tag_reviews_detail'),
     path('finished/',views.finished, name='finished'),
     path('finished_detail/<int:pk>/',views.finished_detail, name='finished_detail'),
+    path('finished_delete/<int:id>/',views.finished_delete, name='finished_delete'),
 ]
