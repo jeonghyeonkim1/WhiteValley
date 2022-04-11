@@ -132,12 +132,6 @@ def register(request):
                 point = Config.objects.get(id=1).sign_point
             )                
             user.save()
-            # send_mail("안녕하세요. WhiteValley입니다.",
-            # "안녕하세요. 회원가입을 축하드립니다. 정상적으로 이용이 가능합니다.",
-            # "dbswlrl2@naver.com",
-            # [user.email],
-            # # html_message='hi.html',
-            # fail_silently=False)
 
             subject, from_email, to = '안녕하세요. Plain Vally입니다.', 'dbswlrl2@naver.com', user.email
             text_content = 'This is an important message.'
