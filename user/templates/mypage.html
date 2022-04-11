@@ -167,9 +167,42 @@
             <div>
                 {% if reviews != "리뷰없음" %}
                     {% for review in reviews %}
-                        
-                        <input type="text" value="{{ review.title }}">
-    
+                    <button class="btn btn-dark" style="margin-left:15px;" disabled>리뷰</button>
+                    <div  style="border:2px solid rgba(212, 212, 212, 0.5); border-radius:5px; padding: 10px; margin:20px 0 50px 20px;">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">등록일자</span>
+                            </div>
+                            <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{ review.0.reg_date }}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">제목</span>
+                            </div>
+                            <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{ review.0.title }}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">내용</span>
+                            </div>
+                            <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{ review.0.contents }}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">포토</span>
+                            </div>
+                            <div style="width:500px;">
+                                <img class="form-control" aria-describedby="basic-addon1" src="{{ review.1.photo }}">
+                            </div>
+                            
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">조회수</span>
+                            </div>
+                            <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{ review.0.view_cnt }}">
+                        </div>
+                    </div>
                     {% endfor %}
                 {% else %}
                         <h3>작성된 리뷰가 없습니다.</h3>
@@ -184,30 +217,31 @@
       </div>
     </div>
 
-    <div class="modal fade" id="exampleModalToggle_f" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-          <div class="modal-content">
+    <div class="modal fade" id="exampleModalToggle_f" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+    tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
             <div class="modal-header">
-              <h3>{{ user }} 님 완성품 목록</h3>  
+                <h3>{{ user }} 님 완성품 목록</h3>
             </div>
             <div class="modal-body">
-              <div>
-                  {% if reviews != "완성품없음" %}
-                      {% for review in reviews %}
-                            <input type="text" value="{{ review.title }}">
-                      {% endfor %}
-                  {% else %}
-                          <h3>커스텀된 완성품이 없습니다.</h3>
-                  {% endif %}
-                  
-              </div>
+                <div>
+                    {% if products == "완성품없음" %}
+                        <h3>커스텀된 완성품이 없습니다.</h3>
+                    {% else %}
+                        {% for product in products %}
+                            <img src="{{product.img}}">
+                        {% endfor %}
+                    {% endif %}
+
+                </div>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-dark" href=""  data-bs-dismiss="modal">확인</button>
+                <button class="btn btn-dark" href="" data-bs-dismiss="modal">확인</button>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
+    </div>
     
 
     <div class="w-100 p-4 bg-dark rounded-pill text-light d-flex flex-column justify-content-around align-items-center">
