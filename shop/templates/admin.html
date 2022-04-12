@@ -103,6 +103,20 @@
             </div>
             <div class="w-100 right_info">
                 <div class="row">
+                    <label for="" class="col-sm-2 col-form-label text-center"><strong>태그 노출 여부</strong></label>
+                    <div class="col-sm-10 d-flex">
+                        <input type="hidden" name="tag_expose" value="{{ config.tag_show }}">
+                        {% if config.tag_show %}
+                            <button type="button" class="w-50 btn btn-primary fw-bold" id="tag_show" disabled>SHOW</button>
+                            <button type="button" class="w-50 btn btn-outline-danger fw-bold" id="tag_hide">HIDE</button>
+                        {% else %}
+                            <button type="button" class="w-50 btn btn-outline-primary fw-bold" id="tag_show">SHOW</button>
+                            <button type="button" class="w-50 btn btn-danger fw-bold" id="tag_hide" disabled>HIDE</button>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
                     <label for="" class="col-sm-2 col-form-label text-center"><strong>사이트명</strong></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" value="{{ config.site_name }}" name="site_name">
