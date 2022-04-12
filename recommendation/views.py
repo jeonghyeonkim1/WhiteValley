@@ -10,6 +10,13 @@ from django.core.paginator import Paginator
 from math import ceil
 from django.http import Http404, HttpResponse
 import re
+import urllib 
+from urllib.parse import quote_plus 
+from urllib.parse import unquote_plus
+
+
+
+
 
 # 리뷰 리스트
 def reviews(request):
@@ -257,12 +264,23 @@ def tag_reviews(request):
     
     list = []
     tag_list = {}
-    for i in Product.objects.all():
-        list.append((i, i.tag_list_set.all()[0].name))
-        tag_list[i.tag_list_set.all()[0].name] = tag_list.get(i.tag_list_set.all()[0].name, 0) + 1
+
+    if len(request.GET.getlist("tag",None)) == 0:
+        for i in Product.objects.all():
+            list.append((i, i.tag_list_set.all()[0].name))
+            tag_list[i.tag_list_set.all()[0].name] = tag_list.get(i.tag_list_set.all()[0].name, 0) + 1
+    else:
+        for i in Product.objects.all():
+            tag1 = i.tag_list_set.all()[0].name
+            if tag1==request.GET.getlist("tag",None)[0]:
+                list.append((i, i.tag_list_set.all()[0].name))
+                tag_list[i.tag_list_set.all()[0].name] = tag_list.get(i.tag_list_set.all()[0].name, 0) + 1
+        
+    
     
     write_pages = int(request.session.get('write_pages', 5)) # 페이징당 몇개의 페이지가 표시되는지
     page = request.GET.get('page', '1')
+    
     paginator = Paginator(list, 12)  # 페이지당 몇개씩 보여주기
     page_obj = paginator.get_page(page)
     
@@ -419,7 +437,7 @@ def finished_detail(request,pk):
     return render(request, 'finished_detail.html',context)
 
 
-def finished_delete(req, id):
+def finished_delete(request, id):
     Product.objects.get(id=id).delete()
 
     return HttpResponse(f'''
