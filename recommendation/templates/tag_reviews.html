@@ -29,12 +29,43 @@
     $(".tag_filter_btn").children().each(function () {
       $(this).click(function () {
         $("#tag_filter_input").val($(this).text().slice(1))
+        console.log(window.location.href)
+        if(window.location.href.indexOf('?') == -1){
+          window.location.href=window.location.href+'?page=1&tag='+$(this).text().slice(1)
+        }
+        else {
+          window.location.href=window.location.href.split('?')[0]
+            +'?page=1'+'&tag='+$(this).text().slice(1)
+          }
+        
 
-        $(".tag_filter").filter(function () {
-          $(this).toggle($(this).find("p").text().indexOf($("#tag_filter_input").val()) > -1)
-        })
       })
     })
+  })
+
+
+
+  $(function () {
+    $($('.page-link')[0]).click(function(){
+
+
+    })
+      $($('.page-link')[$('.page-link').length-1]).click(function(){
+
+      })
+    for(let i=1; i<$('.page-link').length-1; i++){
+      $($('.page-link')[i]).click(function(){
+        const baseurl = window.location.href.split('?')[0]
+        const tag = window.location.href.split('&')[1]
+        if (tag !== undefined){
+          window.location.href=baseurl + '?page='+ i +'&'+tag
+        }
+        
+        else{
+          window.location.href=baseurl + '?page='+ i
+        }
+      })
+    }
   })
 </script>
 
@@ -343,7 +374,7 @@
     {% for page in page_range %}
     {% if question_list.number != page %}
     <li class="page-item" aria-current="page"><a class="page-link"
-        href="{% url 'Recommendation:tag_reviews' %}?page={{ page }}">{{ page }}</a></li>
+        href='javascript:void(0)'>{{ page }}</a></li>
     {% else %}
     <li class="page-item active" aria-current="page"><a class="page-link" href="#" title="현재페이지">{{ page }}</a></li>
     {% endif %}

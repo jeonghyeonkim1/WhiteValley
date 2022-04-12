@@ -10,18 +10,8 @@ $(function() {
         $(this).parent().submit();
     })
 })
-function removeCheck() {
 
-    if (confirm("정말 삭제하시겠습니까??") == true){    //확인
-   
-        document.removefrm.submit();
-   
-    }else{   //취소
-   
-        return false;
-   
-    }
-   }
+
 </script>
 <style>
     .termbtn{
@@ -90,8 +80,8 @@ function removeCheck() {
                                 </form>
                             {% endif %}
                             {% if session.admin %}
-                                <form action="{% url 'Recommendation:finished_delete' product.id %}">
-                                    <button class="btn btn-danger" onclick='removeCheck()'>삭제</button>
+                                <form action="{% url 'Recommendation:finished_delete' product.id %} ">
+                                    <button class="btn btn-danger" onclick="return confirm('해당 게시물을 삭제하시겠습니까?')">삭제</button>
                                 </form>
                             {% endif %}
                         </div>
