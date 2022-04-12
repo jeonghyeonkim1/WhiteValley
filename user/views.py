@@ -400,15 +400,17 @@ def mypage(req):
     total = 0
     list = []
 
-    for i in orders:
-        cnt += i.amount
-        total += i.product.type.price * i.amount
-        list.append([Review.objects.get(order = i), R_photo.objects.get(review = Review.objects.get(order = i))])
-    
+    try:
+        for i in orders:
+            cnt += i.amount
+            total += i.product.type.price * i.amount
+            list.append([Review.objects.get(order = i), R_photo.objects.get(review = Review.objects.get(order = i))])
+        context['reviews'] = list
+    except:
+        context['reviews'] = "리뷰없음"
     
         
-    context['reviews'] = list
-    # context['r_photo'] = list2
+    
     context['cnt'] = cnt
     context['total'] = total
 

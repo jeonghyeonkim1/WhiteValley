@@ -10,6 +10,7 @@ from shop.models import Config, Co_account
 import datetime
 from django.core.paginator import Paginator
 from django.db.models import Max, Min, Avg, Sum
+import itertools
 
 # HOME --------------------------------------------------------------------------------
 def home(req):
@@ -52,8 +53,7 @@ def home(req):
         context['best_cody_count'] = Order.objects.values('product').annotate(count=Count('product'))[0]['count']
         context['best_cody_tag'] = Tag_list.objects.get(product=best_cody)
     except:
-        print("bestcody")
-        pass
+        context['best_cody'] = "완성품없음"
     
     # best tag
     try:
@@ -62,10 +62,9 @@ def home(req):
             for t2 in t1.product.all().order_by('-view_cnt'):
                 tag_dict[t1.name] = t2
         context['all_tags'] = tag_dict.items()
-        context['spring'] = tag_dict['봄']
+        context['first_tag'] = tag_dict[next(iter(tag_dict))]
     except:
-        print("besttag")
-        pass
+        context['first_tag'] = "태그없음"
 
     # best review
     try:
@@ -73,24 +72,41 @@ def home(req):
         context['best_review_img'] = R_photo.objects.get(review=Review.objects.all().order_by('-view_cnt')[0]).photo
         context['best_review_tag'] = Tag_list.objects.get(product=Review.objects.all().order_by('-view_cnt')[0].order.product)
     except:
-        print("bestreview")
-        pass
+        context['best_review'] = "리뷰없음"
 
     # best seller
-    try:
-        best_seller = Order.objects.values('product').annotate(Sum('amount')).order_by('-amount')
+    best_seller = Order.objects.values('product').annotate(Sum('amount')).order_by('-amount')
 
-        Dict = {}
+    Dict = {}
 
-        for i in best_seller:
-            Dict[Product.objects.get(id=i['product']).user] = Dict.get(Product.objects.get(id=i['product']).user, 0) + Product.objects.get(id=i['product']).type.price * i['amount__sum']
+    for i in best_seller:
+        Dict[Product.objects.get(id=i['product']).user] = Dict.get(Product.objects.get(id=i['product']).user, 0) + Product.objects.get(id=i['product']).type.price * i['amount__sum']
 
-        sorted_dict = sorted(Dict.items(), key = lambda item: item[1])
+    sorted_dict = sorted(Dict.items(), key = lambda item: item[1])
 
-        context['best_seller'] = sorted_dict[0]
-    except:
-        print("best seller")
-        pass
+    cnt = 0
+    while 1:
+        try:
+            sorted_dict[cnt]
+        except:
+            break
+
+        if sorted_dict[cnt][0].prized == False:
+            context['best_seller'] = sorted_dict[cnt]
+            print(sorted_dict[cnt])
+            today = datetime.date.today()
+            first_day = today.replace(day=1)
+            if first_day.strftime('%d') == today.strftime('%d'):
+                
+                user = User.objects.get(id=sorted_dict[cnt][0].id)
+                user.point = user.point + Config.objects.get(id=1).best_point
+                user.prized = True
+                user.save()
+                
+                break
+
+        cnt += 1
+
 
     cookie_name = 'visited'
     cookie_value = True
@@ -113,31 +129,21 @@ def home(req):
 def cart(req):
     try:
         req.session['user']
-        try:
-            context = {
-                'session': req.session,
-                'config': Config.objects.get(id=1),
-                'currentpage': 'cart',
-                'carts': Cart.objects.filter(user=User.objects.get(id=req.session['user'])),
-                'current_time': datetime.datetime.now() + datetime.timedelta(days=2),
-            }
+        context = {
+            'session': req.session,
+            'config': Config.objects.get(id=1),
+            'currentpage': 'cart',
+            'carts': Cart.objects.filter(user=User.objects.get(id=req.session['user'])),
+            'current_time': datetime.datetime.now() + datetime.timedelta(days=2),
+        }
 
-            if req.method == "POST":
-                req.POST['product_tag']
-                cart = Cart.objects.filter(user=User.objects.get(id=req.session['user']))
-                for i in cart:
-                    i.checked = req.POST['item_all_bool']
-                    i.save()
+        if req.method == "POST":
+            cart = Cart.objects.filter(user=User.objects.get(id=req.session['user']))
+            for i in cart:
+                i.checked = req.POST['item_all_bool']
+                i.save()
 
-            return render(req, 'cart.html', context)
-        
-        except:
-            return HttpResponse(f'''
-                <script>
-                    alert("구매하실 물품이 없습니다!");
-                    location.href='/whitevalley/shopping/loading2/';
-                </script>
-            ''')
+        return render(req, 'cart.html', context)
     
     except:
         return HttpResponse(f'''
@@ -272,7 +278,7 @@ def admin_member(req):
             if req.session['admin']:
                 context['date'] = "전체"
                 context['order'] = "가입일순"
-                context['users'] = User.objects.all().order_by('-reg_date')
+                context['users'] = User.objects.filter(admin=False).order_by('-reg_date')
                 page = int(req.GET.get('page', 1))
             else:
                 return HttpResponse(f'''
