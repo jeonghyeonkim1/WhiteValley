@@ -340,7 +340,6 @@ def loading(request):
 
     product.save()
 
-    # 태그 추가요망
     tag = Tag_list(name=request.POST['product_tag'])
 
     tag.save()

@@ -120,47 +120,48 @@
     <hr>
 </div>
 
-<form action="{% url 'Recommendation:product_reviews' product.id %}" method="POST" enctype="multipart/form-data">
+<form action="{% url 'Recommendation:product_reviews' order.id %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-<div class="review-table">
-    <div class="review-table__cell review-intake-head title">
-        <img src="{{product.img}}"
-            width="200" height="200" title="구매상품" alt="구매상품" />
+    <div class="review-table">
+        <div class="review-table__cell review-intake-head title">
+            <img src="{{order.product.img}}"
+                width="200" height="200" title="구매상품" alt="구매상품" />
 
-        <span>
-            <div class="review-intake-form">상품내역 : {{product.type}}</div>
-            <div class="review-intake-form">상품옵션 : {{product.size}}</div>
-        </span>
+            <span>
+                <div class="review-intake-form">상품내역 : {{order.product.type}}</div>
+                <div class="review-intake-form">상품옵션 : {{order.product.size}}</div>
+            </span>
+        </div>
+        <hr style='color: black'>
+    </div>
+    <div class="mb-3 mt-3">
+        <label for="title">제목:</label>
+        <input type="text" class="form-control" id="title" placeholder="리뷰제목을 입력하세요" name="title" required>
+    </div>
+
+
+    <div class="mb-3 mt-3">
+        <label class='my__rev' for="contents">상세리뷰</label>
+        <textarea class="form-control" rows="5" id="contents" placeholder="상품 품질에 대한 고객님의 솔직한 리뷰를 남겨주세요." name="contents"
+            required></textarea>
     </div>
     <hr style='color: black'>
-</div>
-<div class="mb-3 mt-3">
-    <label for="title">제목:</label>
-    <input type="text" class="form-control" id="title" placeholder="리뷰제목을 입력하세요" name="title" required>
-</div>
 
-
-<div class="mb-3 mt-3">
-    <label class='my__rev' for="contents">상세리뷰</label>
-    <textarea class="form-control" rows="5" id="contents" placeholder="상품 품질에 대한 고객님의 솔직한 리뷰를 남겨주세요." name="contents"
-        required></textarea>
-</div>
-<hr style='color: black'>
-
-<div class="my-review__modify__file">
-    <div class="field__title">사진첨부</div>
-    <div class="insert">
-        <input type="file" name="uploadedFile" onchange="addFile(this);" required/>
-        <div class="file-list"></div>
+    <div class="my-review__modify__file">
+        <div class="field__title">사진첨부</div>
+        <div class="insert">
+            <input type="file" name="uploadedFile" onchange="addFile(this);" required/>
+            <div class="file-list"></div>
+        </div>
+        
+        <hr style='color: black'>
     </div>
-    
-    <hr style='color: black'>
-</div>
 
-<div class="review-intake-register">
-    <button class="submit-button" type="submit">등록하기</button>
-    <button class="cancel-button" type="button" onclick="history.back()">취소하기</button>
-</div>
+    <div class="review-intake-register">
+        <button class="submit-button" type="submit">등록하기</button>
+        <button class="cancel-button" type="button" onclick="history.back()">취소하기</button>
+    </div>
+</form>
 
 
 {% endblock %}

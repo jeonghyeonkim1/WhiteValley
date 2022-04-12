@@ -116,9 +116,9 @@
                             {% csrf_token %}
                             <button class='btn btn-outline-danger' onclick="chkDelete()">삭제</button>
                         </form>
-                        <a class='btn btn-outline-warning float-end mb-3 col-1' href="{% url 'Recommendation:product_reviews_update' order.product.id %}">수정</a>
+                        <a class='btn btn-outline-warning float-end mb-3 col-1' href="{% url 'Recommendation:product_reviews_update' order.id %}">수정</a>
                     {% else %}
-                        <a class='btn btn-outline-primary float-end mb-3 col-2' href="{% url 'Recommendation:product_reviews' order.product.id %}">리뷰작성</a>
+                        <a class='btn btn-outline-primary float-end mb-3 col-2' href="{% url 'Recommendation:product_reviews' order.id %}">리뷰작성</a>
                     {% endif %}
                     
                 <p>구매일자 : {{order.product.reg_date}}</p>
