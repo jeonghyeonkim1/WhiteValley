@@ -50,18 +50,9 @@
 </table>
 <div class="row">
     <div class="col-12">
-        {% comment %} {% if session.user %} 로그인상태 {% endcomment %}
         {% if not session.admin %}
         <a class="btn btn-dark" href="{% url 'Cs:oto_write' %}" style="float: right;">문의하기</a>
         {% endif %}
-        {% comment %} {% endif %} {% endcomment %}
-
-        {% comment %} <script>
-            function chkLogin() {
-                alert('로그인 후 이용할 수 있습니다.');
-                location.href = "{% url 'Cs:oto_loading' %}"
-            }
-        </script> {% endcomment %}
     </div>
 </div>
 

@@ -114,7 +114,7 @@ def event_write(request):
         'config': Config.objects.get(id=1),
         'currentpage': 'cs'
     }
-    # try:
+    
     if request.method == 'GET':
         return render(request, 'event_write.html', context)
 
@@ -154,23 +154,7 @@ def event_write(request):
 
         return render(request, 'event_writeOk.html', {"pk": board.pk})
 
-    # except ValidationError:
-    #     return HttpResponse(f'''
-    #         <script>
-    #             alert("이벤트 날짜를 지정해주세요");
-    #             history.back();
-    #         </script>
-    #     ''')
 
-    # except MultiValueDictKeyError:
-    #     return HttpResponse(f'''
-    #         <script>
-    #             alert("파일을 첨부해주세요");
-    #             history.back();
-    #         </script>
-    #     ''')
-
-    
 def event_detail(request, pk):
     event = Board.objects.get(pk=pk)
     event.view_cnt += 1
@@ -409,7 +393,7 @@ def faq_list(request):
     keyword = request.GET.get('keyword')
     
     if keyword:
-        all_faqs = Board.objects.filter(title__contains=keyword, tag='FAQ')
+        all_faqs = Board.objects.filter(title__contains=keyword, content__contains=keyword, tag='FAQ')
     else:
         all_faqs = Board.objects.filter(tag='FAQ')
     

@@ -18,10 +18,6 @@
             })
         })
     });
-
-    function order() {
-        document.getElementById('keyword').value;
-    }
 </script>
 {% endblock %}
 
@@ -65,7 +61,7 @@
                     </tr>
                     <tr class="answer" style="display: none; background-color: #fff1db; height: 100px;">
                         <td>A</td>
-                        <td>{{ faq.content }}</td>
+                        <td><pre>{{ faq.content }}</pre></td>
                     </tr>
                 {% endif %}
             {% endfor %}
