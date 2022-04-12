@@ -136,7 +136,6 @@ def cart(req):
             'carts': Cart.objects.filter(user=User.objects.get(id=req.session['user'])),
             'current_time': datetime.datetime.now() + datetime.timedelta(days=2),
         }
-
         if req.method == "POST":
             cart = Cart.objects.filter(user=User.objects.get(id=req.session['user']))
             for i in cart:
@@ -260,6 +259,7 @@ def admin(req):
         config.sale_time = req.POST['sale_time']
         config.lunch_time = req.POST['lunch_time']
         config.holiday = req.POST['holiday']
+        config.tag_show = req.POST['tag_expose']
 
         config.save()
 
@@ -420,7 +420,6 @@ def admin_point(req):
 
         config = Config.objects.get(id=1)
 
-        config.tag_show = req.POST['tag_expose']
         config.sign_point = req.POST['sign_point']
         config.return_point = req.POST['return_point']
         config.review_point = req.POST['review_point']

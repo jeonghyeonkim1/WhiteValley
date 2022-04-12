@@ -20,13 +20,13 @@ from urllib.parse import unquote_plus
 
 # 리뷰 리스트
 def reviews(request):
+   
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
 
     }
-   
     try:
         context['orders'] = Order.objects.filter(user=request.session['user']).order_by('-date')
     except:
@@ -83,6 +83,9 @@ def reviews(request):
     context['end_page']= end_page
     context['page_range']= range(start_page, end_page + 1)
 
+    reviews2 = []
+    List = reviews2
+    context['reviews2'] = page_obj
 
     return render(request, 'reviews.html',context)
 
