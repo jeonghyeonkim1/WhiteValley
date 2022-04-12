@@ -393,7 +393,7 @@ def faq_list(request):
     keyword = request.GET.get('keyword')
     
     if keyword:
-        all_faqs = Board.objects.filter(title__contains=keyword, tag='FAQ')
+        all_faqs = Board.objects.filter(title__contains=keyword, content__contains=keyword, tag='FAQ')
     else:
         all_faqs = Board.objects.filter(tag='FAQ')
     

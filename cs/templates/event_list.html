@@ -36,7 +36,7 @@
                     {% if photo.board == event %}
                     <img class="bd-placeholder-img card-img-top" src="{{ photo.photo }}"
                         onclick="location.href='{% url 'Cs:event_detail' event.id %}'"
-                        style="cursor: pointer; width: 100%; height:500px;">
+                        style="cursor: pointer;">
                     {% endif %}
                     {% endfor %}
                 </div>
