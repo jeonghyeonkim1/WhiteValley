@@ -58,9 +58,15 @@ def home(req):
     # best tag
     try:
         tag_dict = {}
+
         for t1 in Tag_list.objects.all():
+            maximum = 0
             for t2 in t1.product.all().order_by('-view_cnt'):
-                tag_dict[t1.name] = t2
+                
+                if Order.objects.filter(product=t2).count() >= maximum:
+                    maximum = Order.objects.filter(product=t2).count()
+                    tag_dict[t1.name] = t2
+
         context['all_tags'] = tag_dict.items()
         context['first_tag'] = tag_dict[next(iter(tag_dict))]
     except:
@@ -82,7 +88,9 @@ def home(req):
     for i in best_seller:
         Dict[Product.objects.get(id=i['product']).user] = Dict.get(Product.objects.get(id=i['product']).user, 0) + Product.objects.get(id=i['product']).type.price * i['amount__sum']
 
-    sorted_dict = sorted(Dict.items(), key = lambda item: item[1])
+    sorted_dict = sorted(Dict.items(), key = lambda item: item[1], reverse=True)
+
+    print(sorted_dict)
 
     cnt = 0
     while 1:
@@ -93,7 +101,6 @@ def home(req):
 
         if sorted_dict[cnt][0].prized == False:
             context['best_seller'] = sorted_dict[cnt]
-            print(sorted_dict[cnt])
             today = datetime.date.today()
             first_day = today.replace(day=1)
             if first_day.strftime('%d') == today.strftime('%d'):
