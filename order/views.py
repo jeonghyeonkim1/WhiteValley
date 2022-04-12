@@ -353,8 +353,3 @@ def loading(request):
 def loading2(request):
     return render(request, 'loading2.html')
 
-
-def payFail(request):
-    return render(request, 'payFail.html')
-def payCancel(request):
-    return render(request, 'payCancel.html')

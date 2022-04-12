@@ -20,7 +20,7 @@
         <div class="custom1_top">
             <div class="pimg2_wrap">
                 <div id="parent" class="parent" style="width:500px; height:500px; background-image:URL({{ color }}); background-size:cover;">
-                    <div id="textresult" style='position:absolute; left:300px; top:300px; cursor:pointer; cursor:hand; font-weight: bold; font-size: 20px;' onmousedown='startDrag(event, this)'></div>
+                    <div id="textresult" style='position:absolute; left:300px; top:300px; cursor:pointer; cursor:hand; font-weight: bold; font-size: 20px;' onmousedown='startDrag(event, this);'></div>
                     <div class="panzoom" id="panzoom-element" >
                         <img id="uploadimg" src="" width="200"  style="display:none; z-index:2; position: absolute;">
                     </div>
@@ -103,9 +103,6 @@
         // No function bind needed
         parent.addEventListener('wheel', panzoom.zoomWithWheel);
         
-        
-            
-        
           var _gaq = _gaq || [];
           _gaq.push(['_setAccount', 'UA-36251023-1']);
           _gaq.push(['_setDomainName', 'jqueryscript.net']);
@@ -130,7 +127,6 @@
         } catch (error) {
           console.log(error);
         }
-
 
 var img_L = 0;
 var img_T = 0;
