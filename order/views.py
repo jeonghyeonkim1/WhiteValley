@@ -3,9 +3,10 @@ from shop.models import Config, Co_account
 from django.http import HttpResponse
 import urllib.request
 from user.models import User
-from order.models import Cart, Order
+from order.models import Cart, Order, Type_Photo_Upload
 from recommendation.models import Type, T_photo, Product, Tag_list
 import os.path
+import re
 
 
 # Create your views here.
@@ -16,6 +17,35 @@ def order(request):
         'currentpage': 'shopping',
         'types': Type.objects.all()
     }
+
+
+    if request.method == "POST":
+        uploadedFile = request.FILES['image_input']
+
+        if len(re.findall(r'[^a-z | 0-9 | . | " " | ( | )]', uploadedFile.name)) > 0:
+            return HttpResponse(f'''
+                <script>
+                    alert("파일 이름에 특수문자가 포함되어 있습니다!");
+                    history.back();
+                </script>
+            ''')
+
+        Type_Photo_Upload(title=uploadedFile.name, photo=uploadedFile).save()
+
+        Type(
+            title=request.POST['title_input'],
+            description=request.POST['description_input'],
+            price=request.POST['price_input'],
+            img=f'/static/image/products/{uploadedFile}'
+        ).save()
+        
+        return HttpResponse(f'''
+            <script>
+                alert("타입이 추가되었습니다!");
+                location.href='/whitevalley/shopping/order/';
+            </script>
+        ''')
+
 
     if (len(Type.objects.all()) != 0):
         pass
@@ -73,6 +103,16 @@ def order(request):
                 location.href='/whitevalley/shopping/loading2/';
             </script>
         ''')
+
+def order_delete(req):
+    Type.objects.get(title=req.POST['type_delete']).delete()
+
+    return HttpResponse(f'''
+        <script>
+            alert("성공적으로 타입을 삭제하였습니다!");
+            location.href='/whitevalley/shopping/order/';
+        </script>
+    ''')
         
     
 def order_des(request):

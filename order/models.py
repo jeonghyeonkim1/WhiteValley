@@ -71,3 +71,11 @@ class Review_photo_Upload(models.Model):
 
     class Meta:
         db_table = 'u_photos'
+
+class Type_Photo_Upload(models.Model):
+    title = models.CharField(max_length=3000)
+
+    photo = models.FileField(upload_to="static/image/products/")
+
+    class Meta:
+        db_table = 't_photo_upload'

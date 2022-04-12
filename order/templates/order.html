@@ -3,7 +3,32 @@
 {% block attachment %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/order.css' %}?ver=1">
-    <script src="{% static 'js/order.js' %}"></script>
+    <script>
+        $(function() {
+            $("[name='product_delete']").click(function() {
+                if(confirm("해당 타입을 삭제하시겠습니까?")) {
+                    $(this).parent().parent().next()[0].submit()
+                }
+            })
+
+            function deleteitem() {
+                const item = document.getElementById('item');
+                item.remove();
+            }
+            $("[name='title_input']").change(function(){
+                $("[name='title']").val($(this).val());
+            });
+            $("[name='price_input']").change(function(){
+                $("[name='price']").val($(this).val());
+            });
+            $("[name='description_input']").change(function(){
+                $("[name='description']").val($(this).val());
+            });
+            $("[name='image_input']").change(function(){
+                $("[name='img']").val($(this).val());
+            });
+        })
+    </script>
 {% endblock %}
 
 {% block contents %}
@@ -31,30 +56,32 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>관리자_상품추가</h3>
+                    <h3>관리자_타입추가</h3>
                 </div>
-                <div class="modal-body">
+                <form action="{% url 'Order:order' %}" method="POST" name="type_adder" class="modal-body" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <div>
                         <label for="">상품명</label>
-                        <input type="text" name="title_input" class="form-control">
+                        <input type="text" name="title_input" class="form-control" required>
                     </div>
                     <div>
                         <label for="">가격</label>
-                        <input type="text" name="price_input"  class="form-control">
+                        <input type="number" name="price_input"  class="form-control" required>
                     </div>
                     <div style="margin-bottom:40px">
                         <label for="">상품상세 설명</label>
-                        <textarea name="description_input"  class="form-control w-80"></textarea>
+                        <textarea name="description_input"  class="form-control w-80" required></textarea>
                     </div>
                     <div>
                         <label for="">상세이미지</label>
-                        <input type="file" name="image_input"  class="form-control">
+                        <input type="file" name="image_input"  class="form-control" required>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="" class="btn">취소</a>
-                    <a onclick="" id="addbtn" href={% url 'Order:order' %} class="btn btn-dark" type="button" data-dismiss="modal">추가</a>
-                </div>
+                    <div class="modal-footer">
+                        <button class="btn" type="button" data-bs-dismiss="modal">취소</button>
+                        <button id="addbtn" class="btn btn-dark">추가</button>
+                    </div>
+                </form>
+                
                 <form action="{% url 'Order:order' %}" method="GET">
                     <input type="hidden" name="title">
                     <input type="hidden" name="price">
@@ -64,33 +91,11 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="p_del" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="True">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>관리자_상품삭제</h3>
-                </div>
-                <div class="modal-body">
-                    <div>
-                        <div style="display:flex; padding:20px">
-                           <label for="">품번</label>
-                           <input type="text" class="form-control">
-                        </div>
-                        <h3>해당상품을 정말 삭제하시겠습니까?                      
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="" class="btn">아니요.</a>
-                    <a onclick="" id="deletebtn" href={% url 'Order:order' %} class="btn btn-dark" type="button" data-dismiss="modal">예</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="ordertext pt-3">
         <div>
         {% if session.admin %}
-            <button id="product_add" class="btn btn-dark" style="float:right;">상품추가</button>
+            <button id="product_add" class="btn btn-dark" style="float:right;" data-bs-toggle="modal" data-bs-target="#p_add">상품추가</button>
         {% endif %}
         </div>
         <h3>주문/제작 하기
@@ -106,7 +111,7 @@
                     <input type="hidden" value="{{ type.price }}" name="type_price">
                     <li id="item">
                         {% if session.admin %}
-                            <button type="button" id="product_delete" class="btn btn-danger" onclick="deleteitem">X</button>
+                            <button type="button" class="btn btn-danger" name="product_delete">X</button>
                         {% endif %}
                         <div class="p">
                             <button style="border:none">
@@ -119,36 +124,12 @@
                         </div>
                     </li>
                 </form>
+                <form action="{% url 'Order:order_delete' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ type.title }}" name="type_delete">
+                </form>
             {% endfor %}
         </ul>
     </div>
-<script>
-    $("#product_add").click(function(e){
-        e.preventDefault();
-        $("#p_add").modal("show");
-    });
-    
-    $("#product_delete").click(function(e){
-        e.preventDefault();
-        $("#p_del").modal("show");
-    });
-    function deleteitem() {
-        const item = document.getElementById('item');
-        item.remove();
-    }
-    $("[name='title_input']").change(function(){
-        $("[name='title']").val($(this).val());
-    });
-    $("[name='price_input']").change(function(){
-        $("[name='price']").val($(this).val());
-    });
-    $("[name='description_input']").change(function(){
-        $("[name='description']").val($(this).val());
-    });
-    $("[name='image_input']").change(function(){
-        $("[name='img']").val($(this).val());
-    });
-
-</script>
 
 {% endblock %}
