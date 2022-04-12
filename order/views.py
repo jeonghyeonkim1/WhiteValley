@@ -22,29 +22,32 @@ def order(request):
     if request.method == "POST":
         uploadedFile = request.FILES['image_input']
 
-        if len(re.findall(r'[^a-z | 0-9 | . | " " | ( | )]', uploadedFile.name)) > 0:
+        try:
+            Type.objects.get(title=request.POST['title_input'])
+        except:
+            if len(re.findall(r'[^a-z | 0-9 | . | " " | ( | )]', uploadedFile.name)) > 0:
+                return HttpResponse(f'''
+                    <script>
+                        alert("파일 이름에 특수문자가 포함되어 있습니다!");
+                        history.back();
+                    </script>
+                ''')
+
+            Type_Photo_Upload(title=uploadedFile.name, photo=uploadedFile).save()
+
+            Type(
+                title=request.POST['title_input'],
+                description=request.POST['description_input'],
+                price=request.POST['price_input'],
+                img=f'/static/image/products/{uploadedFile}'
+            ).save()
+            
             return HttpResponse(f'''
                 <script>
-                    alert("파일 이름에 특수문자가 포함되어 있습니다!");
-                    history.back();
+                    alert("타입이 추가되었습니다!");
+                    location.href='/whitevalley/shopping/order/';
                 </script>
             ''')
-
-        Type_Photo_Upload(title=uploadedFile.name, photo=uploadedFile).save()
-
-        Type(
-            title=request.POST['title_input'],
-            description=request.POST['description_input'],
-            price=request.POST['price_input'],
-            img=f'/static/image/products/{uploadedFile}'
-        ).save()
-        
-        return HttpResponse(f'''
-            <script>
-                alert("타입이 추가되었습니다!");
-                location.href='/whitevalley/shopping/order/';
-            </script>
-        ''')
 
 
     if (len(Type.objects.all()) != 0):
