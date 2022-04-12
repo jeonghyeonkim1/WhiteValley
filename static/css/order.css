@@ -196,6 +196,22 @@
 #selectpattern {
     margin-left: 78px;
 }
+.selectpattern2{
+    width: 500px;
+    margin-left: 90px;
+    display: flex;
+}
+#selectpattern2 {
+    margin-left: 130px;
+}
+.selectpattern3{
+    width: 500px;
+    margin-left: 90px;
+    display: flex;
+}
+#selectpattern3 {
+    margin-left: 130px;
+}
 #text2_wrap{
     display: flex;
     width: 500px;
