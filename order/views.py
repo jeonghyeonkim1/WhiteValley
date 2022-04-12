@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from shop.models import Config
+from shop.models import Config, Co_account
 from django.http import HttpResponse
 import urllib.request
 from user.models import User
@@ -245,6 +245,7 @@ def payment(request):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
+        'accounts': Co_account.objects.all(),
         'currentpage': 'shopping'
     }
     try:

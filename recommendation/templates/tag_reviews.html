@@ -334,7 +334,9 @@
       <div class="card shadow-sm">
         <div class="card-body">
           <img src="{{tag.0.img}}" style='width:100%; height:100%' alt="">
-          <p class="card-text" style='color:blue'>#{{tag.1}}</p>
+          {% if config.tag_show %}
+            <p class="card-text" style='color:blue'>#{{tag.1}}</p>
+          {% endif %}
           <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
               <button type="button" class="btn btn-sm btn-outline-secondary"
