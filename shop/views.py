@@ -159,6 +159,7 @@ def cart_number(req, id):
 
         
         return redirect("/whitevalley/cart/")
+        
     except:
         return HttpResponse(f'''
             <script>

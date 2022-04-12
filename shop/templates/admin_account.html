@@ -2,8 +2,36 @@
 
 {% block attachment %}
     {% load static %}
+    
+    <style>
+        #admin_nav li a {
+            color: #fff;
+        }
+
+        #admin_nav li a:hover {
+            color: #262626;
+            background-color: #fff;
+        }
+
+        .container {
+            min-width: 950px;
+        }
+
+        .left_info>div,
+        .right_info>div {
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #nav_fixed {
+            left: 5%;
+            top: 30%;
+        }
+    </style>
+
     <script src="{% static 'js/admin.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
 {% endblock %}
 
 {% block contents %}
@@ -29,10 +57,6 @@
             </div>
         </div>
         <div class="w-100">
-            <div class="d-flex mb-3">
-                <button type="button" class="w-50 btn btn-outline-dark left_info_btn" disabled>회사소유계좌</button>
-                <button type="button" class="w-50 btn btn-outline-dark right_info_btn">무통장계좌</button>
-            </div>
             <div class="w-100 h-100 left_info text-center">
                 <div class="row text-white bg-dark fw-bold rounded">
                     <label for="" class="col-sm-2 col-form-label"><strong>은행명</strong></label>
@@ -61,23 +85,6 @@
                 <div class="d-flex mt-3">
                     <button class="m-3 btn btn-success" type="button" onclick="location.href='{% url 'Main:home' %}'">홈으로</button>
                     <button class="m-3 btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@append">추가</button>
-                </div>
-            </div>
-            <div class="w-100 right_info">
-                <div class="row text-white bg-dark fw-bold rounded">
-                    <label for="" class="col-sm-2 col-form-label"><strong>은행명</strong></label>
-                    <label for="" class="col-sm-2 col-form-label"><strong>예금주</strong></label>
-                    <div class="col-sm-7">
-                        <label for="" class="col-form-label"><strong>계좌번호</strong></label>
-                    </div>
-                    <div class="col-sm-1"></div>
-                </div>
-                
-                <div class="d-flex mt-3">
-                    <button class="m-3 btn btn-success" type="button" onclick="location.href='{% url 'Main:home' %}'">홈으로</button>
-                    {% comment %} <button class="m-3 btn btn-primary" id="virtual_account_btn">추가</button> {% endcomment %}
-                    
-
                 </div>
             </div>
         </div>

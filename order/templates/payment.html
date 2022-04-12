@@ -3,7 +3,6 @@
 {% block attachment %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/order.css' %}">
-    <script src="{% static 'js/order.js' %}"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
@@ -65,36 +64,36 @@
                 }
             }).open();
         }
+
+        function re(){
+            document.getElementsByName['r1'].checked = false;
+        }
+        function ch1(e){
+            $("#pay1").css("display","block");
+            $("#pay2").css("display","none");
+            $("#pay3").css("display","none");
+            $("#pay4").css("display","none");
+        }
+        function ch2(e){
+            $("#pay1").css("display","none");
+            $("#pay2").css("display","block");
+            $("#pay3").css("display","none");
+            $("#pay4").css("display","none");
+        }
+        function ch3(e){
+            $("#pay1").css("display","none");
+            $("#pay2").css("display","none");
+            $("#pay3").css("display","block");
+            $("#pay4").css("display","none");
+        }
+        function ch4(e){
+            $("#pay1").css("display","none");
+            $("#pay2").css("display","none");
+            $("#pay3").css("display","none");
+            $("#pay4").css("display","block");
+        }
         
         $(function() {
-            function re(){
-                document.getElementsByName['r1'].checked = false;
-            }
-            function ch1(e){
-                $("#pay1").css("display","block");
-                $("#pay2").css("display","none");
-                $("#pay3").css("display","none");
-                $("#pay4").css("display","none");
-            }
-            function ch2(e){
-                $("#pay1").css("display","none");
-                $("#pay2").css("display","block");
-                $("#pay3").css("display","none");
-                $("#pay4").css("display","none");
-            }
-            function ch3(e){
-                $("#pay1").css("display","none");
-                $("#pay2").css("display","none");
-                $("#pay3").css("display","block");
-                $("#pay4").css("display","none");
-            }
-            function ch4(e){
-                $("#pay1").css("display","none");
-                $("#pay2").css("display","none");
-                $("#pay3").css("display","none");
-                $("#pay4").css("display","block");
-            }
-
             $("#userequal").click(function() {
                 $("[name='receiver']").val($("[name='user']").val());
                 $("#equalcontact").val($("#usernum").val());
@@ -400,14 +399,19 @@
       </div>
       <div class="d-flex align-items-center form-check">
         <input onclick="ch3(this.value);" class="form-check-input" type="radio" name="flexRadioDefault"  name="r3">
-        <label class="form-check-label" for="flexRadioDefault1">
-            무통장입금
+        <label class="form-check-label me-3" for="flexRadioDefault1">
+            계좌입금
         </label>
         <div style="font-size: 100px;"><i class="fa-solid fa-money-bill-transfer ms-4"></i></div>
         <div id="pay3" style="display: none;" class="w-75">
             <hr>
             <div class="d-flex justify-content-evenly align-items-center">
-                <strong>은행선택</strong><select name="form-control w-25" id=""><option value="">카아드</option></select>
+                <strong>은행선택</strong>
+                <select name="form-control w-100" id="">
+                    {% for account in accounts %}
+                        <option value="{{ account.bank }}">{{ account.bank }}: {{ account.number }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <hr>
         </div>
