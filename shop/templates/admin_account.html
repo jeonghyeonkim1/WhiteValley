@@ -2,8 +2,36 @@
 
 {% block attachment %}
     {% load static %}
+    
+    <style>
+        #admin_nav li a {
+            color: #fff;
+        }
+
+        #admin_nav li a:hover {
+            color: #262626;
+            background-color: #fff;
+        }
+
+        .container {
+            min-width: 950px;
+        }
+
+        .left_info>div,
+        .right_info>div {
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #nav_fixed {
+            left: 5%;
+            top: 30%;
+        }
+    </style>
+
     <script src="{% static 'js/admin.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
 {% endblock %}
 
 {% block contents %}
