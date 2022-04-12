@@ -34,7 +34,7 @@
                     <div>
                         <p id="product_type">{{ type_title }}({{ type_size }})</p>
                     </div>
-                    <div style="padding-right:65%"><a data-toggle="tooltip" style="text-decoration: none; padding:30px;" title="이미지는 마우스 휠로 크기 조절 가능합니다. &#8251;상세한 변경을 더 원하시면 다음 페이지 요청란에 적어주세요&#8251;">TIP</a></div>
+                    <div style="padding-right:70%"><a data-toggle="tooltip" style="text-decoration: none; padding:30px;" title="이미지는 마우스 휠로 크기 조절 가능합니다. &#8251;상세한 변경을 더 원하시면 다음 페이지 요청란에 적어주세요&#8251;">TIP</a></div>
                 </div>
              
             <div class="text_contain">
@@ -67,6 +67,26 @@
                     <option value="/static/image/patterns/s_p3.png">빈티지</option>
                 </select>
             </div> 
+            <div class="selectpattern2" style="display: none;"> 
+                <label id="selecttext" for="selecttext" class="col-xs control-label">Pattern</label>
+                <select class="form-control w-25" id="selectpattern2" name="selectpattern2"  onchange="document.all.s_input.value=document.all.selectpattern.value;" required>
+                    <option value="0">선택</option>
+                    <option value="p1">무지</option>
+                    <option value="/static/image/patterns/m_p1.png">도트</option>
+                    <option value="/static/image/patterns/m_p2.png">페인트</option>
+                    <option value="/static/image/patterns/m_p3.png">빈티지</option>
+                </select>
+            </div> 
+            <div class="selectpattern3" style="display: none;"> 
+                <label id="selecttext" for="selecttext" class="col-xs control-label">Pattern</label>
+                <select class="form-control w-25" id="selectpattern3" name="selectpattern3"  onchange="document.all.s_input.value=document.all.selectpattern.value;" required>
+                    <option value="0">선택</option>
+                    <option value="p1">무지</option>
+                    <option value="/static/image/patterns/h_p1.png">도트</option>
+                    <option value="/static/image/patterns/h_p2.png">페인트</option>
+                    <option value="/static/image/patterns/h_p3.png">빈티지</option>
+                </select>
+            </div> 
             <div class="imageupload" style="height:10%">
                 <label class="col-xs control-label" id="imagetext" style="margin-right:90px;">Image</label>
     
@@ -91,9 +111,27 @@
             <input type="hidden" value="{{ type_title }}" name="type_title">
             <input type="hidden" value="0" id="input_image" name="i_input" style="display: none;">
         </form>
+        <input type="hidden" value="{{ type_title }}" id="typetext">
        
       
-       <script>   
+       <script>  
+        if($("#typetext").val() == "티셔츠"){
+            $(".selectpattern2").css("display","block");
+            $(".selectpattern2").css("display","none");
+            $(".selectpattern3").css("display","none");
+        }
+        if($("#typetext").val() == "긴팔"){
+            $(".selectpattern").css("display","none");
+            $(".selectpattern2").css("display","block");
+            $(".selectpattern3").css("display","none");
+        }
+        if($("#typetext").val() == "후드티"){
+            $(".selectpattern3").css("display","block");
+            $(".selectpattern").css("display","none");
+            $(".selectpattern2").css("display","none");
+        }
+         
+
         const elem = document.getElementById('panzoom-element');
         const zoomInButton = document.getElementById('zoom-in');
         const zoomOutButton = document.getElementById('zoom-out');
@@ -199,6 +237,32 @@ $(document).ready(function(){
         else{
             patternimg_wrap.style.display = "block"
             patternimg.setAttribute('src',$("#selectpattern").val())
+        }
+    })
+
+    $("#selectpattern2").change(function(){
+        if($("#selectpattern2").val() == "p1"){
+            patternimg_wrap.style.display = "none"
+        }
+        else if($("#selectpattern2").val() == "0"){
+            patternimg_wrap.style.display = "none"
+        }
+        else{
+            patternimg_wrap.style.display = "block"
+            patternimg.setAttribute('src',$("#selectpattern2").val())
+        }
+    })
+
+    $("#selectpattern3").change(function(){
+        if($("#selectpattern3").val() == "p1"){
+            patternimg_wrap.style.display = "none"
+        }
+        else if($("#selectpattern3").val() == "0"){
+            patternimg_wrap.style.display = "none"
+        }
+        else{
+            patternimg_wrap.style.display = "block"
+            patternimg.setAttribute('src',$("#selectpattern3").val())
         }
     })
 

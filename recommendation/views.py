@@ -90,13 +90,13 @@ def reviews(request):
 
        
 
-# 리뷰작성
-def product_reviews(request,id):
+# 리뷰작성 (order id)
+def product_reviews(request, id):
     context = {
         'session': request.session,
         'config': Config.objects.get(id=1),
         'currentpage': 'shopping',
-        'product' : Product.objects.get(id=id),
+        'order' : Order.objects.get(id=id),
     }
     context['user'] = User.objects.get(id=request.session['user'])
     if request.method == 'GET':
@@ -117,16 +117,16 @@ def product_reviews(request,id):
         Review_photo_Upload(title=uploadedFile.name, photo=uploadedFile).save()
         
         rev = Review(
-            order=Order.objects.get(user=User.objects.get(id=request.session['user']), product=Product.objects.get(id=id)),
+            order=Order.objects.get(id=id),
             title=title, 
             contents=contents, 
         )
-        
+
         rev.save()
         
         R_photo(review=rev, photo=f'/static/image/product_review/{uploadedFile.name}').save()
 
-        order = Order.objects.get(user=User.objects.get(id=request.session['user']), product=Product.objects.get(id=id))
+        order = Order.objects.get(id=id)
         order.reviewed = True
         order.save()
 
