@@ -89,9 +89,7 @@ def home(req):
         Dict[Product.objects.get(id=i['product']).user] = Dict.get(Product.objects.get(id=i['product']).user, 0) + Product.objects.get(id=i['product']).type.price * i['amount__sum']
 
     sorted_dict = sorted(Dict.items(), key = lambda item: item[1], reverse=True)
-
-    print(sorted_dict)
-
+    
     cnt = 0
     while 1:
         try:

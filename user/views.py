@@ -485,7 +485,7 @@ def info_modify_detail(req):
         ''')
 
     if req.method == "POST":
-        # try:
+        try:
             if (req.POST['pw1'] or req.POST['pw2']) != "":
                 if check_password(req.POST['pw2'], make_password(req.POST['pw1'])) == False:
                     return HttpResponse(f'''
@@ -517,17 +517,17 @@ def info_modify_detail(req):
                         location.href="/whitevalley/user/mypage/"
                     </script>
                     ''')
-        # except: 
-        #     user.adress = req.POST['adress7']
-        #     user.nickname = req.POST['nick']
-        #     user.contact = req.POST['cont']
-        #     user.save()
-        #     return HttpResponse(f'''
-        #     <script>
-        #         alert("변경되었습니다.");
-        #         location.href="/whitevalley/user/mypage/"
-        #     </script>
-        # ''')
+        except: 
+            user.adress = req.POST['adress7']
+            user.nickname = req.POST['nick']
+            user.contact = req.POST['cont']
+            user.save()
+            return HttpResponse(f'''
+            <script>
+                alert("변경되었습니다.");
+                location.href="/whitevalley/user/mypage/"
+            </script>
+        ''')
 
 
     return render(req, 'mypage_modify.html', context)
