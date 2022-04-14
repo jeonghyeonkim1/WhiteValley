@@ -206,7 +206,7 @@
 <input type="hidden" value="{{ user.adress }}" id="user_adress">
 
 <div class="paycontain">
-    <form method="POST" action="." id="pay_form">
+    {% comment %} <form method="POST" action="." id="pay_form"> {% endcomment %}
         {% csrf_token %}
     <div name="paymentForm1" class="userform pe-5" action="">
         <div class="w-100 text-center">
@@ -391,8 +391,8 @@
         <div id="pay2" style="display: none;" class="w-75">
             <hr>
             <div class="d-flex justify-content-evenly align-items-center">
-                <div><form action="" method="POST">{% csrf_token %}<button type="button" class="btn btn-warning">카카오페이</button></div>
-                <div><form action="" method="POST">{% csrf_token %}<button type="button" class="btn btn-success">네이버페이</button></div>
+                <div><form action="/whitevalley/shopping/kakaoPayLogic/" method="post">{% csrf_token %}<input type="submit" value="결제"></form></div>
+                <div><button type="button" class="btn btn-success">네이버페이</button></div>
             </div>
             <hr>
         </div>
@@ -445,7 +445,7 @@
         <button class="btn btn-dark w-50 fs-3 fw-bold" style="height: 60px;">결제</button>
     </div>
 </div>
-</form>
+{% comment %} </form> {% endcomment %}
 
 <input type="hidden" value="{{ config.min_amount }}" name="min_amount">
 <input type="hidden" value="{{ config.max_point }}" name="max_point">

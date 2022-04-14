@@ -7,6 +7,10 @@ from order.models import Cart, Order, Type_Photo_Upload
 from recommendation.models import Type, T_photo, Product, Tag_list
 import os.path
 import re
+import json
+import requests
+from django.template import loader
+from flask import Flask, session, render_template, request, jsonify, escape
 
 
 # Create your views here.
@@ -324,6 +328,7 @@ def payment(request):
         context['total_point'] = total_price // 10
 
     if request.method == 'POST':
+       
         List = []
         for i in range(5):
             List.append(request.POST[f'adress{i}'])
@@ -363,6 +368,13 @@ def payment(request):
             </script>
         ''')
 
+    if request.method == 'GET':
+        _context = {'check':False}
+        if request.session.get('access_token'):
+            _context['check'] = True
+
+
+
     return render(request, 'payment.html', context)
     
 
@@ -395,4 +407,67 @@ def loading(request):
 
 def loading2(request):
     return render(request, 'loading2.html')
+
+
+
+def kakaoPayLogic(request):
+    if request.method == "POST":
+        _admin_key = '8c7cf512e39e107d1612cd3f23c6f0ec' # 입력필요
+        _url = f'https://kapi.kakao.com/v1/payment/ready'
+        _headers = {
+            'Authorization': f'KakaoAK {_admin_key}',
+        }
+        _data = {
+            'cid': 'TC0ONETIME',
+            'partner_order_id':'partner_order_id',
+            'partner_user_id':'partner_user_id',
+            'item_name':'초코파이',
+            'quantity':'1',
+            'total_amount':'2200',
+            'vat_amount':'200',
+            'tax_free_amount':'0',
+            # 내 애플리케이션 -> 앱설정 / 플랫폼 - WEB 사이트 도메인에 등록된 정보만 가능합니다
+            # * 등록 : http://IP:8000 
+            'approval_url':'http://127.0.0.1:8000/whitevalley/shopping/paySuccess', 
+            'fail_url':'http://127.0.0.1:8000/whitevalley/shopping/payFail',
+            'cancel_url':'http://127.0.0.1:8000/whitevalley/shopping/payCancel'
+        }
+        _res = requests.post(_url, data=_data, headers=_headers)
+        _result = _res.json()
+        request.session['tid'] = _result['tid']
+        return redirect(_result['next_redirect_pc_url'])
+    return render(request,'payment.html')
+
+
+
+def paySuccess(request):
+    _url = 'https://kapi.kakao.com/v1/payment/approve'
+    _admin_key = '8c7cf512e39e107d1612cd3f23c6f0ec' # 입력필요
+    _headers = {
+        'Authorization': f'KakaoAK {_admin_key}'
+    }
+    _data = {
+        'cid':'TC0ONETIME',
+        'tid': request.session['tid'],
+        'partner_order_id':'partner_order_id',
+        'partner_user_id':'partner_user_id',
+        'pg_token': request.GET['pg_token']
+    }
+    _res = requests.post(_url, data=_data, headers=_headers)
+    _result = _res.json()
+    if _result.get('msg'):
+        return redirect('/payFail')
+    else:
+        # * 사용하는 프레임워크별 코드를 수정하여 배포하는 방법도 있지만
+        #   Req Header를 통해 분기하는 것을 추천
+        # - Django 등 적용 시
+        # return render(request, 'paySuccess.html')
+        print(_result)
+        # - React 적용 시
+        return redirect(request, 'paySuccess.html')
+
+def payFail(request):
+    return render(request, 'payFail.html')
+def payCancel(request):
+    return render(request, 'payCancel.html')
 

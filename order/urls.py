@@ -14,9 +14,9 @@ urlpatterns = [
     path('payment/', views.payment,name="payment"),
     path('loading/', views.loading, name="loading"),
     path('loading2/', views.loading2, name="loading2"),
-    # path('kakaoPayLogic/', views.kakaoPayLogic, name="kakaoPayLogic"),
-    # path('paySuccess/', views.paySuccess, name="paySuccess"),
-    # path('payFail/', views.payFail, name="payFail"),
-    # path('payCancel/', views.payCancel, name="payCancel"),
+    path('kakaoPayLogic/', views.kakaoPayLogic, name="kakaoPayLogic"),
+    path('paySuccess/', views.paySuccess, name="paySuccess"),
+    path('payFail/', views.payFail, name="payFail"),
+    path('payCancel/', views.payCancel, name="payCancel"),
     
 ]
