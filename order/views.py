@@ -325,7 +325,7 @@ def payment(request):
         
     else:
         context['total_price'] = total_price
-        context['total_point'] = total_price // 10
+        context['total_point'] = (total_price * int(Config.objects.get(id=1).return_point)) // 100
 
     if request.method == 'POST':
        
@@ -415,6 +415,56 @@ def kakaoPayLogic(request):
         return render(request,'payment.html')
         
     elif request.method == "POST":
+
+        user = User.objects.get(id=request.session['user'])
+        cart = Cart.objects.filter(user=user, checked="True")
+
+        List = []
+        for i in range(5):
+            List.append(request.POST[f'adress{i}'])
+
+        adress = "_".join(List)
+
+        for i in cart:
+            Order(
+                user = User.objects.get(id=request.session['user']),
+                product = i.product,
+                amount = i.amount,
+                state = "배송준비",
+                delivery_req = request.POST['del_req'],
+                r_name = request.POST['receiver'],
+                r_adress = adress,
+                r_contact = request.POST['contact'],
+                r_location = request.POST['location_etc'] if request.POST['location'] == "기타사항" else request.POST['location'],
+                r_pw = request.POST['r_pw_etc'] if request.POST['r_pw'] == "기타사항" else request.POST['r_pw']
+            ).save()
+
+            i.delete()
+        
+
+        total_price = 0
+        for i in cart:
+            total_price += i.product.type.price * i.amount
+
+        if total_price == 0:
+            return HttpResponse(f'''
+                <script>
+                    alert("구매하실 수 있는 물품이 없습니다!");
+                    location.href = '/whitevalley/shopping/order/';
+                </script>
+            ''')
+            
+        else:
+            total_point = (total_price * int(Config.objects.get(id=1).return_point)) // 100
+            user.point = user.point + total_point
+        try:
+            user.point = user.point - int(request.POST['use_point'])
+        except:
+            pass
+
+        user.save()
+
+
         _admin_key = '8c7cf512e39e107d1612cd3f23c6f0ec' # 입력필요
         _url = f'https://kapi.kakao.com/v1/payment/ready'
         _headers = {
@@ -424,9 +474,9 @@ def kakaoPayLogic(request):
             'cid': 'TC0ONETIME',
             'partner_order_id':'partner_order_id',
             'partner_user_id':'partner_user_id',
-            'item_name':'초코파이',
+            'item_name': 'whitevalley 완성품',
             'quantity':'1',
-            'total_amount':'2200',
+            'total_amount': f'{total_price}',
             'vat_amount':'200',
             'tax_free_amount':'0',
             # 내 애플리케이션 -> 앱설정 / 플랫폼 - WEB 사이트 도메인에 등록된 정보만 가능합니다
@@ -467,15 +517,62 @@ def paySuccess(request):
             </script>
         ''')
     else:
-        # * 사용하는 프레임워크별 코드를 수정하여 배포하는 방법도 있지만
-        #   Req Header를 통해 분기하는 것을 추천
-        # - Django 등 적용 시
+        user = User.objects.get(id=request.session['user'])
+        cart = Cart.objects.filter(user=user, checked="True")
+
+        List = []
+        for i in range(5):
+            List.append(request.POST[f'adress{i}'])
+
+        adress = "_".join(List)
+
+        for i in cart:
+            Order(
+                user = User.objects.get(id=request.session['user']),
+                product = i.product,
+                amount = i.amount,
+                state = "배송준비",
+                delivery_req = request.POST['del_req'],
+                r_name = request.POST['receiver'],
+                r_adress = adress,
+                r_contact = request.POST['contact'],
+                r_location = request.POST['location_etc'] if request.POST['location'] == "기타사항" else request.POST['location'],
+                r_pw = request.POST['r_pw_etc'] if request.POST['r_pw'] == "기타사항" else request.POST['r_pw']
+            ).save()
+
+            i.delete()
+        
+
+        total_price = 0
+        for i in cart:
+            total_price += i.product.type.price * i.amount
+
+        if total_price == 0:
+            return HttpResponse(f'''
+                <script>
+                    alert("구매하실 수 있는 물품이 없습니다!");
+                    location.href = '/whitevalley/shopping/order/';
+                </script>
+            ''')
+            
+        else:
+            total_point = (total_price * int(Config.objects.get(id=1).return_point)) // 100
+            user.point = user.point + total_point
+        try:
+            user.point = user.point - int(request.POST['use_point'])
+        except:
+            pass
+
+        user.save()
+
         return HttpResponse(f'''
             <script>
                 alert("결제에 성공하였습니다!");
-                history.back();
+                location.href="/whitevalley/";
             </script>
         ''')
+
+
 
 def payFail(request):
     return HttpResponse(f'''

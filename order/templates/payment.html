@@ -95,7 +95,13 @@
         
         $(function() {
             $("#kakao_pay_btn").click(function() {
+                $("#pay_checking")[0].checked = true
                 $("#pay_form").attr('action', "/whitevalley/shopping/kakaoPayLogic/")
+                $("#pay_form").submit()
+            })
+
+            $("#pay_finished").click(function(){
+                $("#pay_form").attr('action', "/whitevalley/shopping/payment/")
                 $("#pay_form").submit()
             })
 
@@ -447,7 +453,7 @@
             <input type="checkbox" class="ml-3" id="pay_checking">
         </div>
         <div class="w-100 d-flex justify-content-center align-items-center mt-5">
-            <button class="btn btn-dark w-50 fs-3 fw-bold" style="height: 60px;">결제</button>
+            <button class="btn btn-dark w-50 fs-3 fw-bold" type="button" style="height: 60px;" id="pay_finished">결제</button>
         </div>
     </div>
 </form>
