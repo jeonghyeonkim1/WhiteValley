@@ -310,7 +310,7 @@ def tag_reviews(request):
     for i in Tag_list.objects.all():
         context[i.name] = tag_list.get(i.name, 1) * 50
 
-    return render(request, 'tag_reviews.html',context)
+    return render(request, 'tag_reviews.html', context)
 
 # 태그 리뷰 디테일
 def tag_reviews_detail(request,pk):
