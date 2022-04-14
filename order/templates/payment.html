@@ -94,6 +94,11 @@
         }
         
         $(function() {
+            $("#kakao_pay_btn").click(function() {
+                $("#pay_form").attr('action', "/whitevalley/shopping/kakaoPayLogic/")
+                $("#pay_form").submit()
+            })
+
             $("#userequal").click(function() {
                 $("[name='receiver']").val($("[name='user']").val());
                 $("#equalcontact").val($("#usernum").val());
@@ -206,246 +211,246 @@
 <input type="hidden" value="{{ user.adress }}" id="user_adress">
 
 <div class="paycontain">
-    {% comment %} <form method="POST" action="." id="pay_form"> {% endcomment %}
+    <form method="POST" action="." id="pay_form">
         {% csrf_token %}
-    <div name="paymentForm1" class="userform pe-5" action="">
-        <div class="w-100 text-center">
-            <legend class="mb-5">주문정보</legend>
-        </div>
-        <div class="row mb-3">
-            <label class="text-center col-sm-2 col-form-label">주문자</label>
-            <div class="col-sm-10" style="display: inline-block; margin-bottom:15px">
-                <input type="text" class="form-control" placeholder="필수" name="user" value="{{ user }}" disabled>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label class="text-center col-sm-2 col-form-label">이메일</label>
-            <div class="col-sm-10" style="display: inline-block; margin-bottom:15px">
-                <input type="text" class="form-control" placeholder="필수" value="{{ user.email }}" disabled>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label class="text-center col-sm-2 col-form-label">연락처</label>
-            <div class="col-sm-10" style="display: inline-block; margin-bottom:30px">
-                <input id="usernum" type="text" class="form-control" value="{{ user.contact }}" placeholder="000-0000-0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" disabled>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div style="float:right;"><button type="button" class="btn btn-dark" id="userequal" name="userequal">구매자와 동일</button></div>
-    <div name="paymentForm2" class="receform pe-5" action="">
-        <div class="w-100 text-center">
-            <legend class="mb-5">배송지</legend>
-        </div>
-        <div class="row mb-4">
-            <label class="text-center col-sm-2 col-form-label">받는이</label>
-            <div class="col-sm-10">
-                <input id="receiver" name="receiver" type="text" class="form-control" placeholder="필수" required>
-            </div>
-        </div>
-        <div class="row mb-4">
-            <label class="text-center col-sm-2 col-form-label">주소</label>
-            <input type="hidden" value="{{ user.adress }}" id="user_adress">
-            <div class="col-sm-7">
-                <input id="sample4_postcode" name="adress0" type="text" class="form-control" placeholder="우편번호" required>
-            </div>
-            <div class="col-sm-3 d-flex justify-content-center">
-                <input type="button" class="w-100 btn btn-dark" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
-            </div>
-        </div>
-        
-        <div class="row mb-4">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-6">
-                <input id="sample4_roadAddress" name="adress1" type="text" class="form-control" placeholder="도로명주소" name="adress1">
-            </div>
-            <div class="col-sm-4">
-                <input id="sample4_jibunAddress" name="adress2" type="text" class="form-control" placeholder="지번주소" name="adress2">
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-6">
-                <input id="sample4_detailAddress" name="adress4" type="text" class="form-control" placeholder="상세주소" name="adress3" required>
-            </div>
-            <div class="col-sm-4">
-                <input id="sample4_extraAddress" name="adress3" type="text" class="form-control" value="" placeholder="참고항목" name="adress4">
-            </div>
-        </div>
-        <div class="row mb-4">
-            <label class="text-center col-sm-2 col-form-label">연락처</label>
-            <div class="col-sm-10">
-                <input type="text" id="equalcontact" name="contact" class="form-control" placeholder="필수" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required>
-            </div>
-        </div>
-        <div class="row mb-2">
-            <label class="text-center col-sm-2 col-form-label">요청사항</label>
-            <div class="col-sm-10" style="display: inline-block; margin-bottom:18px">
-                <input type="text" name="del_req" class="form-control" placeholder="요청사항">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label class="text-center col-sm-2 col-form-label">배송위치</label>
-            <div class="col-sm-10">
-                <select type="text" id="selbox1" name="location" class="form-control" placeholder="필수">
-                    <option value="문앞">문앞</option>
-                    <option value="직접 받고 부재 시 문앞">직접 받고 부재 시 문앞</option>
-                    <option value="경비실">경비실</option>
-                    <option value="택배함">택배함</option>
-                    <option value="기타사항">기타사항</option>
-                </select>
-                <input id="direct1" class="form-control" name="location_etc" type="text" placeholder="상세사항" style="display: none;">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label class="text-center col-sm-2 col-form-label">공동현관</label>
-            <div class="col-sm-10">
-                <select type="text" id="selbox2" name="r_pw" class="form-control" placeholder="필수">
-                    <option>공동현관 출입번호 없음.</option>
-                    <option value="기타사항">공동현관 출입번호 있음.&nbsp&nbsp&#9660</option>
-                </select>
-                <input id="direct2" class="form-control" name="r_pw_etc" type="text" placeholder="예시: #1234*" style="display: none;">
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="paytext" style="margin-top: 200px; border-bottom: 3px solid rgb(172, 172, 172);">
-    <div class="">
-        <h1>결제</h1>
-    </div>
-</div>
-<div name="cashForm" class="cashform" action="" >
-    <div class="pt-5 pb-5 mb-5 border-bottom border-dark">
-        <div class="text-center row g-3 align-items-center">
+        <div name="paymentForm1" class="userform pe-5" action="">
             <div class="w-100 text-center">
-                <legend>금액</legend>
+                <legend class="mb-5">주문정보</legend>
+            </div>
+            <div class="row mb-3">
+                <label class="text-center col-sm-2 col-form-label">주문자</label>
+                <div class="col-sm-10" style="display: inline-block; margin-bottom:15px">
+                    <input type="text" class="form-control" placeholder="필수" name="user" value="{{ user }}" disabled>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="text-center col-sm-2 col-form-label">이메일</label>
+                <div class="col-sm-10" style="display: inline-block; margin-bottom:15px">
+                    <input type="text" class="form-control" placeholder="필수" value="{{ user.email }}" disabled>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="text-center col-sm-2 col-form-label">연락처</label>
+                <div class="col-sm-10" style="display: inline-block; margin-bottom:30px">
+                    <input id="usernum" type="text" class="form-control" value="{{ user.contact }}" placeholder="000-0000-0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" disabled>
+                </div>
             </div>
         </div>
-        <div class="text-center row g-3 align-items-center mt-2">
-            <div class="col-2">
-                <label for="inputPassword6" class="col-form-label">총 결제금액</label>
+        <br>
+        <div style="float:right;"><button type="button" class="btn btn-dark" id="userequal" name="userequal">구매자와 동일</button></div>
+        <div name="paymentForm2" class="receform pe-5" action="">
+            <div class="w-100 text-center">
+                <legend class="mb-5">배송지</legend>
             </div>
-            <div class="col-6">
-                <input type="number" id="total_price" value="{{ total_price }}" class="form-control" disabled>
+            <div class="row mb-4">
+                <label class="text-center col-sm-2 col-form-label">받는이</label>
+                <div class="col-sm-10">
+                    <input id="receiver" name="receiver" type="text" class="form-control" placeholder="필수" required>
+                </div>
             </div>
-            <div class="col-auto">
-                <span id="total_warning" class="form-text">
-                    <div>* 적립금이 포함되지 않은 가격입니다.</div>
-                    <div class="text-danger" style="display: none;">* 적립금이 포함된 가격입니다!</div>
-                </span>
+            <div class="row mb-4">
+                <label class="text-center col-sm-2 col-form-label">주소</label>
+                <input type="hidden" value="{{ user.adress }}" id="user_adress">
+                <div class="col-sm-7">
+                    <input id="sample4_postcode" name="adress0" type="text" class="form-control" placeholder="우편번호" required>
+                </div>
+                <div class="col-sm-3 d-flex justify-content-center">
+                    <input type="button" class="w-100 btn btn-dark" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <input id="sample4_roadAddress" name="adress1" type="text" class="form-control" placeholder="도로명주소" name="adress1">
+                </div>
+                <div class="col-sm-4">
+                    <input id="sample4_jibunAddress" name="adress2" type="text" class="form-control" placeholder="지번주소" name="adress2">
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <input id="sample4_detailAddress" name="adress4" type="text" class="form-control" placeholder="상세주소" name="adress3" required>
+                </div>
+                <div class="col-sm-4">
+                    <input id="sample4_extraAddress" name="adress3" type="text" class="form-control" value="" placeholder="참고항목" name="adress4">
+                </div>
+            </div>
+            <div class="row mb-4">
+                <label class="text-center col-sm-2 col-form-label">연락처</label>
+                <div class="col-sm-10">
+                    <input type="text" id="equalcontact" name="contact" class="form-control" placeholder="필수" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <label class="text-center col-sm-2 col-form-label">요청사항</label>
+                <div class="col-sm-10" style="display: inline-block; margin-bottom:18px">
+                    <input type="text" name="del_req" class="form-control" placeholder="요청사항">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="text-center col-sm-2 col-form-label">배송위치</label>
+                <div class="col-sm-10">
+                    <select type="text" id="selbox1" name="location" class="form-control" placeholder="필수">
+                        <option value="문앞">문앞</option>
+                        <option value="직접 받고 부재 시 문앞">직접 받고 부재 시 문앞</option>
+                        <option value="경비실">경비실</option>
+                        <option value="택배함">택배함</option>
+                        <option value="기타사항">기타사항</option>
+                    </select>
+                    <input id="direct1" class="form-control" name="location_etc" type="text" placeholder="상세사항" style="display: none;">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="text-center col-sm-2 col-form-label">공동현관</label>
+                <div class="col-sm-10">
+                    <select type="text" id="selbox2" name="r_pw" class="form-control" placeholder="필수">
+                        <option>공동현관 출입번호 없음.</option>
+                        <option value="기타사항">공동현관 출입번호 있음.&nbsp&nbsp&#9660</option>
+                    </select>
+                    <input id="direct2" class="form-control" name="r_pw_etc" type="text" placeholder="예시: #1234*" style="display: none;">
+                </div>
             </div>
         </div>
-        <div class="text-center row g-3 align-items-center mt-3">
-            <div class="col-2">
-                <label for="inputPassword6" class="col-form-label">적립될 포인트</label>
-            </div>
-            <div class="col-6">
-                <input type="number" value="{{ total_point }}" class="form-control" name="plus_point" disabled>
-            </div>
-            <div class="col-auto">
-                <span id="passwordHelpInline" class="form-text">
-                    * 총 결제 금액의 {{ config.return_point }}% 가 적립됩니다.
-                </span>
-            </div>
-        </div>
-        <div class="text-center row g-3 align-items-center mt-3">
-            <div class="col-2">
-                <label for="inputPassword6" class="col-form-label">내 적립금</label>
-            </div>
-            <div class="col-3">
-                <input type="number" value="{{ user.point }}" class="form-control" id="own_point" disabled>
-            </div>
-            <div class="col-3">
-                <input type="number" class="form-control" name="use_point" id="use_point" placeholder="사용할 포인트를 기입해주세요." {% if total_price < config.min_amount %}disabled{% endif %}>
-            </div>
-        </div>
-    </div>
-</div>
-<div name="paymentForm" class="paymentform" action="">
-    <div class="border-bottom border-dark">
-      <div>
-        <legend>결제방법</legend>
-      </div>
-      <div class="d-flex align-items-center form-check">
-        <input onclick="ch1(this.value);" class="form-check-input" type="radio" name="flexRadioDefault" name="r1" checked>
-        <label class="form-check-label" for="flexRadioDefault1">
-            카드결제
-        </label>
-        <i class="fa-solid fa-credit-card display-1 ms-5"></i>
-        <div id="pay1" class="w-75">
-            <hr>
-            <div class="d-flex justify-content-evenly align-items-center">
-                <div><strong class="me-2">카드선택</strong><select name="form-control w-20" id=""><option value="">카아드</option></select></div>
-                <div><strong class="me-2">할부기간</strong><select name="form-control w-20" id=""><option value="">카아드</option></select></div>
-            </div>
-            <hr>
-        </div>
-      </div>
-      <div class="d-flex align-items-center form-check">
-        <input onclick="ch2(this.value);" class="form-check-input" type="radio" name="flexRadioDefault"  name="r2">
-        <label class="form-check-label" for="flexRadioDefault1">
-            간편결제
-        </label>
-        <i class="fa-brands fa-cc-amazon-pay display-1 ms-5"></i>
-        <div id="pay2" style="display: none;" class="w-75">
-            <hr>
-            <div class="d-flex justify-content-evenly align-items-center">
-                <div><form action="/whitevalley/shopping/kakaoPayLogic/" method="post">{% csrf_token %}<input type="submit" value="결제"></form></div>
-                <div><button type="button" class="btn btn-success">네이버페이</button></div>
-            </div>
-            <hr>
-        </div>
-      </div>
-      <div class="d-flex align-items-center form-check">
-        <input onclick="ch3(this.value);" class="form-check-input" type="radio" name="flexRadioDefault"  name="r3">
-        <label class="form-check-label me-3" for="flexRadioDefault1">
-            계좌입금
-        </label>
-        <div style="font-size: 100px;"><i class="fa-solid fa-money-bill-transfer ms-4"></i></div>
-        <div id="pay3" style="display: none;" class="w-75">
-            <hr>
-            <div class="d-flex justify-content-evenly align-items-center">
-                <strong>은행선택</strong>
-                <select name="form-control w-100" id="">
-                    {% for account in accounts %}
-                        <option value="{{ account.bank }}">{{ account.bank }}: {{ account.number }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <hr>
-        </div>
-      </div>
-      <div class="d-flex align-items-center form-check">
-        <input onclick="ch4(this.value);" class="form-check-input" type="radio" name="flexRadioDefault"  name="r4">
-        <label class="form-check-label" for="flexRadioDefault1">
-            핸드폰결제
-        </label>
-        <div style="font-size: 100px;"><i class="fa-solid fa-mobile-screen-button ms-5"></i></div>
-        <div id="pay4" style="display: none;" class="w-75">
-            <hr>
-            <div class="d-flex justify-content-evenly align-items-center">
-                <strong>통신사선택</strong>
-                <select name="form-control w-25" id="">
-                    <option value="SKT">SKT</option>
-                    <option value="KT">KT</option>
-                    <option value="LG U+">LG U+</option>
-                </select>
-            </div>
-            <hr>
-        </div>
-      </div>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center mt-5">
-        위 주문 내용을 확인하였으며, 회원본인은 개인정보 이용 및 제공 및 결제에 동의합니다.
-        <input type="checkbox" class="ml-3" id="pay_checking">
+    <div class="paytext" style="margin-top: 200px; border-bottom: 3px solid rgb(172, 172, 172);">
+        <div class="">
+            <h1>결제</h1>
+        </div>
     </div>
-    <div class="w-100 d-flex justify-content-center align-items-center mt-5">
-        <button class="btn btn-dark w-50 fs-3 fw-bold" style="height: 60px;">결제</button>
+    <div name="cashForm" class="cashform" action="" >
+        <div class="pt-5 pb-5 mb-5 border-bottom border-dark">
+            <div class="text-center row g-3 align-items-center">
+                <div class="w-100 text-center">
+                    <legend>금액</legend>
+                </div>
+            </div>
+            <div class="text-center row g-3 align-items-center mt-2">
+                <div class="col-2">
+                    <label for="inputPassword6" class="col-form-label">총 결제금액</label>
+                </div>
+                <div class="col-6">
+                    <input type="number" id="total_price" value="{{ total_price }}" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <span id="total_warning" class="form-text">
+                        <div>* 적립금이 포함되지 않은 가격입니다.</div>
+                        <div class="text-danger" style="display: none;">* 적립금이 포함된 가격입니다!</div>
+                    </span>
+                </div>
+            </div>
+            <div class="text-center row g-3 align-items-center mt-3">
+                <div class="col-2">
+                    <label for="inputPassword6" class="col-form-label">적립될 포인트</label>
+                </div>
+                <div class="col-6">
+                    <input type="number" value="{{ total_point }}" class="form-control" name="plus_point" disabled>
+                </div>
+                <div class="col-auto">
+                    <span id="passwordHelpInline" class="form-text">
+                        * 총 결제 금액의 {{ config.return_point }}% 가 적립됩니다.
+                    </span>
+                </div>
+            </div>
+            <div class="text-center row g-3 align-items-center mt-3">
+                <div class="col-2">
+                    <label for="inputPassword6" class="col-form-label">내 적립금</label>
+                </div>
+                <div class="col-3">
+                    <input type="number" value="{{ user.point }}" class="form-control" id="own_point" disabled>
+                </div>
+                <div class="col-3">
+                    <input type="number" class="form-control" name="use_point" id="use_point" placeholder="사용할 포인트를 기입해주세요." {% if total_price < config.min_amount %}disabled{% endif %}>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-{% comment %} </form> {% endcomment %}
+    <div name="paymentForm" class="paymentform" action="">
+        <div class="border-bottom border-dark">
+        <div>
+            <legend>결제방법</legend>
+        </div>
+        <div class="d-flex align-items-center form-check">
+            <input onclick="ch1(this.value);" class="form-check-input" type="radio" name="flexRadioDefault" name="r1" checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+                카드결제
+            </label>
+            <i class="fa-solid fa-credit-card display-1 ms-5"></i>
+            <div id="pay1" class="w-75">
+                <hr>
+                <div class="d-flex justify-content-evenly align-items-center">
+                    <div><strong class="me-2">카드선택</strong><select name="form-control w-20" id=""><option value="">카아드</option></select></div>
+                    <div><strong class="me-2">할부기간</strong><select name="form-control w-20" id=""><option value="">카아드</option></select></div>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div class="d-flex align-items-center form-check">
+            <input onclick="ch2(this.value);" class="form-check-input" type="radio" name="flexRadioDefault"  name="r2">
+            <label class="form-check-label" for="flexRadioDefault1">
+                간편결제
+            </label>
+            <i class="fa-brands fa-cc-amazon-pay display-1 ms-5"></i>
+            <div id="pay2" style="display: none;" class="w-75">
+                <hr>
+                <div class="d-flex justify-content-evenly align-items-center">
+                    <div><button type="button" id="kakao_pay_btn">카카오페이</div>
+                    <div><button type="button" class="btn btn-success">네이버페이</button></div>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div class="d-flex align-items-center form-check">
+            <input onclick="ch3(this.value);" class="form-check-input" type="radio" name="flexRadioDefault"  name="r3">
+            <label class="form-check-label me-3" for="flexRadioDefault1">
+                계좌입금
+            </label>
+            <div style="font-size: 100px;"><i class="fa-solid fa-money-bill-transfer ms-4"></i></div>
+            <div id="pay3" style="display: none;" class="w-75">
+                <hr>
+                <div class="d-flex justify-content-evenly align-items-center">
+                    <strong>은행선택</strong>
+                    <select name="form-control w-100" id="">
+                        {% for account in accounts %}
+                            <option value="{{ account.bank }}">{{ account.bank }}: {{ account.number }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div class="d-flex align-items-center form-check">
+            <input onclick="ch4(this.value);" class="form-check-input" type="radio" name="flexRadioDefault"  name="r4">
+            <label class="form-check-label" for="flexRadioDefault1">
+                핸드폰결제
+            </label>
+            <div style="font-size: 100px;"><i class="fa-solid fa-mobile-screen-button ms-5"></i></div>
+            <div id="pay4" style="display: none;" class="w-75">
+                <hr>
+                <div class="d-flex justify-content-evenly align-items-center">
+                    <strong>통신사선택</strong>
+                    <select name="form-control w-25" id="">
+                        <option value="SKT">SKT</option>
+                        <option value="KT">KT</option>
+                        <option value="LG U+">LG U+</option>
+                    </select>
+                </div>
+                <hr>
+            </div>
+        </div>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center mt-5">
+            위 주문 내용을 확인하였으며, 회원본인은 개인정보 이용 및 제공 및 결제에 동의합니다.
+            <input type="checkbox" class="ml-3" id="pay_checking">
+        </div>
+        <div class="w-100 d-flex justify-content-center align-items-center mt-5">
+            <button class="btn btn-dark w-50 fs-3 fw-bold" style="height: 60px;">결제</button>
+        </div>
+    </div>
+</form>
 
 <input type="hidden" value="{{ config.min_amount }}" name="min_amount">
 <input type="hidden" value="{{ config.max_point }}" name="max_point">
