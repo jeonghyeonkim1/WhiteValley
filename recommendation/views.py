@@ -363,11 +363,11 @@ def finished(request):
         'currentpage': 'shopping',
     }
     if request.method == "GET":
-        all_product = Product.objects.all().order_by('-reg_date')
+        all_product = Product.objects.all().order_by('reg_date')
         context['order_method'] = "최신순"
     elif request.method == "POST":
         if request.POST['order_filter'] == "new_list":
-            all_product = Product.objects.all().order_by('-reg_date')
+            all_product = Product.objects.all().order_by('reg_date')
             context['order_method'] = "최신순"
         else:
             all_product = Product.objects.all().order_by('-view_cnt')

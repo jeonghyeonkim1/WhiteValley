@@ -90,8 +90,6 @@ def home(req):
 
     sorted_dict = sorted(Dict.items(), key = lambda item: item[1], reverse=True)
 
-    print(sorted_dict)
-
     cnt = 0
     while 1:
         try:

@@ -415,7 +415,6 @@ def kakaoPayLogic(request):
         return render(request,'payment.html')
         
     elif request.method == "POST":
-
         user = User.objects.get(id=request.session['user'])
         cart = Cart.objects.filter(user=user, checked="True")
 
@@ -423,25 +422,14 @@ def kakaoPayLogic(request):
         for i in range(5):
             List.append(request.POST[f'adress{i}'])
 
-        adress = "_".join(List)
-
-        for i in cart:
-            Order(
-                user = User.objects.get(id=request.session['user']),
-                product = i.product,
-                amount = i.amount,
-                state = "배송준비",
-                delivery_req = request.POST['del_req'],
-                r_name = request.POST['receiver'],
-                r_adress = adress,
-                r_contact = request.POST['contact'],
-                r_location = request.POST['location_etc'] if request.POST['location'] == "기타사항" else request.POST['location'],
-                r_pw = request.POST['r_pw_etc'] if request.POST['r_pw'] == "기타사항" else request.POST['r_pw']
-            ).save()
-
-            i.delete()
+        request.session['r_adress'] = "_".join(List)
+        request.session['delivery_req'] = request.POST['del_req']
+        request.session['r_name'] = request.POST['receiver']
+        request.session['r_contact'] = request.POST['contact']
+        request.session['r_location'] = request.POST['location_etc'] if request.POST['location'] == "기타사항" else request.POST['location']
+        request.session['r_pw'] = request.POST['r_pw_etc'] if request.POST['r_pw'] == "기타사항" else request.POST['r_pw']
+        request.session['use_point'] = request.POST['use_point']
         
-
         total_price = 0
         for i in cart:
             total_price += i.product.type.price * i.amount
@@ -453,17 +441,6 @@ def kakaoPayLogic(request):
                     location.href = '/whitevalley/shopping/order/';
                 </script>
             ''')
-            
-        else:
-            total_point = (total_price * int(Config.objects.get(id=1).return_point)) // 100
-            user.point = user.point + total_point
-        try:
-            user.point = user.point - int(request.POST['use_point'])
-        except:
-            pass
-
-        user.save()
-
 
         _admin_key = '8c7cf512e39e107d1612cd3f23c6f0ec' # 입력필요
         _url = f'https://kapi.kakao.com/v1/payment/ready'
@@ -520,29 +497,22 @@ def paySuccess(request):
         user = User.objects.get(id=request.session['user'])
         cart = Cart.objects.filter(user=user, checked="True")
 
-        List = []
-        for i in range(5):
-            List.append(request.POST[f'adress{i}'])
-
-        adress = "_".join(List)
-
         for i in cart:
             Order(
                 user = User.objects.get(id=request.session['user']),
                 product = i.product,
                 amount = i.amount,
                 state = "배송준비",
-                delivery_req = request.POST['del_req'],
-                r_name = request.POST['receiver'],
-                r_adress = adress,
-                r_contact = request.POST['contact'],
-                r_location = request.POST['location_etc'] if request.POST['location'] == "기타사항" else request.POST['location'],
-                r_pw = request.POST['r_pw_etc'] if request.POST['r_pw'] == "기타사항" else request.POST['r_pw']
+                delivery_req = request.session['delivery_req'],
+                r_name = request.session['r_name'],
+                r_adress = request.session['r_adress'],
+                r_contact = request.session['r_contact'],
+                r_location = request.session['r_location'],
+                r_pw = request.session['r_pw']
             ).save()
 
             i.delete()
         
-
         total_price = 0
         for i in cart:
             total_price += i.product.type.price * i.amount
@@ -550,8 +520,8 @@ def paySuccess(request):
         if total_price == 0:
             return HttpResponse(f'''
                 <script>
-                    alert("구매하실 수 있는 물품이 없습니다!");
-                    location.href = '/whitevalley/shopping/order/';
+                    alert("비정상적인 루트입니다!");
+                    location.href = '/whitevalley/shopping/payment/';
                 </script>
             ''')
             
