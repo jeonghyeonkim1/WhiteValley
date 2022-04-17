@@ -50,7 +50,7 @@ def home(req):
         count=Count('product')
         ).order_by('-count')[0]['product'])
         context['best_cody'] = best_cody
-        context['best_cody_count'] = Order.objects.values('product').annotate(count=Count('product'))[0]['count']
+        context['best_cody_count'] = Order.objects.values('product').annotate(count=Count('product')).order_by('-count')[0]['count']
         context['best_cody_tag'] = Tag_list.objects.get(product=best_cody)
     except:
         context['best_cody'] = "완성품없음"
@@ -69,6 +69,8 @@ def home(req):
 
         context['all_tags'] = tag_dict.items()
         context['first_tag'] = tag_dict[next(iter(tag_dict))]
+
+        print(context['first_tag'])
     except:
         context['first_tag'] = "태그없음"
 
